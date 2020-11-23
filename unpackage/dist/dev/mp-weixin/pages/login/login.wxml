@@ -1,0 +1,1 @@
+<view><image src="../../static/logo.png"></image><block wx:if="{{canIUse}}"><button type="default" open-type="getUserInfo" data-event-opts="{{[['getuserinfo',[['handleGetuserinfo',['$event']]]]]}}" bindgetuserinfo="__e">授权登录</button></block></view>
