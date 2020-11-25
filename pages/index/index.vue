@@ -189,6 +189,7 @@
 	}
 	.groupView .subjectView{
 		width: 100%;
+		padding: 20rpx 0;
 	}
 	.groupView .subjectView .subjectItem{
 		display: inline-block;
