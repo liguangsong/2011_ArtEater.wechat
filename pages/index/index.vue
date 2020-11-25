@@ -1,17 +1,13 @@
 <template>
 	<view class="myPage">
 		<!--轮播 start-->
-		<view class="page-section swiper">
+		<view class="page-section">
 			<view class="page-section-spacing">
 				<swiper class="swiper" :autoplay="true">
 					<swiper-item>
-						<view class="swiperItem">A</view>
-					</swiper-item>
-					<swiper-item>
-						<view class="swiperItem">B</view>
-					</swiper-item>
-					<swiper-item>
-						<view class="swiperItem">C</view>
+						<view class="swiperItem">
+							<image src="../../static/banner.png"></image>
+						</view>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -22,51 +18,65 @@
 			<view class="navSection">
 				<view class="navItem">
 					<view class="img">
-						<image src="../../static/logo.png"></image>
+						<image src="../../static/icon/icon_errorques.png"></image>
 					</view>
-					<view class="title">错误集</view>
+					<view class="title">错题集</view>
 				</view>
 				<view class="navItem">
 					<view class="img">
-						<image src="../../static/logo.png"></image>
+						<image src="../../static/icon/icon_question.png"></image>
 					</view>
 					<view class="title">重点题库</view>
 				</view>
 				<view class="navItem" @click="handleExamClick">
 					<view class="img">
-						<image src="../../static/logo.png"></image>
+						<image src="../../static/icon/icon_test.png"></image>
 					</view>
-					<view class="title">模拟试题</view>
+					<view class="title">模拟试卷</view>
 				</view>
 				<view class="navItem" @click="handleMyClick">
 					<view class="img">
-						<image src="../../static/logo.png"></image>
+						<image src="../../static/icon/icon_mine.png"></image>
 					</view>
-					<view class="title">我</view>
+					<view class="title">个人中心</view>
 				</view>
 			</view>
 		</view>
 		<!--导航 end-->
 		<!--热门专题 start-->
 		<view class="groupView">
-			<view class="headView">
-				<view class="title">热门专题</view>
-			</view>
 			<view class="subjectView">
-				<view class="subjectItem" @click="handleSubjectClick" :data-item="item" v-for="(item) in subjects">{{item.subject_name}}</view>
+				<view class="subjectItem" @click="handleSubjectClick" :data-item="item" v-for="(item,index) in subjects">
+					<image :src="'../../static/btn/btn_'+((index+1)%4)+'.png'"></image>
+					<view class="txt">{{item.subject_name}}</view>
+				</view>
 			</view>
 		</view>
 		<!--热门专题 end-->
 		<!--精品推荐 start-->
 		<view class="groupView">
 			<view class="headView">
-				<view class="title">精品推荐</view>
+				<view class="title">推荐</view>
 			</view>
-			<view class="subjectView">
-				<view class="subjectItem">中国美术史</view>
-				<view class="subjectItem">外国美术史</view>
-				<view class="subjectItem">科技文艺</view>
-				<view class="subjectItem">中国美术史1</view>
+			<view class="newsView">
+				<view class="newsItem">
+					<view class="imgView">
+						<image src="../../static/banner.png"></image>
+					</view>
+					<view class="conView">
+						<view class="title">欧洲文艺复兴时期的...风格</view>
+						<view class="content">17世纪巴洛克时代的美术风格要点分析</view>
+					</view>
+				</view>
+				<view class="newsItem">
+					<view class="imgView">
+						<image src="../../static/banner.png"></image>
+					</view>
+					<view class="conView">
+						<view class="title">欧洲文艺复兴时期的...风格</view>
+						<view class="content">17世纪巴洛克时代的美术风格要点分析</view>
+					</view>
+				</view>
 			</view>
 		</view>
 		<!--精品推荐 end-->
@@ -100,6 +110,13 @@
 			query.startsWith("parent_ID", "0")
 			query.find().then(list => {
 				self.subjects = list
+			})
+			uni.loadFontFace ({
+			  family: 'PingFangSC-Medium',
+			  source: 'url("https://www.aoekids.cn/PingFang Medium.ttf")',
+			  success: function(){
+				  console.log('load font success')
+			  }
 			})
 		},
 		methods: {
@@ -139,14 +156,32 @@
 </script>
 
 <style>
+	page{
+		background-color: #fbf8f7;
+	}
+	.myPage{
+		/* padding: 0 30rpx; */
+	}
+	.swiper{
+		margin-top: 20rpx;
+		border-radius: 20rpx;
+		/* width: 690rpx; */
+		width: calc(100% - 60rpx);
+		height: 320rpx;
+		padding: 0 30rpx;
+	}
 	.swiperItem{
-		background-color: #007AFF;
-		height: 100%;
-		width: 100%;
+		height: 320rpx;
+		border-radius: 30rpx;
+	}
+	.swiperItem image{
+		width: 690rpx;
+		height: 320rpx;
+		border-radius: 30rpx;
 	}
 	.navView{
 		/* width: calc(100% - 40rpx); */
-		padding:20rpx;
+		margin-top:20rpx;
 	}
 	.navView .navSection{
 		display: flex;
@@ -157,34 +192,43 @@
 		text-align: center;
 	}
 	.navView .navSection .navItem .img{
-		width: 100rpx;
-		height: 100rpx;
-		display: inline-block;
+		width: 130rpx;
+		height: 130rpx;
+		display: block;
 		text-align: center;
+		margin: auto;
 	}
 	.navView .navSection .navItem .img image{
-		width: 100rpx;
-		height: 100rpx;
+		width: 130rpx;
+		height: 130rpx;
 	}
 	.navView .navSection .navItem .title{
 		width: 130rpx;
-		height: 40rpx;
-		line-height: 40rpx;
+		height: 30rpx;
+		line-height: 30rpx;
 		display: inline-block;
 		text-align: center;
-		font-size: 30rpx;
-		
+		font-family: PingFangSC-Medium;
+		font-weight: bold;
+		font-size: 22rpx;
+		color: #352026;
+		display: block;
+		margin: auto;
 	}
 	.groupView{
 		/* width: calc(100% - 40rpx); */
-		padding: 20rpx;
+		/* padding: 30rpx; */
+		margin-top: 38rpx;
 	}
 	.groupView .headView{
 		display: flex;
+		padding: 0 40rpx;
 	}
 	.groupView .headView .title{
 		flex: 1;
-		font-size: 40rpx;
+		font-size: 38rpx;
+		font-family: PingFangSC-Medium;
+		color: #352026;
 		font-weight: bold;
 	}
 	.groupView .subjectView{
@@ -193,15 +237,80 @@
 	}
 	.groupView .subjectView .subjectItem{
 		display: inline-block;
-		width: calc(50% - 30rpx);
-		margin-left: 20rpx;
+		width: 336rpx;
+		height: 152rpx;
+		margin-left: 30rpx;
 		text-align: center;
-		height: 100rpx;
-		line-height: 100rpx;
-		border: 1rpx solid #2C405A;
-		border-radius: 20rpx;
+		/* border: 1rpx solid #2C405A; */
+		border-radius: 56rpx;
+		position: relative;
+	}
+	.groupView .subjectView .subjectItem:nth-child(2n){
+		margin-left: 18rpx;
+	}
+	.groupView .subjectView .subjectItem image{
+		width: 336rpx;
+		height: 152rpx;
+		border-radius: 56rpx;
+		position: absolute;
+		left: 0;
+	}
+	.groupView .subjectView .subjectItem .txt{
+		width: 336rpx;
+		height: 152rpx;
+		line-height: 152rpx;
+		display: inline-block;
+		z-index: 11;
+		position: absolute;
+		left: 0;
+		font-family: PingFangSC-Medium;
+		font-size: 34rpx;
+		color: #ffffff;
+		/* font-weight: bold; */
 	}
 	.groupView .subjectView .subjectItem:nth-child(n+2){
-		margin-top: 20rpx;
+		margin-top: 12rpx;
+	}
+	
+	.newsView{
+		padding: 0 30rpx;
+	}
+	.newsView .newsItem{
+		background-color: #ffffff;
+		border-radius: 30rpx;
+		margin: 18rpx 0;
+		display: flex;
+		width: 690rpx;
+		height: 214rpx;
+		padding: 25rpx;
+	}
+	.newsView .newsItem .imgView{
+		width: 208rpx;
+		height: 164rpx;
+		line-height: 164rpx;
+		text-align: center;
+	}
+	.newsView .newsItem .imgView image{
+		width: 208rpx;
+		height: 164rpx;
+		margin: auto;
+		display: inline-block;
+		vertical-align: middle;
+		border-radius: 10rpx;
+	}
+	.newsView .newsItem .conView{
+		flex: 1;
+		padding: 10rpx 0 0 25rpx;
+	}
+	.newsView .newsItem .conView .title{
+		font-family: PingFangSC-Medium;
+		font-size: 34rpx;
+		color: #352026;
+		font-weight: bold;
+	}
+	.newsView .newsItem .conView .content{
+		font-family: PingFangSC-Medium;
+		font-size: 30rpx;
+		color: #352026;
 	}
 </style>
