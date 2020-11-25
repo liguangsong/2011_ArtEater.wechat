@@ -1,0 +1,25 @@
+{
+  "name": "wechat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "parse": "^2.18.0",
+    "uview-ui": "^1.8.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liguangsong/2011_ArtEater.wechat.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liguangsong/2011_ArtEater.wechat/issues"
+  },
+  "homepage": "https://github.com/liguangsong/2011_ArtEater.wechat#readme"
+}
