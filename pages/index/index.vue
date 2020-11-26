@@ -92,7 +92,62 @@
 				openid: '',
 				userInfo: {},
 				title: 'Hello',
-				subjects: []
+				subjects: [{
+						"objectId":"FGXwa0hCBr",
+						"subject_name":"中国美术史",
+						"content":"",
+						"price":"86.48",
+						"level":0,
+						"parent_ID":"0",
+						"has_down_level":true,
+						"createdAt":"2020-11-24T08:08:32.845Z",
+						"updatedAt":"2020-11-24T09:46:45.965Z"
+					},
+					{
+						"objectId":"34EXyuIXzY",
+						"subject_name":"中国童话故事",
+						"content":"<p>222222</p>",
+						"price":"20.00",
+						"level":0,
+						"parent_ID":"0",
+						"has_down_level":true,
+						"createdAt":"2020-11-24T08:08:52.234Z",
+						"updatedAt":"2020-11-24T09:48:30.386Z"
+					},
+					{
+						"objectId":"JqLnBUsUyS",
+						"subject_name":"中国鬼故事",
+						"content":"",
+						"price":"0",
+						"level":0,
+						"parent_ID":"0",
+						"has_down_level":false,
+						"createdAt":"2020-11-25T11:57:15.084Z",
+						"updatedAt":"2020-11-25T11:57:15.084Z"
+					},
+					{
+						"objectId":"FuwDGurtTv",
+						"subject_name":"科技文艺",
+						"content":"",
+						"price":"0",
+						"level":0,
+						"parent_ID":"0",
+						"has_down_level":false,
+						"createdAt":"2020-11-25T11:57:38.993Z",
+						"updatedAt":"2020-11-25T11:57:38.993Z"
+					},
+					{
+						"objectId":"DQ2wbrtbFT",
+						"subject_name":"外国美术史",
+						"content":"",
+						"price":"0",
+						"level":0,
+						"parent_ID":"0",
+						"has_down_level":false,
+						"createdAt":"2020-11-25T11:57:51.426Z",
+						"updatedAt":"2020-11-25T11:57:51.426Z"
+					}
+				]
 			}
 		},
 		onShow() {
@@ -108,12 +163,12 @@
 			const Subjects = this.Parse.Object.extend("Subjects")
 			const query = new this.Parse.Query(Subjects)
 			query.startsWith("parent_ID", "0")
-			query.find().then(list => {
-				self.subjects = list
-			})
+			// query.find().then(list => {
+			// 	self.subjects = list
+			// })
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/PingFang Medium.ttf")',
+			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }

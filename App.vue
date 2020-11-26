@@ -8,7 +8,6 @@
 		onLaunch: function() {
 			uni.login({
 			  success: coderes => {
-				  debugger
 				  uni.request({
 				  	url:'https://api.weixin.qq.com/sns/jscode2session',
 					data: {
