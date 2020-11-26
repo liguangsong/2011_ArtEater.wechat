@@ -3,7 +3,6 @@
 	@import "uview-ui/index.scss";
 </style>
 <script>
-	import MyConfig from 'static/config/index.js'
 	export default {
 		onLaunch: function() {
 			uni.login({

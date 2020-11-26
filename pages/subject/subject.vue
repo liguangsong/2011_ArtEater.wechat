@@ -3,12 +3,14 @@
 		<view class="treeView">
 			<view v-for="(subject,index) in subjectTree" class="treeItem">
 				<view class="listIcon"  @click="handleExtend(subject)">
-					<image v-if="!subject.extend" src="../../static/icon/icon_add.png"></image>
-					<image v-else src="../../static/icon/icon_remove.png"></image>
+					<template v-if="subject.has_down_level">
+						<image v-if="!subject.extend" src="../../static/icon/icon_add.png"></image>
+						<image v-else src="../../static/icon/icon_remove.png"></image>
+					</template>
 				</view>
 				<view class="content">
 					<view class="conView">
-						<view class="listTxt" @click="handleNameClick">{{subject.subject_name}}</view>
+						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}</view>
 						<view class="listAction">
 							<image @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
 							<image @click="handleTestClick" src="../../static/icon/icon_pencle.png"></image>
@@ -19,7 +21,7 @@
 							<view class="listIcon">·</view>
 							<view class="content">
 								<view class="conView">
-									<view class="listTxt" @click="handleNameClick">{{sub.subject_name}}</view>
+									<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
 									<view class="listAction">
 										<image @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
 										<image @click="handleTestClick" src="../../static/icon/icon_pencle.png"></image>
@@ -35,65 +37,15 @@
 			<view class="detailView" style="padding:74rpx 50rpx;">
 				<scroll-view scroll-y="true" :style="'max-height:'+(screenHeight - 600)+'rpx;'">
 					<view>
-						
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
-						人生若只如初见，何事秋风悲画扇
+						<u-parse :html="currSubjectDetail.content"></u-parse>
 					</view>
 				</scroll-view>
 			</view>
 		</u-popup>
 		<u-popup v-model="isShowSubjectBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
 			<view class="buylView" style="padding:74rpx 40rpx;">
-				<view class="title">中国美术史</view>
-				<view class="price">¥299.99</view>
+				<view class="title">{{subjectDetail.subject_name}}</view>
+				<view class="price">¥{{subjectDetail.price}}</view>
 				<view class="tips">
 					您购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
 				</view>
@@ -101,7 +53,7 @@
 					购买后可在【个人中心-已购项目】中查看
 				</view>
 				<view class="btnActions">
-					<button>确认购买</button>
+					<button @click="handleBuyBtnClick">确认购买</button>
 				</view>
 			</view>
 		</u-popup>
@@ -109,36 +61,53 @@
 </template>
 
 <script>
+	import { dateFormat, GetRandomNum } from '../../js/common.js'
 	export default {
 		data() {
 			return {
-				subjectTree:[
-					{id:'2313dsa', subject_name:'原始、古代美术', extend: false, children:[
-						{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
-						{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
-						{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
-					]},
-					{id:'2313dsa', subject_name:'欧洲中世纪的美术', extend: false, children:[
-						{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
-						{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
-						{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
-					]},
-					{id:'2313dsa', subject_name:'欧洲文艺复兴时期的...风格', extend: false, children:[
-						{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
-						{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
-						{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
-					]},
-					{id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
-					{id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
-					{id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
-					{id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]}
+				subjectTree:
+				[
+					// {id:'2313dsa', subject_name:'原始、古代美术', extend: false, children:[
+					// 	{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
+					// 	{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
+					// 	{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
+					// ]},
+					// {id:'2313dsa', subject_name:'欧洲中世纪的美术', extend: false, children:[
+					// 	{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
+					// 	{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
+					// 	{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
+					// ]},
+					// {id:'2313dsa', subject_name:'欧洲文艺复兴时期的...风格', extend: false, children:[
+					// 	{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
+					// 	{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
+					// 	{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
+					// ]},
+					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
+					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
+					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
+					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]}
 				],
+				userInfo: null,
+				subjectId:'',
+				subjectDetail: null,
+				currSubjectDetail: null,
 				isShowSubjectDetail: false,
 				isShowSubjectBuy: false,
 				screenHeight:0
 			}
 		},
-		onLoad() {
+		onLoad(options) {
+			uni.getStorage({
+				key:'userInfo',
+				success: res => {
+					this.userInfo = res.data
+				}
+			})
+			if(options.sid){
+				this.subjectId = options.sid
+				this.bindSubjectDetail()
+				this.bindSubjectTree()
+			}
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
 			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
@@ -156,17 +125,101 @@
 			})
 		},
 		methods: {
+			/*加载科目详情*/
+			bindSubjectDetail(){
+				var self = this
+				var query = new this.Parse.Query("Subjects")
+				query.get(this.subjectId).then(res=>{
+					self.subjectDetail = res
+				})
+			},
+			/* 加载科目树*/
+			bindSubjectTree(){
+				var self = this
+				var query = new this.Parse.Query("Subjects")
+				// query.equalTo("parent_ID", this.subjectId)
+				query.find().then(res=>{
+					var tree = self.initSubjectTree(res, self.subjectId)
+					self.subjectTree = tree
+				})
+			},
+			/** 构造树形科目 */
+			initSubjectTree(subjects, parentId){
+				var self = this
+				var treeValue = []
+				let _subjects = subjects.filter((_item)=>{
+					return _item.get('parent_ID') == parentId
+				})
+				_subjects.forEach((_subject, _index)=> {
+					let subject = {
+						subject_name: _subject.get('subject_name'),
+						content: _subject.get('content'),
+						extend: false,
+						has_down_level: _subject.get('has_down_level'),
+						value: _subject.id,
+					}
+					let childrens = subjects.filter(_item=>{
+						return _item.get('parent_ID') == _subject.id
+					})
+					if(childrens.length>0){
+						subject.children = self.initSubjectTree(subjects, _subject.id)
+					}
+					treeValue.push(subject)
+				})
+				return treeValue
+			},
 			/*展开关闭*/
 			handleExtend(subject){
 				subject.extend = !subject.extend
 			},
 			/*查看详情*/
-			handleNameClick(){
-				this.isShowSubjectDetail = true
+			handleNameClick(e){
+				var item = e.currentTarget.dataset.item
+				// if(item.content){
+					this.currSubjectDetail = item
+					this.isShowSubjectDetail = true
+				// }
 			},
-			/*购买*/
+			/*弹出购买界面*/
 			handleBuyClick(){
 				this.isShowSubjectBuy = true
+			},
+			/*点击购买按钮*/
+			handleBuyBtnClick(){
+				var self = this
+				var _subject = this.currSubjectDetail
+				var dbOrder = this.Parse.Object.extend("Order")
+				var order = new dbOrder()
+				var orderNo = dateFormat(new Date(),'yyyyMMddHHmmss'+ GetRandomNum(3))
+				order.set('orderNo', orderNo)
+				order.set("subjectId",  this.subjectId)
+				order.set("subjectName",  this.subjectDetail.get('subject_name'))
+				order.set("price",  this.subjectDetail.get('price'))
+				order.set("openId", this.userInfo.openid)
+				order.set("state", 0)
+				order.set("wechatPayOrderId", '') // 支付流水号
+				order.save().then(_order => {
+					this.$Message.success('保存成功')
+				},(error)=>{
+					console.log(error)
+					this.$Message.error('保存失败')
+				})
+				uni.requestPayment({
+				  appId: '',
+				  timeStamp: '',
+				  nonceStr: '',
+				  package: '',
+				  signType: '',
+				  paySign: '',
+				  success (res) {
+					 //  uni.reLaunch({
+						// url: 'paysuccess?orderNo=' + result.orderNo,
+					 //  })
+				  },
+				  fail (res) {
+					console.log("支付失败"+ JSON.stringify(res))
+				  }
+				})
 			},
 			/*做题*/
 			handleTestClick(){

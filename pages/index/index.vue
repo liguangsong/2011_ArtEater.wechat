@@ -163,9 +163,9 @@
 			const Subjects = this.Parse.Object.extend("Subjects")
 			const query = new this.Parse.Query(Subjects)
 			query.startsWith("parent_ID", "0")
-			// query.find().then(list => {
-			// 	self.subjects = list
-			// })
+			query.find().then(list => {
+				self.subjects = list
+			})
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
 			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
@@ -203,7 +203,7 @@
 			handleSubjectClick(e){
 				var item = e.currentTarget.dataset.item
 				uni.navigateTo({
-					url:'../subject/subject?sid='+item._id
+					url:'../subject/subject?sid='+item.objectId
 				})
 			}
 		}
