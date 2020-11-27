@@ -12,7 +12,8 @@
             "path" : "pages/mine/mine",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "我的",
+				"navigationBarBackgroundColor": "#fbfbfb",
+                "navigationBarTitleText": "食艺兽",
                 "enablePullDownRefresh": false
             }
             
@@ -71,6 +72,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/subject/complate",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -83,8 +93,8 @@
 		"list": [
 			{
 				"name": "补全信息", //模式名称
-				"path": "pages/subject/subject", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
+				"path": "pages/mine/mine", //启动页面，必选
+				"query": "sid=3WBX2OGzYB" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
 	}

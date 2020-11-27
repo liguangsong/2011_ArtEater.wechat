@@ -13,7 +13,7 @@
 						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}</view>
 						<view class="listAction">
 							<image @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
-							<image @click="handleTestClick" src="../../static/icon/icon_pencle.png"></image>
+							<image @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_pencle.png"></image>
 						</view>
 					</view>
 					<view class="children" v-if="subject.extend">
@@ -24,7 +24,7 @@
 									<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
 									<view class="listAction">
 										<image @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
-										<image @click="handleTestClick" src="../../static/icon/icon_pencle.png"></image>
+										<image @click="handleTestClick" :data-item="sub" src="../../static/icon/icon_pencle.png"></image>
 									</view>
 								</view>
 							</view>
@@ -222,9 +222,10 @@
 				})
 			},
 			/*做题*/
-			handleTestClick(){
+			handleTestClick(e){
+				var item = e.currentTarget.dataset.item
 				uni.navigateTo({
-					url:'exam'
+					url:'exam?sid=' + item.value
 				})
 			}
 		}
@@ -232,6 +233,9 @@
 </script>
 
 <style>
+	page{
+		background-color: #fbfbfb;
+	}
 	.treeView{
 		padding: 30rpx;
 		line-height: 66rpx;
