@@ -1,15 +1,5 @@
 <template>
 	<view>
-		<view class="buytipsView">
-			<view class="tipView">
-				<view class="txt">
-					本章为免费内容，学习更多知识，请点击购买全部章节
-				</view>
-				<view class="icon">
-					<u-icon name="arrow-right" color="#ffffff" size="32"></u-icon>
-				</view>
-			</view>
-		</view>
 		<view v-if="count==0" style="text-align: center;">
 			<u-empty text="数据为空" mode="data"></u-empty>
 		</view>
@@ -18,7 +8,7 @@
 				<view v-if="questionDetail.type==1" class="queType">单选题</view>
 				<view v-if="questionDetail.type==2" class="queType">多选题</view>
 				<view v-if="questionDetail.type==3" class="queType">填空题</view>
-				<view class="countView">{{subjectIndex}}/{{count}}</view>
+				<view class="countView">{{index}}/{{count}}</view>
 			</view>
 			<view class="imgView">
 				<image mode="widthFix" src="../../static/banner.png"></image>
@@ -48,7 +38,7 @@
 		</view>
 		<view v-if="count > 0" class="actionView">	
 			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
-			<button v-if="hasSubmit&&subjectIndex < count" @click="handleNext" class="next">下一题</button>
+			<button v-if="hasSubmit && index < count" @click="handleNext" class="next">下一题</button>
 		</view>
 	</view>
 </template>
@@ -61,7 +51,7 @@
 		},
 		data() {
 			return {
-				subjectIndex: 1, // 当前答题序号
+				index: 1, // 当前序号
 				count:0, // 总题数
 				options: [],
 				currAnswer:[], // 当前答案
@@ -70,18 +60,13 @@
 				screenWidth: 0,
 				inputHeight:328, // 软键盘高度
 				userInfo: null,
-				subjectId:'',
-				subjectDetail: null,
 				questionDetail: null,
-				history:null
+				currnote:null,
+				notes:[]
 			}
 		},
 		onLoad(options) {
 			var self = this
-			if(options.sid){
-				this.subjectId = options.sid
-				this.bindSubjectDetail()
-			}
 			uni.getStorage({
 				key:'userInfo',
 				success: res => {
@@ -115,60 +100,36 @@
 			inputBlur(e) {
 				this.inputHeight = 0
 			    console.log('键盘收起')
-			},			
-			/*加载科目详情*/
-			bindSubjectDetail(){
-				var self = this
-				var query = new this.Parse.Query("Subjects")
-				query.get(this.subjectId).then(res=>{
-					self.subjectDetail = res
-				})
 			},
 			/*加载题目*/
 			bindQuestion(){
 				var self = this
-				var hisQuery = new this.Parse.Query("QuestionHistory")
-				hisQuery.equalTo("subjectId",this.subjectId)
-				hisQuery.equalTo("isImportant", 0)
-				hisQuery.equalTo("openid",this.userInfo.openid)
-				hisQuery.first().then(hres=>{
-					if(hres){
-						self.history = hres
-						self.subjectIndex = hres.get('subjectIndex') + 1
-					}
-					
-					var cquery = new this.Parse.Query("TestQuestions")
-					cquery.equalTo("subjects", this.subjectId)
-					cquery.equalTo("isImportant", 0)
-					cquery.count().then(cres=>{
-						if(cres==0) {
-							self.count = 0
-							return
-						}
-						if(hres && hres.get('subjectIndex') >= cres) {
-							uni.navigateTo({
-								url:'complate'
-							})
-						}
-						self.count = cres
-					})
-					var query = new this.Parse.Query("TestQuestions")
-					query.equalTo("subjects", this.subjectId)
-					query.equalTo("isImportant", 0)
-					query.ascending("index")
-					if(hres){
-						query.greaterThan("index", hres.get('questIndex'))	
-					}
-					query.first().then(res=>{
-						if(res){
-							if(res.get('type') == 3){
-								res.set('cinputs', res.get('title').split('____'))
+				var hisQuery = new this.Parse.Query("ErrorHistory")
+				hisQuery.equalTo("openid", this.userInfo.openid)
+				hisQuery.find().then(hres=>{
+					debugger
+					if(hres) {
+						self.index = 1
+						self.count = hres.length
+						hres.sort(function(){
+							return Math.random() - 0.5;
+						});
+						self.currnote = hres[0]
+						self.notes = hres
+						var cquery = new this.Parse.Query("TestQuestions")
+						cquery.get(self.currnote.get('questionId')).then(res=>{
+							if(res){
+								if(res.get('type') == 3){
+									res.set('cinputs', res.get('title').split('____'))
+								}
+								self.questionDetail = res
+								let _options = JSON.parse(JSON.stringify(res.get('options')))
+								self.options =  _options
 							}
-							self.questionDetail = res
-							let _options = JSON.parse(JSON.stringify(res.get('options')))
-							self.options =  _options
-						}
-					})
+						})
+					} else {
+						self.count = 0
+					}
 				})
 			},
 			/*选择答案*/
@@ -245,57 +206,37 @@
 							}
 						})
 					}
-					/*保存答题记录*/
-					var dbHistory = this.Parse.Object.extend("QuestionHistory")
-					var _history = new dbHistory()
-					if(this.history){
-						_history.set('id', this.history.id)
-					}
-					_history.set('openid', this.userInfo.openid)
-					_history.set('subjectId', this.subjectDetail.id)
-					_history.set('isImportant', 0)
-					_history.set('questIndex', this.questionDetail.get('index'))
-					_history.set('subjectIndex', this.history?(this.history.get('subjectIndex') + 1) : 1)
-					_history.save().then(his => {
-						self.history = his
-						console.log('保存成功')
-					},(error)=>{
-						console.log(error)
-					})
-					if(!result) { // 答错
+					if(result) { // 答对了，删除错题记录
 						/*错题记录*/
-						
-						var queryNote = this.Parse.Object.extend("ErrorHistory")
-						var query = new queryNote()
-						query.equalTo('openid', this.userInfo.openid)
-						query.equalTo('questionId', this.questionDetail.id)
-						query.count().then(count=>{
-							if(count && count > 0){ // 已存在错误记录
-								
-							} else {
-								var dbNote = this.Parse.Object.extend("ErrorHistory")
-								var note = new dbNote()
-								note.set('openid', this.userInfo.openid)
-								note.set('questionId', this.questionDetail.id)
-								note.set('title', this.questionDetail.get('title'))
-								note.set('options', this.questionDetail.get('options'))
-								note.save().then(_note => {
-									console.log('保存成功')
-								},(error)=>{
-									console.log(error)
-								})
-							}
+						var query = new this.Parse.Query("ErrorHistory")
+						query.get(self.currnote.id).then((note)=>{
+							// 删除当前题目
+							note.destroy().then((delete_result)=>{
+								console.log('答对了，删除错题记录')
+							})
 						})
 					}
 				}
 			},
 			/*下一题*/
 			handleNext(){
-				this.subjectIndex = this.history.get('subjectIndex')
+				var self = this
+				this.index = this.index + 1
 				this.currAnswer = [] // 当前答案
 				this.hasSubmit = false;
 				this.canSubmit = false;
-				this.bindQuestion()
+				this.currnote = this.notes[this.index]
+				var cquery = new this.Parse.Query("TestQuestions")
+				cquery.get(this.currnote.get('questionId')).then(res=>{
+					if(res){
+						if(res.get('type') == 3){
+							res.set('cinputs', res.get('title').split('____'))
+						}
+						self.questionDetail = res
+						let _options = JSON.parse(JSON.stringify(res.get('options')))
+						self.options =  _options
+					}
+				})
 			}
 		}
 	}

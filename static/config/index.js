@@ -7,6 +7,6 @@ export default{
 	parseServerUrl: 'http://localhost:2018/parse',
 	parseServerAppId:'myAppId',
 	parseServerJsKey:'123456',
-	AppId: 'wxb4777d3c2ec9d3ae',
+	AppId: 'wxb4777d3c2ec9d3ae', // 食艺兽:wx8bef88e5b3f056be
 	AppSecrect: '515b595fed9971d71258e2c23def6119',
 }

@@ -1,15 +1,5 @@
 <template>
 	<view>
-		<view class="buytipsView">
-			<view class="tipView">
-				<view class="txt">
-					本章为免费内容，学习更多知识，请点击购买全部章节
-				</view>
-				<view class="icon">
-					<u-icon name="arrow-right" color="#ffffff" size="32"></u-icon>
-				</view>
-			</view>
-		</view>
 		<view v-if="count==0" style="text-align: center;">
 			<u-empty text="数据为空" mode="data"></u-empty>
 		</view>
@@ -129,7 +119,7 @@
 				var self = this
 				var hisQuery = new this.Parse.Query("QuestionHistory")
 				hisQuery.equalTo("subjectId",this.subjectId)
-				hisQuery.equalTo("isImportant", 0)
+				hisQuery.equalTo("isImportant", 1)
 				hisQuery.equalTo("openid",this.userInfo.openid)
 				hisQuery.first().then(hres=>{
 					if(hres){
@@ -139,7 +129,7 @@
 					
 					var cquery = new this.Parse.Query("TestQuestions")
 					cquery.equalTo("subjects", this.subjectId)
-					cquery.equalTo("isImportant", 0)
+					cquery.equalTo("isImportant", 1)
 					cquery.count().then(cres=>{
 						if(cres==0) {
 							self.count = 0
@@ -154,7 +144,7 @@
 					})
 					var query = new this.Parse.Query("TestQuestions")
 					query.equalTo("subjects", this.subjectId)
-					query.equalTo("isImportant", 0)
+					query.equalTo("isImportant", 1)
 					query.ascending("index")
 					if(hres){
 						query.greaterThan("index", hres.get('questIndex'))	
@@ -253,7 +243,7 @@
 					}
 					_history.set('openid', this.userInfo.openid)
 					_history.set('subjectId', this.subjectDetail.id)
-					_history.set('isImportant', 0)
+					_history.set('isImportant', 1)
 					_history.set('questIndex', this.questionDetail.get('index'))
 					_history.set('subjectIndex', this.history?(this.history.get('subjectIndex') + 1) : 1)
 					_history.save().then(his => {

@@ -5,7 +5,7 @@
 				<view class="headIconView">
 					<image v-if="userInfo&&userInfo.avatarUrl" :src="userInfo.avatarUrl"></image>
 				</view>
-				<view class="nickName">颜欢</view>
+				<view class="nickName">{{userInfo.nickName}}</view>
 				<view class="icon">
 					<u-icon name="arrow-right" color="#f4f4f4" size="32"></u-icon>
 				</view>
@@ -21,14 +21,14 @@
 						<view class="title">错题集</view>
 					</view>
 					<view class="scoreItem">
-						<view class="score">0</view>
+						<view class="score">{{userInfo.score}}</view>
 						<view class="title">总积分</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="actionView">
-			<view class="actionItem">
+			<view class="actionItem" @click="handleSignInClick">
 				<view class="licon">
 					<image src="../../static/icon/icon_action_daka.png"></image>
 				</view>
@@ -39,7 +39,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="actionItem">
+			<view class="actionItem" @click="handleScoreListClick">
 				<view class="licon">
 					<image src="../../static/icon/icon_action_paihang.png"></image>
 				</view>
@@ -63,7 +63,7 @@
 			</view>
 		</view>
 		<view class="actionView">
-			<view class="actionItem">
+			<view class="actionItem" @click="handleMessageClick">
 				<view class="licon">
 					<image src="../../static/icon/icon_action_xiaoxi.png"></image>
 				</view>
@@ -116,6 +116,24 @@
 			handleOrderClick(){
 				uni.navigateTo({
 					url:'order'
+				})
+			},
+			/*签到*/
+			handleSignInClick(){
+				uni.navigateTo({
+					url:'./signin'
+				})
+			},
+			/*积分排行榜*/
+			handleScoreListClick(){
+				uni.navigateTo({
+					url:'./score'
+				})
+			},
+			/* 消息中心 */
+			handleMessageClick(){
+				uni.navigateTo({
+					url:'./message'
 				})
 			}
 		}

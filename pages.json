@@ -81,6 +81,97 @@
             }
             
         }
+        ,{
+            "path" : "pages/mine/note",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/important/subject",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "重点题库",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/important/exam",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/important/index",
+            "style" :                                                                                    
+            {
+				"navigationBarBackgroundColor": "#fbfbfb",
+                "navigationBarTitleText": "重点题库",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/important/complate",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/exam/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/signin",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/score",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/message",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/msgdetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -93,8 +184,8 @@
 		"list": [
 			{
 				"name": "补全信息", //模式名称
-				"path": "pages/mine/mine", //启动页面，必选
-				"query": "sid=3WBX2OGzYB" //启动参数，在页面的onLoad函数里面得到
+				"path": "pages/important/subject", //启动页面，必选
+				"query": "sid=FGXwa0hCBr" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
 	}

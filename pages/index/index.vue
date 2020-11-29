@@ -16,13 +16,13 @@
 		<!--导航 start-->
 		<view class="navView">
 			<view class="navSection">
-				<view class="navItem">
+				<view class="navItem" @click="handleNoteClick">
 					<view class="img">
 						<image src="../../static/icon/icon_errorques.png"></image>
 					</view>
 					<view class="title">错题集</view>
 				</view>
-				<view class="navItem">
+				<view class="navItem" @click="handleImportantClick">
 					<view class="img">
 						<image src="../../static/icon/icon_question.png"></image>
 					</view>
@@ -80,6 +80,22 @@
 			</view>
 		</view>
 		<!--精品推荐 end-->
+		
+		<u-popup v-model="isShowImportBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
+			<view class="buylView" style="padding:74rpx 40rpx;">
+				<view class="title">{{subjectDetail.subject_name}}</view>
+				<view class="price">¥{{subjectDetail.price}}</view>
+				<view class="tips">
+					您购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
+				</view>
+				<view class="tips">
+					购买后可在【个人中心-已购项目】中查看
+				</view>
+				<view class="btnActions">
+					<button @click="handleBuyBtnClick">确认购买</button>
+				</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -91,6 +107,7 @@
 			return {
 				openid: '',
 				userInfo: {},
+				isShowImportBuy: false,
 				title: 'Hello',
 				subjects: [{
 						"objectId":"FGXwa0hCBr",
@@ -175,11 +192,36 @@
 			})
 		},
 		methods: {
+			/*错题集*/
+			handleNoteClick(){
+				if(this.userInfo&&this.userInfo.openid){
+					uni.navigateTo({
+						url:'../mine/note'
+					})
+				} else {
+					uni.navigateTo({
+						url:'../login/login'
+					})
+				}
+			},
+			/*重点题库*/
+			handleImportantClick(){
+				if(this.userInfo&&this.userInfo.openid){
+					uni.navigateTo({
+						url:'../important/index'
+					})
+					// this.isShowImportBuy = true
+				} else {
+					uni.navigateTo({
+						url:'../login/login'
+					})
+				}
+			},
 			/*考试*/
 			handleExamClick() {
-				if(this.userInfo&&this.userInfo.openid){					
+				if(this.userInfo&&this.userInfo.openid){
 					uni.navigateTo({
-						url:'../exam/exam'
+						url:'../exam/index'
 					})
 				} else {
 					uni.navigateTo({
@@ -189,7 +231,7 @@
 			},
 			/* 点击“我” */
 			handleMyClick(){
-				if(this.userInfo&&this.userInfo.openid){					
+				if(this.userInfo&&this.userInfo.openid){
 					uni.navigateTo({
 						url:'../mine/mine'
 					})

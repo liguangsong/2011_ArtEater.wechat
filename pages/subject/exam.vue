@@ -11,7 +11,7 @@
 			</view>
 		</view>
 		<view v-if="count==0" style="text-align: center;">
-			暂无内容
+			<u-empty text="数据为空" mode="data"></u-empty>
 		</view>
 		<view v-else class="questionView">
 			<view class="headView">
@@ -129,6 +129,7 @@
 				var self = this
 				var hisQuery = new this.Parse.Query("QuestionHistory")
 				hisQuery.equalTo("subjectId",this.subjectId)
+				hisQuery.equalTo("isImportant", 0)
 				hisQuery.equalTo("openid",this.userInfo.openid)
 				hisQuery.first().then(hres=>{
 					if(hres){
@@ -138,6 +139,7 @@
 					
 					var cquery = new this.Parse.Query("TestQuestions")
 					cquery.equalTo("subjects", this.subjectId)
+					cquery.equalTo("isImportant", 0)
 					cquery.count().then(cres=>{
 						if(cres==0) {
 							self.count = 0
@@ -152,6 +154,7 @@
 					})
 					var query = new this.Parse.Query("TestQuestions")
 					query.equalTo("subjects", this.subjectId)
+					query.equalTo("isImportant", 0)
 					query.ascending("index")
 					if(hres){
 						query.greaterThan("index", hres.get('questIndex'))	
@@ -243,17 +246,17 @@
 						})
 					}
 					/*保存答题记录*/
-					var dbOrder = this.Parse.Object.extend("QuestionHistory")
-					var order = new dbOrder()
+					var dbHistory = this.Parse.Object.extend("QuestionHistory")
+					var _history = new dbHistory()
 					if(this.history){
-						order.set('id', this.history.id)
+						_history.set('id', this.history.id)
 					}
-					order.set('openid', this.userInfo.openid)
-					order.set('subjectId', this.subjectDetail.id)
-					order.set('questIndex', this.questionDetail.get('index'))
-					order.set('subjectIndex', this.history?(this.history.get('subjectIndex') + 1) : 1)
-					order.save().then(his => {
-						debugger
+					_history.set('openid', this.userInfo.openid)
+					_history.set('subjectId', this.subjectDetail.id)
+					_history.set('isImportant', 0)
+					_history.set('questIndex', this.questionDetail.get('index'))
+					_history.set('subjectIndex', this.history?(this.history.get('subjectIndex') + 1) : 1)
+					_history.save().then(his => {
 						self.history = his
 						console.log('保存成功')
 					},(error)=>{
@@ -261,16 +264,27 @@
 					})
 					if(!result) { // 答错
 						/*错题记录*/
-						var dbOrder = this.Parse.Object.extend("ErrorHistory")
-						var order = new dbOrder()
-						order.set('openid', this.userInfo.openid)
-						order.set('questionId', this.questionDetail.id)
-						order.set('title', this.questionDetail.get('title'))
-						order.set('options', this.questionDetail.get('options'))
-						order.save().then(_order => {
-							console.log('保存成功')
-						},(error)=>{
-							console.log(error)
+						
+						var queryNote = this.Parse.Object.extend("ErrorHistory")
+						var query = new queryNote()
+						query.equalTo('openid', this.userInfo.openid)
+						query.equalTo('questionId', this.questionDetail.id)
+						query.count().then(count=>{
+							if(count && count > 0){ // 已存在错误记录
+								
+							} else {
+								var dbNote = this.Parse.Object.extend("ErrorHistory")
+								var note = new dbNote()
+								note.set('openid', this.userInfo.openid)
+								note.set('questionId', this.questionDetail.id)
+								note.set('title', this.questionDetail.get('title'))
+								note.set('options', this.questionDetail.get('options'))
+								note.save().then(_note => {
+									console.log('保存成功')
+								},(error)=>{
+									console.log(error)
+								})
+							}
 						})
 					}
 				}
