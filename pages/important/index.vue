@@ -23,6 +23,7 @@
 			const Subjects = this.Parse.Object.extend("Subjects")
 			const query = new this.Parse.Query(Subjects)
 			query.startsWith("parent_ID", "0")
+			query.ascending("createdAt")
 			query.find().then(list => {
 				self.subjects = list
 			})

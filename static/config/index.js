@@ -1,12 +1,16 @@
-export const AppId = 'wxb4777d3c2ec9d3ae'
-export const AppSecrect = '515b595fed9971d71258e2c23def6119'
 export default{
   /**
    * @description token在Cookie中存储的天数，默认1天
    */
-	parseServerUrl: 'http://localhost:2018/parse',
-	parseServerAppId:'myAppId',
-	parseServerJsKey:'123456',
-	AppId: 'wxb4777d3c2ec9d3ae', // 食艺兽:wx8bef88e5b3f056be
-	AppSecrect: '515b595fed9971d71258e2c23def6119',
+	// parseServerBaseUrl: 'http://localhost:2018/parse',
+	// ParseAppId:'myAppId',
+	// parseServerJsKey:'123456',
+	
+	parseRestBaseUrl: 'http://101.200.34.189:1401',
+	parseServerBaseUrl: 'http://101.200.34.189:1401/api/1',
+	ParseAppId:'8IXBcjIkgHNQ2v9k',
+	parseServerJsKey:'1uGXsOnrM70ElEuwWaxm1lp1zsE6nxJj',
+	parseRestApiKey:'47d8ecg6a77aa2981b9c',
+	
+	AppId: 'wx8bef88e5b3f056be', // 食艺兽:wx8bef88e5b3f056be
 }

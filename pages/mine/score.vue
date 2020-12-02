@@ -40,7 +40,7 @@
 			},
 			bindData(){
 				var self = this
-				var userQuery = new this.Parse.Query("UserInfo")
+				var userQuery = new this.Parse.Query(this.Parse.User)
 				userQuery.descending('score','updatedAt')
 				userQuery.skip((this.page - 1) * this.pageSize)
 				userQuery.limit(this.pageSize)

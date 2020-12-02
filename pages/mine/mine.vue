@@ -1,7 +1,7 @@
 <template>
 	<view class="myView">
 		<view class="headView">
-			<view class="headCon">
+			<view class="headCon" @click="handleInfoClick">
 				<view class="headIconView">
 					<image v-if="userInfo&&userInfo.avatarUrl" :src="userInfo.avatarUrl"></image>
 				</view>
@@ -74,7 +74,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="actionItem">
+			<view class="actionItem" @click="handleFeedBackClick">
 				<view class="licon">
 					<image src="../../static/icon/icon_action_fankui.png"></image>
 				</view>
@@ -134,6 +134,18 @@
 			handleMessageClick(){
 				uni.navigateTo({
 					url:'./message'
+				})
+			},
+			/* 查看详情 */
+			handleInfoClick(){
+				uni.navigateTo({
+					url:'./info'
+				})
+			},
+			/*反馈*/
+			handleFeedBackClick(){
+				uni.navigateTo({
+					url:'./feedback'
 				})
 			}
 		}

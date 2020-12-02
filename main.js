@@ -7,8 +7,8 @@ Vue.use(uView);
 import parse from 'parse/weapp'
 
 // 注册parse-server服务
-parse.serverURL =config.parseServerUrl
-parse.initialize(config.parseServerAppId, config.parseServerJsKey)
+parse.serverURL =config.parseServerBaseUrl
+parse.initialize(config.ParseAppId, config.parseServerJsKey)
 
 Vue.prototype.Parse = parse
 Vue.BaseConfig = config

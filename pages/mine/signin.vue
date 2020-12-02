@@ -133,20 +133,13 @@
 				var _history = new dbHistory()
 				_history.set('openid', this.userInfo.openid)
 				_history.save().then(his => {
-					var dbUserInfo = self.Parse.Object.extend("UserInfo")
-					var user = new dbUserInfo()
-					user.set('id',self.userInfo.objectId)
-					let score = 0
-					if(self.userInfo.score){
-						user.set('score', self.userInfo.score + 10)
-					} else {
-						user.set('score', 10)
-					}
+					var user = self.Parse.User.current()
+					user.set('score', user.get('score') + 10)
 					user.save().then(ures => {
 						self.userInfo.score = ures.get('score')
 						uni.setStorage({
 							key: 'userInfo',
-							data: self.userInfo
+							data: ures
 						})
 						self.bindSignInHistory()
 						console.log('保存成功')

@@ -131,7 +131,7 @@
             "path" : "pages/exam/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "模拟考试",
                 "enablePullDownRefresh": false
             }
             
@@ -140,7 +140,7 @@
             "path" : "pages/mine/signin",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "签到",
                 "enablePullDownRefresh": false
             }
             
@@ -149,7 +149,7 @@
             "path" : "pages/mine/score",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "积分排行榜",
                 "enablePullDownRefresh": false
             }
             
@@ -158,7 +158,7 @@
             "path" : "pages/mine/message",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "消息列表",
                 "enablePullDownRefresh": false
             }
             
@@ -167,7 +167,25 @@
             "path" : "pages/mine/msgdetail",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "消息详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/info",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "个人信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/feedback",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "意见反馈",
                 "enablePullDownRefresh": false
             }
             
@@ -184,7 +202,7 @@
 		"list": [
 			{
 				"name": "补全信息", //模式名称
-				"path": "pages/important/subject", //启动页面，必选
+				"path": "pages/index/index", //启动页面，必选
 				"query": "sid=FGXwa0hCBr" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
