@@ -1,46 +1,57 @@
 <template>
 	<view>
-		<view class="scoreView">
-			当前积分：{{userInfo.score}}
-		</view>
-		<view class="actionView">
-			<view v-if="isNeedSign" @click="handleSign" class="action">签到</view>
-			<view v-else class="action">已签到</view>
-		</view>
 		<view class="mydatepicker">
 		  <view class="head">
-			<view class="prev" @click="handlePrev">
-			  prev
-			</view>
 			<view class="title">
-			  <picker mode="date" :value="date" fields="month" :end="endtDate">
+				{{dateStr}}
+			  <!-- <picker mode="date" :value="date" fields="month" :end="endtDate">
 				<view class="picker">
 				  {{dateStr}}
 				</view>
-			  </picker>
+			  </picker> -->
+			</view>
+			<view class="prev" @click="handlePrev">
+			  <u-icon name="arrow-left" color="#ff6867" size="30"></u-icon>
 			</view>
 			<view class="next" @click="handleNext">
-			  next
+			  <u-icon name="arrow-right" color="#ff6867" size="30"></u-icon>
 			</view>
 		  </view>
 		  <view class="body">
-			<view class="title">
-			  <view>日</view>
-			  <view>一</view>
-			  <view>二</view>
-			  <view>三</view>
-			  <view>四</view>
-			  <view>五</view>
-			  <view>六</view>
+			<view class="titleView">
+				<view class="title">
+					<view>日</view>
+					<view>一</view>
+					<view>二</view>
+					<view>三</view>
+					<view>四</view>
+					<view>五</view>
+					<view>六</view>
+				</view>
 			</view>
 			<view class="content">
-			  <view v-for="item in prevDays" class="item prev">{{item.text}}</view>
-			  <view v-for="item in currDays" class="item">
-				<view @click="handleClickItem" :data-item="item" :class="(item.isContain?'contain':'') + (item.isChecked?' checked':'')">{{item.text}}</view>
+			  <view v-for="item in prevDays" class="item prev">
+				<view @click="handleClickItem" :data-item="item" :class="(item.dateStr == today?'today':'') + (item.isContain?' contain':'') + (item.isChecked?' checked':'')">{{item.text}}</view>  
 			  </view>
-			  <view v-for="item in nextDays"class="item next">{{item.text}}</view>
+			  <view v-for="item in currDays" class="item">
+				<view @click="handleClickItem" :data-item="item" :class="(item.dateStr == today?'today':'') + (item.isContain?' contain':'') + (item.isChecked?' checked':'')">{{item.text}}</view>
+			  </view>
+			  <view v-for="item in nextDays"class="item next">
+				  <view @click="handleClickItem" :data-item="item" :class="(item.dateStr == today?'today':'') + (item.isContain?' contain':'') + (item.isChecked?' checked':'')">{{item.text}}</view>
+			  </view>
 			</view>
 		  </view> 
+		</view>		
+		<view class="actionView">
+			<view v-if="isNeedSign" @click="handleSign" class="action">立即签到</view>
+			<view v-else class="action disabled">已签到</view>
+			<view v-if="isNeedSign" class="tips">
+				签到成功获得10积分
+				<view class="tipicon"></view>
+			</view>
+		</view>
+		<view class="scoreView">
+			当前积分：{{userInfo.score}}
 		</view>
 	</view>
 </template>
@@ -51,6 +62,7 @@
 			return {
 				userInfo:{},
 				date:'',
+				today:'',
 				checkday:'',
 				checkeddays:[],
 				cancheck:'all',
@@ -66,6 +78,7 @@
 		onLoad() {
 			var self = this
 			this.date= dateFormat(new Date(),'yyyy-MM-dd')
+			this.today= dateFormat(new Date(),'yyyy-MM-dd')
 			this.startDate = dateFormat(new Date(),'yyyy-MM-dd')
 			this.endDate = dateFormat(addDays(new Date(),365),'yyyy-MM-dd')
 			uni.getStorage({
@@ -166,7 +179,9 @@
 						self.prevDays.push({
 							text: currDate.getDate(),
 							date: currDate,
-							dateStr: dateFormat(currDate, 'yyyy-MM-dd')
+							dateStr: dateFormat(currDate, 'yyyy-MM-dd'),
+							isChecked: self.checkday == dateFormat(currDate, 'yyyy-MM-dd'),
+							isContain: hasCheckday ? true : false
 						})
 						currDate = addDays(currDate, 1)
 					}
@@ -194,7 +209,9 @@
 				  self.nextDays.push({
 					text: currDate.getDate(),
 					date: currDate,
-					dateStr: dateFormat(currDate, 'yyyy-MM-dd')
+					dateStr: dateFormat(currDate, 'yyyy-MM-dd'),
+					isChecked: self.checkday == dateFormat(currDate, 'yyyy-MM-dd'),
+					isContain: hasCheckday ? true : false
 				  })
 				  currDate = addDays(currDate, 1)
 				}
@@ -214,7 +231,7 @@
 			  var dateItem = e.currentTarget.dataset.item
 			  var self = this
 			  if(self.cancheck == 'all'){
-				self.checkeddays = [dateItem.dateStr]
+				// self.checkeddays = [dateItem.dateStr]
 			  } else if(self.cancheck == 'month'){
 
 			  } else if(self.cancheck == 'checked'){
@@ -238,68 +255,130 @@
 </script>
 
 <style>
-	.scoreView{
-		padding: 50rpx 36rpx;
-	}
 	.actionView{
-		padding: 50rpx;
+		/* padding: 50rpx; */
 		width: 100%;
+		text-align: center;
+		margin-top: 90rpx;
+		position: relative;
+	}
+	.actionView .tips{
+		background-color: #fcbfbe;
+		color: #ffffff;
+		font-size: 26rpx;
+		font-family: PingFangSC-Medium;
+		border-radius: 20rpx;
+		padding: 20rpx;
+		position: absolute;
+		top: -100rpx;
+		left: 390rpx;
+		/* width: 300rpx; */
+	}
+	.actionView .tips .tipicon{
+		position: absolute;
+		top: 76rpx;
+		left: 40rpx;
+		border-width: 14rpx;
+		border-style: solid dashed dashed dashed;
+		border-color: #fcbfbe transparent transparent transparent;
+	}
+	.scoreView{
+		margin-top: 26rpx;
+		height: 48rpx;
+		line-height: 48rpx;
+		color: #352026;
+		font-family: PingFangSC-Medium;
+		font-size: 34rpx;
+		font-weight: bold;
 		text-align: center;
 	}
 	.actionView .action{
 		display: inline-block;
-		width: 200rpx;
-		height: 200rpx;
-		line-height: 200rpx;
+		width: 240rpx;
+		height: 240rpx;
+		line-height: 240rpx;
 		border-radius: 50%;
-		background-color: #4CD964;
+		background-color: #ff6867;
 		color: #ffffff;
+		font-family: PingFangSC-Medium;
+		font-size: 42rpx;
+	}
+	.actionView .action.disabled{
+		background-color: #dcdcdc;
 	}
 	.mydatepicker{
 	  height: 100%;
-	  padding: 0 20rpx;
 	}
 	.mydatepicker .head{
 	  display: flex;
-	  height: 50rpx;
-	  line-height: 50rpx;
-	}
-	.mydatepicker .head .prev{
-	  text-align: center;
-	  width: 14.2%;
+	  height: 150rpx;
+	  line-height: 150rpx;
+	  padding: 0 42rpx;
 	}
 	.mydatepicker .head .title{
-	  flex: 1;
-	  text-align: center;
-	  font-weight: bold;
+		flex: 1;
+		text-align: left;
+		font-weight: bold;
+		font-size: 38rpx;
+		font-family: PingFangSC-Medium;
+		color: #352026;
+	}
+	.mydatepicker .head .prev{
+	  text-align: right;
+	  width: 60rpx;
 	}
 	.mydatepicker .head .next{
-	  text-align: center;
-	  width: 14.2%;
+	  text-align: right;
+	  width: 60rpx;
 	}
 	
 	
 	.mydatepicker .body{
 	  width: 100%;
 	}
-	.mydatepicker .body .title{
-	  display: flex;
-	  height: 50rpx;
-	  line-height: 50rpx;
-	  color: #80848f;
+	.mydatepicker .body .titleView{
+		height: 68rpx;
+		line-height: 68rpx;
+		border-bottom: 1rpx solid #f4f4f4;
+		padding: 0 20rpx;
 	}
-	.mydatepicker .body .title view{
+	.mydatepicker .body .titleView .title{
+	  display: flex;
+	  height: 42rpx;
+	  line-height: 42rpx;
+	  font-weight: bold;
+	  font-size: 30rpx;
+	  font-family: PingFangSC-Medium;
+	  color: #352026;
+	}
+	.mydatepicker .body .titleView .title view{
 	  flex: 1;
 	  text-align: center;
+	  height: 42rpx;
+	  line-height: 42rpx;
+	}
+	.mydatepicker .body .content{
+		padding: 0 20rpx;
+		min-height: 564rpx;
 	}
 	.mydatepicker .body .content .item{
 	 display: inline-block;
 	 width: 14.2%;
-	 height: 60rpx;
-	 line-height: 60rpx;
+	 height: 94rpx;
+	 line-height: 94rpx;
 	 text-align: center;
-	 font-weight: bold;
+	 /* font-weight: bold; */
 	 font-size: 30rpx;
+	 font-family: PingFangSC-Medium;
+	 color: #352026;
+	}
+	.mydatepicker .body .content .item .today{
+		border: 1rpx solid #FF6867;
+	  border-radius: 50%;
+	  width: 64rpx;
+	  height: 64rpx;
+	  line-height: 64rpx;
+	  display: inline-block;
 	}
 	.mydatepicker .body .content .item.prev{
 	  color:#80848f;
@@ -309,21 +388,22 @@
 	}
 	.checked{
 	  color: #ffffff;
-	  background-color: #495060!important;
+	  background-color: #ff6867!important;
 	  border-radius: 50%;
-	  width: 50rpx;
-	  height: 50rpx;
+	  width: 64rpx;
+	  height: 64rpx;
+	  line-height: 64rpx;
 	  display: inline-block;
 	  text-align: center;
 	}
 	/** 包含 */
 	.contain{
 	  color: #ffffff;
-	  background-color: #2b85e4;
+	  background-color: #ff6867;
 	  border-radius: 50%;
-	  width: 50rpx;
-	  height: 50rpx;
-	  line-height: 50rpx;
+	  width: 64rpx;
+	  height: 64rpx;
+	  line-height: 64rpx;
 	  display: inline-block;
 	  text-align: center;
 	}

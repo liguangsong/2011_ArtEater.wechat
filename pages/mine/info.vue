@@ -70,6 +70,7 @@
 				form:{
 					avatarUrl:'',
 					realname:'',
+					nickName:'',
 					phone:'',
 					speciality:'',
 					university:'',
@@ -142,7 +143,7 @@
 				success: function(res){
 					self.userInfo = res.data
 					self.form.avatarUrl = res.data.avatarUrl
-					self.form.nickName = res.data.nickname
+					self.form.nickName = res.data.nickName
 					self.form.realname = res.data.realname
 					self.form.phone = res.data.phone
 					self.form.score = res.data.score

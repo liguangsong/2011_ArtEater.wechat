@@ -233,7 +233,6 @@
 			},
 			/* 点击“我” */
 			handleMyClick(){
-				debugger
 				if(this.userInfo&&this.userInfo.openid){
 					uni.navigateTo({
 						url:'../mine/mine'

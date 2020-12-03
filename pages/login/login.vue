@@ -144,10 +144,10 @@
 									let app = getApp()
 									self.avatarUrl = res.userInfo.avatarUrl
 									self.form.nickname = res.userInfo.nickName
-									let user = new self.Parse.Query(self.Parse.User)
+									var query = new self.Parse.Query(self.Parse.User)
 									// self.hasLogin = true
-									user.equalTo('openid', self.openid)
-									user.first().then(ures=>{
+									query.equalTo('openid', self.openid)
+									query.first().then(ures=>{
 										if(ures){ // 已注册，直接登录
 											self.Parse.User.logIn(self.openid,self.openid).then(lres=>{
 												uni.setStorage({
@@ -222,8 +222,7 @@
 						user.signUp().then((ruser)=> {
 							var postACL = new self.Parse.ACL();
 							postACL.setRoleWriteAccess("admin", true);
-							postACL.setRoleReadAccess("admin", true);
-							postACL.setRoleReadAccess("teacher", true);
+							postACL.setPublicReadAccess(true);
 							ruser.setACL(postACL);
 							ruser.save().then(res=>{
 								self.Parse.User.logIn(self.openid,self.openid).then(lres=>{

@@ -243,13 +243,14 @@
 		line-height: 108rpx;
 	}
 	.myView .actionView .actionItem .licon image{
-		width: 44rpx;
-		height: 44rpx;
+		width: 64rpx;
+		height: 64rpx;
 		display: inline-block;
 		vertical-align: middle;
 	}
 	.myView .actionView .actionItem .cont{
 		flex: 1;
+		padding-left: 28rpx;
 		display: flex;
 		border-bottom: 1rpx solid #f4f4f4;
 	}
