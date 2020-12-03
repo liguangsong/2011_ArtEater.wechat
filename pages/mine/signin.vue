@@ -176,6 +176,9 @@
 				if (week > 0) {
 					currDate = addDays(startDate, -week)
 					while (currDate <= addDays(startDate, -1)) {
+						var hasCheckday = self.checkeddays.find(function (v, i) {
+							return v == dateFormat(currDate, 'yyyy-MM-dd')
+						});
 						self.prevDays.push({
 							text: currDate.getDate(),
 							date: currDate,
@@ -190,32 +193,36 @@
 				var currDate = startDate;
 				while (currDate <= endDate) {
 					var hasCheckday = self.checkeddays.find(function (v, i) {
-					return v == dateFormat(currDate, 'yyyy-MM-dd')
-				});
-				self.currDays.push({
-					text: currDate.getDate(),
-					date: currDate,
-					dateStr: dateFormat(currDate, 'yyyy-MM-dd'),
-					isChecked: self.checkday == dateFormat(currDate, 'yyyy-MM-dd'),
-					isContain: hasCheckday ? true : false
-				})
-				currDate = addDays(currDate, 1)
-			  }
-			  /** 开始处理下月的数据 */
-			  week = endDate.getDay();
-			  if (week < 6) {
-				var currDate = addDays(endDate, 1);
-				while (currDate <= addDays(endDate, 6 - week)) {
-				  self.nextDays.push({
-					text: currDate.getDate(),
-					date: currDate,
-					dateStr: dateFormat(currDate, 'yyyy-MM-dd'),
-					isChecked: self.checkday == dateFormat(currDate, 'yyyy-MM-dd'),
-					isContain: hasCheckday ? true : false
-				  })
-				  currDate = addDays(currDate, 1)
+						return v == dateFormat(currDate, 'yyyy-MM-dd')
+					});
+					self.currDays.push({
+						text: currDate.getDate(),
+						date: currDate,
+						dateStr: dateFormat(currDate, 'yyyy-MM-dd'),
+						isChecked: self.checkday == dateFormat(currDate, 'yyyy-MM-dd'),
+						isContain: hasCheckday ? true : false
+					})
+					currDate = addDays(currDate, 1)
 				}
-			  }
+				/** 开始处理下月的数据 */
+				week = endDate.getDay();
+				if (week < 6) {
+					var currDate = addDays(endDate, 1);
+					while (currDate <= addDays(endDate, 6 - week)) {
+						
+						var hasCheckday = self.checkeddays.find(function (v, i) {
+							return v == dateFormat(currDate, 'yyyy-MM-dd')
+						});
+						self.nextDays.push({
+							text: currDate.getDate(),
+							date: currDate,
+							dateStr: dateFormat(currDate, 'yyyy-MM-dd'),
+							isChecked: self.checkday == dateFormat(currDate, 'yyyy-MM-dd'),
+							isContain: hasCheckday ? true : false
+						})
+						currDate = addDays(currDate, 1)
+					}
+				}
 			},
 			handlePrev(){
 			  var self = this
