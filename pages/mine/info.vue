@@ -6,25 +6,35 @@
 					<image class="headIcon" slot="right" :src="form.avatarUrl"></image>
 				</u-form-item>
 				<u-form-item label="昵称" :label-width="150">
-					<label slot="right">{{form.nickName}}</label>
+					<label class="txt" slot="right">{{form.nickName}}</label>
 				</u-form-item>
 				<u-form-item label="手机号码" :label-width="150" prop="phone">
-					<label slot="right">{{form.phone}}</label>
+					<label class="txt" slot="right">{{form.phone}}</label>
 				</u-form-item>
 				<u-form-item label="真实姓名" :label-width="150" prop="realname">
-					<label slot="right">{{form.realname}}</label>
+					<label class="txt" slot="right">{{form.realname}}</label>
 				</u-form-item>
 				<u-form-item label="所在地区" :label-width="150" prop="areaTxt">
-					<u-select v-model="isShowArea" mode="mutil-column-auto" value-name="code" label-name="name" :list="provices" @confirm="confirm"></u-select>
-					<u-input v-model="form.areaTxt" type="select" input-align="right" maxlength='30' placeholder="请选择所在地区"  @click="bindOpenArea" />
+					<u-select v-model="isShowArea" mode="mutil-column-auto" confirm-color="#352026" value-name="code" label-name="name" :list="provices" @confirm="confirm"></u-select>
+					<u-input v-model="form.areaTxt" :custom-style="custStyle" :disabled="true" input-align="right" maxlength='30' placeholder="请选择所在地区"  @click="bindOpenArea" />
+					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item">
+						<u-icon name="arrow-right" size="26" color="#c0c4cc"></u-icon>
+					</view>
 				</u-form-item>
 				<u-form-item label="报考专业" :label-width="150" prop="speciality">
-					<u-select v-model="isShowSpeciality" mode="single-column" value-name="code" label-name="name" :list="specialitys" @confirm="spConfirm"></u-select>
-					<u-input v-model="form.speciality" type="select" input-align="right" maxlength='20' placeholder="请选择报考专业"  @click="isShowSpeciality=true" />
+					<u-select v-model="isShowSpeciality" mode="single-column" confirm-color="#352026" value-name="code" label-name="name" :list="specialitys" @confirm="spConfirm"></u-select>
+					<u-input v-model="form.speciality" :custom-style="custStyle" :disabled="true" input-align="right" maxlength='20' placeholder="请选择报考专业"  @click="isShowSpeciality=true" />
+					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item">
+						<u-icon name="arrow-right" size="26" color="#c0c4cc"></u-icon>
+					</view>
 				</u-form-item>
 				<u-form-item label="目标院校" :label-width="150" prop="university">
-					<u-select v-model="isShowUniversities" mode="single-column" value-name="code" label-name="name" :list="universities" @confirm="unConfirm"></u-select>
-					<u-input v-model="form.university" type="select" input-align="right" maxlength='30' placeholder="请选择目标院校"  @click="isShowUniversities=true" />
+					<!-- <u-select v-model="isShowUniversity" mode="single-column" confirm-color="#352026" value-name="code" label-name="name" :list="universities" @confirm="unConfirm"></u-select> -->
+					<checkunivercity :visiable="isShowUniversity" @cancle="handleCancel"  @complate="handleComplate" :value="form.university"></checkunivercity>
+					<u-input v-model="form.university" @click="handleUnClick" :custom-style="custStyle" :disabled="true" input-align="right" maxlength='30' placeholder="请选择目标院校" />
+					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item">
+						<u-icon name="arrow-right" size="26" color="#c0c4cc"></u-icon>
+					</view>
 				</u-form-item>
 				<u-form-item label="消费金额" :label-width="150">
 					<label slot="right">{{form.amount}}</label>
@@ -42,24 +52,33 @@
 	import config from '../../static/config/index.js'
 	import provice from '../../js/provinces.js'
 	import cities from '../../js/cities.js'
+	import checkunivercity from '../../components/checkunivercity/checkunivercity.vue'
 	export default {
+		components:{
+			checkunivercity
+		},
 		data() {
 			return {
 				userInfo: {},
 				isShowArea: false,
+				isShowUniversity: false,
+				custStyle:{
+					'color:':'rgba(53,32,38, 0.7)',
+					'font-size':'28rpx!important',
+					'font-family':'PingFangSC-Medium'
+				},
 				isShowSpeciality: false,
-				isShowUniversities: false,
 				specialitys:[
 					{code:'实验艺术',name:'实验艺术'},
 					{code:'艺术史论',name:'艺术史论'}
 				],
 				universities:[
-					{code:'中央美术学院',name:'中央美术学院'},
+					{code:'中央美术学院',name:'中央美术学院',checked:'checked'},
 					{code:'中国美术学院',name:'中国美术学院'},
-					{code:'清华美术学院',name:'清华美术学院'},
+					{code:'清华美术学院',name:'清华美术学院',checked:'checked'},
 					{code:'西安美术学院',name:'西安美术学院'},
 					{code:'四川美术学院',name:'四川美术学院'},
-					{code:'鲁迅美术学院',name:'鲁迅美术学院'},
+					{code:'鲁迅美术学院',name:'鲁迅美术学院',checked:'checked'},
 					{code:'湖北美术学院',name:'湖北美术学院'},
 					{code:'天津美术学院',name:'天津美术学院'},
 					{code:'广州美术学院',name:'广州美术学院'},
@@ -138,6 +157,13 @@
 		},
 		onLoad() {
 			var self = this
+			uni.loadFontFace ({
+			  family: 'PingFangSC-Medium',
+			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  success: function(){
+				  console.log('load font success')
+			  }
+			})
 			uni.getStorage({
 				key:'userInfo',
 				success: function(res){
@@ -164,6 +190,9 @@
 			this.$refs.uForm.setRules(this.rules);
 		},
 		methods: {
+			handleCancel(){
+				this.isShowUniversity = false
+			},
 			bindOpenArea(){
 				this.isShowArea = true
 				this.provices.forEach((item)=>{
@@ -199,9 +228,14 @@
 					})
 				})
 			},
-			/* 选择目标院校 */
-			unConfirm(array){
-				this.form.university= array[0].label
+			/*打开选择院校弹窗*/
+			handleUnClick(){
+				this.isShowUniversity = true
+			},
+			/*完成选择*/
+			handleComplate(codes){
+				this.form.university=codes
+				this.isShowUniversity = false
 				var user = this.Parse.User.current()
 				user.set("university", this.form.university);
 				user.save().then(res=>{
@@ -211,6 +245,18 @@
 					})
 				})
 			},
+			// /* 选择目标院校 */
+			// unConfirm(array){
+			// 	this.form.university= array[0].label
+			// 	var user = this.Parse.User.current()
+			// 	user.set("university", this.form.university);
+			// 	user.save().then(res=>{
+			// 		uni.setStorage({
+			// 			key:'userInfo',
+			// 			data: res
+			// 		})
+			// 	})
+			// },
 			submit(){
 				var self = this
 				this.$refs.uForm.validate(valid => {
@@ -257,8 +303,38 @@
 		padding: 40rpx;
 	}
 	.headIcon{
-		width: 100rpx;
-		height: 100rpx;
+		width: 72rpx;
+		height: 72rpx;
 		border-radius: 50%;
+	}
+	.txt{
+		font-size: 28rpx;
+		color: rgba(53,32,38, 0.7);
+	}
+	.u-drawer-content{
+		border-top-left-radius: 46rpx;
+		border-top-right-radius: 46rpx;
+	}
+	
+	.u-input{
+		border-radius: 20rpx!important;
+		background-color: #ffffff;
+		/* border: 2rpx solid #efefef; */
+		height: 74rpx;
+		line-height: 74rpx;
+		font-size: 30rpx;
+		color: #352026;
+		font-family: PingFangSC-Medium;
+	}
+	.u-input input{
+		line-height: 74rpx;
+		font-family: PingFangSC-Medium;
+		font-size: 30rpx!important;
+		color: #352026!important;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
 	}
 </style>

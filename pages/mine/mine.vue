@@ -61,6 +61,17 @@
 					</view>
 				</view>
 			</view>
+			<view class="actionItem" @click="handleTestHisClick">
+				<view class="licon">
+					<image src="../../static/icon/icon_action_kaoshijilu.png"></image>
+				</view>
+				<view class="cont">
+					<view class="title">考试记录</view>
+					<view class="icon">
+						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
+					</view>
+				</view>
+			</view>
 		</view>
 		<view class="actionView">
 			<view class="actionItem" @click="handleMessageClick">
@@ -128,6 +139,12 @@
 			handleScoreListClick(){
 				uni.navigateTo({
 					url:'./score'
+				})
+			},
+			/*查看考试记录*/
+			handleTestHisClick(){
+				uni.navigateTo({
+					url:'./testhistory'
 				})
 			},
 			/* 消息中心 */

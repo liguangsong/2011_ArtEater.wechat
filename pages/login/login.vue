@@ -1,7 +1,7 @@
 <template>
 	<view class="myPage">
 		<view class="boxView">
-			<view :class="'loginView '+ (hasLogin?'hide':'')">
+			<!-- <view :class="'loginView '+ (hasLogin?'hide':'')">
 				<view v-if="!hasLogin" class="headIcon">
 					<image v-if="avatarUrl" :src="avatarUrl"></image>
 					<image v-else src="../../static/header.png"></image>
@@ -9,37 +9,39 @@
 				<view v-if="!hasLogin" style="text-align: center;margin-top: 20rpx;">
 					<button class="btnLogin" v-if="canIUse" type="default" size="mini" open-type="getUserInfo" @getuserinfo="handleGetuserinfo">授权登录</button>
 				</view>
-			</view>
-			<view v-show="hasLogin" class="editForm">
+			</view> -->
+			<view class="editForm">
 				<view class="headIcon">
-					<image v-if="avatarUrl" :src="avatarUrl"></image>
+					<image v-if="form.avatarUrl" :src="form.avatarUrl"></image>
 				</view>
-				<u-form :model="form" ref="uForm" :rules="rules">
-					<u-form-item label="昵称" :label-width="150">
-						<u-input v-model="form.nickname" maxlength='20' placeholder="请输入昵称" />
+				<u-form :model="form" ref="uForm" :border-bottom="false" label-position="top" :rules="rules">
+					<u-form-item label="昵称" :label-width="150" :border-bottom="false" :label-style="labelStyle">
+						<u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)" v-model="form.nickname" :border="true" maxlength='20' placeholder="请输入昵称" />
 					</u-form-item>
-					<u-form-item label="手机号码" :label-width="150" prop="phone">
-						<u-input :disabled="true" v-model="form.phone" maxlength='11' placeholder="请点击右侧按钮绑定手机号" />					
-						<u-button slot="right" type="default" size="mini" open-type="getPhoneNumber" @getphonenumber="handleGetPhoneNumber">获取手机号码</u-button>
+					<u-form-item label="手机号码" :label-width="150" prop="phone" :border-bottom="false" :label-style="labelStyle">
+						<!-- <u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)" :disabled="true" v-model="form.phone" :border="true" maxlength='11' placeholder="请点击右侧按钮绑定手机号" /> -->
+						<button class="btngetphonenumber" open-type="getPhoneNumber" @getphonenumber="handleGetPhoneNumber" :style="{'color':(form.phone=='点击获取手机号'?'#ff7767':'#352026')}">{{form.phone}}</button>
 					</u-form-item>
-					<u-form-item label="真实姓名" :label-width="150" prop="realname">
-						<u-input v-model="form.realname" maxlength='10' placeholder="请输入真实姓名" />
+					<u-form-item label="真实姓名" :label-width="150" prop="realname" :border-bottom="false" :label-style="labelStyle">
+						<u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)" v-model="form.realname" :border="true" maxlength='10' placeholder="请输入真实姓名" />
 					</u-form-item>
-					<u-form-item label="所在地区" :label-width="150" prop="areaTxt">
-						<u-select v-model="isShowArea" mode="mutil-column-auto" value-name="code" label-name="name" :list="provices" @confirm="confirm"></u-select>
-						<u-input v-model="form.areaTxt" type="select" maxlength='30' placeholder="请选择所在地区"  @click="bindOpenArea" />
+					<u-form-item label="所在地区" :label-width="150" prop="areaTxt" :border-bottom="false" :label-style="labelStyle">
+						<u-select v-model="isShowArea" mode="mutil-column-auto" confirm-color="#352026" value-name="code" label-name="name" :list="provices" @confirm="confirm"></u-select>
+						<u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)" v-model="form.areaTxt" :border="true" :disabled="true" maxlength='30' placeholder="请选择所在地区"  @click="bindOpenArea" />
 					</u-form-item>
-					<u-form-item label="报考专业" :label-width="150" prop="speciality">
-						<u-select v-model="isShowSpeciality" mode="single-column" value-name="code" label-name="name" :list="specialitys" @confirm="spConfirm"></u-select>
-						<u-input v-model="form.speciality" type="select" maxlength='20' placeholder="请选择报考专业"  @click="isShowSpeciality=true" />
+					<u-form-item label="报考专业" :label-width="150" prop="speciality" :border-bottom="false" :label-style="labelStyle">
+						<u-select v-model="isShowSpeciality" mode="single-column" confirm-color="#352026" value-name="code" label-name="name" :list="specialitys" @confirm="spConfirm"></u-select>
+						<u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)" v-model="form.speciality" :border="true" :disabled="true" maxlength='20' placeholder="请选择报考专业"  @click="isShowSpeciality=true" />
 					</u-form-item>
-					<u-form-item label="目标院校" :label-width="150" prop="university">
-						<u-select v-model="isShowUniversities" mode="single-column" value-name="code" label-name="name" :list="universities" @confirm="unConfirm"></u-select>
-						<u-input v-model="form.university" type="select" maxlength='30' placeholder="请选择目标院校"  @click="isShowUniversities=true" />
+					<u-form-item label="目标院校" :label-width="150" prop="university" :border-bottom="false" :label-style="labelStyle">
+						<!-- <u-select v-model="isShowUniversities" mode="single-column" value-name="code" label-name="name" :list="universities" @confirm="unConfirm"></u-select> -->
+						<checkunivercity :visiable="isShowUniversity" @cancle="handleCancel" @complate="handleComplate" :value="form.university"></checkunivercity>
+						<u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)" v-model="form.university" :border="true" :disabled="true" maxlength='30' placeholder="请选择目标院校"  @click="isShowUniversity=true" />
 					</u-form-item>
 				</u-form>
-				<view style="text-align: center;margin-top: 40rpx;">
-					<u-button type='primary' size='medium' @click="submit">登录学习</u-button>
+				<view class="btnView">
+					<!-- <u-button type='primary' size='medium' @click="submit">登录学习</u-button> -->
+					<button class="btnSubmit" @click="submit">登录学习</button>
 				</view>
 			</view>
 		
@@ -55,11 +57,13 @@
 	export default {
 		data() {
 			return {
+				customStyle:{'border-radius':'40rpx','min-height':'10rpx','height':'74rpx'},
+				labelStyle:{'height':'36rpx','margin-top':'30rpx','text-indent':'28rpx','font-size':'26rpx','color':'rgba(53,32,38,0.7)','font-family':'PingFangSC-Medium'},
 				openid:'',
 				sessionKey:'',
 				isShowArea: false,
 				isShowSpeciality: false,
-				isShowUniversities: false,
+				isShowUniversity: false,
 				specialitys:[
 					{code:'实验艺术',name:'实验艺术'},
 					{code:'艺术史论',name:'艺术史论'}
@@ -83,24 +87,33 @@
 				form:{
 					nickname:'',
 					realname:'',
-					phone:'',
+					phone:'点击获取手机号',
 					speciality:'',
 					university:'',
+					avatarUrl:'',
 					areaTxt:'',
 					areaVaue: '',
 					area:[]
 				},
 				rules: {
 					realname: [{ required: true, message: '请输入真实姓名', trigger: ['change','blur']}],
-					phone: [{ required: true, message: '请输入手机号码', trigger: ['change','blur','input']},
+					phone: [{ required: true, message: '请输入手机号码', trigger: ['change','blur']},
 						{validator: (rule, value, callback) => {
 								return this.$u.test.mobile(value);
 							},
-							message: '手机号码不正确',trigger: ['change','blur','input'],
+							message: '手机号码不正确',trigger: ['change','blur'],
 						}
 					],
 					speciality: [{ required: true, message: '请输入报考专业', trigger: ['change','blur']}],
-					university: [{ required: true,message: '请输入目标院校', trigger: ['change','blur']}],
+					university: [{ trigger: ['change','blur'],
+						validator: (rule, value, callback) => {
+							if(!value||value.length==0) {
+								callback(new Error('请选择目标院校'));
+							} else {
+								callback();
+							}
+						}
+					}],
 					areaTxt:[{ required: true,message: '请选择所在地区', trigger: ['change','blur']},
 						{ validator: (rule, value, callback) => {
 							if(!value||value=='请选择所在地区'){
@@ -129,9 +142,40 @@
 					self.openid = res.data
 				}
 			})
+			uni.getStorage({
+				key:'userInfo',
+				success:function(res){
+					self.userInfo = res.data
+					self.form.avatarUrl = res.data.avatarUrl
+					self.form.nickname = res.data.nickName
+				}
+			})
+			uni.loadFontFace ({
+			  family: 'PingFangSC-Medium',
+			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  success: function(){
+				  console.log('load font success')
+			  }
+			})
 			this.$refs.uForm.setRules(this.rules);
 		},
 		methods: {
+			handleCancel(){
+				this.isShowUniversity = false
+			},
+			/*完成选择*/
+			handleComplate(codes){
+				this.form.university=codes
+				this.isShowUniversity = false
+				var user = this.Parse.User.current()
+				user.set("university", this.form.university);
+				user.save().then(res=>{
+					uni.setStorage({
+						key:'userInfo',
+						data: res
+					})
+				})
+			},
 			handleGetuserinfo({detail}){
 				var self = this
 				// 获取用户信息
@@ -201,54 +245,23 @@
 				var self = this
 				self.$refs.uForm.validate(valid => {
 					if (valid) {
-						var user = new self.Parse.User();
-						user.set('openid', self.openid)
-						user.set('avatarUrl', self.avatarUrl)
-						user.set('nickName', self.form.nickname)
-						user.set('username', self.openid)
-						user.set('password', self.openid)
-						
+						var user = self.Parse.User.current();
 						user.set("realname", self.form.realname);
 						user.set("phone", self.form.phone);
-						user.set("role", 'student');
-						user.set("score", 0);
-						user.set("amount", 0);
 						user.set("speciality", self.form.speciality);
 						user.set("university", self.form.university);
 						user.set("proviceId", self.form.area[0].value);
 						user.set("proviceName", self.form.area[0].label);
 						user.set("cityId", self.form.area[1].value);
 						user.set("cityName", self.form.area[1].label);
-						user.signUp().then((ruser)=> {
-							var postACL = new self.Parse.ACL();
-							postACL.setRoleWriteAccess("admin", true);
-							postACL.setPublicReadAccess(true);
-							ruser.setACL(postACL);
-							ruser.save().then(res=>{
-								self.Parse.User.logIn(self.openid,self.openid).then(lres=>{
-									uni.setStorage({
-										key:'userInfo',
-										data: lres
-									})
-									uni.navigateBack()
-								})
-							},error=>{
-								console.log('设置角色权限失败')
-								console.log(error)
+						user.save().then((ruser)=> {
+							uni.setStorage({
+								key:'userInfo',
+								data: ruser
 							})
-							
-							const role = self.Parse.Role
-							let query1 = new self.Parse.Query(role);
-							query1.equalTo('name','student')
-							query1.first().then(role=>{
-								role.getUsers().add(ruser);
-								role.save().then(res=>{
-									console.log('设置角色成功')
-								},error=>{
-									console.log('设置角色失败')
-									console.log(error)
-								})
-							})
+							uni.navigateBack()
+							const eventChannel = self.getOpenerEventChannel()
+							eventChannel.emit('back', {});
 						},(error)=> {
 						  console.log("Error: " + error.code + " " + error.message);
 						});
@@ -262,11 +275,14 @@
 </script>
 
 <style>
+	page{
+		background-color: #fbfbfb;
+	}
 	.myPage{
 		position: relative;
 		width: 100%;
-		height: 1250rpx;
-		overflow: hidden;
+		/* height: 1250rpx; */
+		/* overflow: hidden; */
 	}
 	.myPage .boxView{
 		width: 100%;
@@ -275,47 +291,26 @@
 		top: 0;
 	}
 	.myPage .boxView .loginView.hide{
-		animation:1s myfirst forwards;
-		-moz-animation:1s myfirst forwards; /* Firefox */
-		-webkit-animation:1s myfirst forwards; /* Safari and Chrome */
-		-o-animation:1s myfirst forwards; /* Opera */
-	}
-	@keyframes myfirst
-	{
-	0%   {height:30%;}
-	100% {height:0;display: none;}
-	}
-	
-	@-moz-keyframes myfirst /* Firefox */
-	{
-	0%   {height:30%;}
-	100% {height:0;display: none;}
-	}
-	
-	@-webkit-keyframes myfirst /* Safari and Chrome */
-	{
-	0%   {height:30%;}
-	100% {height:0;display: none;}
-	}
-	
-	@-o-keyframes myfirst /* Opera */
-	{
-	0%   {height:30%;}
-	100% {height:0;display: none;}
+		/* animation:1s myfirst forwards; */
+		/* -moz-animation:1s myfirst forwards; /* Firefox */ 
+		/* -webkit-animation:1s myfirst forwards; /* Safari and Chrome */ 
+		/* -o-animation:1s myfirst forwards; /* Opera */
 	}
 	.loginView{
 		height: 100%;
 		line-height: 500rpx;
 	}
 	.headIcon{
-		width: 300rpx;
-		height: 150rpx;
+		padding-top: 20rpx;
+		padding-bottom: 30rpx;
+		width: 128rpx;
+		height: 178rpx;
 		text-align: center;
 		margin: auto;
 	}
 	.headIcon image{
-		width: 150rpx;
-		height: 150rpx;
+		width: 128rpx;
+		height: 128rpx;
 		border-radius: 50%;
 		display: inline-block;
 		vertical-align: middle;
@@ -326,5 +321,55 @@
 	
 	.editForm{
 		padding: 40rpx;
+	}
+	.editForm .btnView{
+		text-align: center;
+		margin-top: 30rpx;
+		/* position: fixed;
+		bottom: 100rpx;
+		width:calc(100% - 80rpx) */
+	}
+	.btnSubmit{
+		width: 100%;
+		height: 94rpx;
+		line-height: 94rpx;
+		background-color: #ff776f;
+		border-radius: 94rpx;
+		color: #ffffff;
+	}
+	.u-input{
+		border-radius: 20rpx!important;
+		background-color: #ffffff;
+		border: 2rpx solid #efefef;
+		height: 74rpx;
+		line-height: 74rpx;
+		font-size: 30rpx;
+		color: #352026;
+		font-family: PingFangSC-Medium;
+	}
+	.u-input input{
+		line-height: 74rpx;
+		font-family: PingFangSC-Medium;
+		font-size: 30rpx!important;
+		color: #352026!important;
+	}
+	.u-form-item{
+		padding: 0!important;
+	}
+	.u-drawer-content{
+		border-top-left-radius: 46rpx;
+		border-top-right-radius: 46rpx;
+	}
+	.btngetphonenumber{
+		color: #ff776f;
+		font-size: 30rpx;
+		background-color: #ffffff;
+		border-radius: 20rpx;
+		border: 2rpx solid #efefef;
+		text-align: left;
+		font-family: PingFangSC-Medium;
+	}
+	.btngetphonenumber::after{
+		border: 0;
 	}
 </style>

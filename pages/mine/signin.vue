@@ -209,7 +209,6 @@
 				if (week < 6) {
 					var currDate = addDays(endDate, 1);
 					while (currDate <= addDays(endDate, 6 - week)) {
-						
 						var hasCheckday = self.checkeddays.find(function (v, i) {
 							return v == dateFormat(currDate, 'yyyy-MM-dd')
 						});

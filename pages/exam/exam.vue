@@ -1,24 +1,14 @@
 <template>
 	<view>
-		<view class="buytipsView">
-			<view class="tipView">
-				<view class="txt">
-					本章为免费内容，学习更多知识，请点击购买全部章节
-				</view>
-				<view class="icon">
-					<u-icon name="arrow-right" color="#ffffff" size="32"></u-icon>
-				</view>
-			</view>
+		<view class="timeView">
+			考试剩余时间：<u-count-down color="#b1b1b1" font-size="26" separator="zh" separator-size="26" separator-color="#b1b1b1" @change="handleChange" :timestamp="endTime"></u-count-down>
 		</view>
-		<view v-if="count==0" style="text-align: center;">
-			<u-empty text="数据为空" mode="data"></u-empty>
-		</view>
-		<view v-else class="questionView">
+		<view class="questionView">
 			<view class="headView">
 				<view v-if="questionDetail.type==1" class="queType">单选题</view>
 				<view v-if="questionDetail.type==2" class="queType">多选题</view>
 				<view v-if="questionDetail.type==3" class="queType">填空题</view>
-				<view class="countView">{{subjectIndex}}/{{count}}</view>
+				<view class="countView">{{index}}/{{count}}</view>
 			</view>
 			<view class="imgView">
 				<image mode="widthFix" src="../../static/banner.png"></image>
@@ -31,6 +21,7 @@
 					</block>
 					<block v-else>
 						<input v-if="i!=questionDetail.cinputs.length-1" :style="{width: (options[i].value[0].txt.length * 34 + 60) + 'rpx;'}" :data-index="i" @input="handleAnswerChange" @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />
+						<view v-if="i!=questionDetail.cinputs.length-1" class="tips">({{options[i].value[0].txt.length}}个字)</view>
 					</block>
 				</block>
 			</view>
@@ -43,25 +34,28 @@
 					<view v-for="s in options">{{s.rightAnswer}}</view>
 				</view>
 				<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
-				<view class="comment">答案解析：{{questionDetail.comments}}</view>
+				<view class="comment">答案解析：
+					<u-parse :html="questionDetail.comments"></u-parse>
+				</view>
 			</view>
 		</view>
 		<view v-if="count > 0" class="actionView">	
 			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
-			<button v-if="hasSubmit&&subjectIndex < count" @click="handleNext" class="next">下一题</button>
+			<button v-if="hasSubmit&&index < count" @click="handleNext" class="next">下一题</button>
 		</view>
 	</view>
 </template>
 
 <script>
 	import myRadioGroup from '../../components/myRadio/myRadioGroup.vue'
+	import { dateFormat, toDateFromString,addMonths, addDays, addSeconds, GetRandomNum } from '../../js/common.js'
 	export default {
 		components:{
 			myRadioGroup
 		},
 		data() {
 			return {
-				subjectIndex: 1, // 当前答题序号
+				index: 1, // 当前答题序号
 				count:0, // 总题数
 				options: [],
 				currAnswer:[], // 当前答案
@@ -70,23 +64,26 @@
 				screenWidth: 0,
 				inputHeight:328, // 软键盘高度
 				userInfo: null,
-				subjectId:'',
-				subjectDetail: null,
+				examId:'',
+				examDetail: null,
 				questionDetail: null,
-				history:null
+				endTime: null,
+				answers:[],
+				currTime:0, // 多去多少时间（秒）
+				score:0,
+				isComplate: false, // 是否已正常提交
 			}
 		},
 		onLoad(options) {
 			var self = this
-			if(options.sid){
-				this.subjectId = options.sid
-				this.bindSubjectDetail()
+			if(options.tid){
+				this.examId = options.tid
+				this.bindExamDetail()
 			}
 			uni.getStorage({
 				key:'userInfo',
 				success: res => {
 					this.userInfo = res.data
-					self.bindQuestion()
 				}
 			})
 			uni.getSystemInfo({
@@ -103,6 +100,29 @@
 				  console.log('load font success')
 			  }
 			})
+			
+			uni.enableAlertBeforeUnload({
+				message:'当前还未完成考试，返回则默认提交考卷，是否继续退出？',
+				success: res=>{
+					
+				},
+				fail: error=>{}
+			})
+		},
+		/**
+		  * 生命周期函数--监听页面隐藏
+		  */
+		onHide: function () {
+			debugger
+		},
+		
+		/**
+		  * 生命周期函数--监听页面卸载
+		  */
+		onUnload: function () {
+			if(!this.isComplate){ // 如果没有正常提交,则自动提交
+				this.submit()
+			}
 		},
 		methods: {
 			inputFocus(e){
@@ -115,60 +135,40 @@
 			inputBlur(e) {
 				this.inputHeight = 0
 			    console.log('键盘收起')
-			},			
-			/*加载科目详情*/
-			bindSubjectDetail(){
+			},
+			/*倒计时*/
+			handleChange(timestamp){
+				this.currTime =  this.endTime -timestamp
+			},
+			/*加载考试详情*/
+			bindExamDetail(){
 				var self = this
-				var query = new this.Parse.Query("Subjects")
-				query.get(this.subjectId).then(res=>{
-					self.subjectDetail = res
+				var query = new this.Parse.Query("ExamPaper")
+				query.get(this.examId).then(res=>{
+					self.examDetail = res
+					let questions = res.get('questions')
+					let minutes = res.get('time_count')
+					self.endTime = minutes * 60
+					self.count = questions.length
+					self.answers = new Array(questions.length)
+					self.bindQuestion()
 				})
 			},
 			/*加载题目*/
 			bindQuestion(){
 				var self = this
-				var hisQuery = new this.Parse.Query("QuestionHistory")
-				hisQuery.equalTo("subjectId",this.subjectId)
-				hisQuery.equalTo("isImportant", 0)
-				hisQuery.equalTo("openid",this.userInfo.openid)
-				hisQuery.first().then(hres=>{
-					if(hres){
-						self.history = hres
-						self.subjectIndex = hres.get('subjectIndex') + 1
+				var query = new this.Parse.Query("TestQuestions")
+				let id = self.examDetail.get('questions')[self.index-1]
+				// query.equalTo('id', id)
+				query.get(id).then(res=>{
+					if(res){
+						if(res.get('type') == 3){
+							res.set('cinputs', res.get('title').split('____'))
+						}
+						self.questionDetail = res
+						let _options = JSON.parse(JSON.stringify(res.get('options')))
+						self.options =  _options
 					}
-					
-					var cquery = new this.Parse.Query("TestQuestions")
-					cquery.equalTo("subjects", this.subjectId)
-					cquery.equalTo("isImportant", 0)
-					cquery.count().then(cres=>{
-						if(cres==0) {
-							self.count = 0
-							return
-						}
-						if(hres && hres.get('subjectIndex') >= cres) {
-							uni.navigateTo({
-								url:'complate'
-							})
-						}
-						self.count = cres
-					})
-					var query = new this.Parse.Query("TestQuestions")
-					query.equalTo("subjects", this.subjectId)
-					query.equalTo("isImportant", 0)
-					query.ascending("index")
-					if(hres){
-						query.greaterThan("index", hres.get('questIndex'))	
-					}
-					query.first().then(res=>{
-						if(res){
-							if(res.get('type') == 3){
-								res.set('cinputs', res.get('title').split('____'))
-							}
-							self.questionDetail = res
-							let _options = JSON.parse(JSON.stringify(res.get('options')))
-							self.options =  _options
-						}
-					})
 				})
 			},
 			/*选择答案*/
@@ -202,10 +202,21 @@
 			/*提交答案*/
 			handleSubmit(){
 				var self = this
-				if(this.canSubmit) {
-					this.hasSubmit = true // 先禁用
+				if(self.canSubmit) {
+					self.hasSubmit = true // 先禁用
 					let result = true
+					let _score = 0
+					let _examOptions = self.examDetail.get('options')
+					let _type = self.questionDetail.get('type')
+					let _typeTxt = (_type==1?'单选':(_type==2?'多选':(_type==3?'填空':'')))
+					let _option = _examOptions.find(t=>{
+						return t.type == _typeTxt
+					})
 					if(this.questionDetail.get('type') == 3) {
+						self.currAnswer=[]
+						self.options.forEach(item=>{
+							self.currAnswer.push(item.content)
+						})
 						this.options.forEach(item=>{
 							var answer = item.value.find(t=>{
 								return t.txt == item.content
@@ -245,57 +256,66 @@
 							}
 						})
 					}
-					/*保存答题记录*/
-					var dbHistory = this.Parse.Object.extend("QuestionHistory")
-					var _history = new dbHistory()
-					if(this.history){
-						_history.set('id', this.history.id)
+					if(result){
+						self.score += parseFloat(_option.score)
 					}
-					_history.set('openid', this.userInfo.openid)
-					_history.set('subjectId', this.subjectDetail.id)
-					_history.set('isImportant', 0)
-					_history.set('questIndex', this.questionDetail.get('index'))
-					_history.set('subjectIndex', this.history?(this.history.get('subjectIndex') + 1) : 1)
-					_history.save().then(his => {
-						self.history = his
-						console.log('保存成功')
-					},(error)=>{
-						console.log(error)
-					})
-					if(!result) { // 答错
-						/*错题记录*/
-						
-						var queryNote = this.Parse.Object.extend("ErrorHistory")
-						var query = new queryNote()
-						query.equalTo('openid', this.userInfo.openid)
-						query.equalTo('questionId', this.questionDetail.id)
-						query.count().then(count=>{
-							if(count && count > 0){ // 已存在错误记录
-								
-							} else {
-								var dbNote = this.Parse.Object.extend("ErrorHistory")
-								var note = new dbNote()
-								note.set('openid', this.userInfo.openid)
-								note.set('questionId', this.questionDetail.id)
-								note.set('title', this.questionDetail.get('title'))
-								note.set('options', this.questionDetail.get('options'))
-								note.save().then(_note => {
-									console.log('保存成功')
-								},(error)=>{
-									console.log(error)
-								})
-							}
+					self.answers[self.index-1] = { answer: JSON.parse(JSON.stringify(self.currAnswer)), result:result}
+					if(self.index==self.examDetail.get('questions').length){
+						// 最后一题
+						/*保存答题记录*/
+						var dbHistory = this.Parse.Object.extend("TestHistory")
+						var _history = new dbHistory()
+						_history.set('openid', this.userInfo.openid)
+						_history.set('examName', this.examDetail.get('test_paper_name'))
+						_history.set('examId', this.examDetail.id)
+						_history.set('questions', self.examDetail.get('questions'))
+						_history.set('answers', self.answers)
+						_history.set('seconds', self.currTime)
+						_history.set('score', self.score)
+						_history.set('pass_score', self.examDetail.get('pass_score'))
+						_history.set('allscore', self.examDetail.get('score'))
+						_history.save().then(his => {
+							self.isComplate = true
+							uni.navigateTo({
+								url:'/pages/mine/testresult?eid='+ his.id+'&from=exam'
+							})
+							console.log('保存成功')
+						},(error)=>{
+							debugger
+							console.log(error)
 						})
 					}
 				}
 			},
 			/*下一题*/
 			handleNext(){
-				this.subjectIndex = this.history.get('subjectIndex')
+				this.index = this.index + 1
 				this.currAnswer = [] // 当前答案
 				this.hasSubmit = false;
 				this.canSubmit = false;
 				this.bindQuestion()
+			},
+			/* 提交 */
+			submit(){
+				var self = this
+				// 最后一题
+				/*保存答题记录*/
+				var dbHistory = this.Parse.Object.extend("TestHistory")
+				var _history = new dbHistory()
+				_history.set('openid', this.userInfo.openid)
+				_history.set('examName', this.examDetail.get('test_paper_name'))
+				_history.set('examId', this.examDetail.id)
+				_history.set('questions', self.examDetail.get('questions'))
+				_history.set('answers', self.answers)
+				_history.set('seconds', self.currTime)
+				_history.set('score', self.score)
+				_history.set('pass_score', self.examDetail.get('pass_score'))
+				_history.set('allscore', self.examDetail.get('score'))
+				_history.save().then(his => {
+					console.log('保存成功')
+				},(error)=>{
+					console.log(error)
+				})
 			}
 		}
 	}
@@ -305,24 +325,14 @@
 	page{
 		background-color: #fbfbfb;
 	}
-	.buytipsView{
-		background-color: #ffb8b7;
+	.timeView{
 		height: 72rpx;
 		line-height: 72rpx;
-	}
-	.buytipsView .tipView{
-		display: flex;
-		padding: 0 36rpx;
-	}
-	.buytipsView .tipView .txt{
-		flex: 1;
+		padding-left: 36rpx;
 		font-size: 26rpx;
+		color: #b1b1b1;
 		font-family: PingFangSC-Medium;
-		color: #ffffff;
-	}
-	.buytipsView .tipView .icon{
-		width: 50rpx;
-		text-align: right;
+		background-color: #ffffff;
 	}
 	.questionView{
 		padding: 0 36rpx;
@@ -356,6 +366,13 @@
 		margin-top: 24rpx;
 		font-size: 34rpx;
 		color: #352026;
+		font-size: PingFangSC-Medium;
+		line-height: 80rpx;
+	}
+	.questionView .title .tips{
+		display: inline;
+		font-size: 26rpx;
+		color: rgb(53,32,38,0.4);
 		font-size: PingFangSC-Medium;
 		line-height: 80rpx;
 	}

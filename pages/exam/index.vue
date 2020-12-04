@@ -2,11 +2,15 @@
 	<view class="myPage">
 		<view class="testItem" v-for="(test) in tests">
 			<view class="testCon">
-				<view class="testName">{{test.test_name}}</view>
-				<view class="time">考试时间：{{test.minutes}}分钟</view>
+				<view class="testName">{{test.test_paper_name}}</view>
+				<view class="time">考试时间：{{test.time_count}}分钟</view>
 			</view>
 			<view class="action">
-				<u-button  @click="handleTestClick" :data-item="test" type="primary">开始考试</u-button>
+				<!-- <u-button  @click="handleTestClick" :data-item="test" type="primary">开始考试</u-button> -->
+				<button @click="handleTestClick" :data-item="test">
+					<image src="../../static/icon/icon_pencle_red.png"></image>
+					开始考试
+				</button>
 			</view>
 		</view>
 	</view>
@@ -16,21 +20,16 @@
 	export default {
 		data() {
 			return {
-				tests:[
-					{ objectId:'fdjgysa', test_name:'期中考试', minutes:'45' },
-					{ objectId:'sUJHljg8', test_name:'期末考试', minutes:'45' },
-					{ objectId:'1Gkdlskl', test_name:'9月份考试', minutes:'45' },
-				]
+				tests:[]
 			}
 		},
 		onLoad() {			
 			var self = this
-			// const Subjects = this.Parse.Object.extend("Subjects")
-			// const query = new this.Parse.Query(Subjects)
-			// query.startsWith("parent_ID", "0")
-			// query.find().then(list => {
-			// 	self.subjects = list
-			// })
+			const exams = this.Parse.Object.extend("ExamPaper")
+			const query = new this.Parse.Query(exams)
+			query.find().then(list => {
+				self.tests = list
+			})
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
 			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
@@ -43,7 +42,7 @@
 			handleTestClick(e){
 				var item = e.currentTarget.dataset.item
 				uni.navigateTo({
-					url:'./exam?tid=' //+item.objectId
+					url:'./exam?tid=' + item.objectId
 				})
 			}
 		}
@@ -53,42 +52,58 @@
 <style>
 	page{
 		background-color: #fbfbfb;
-		padding: 22rpx 36rpx;
+		padding: 30rpx;
 	}
 	.myPage{
 		width: calc(100% - 80rpx);
-		padding: 40rpx;
-		background-color: #FFFFFF;
-		border-radius: 46rpx;
 	}
 	.myPage .testItem{
-		padding: 0 36rpx;
+		padding-left: 38rpx;
 		display: flex;
-		height: 106rpx;
-		line-height: 106rpx;
-		border-bottom: 1rpx solid #eeeeee;
-	}
-	.myPage .testItem:last-child{
-		border: 0;
+		height: 140rpx;
+		line-height: 140rpx;
+		border-bottom: 1rpx solid #f4f4f4;
 	}
 	.myPage .testItem .testCon{
 		flex: 1;
+		padding: 28rpx 0;
 	}
 	.myPage .testItem .testCon .testName{
-		height: 50rpx;
-		line-height: 50rpx;
+		height: 48rpx;
+		line-height: 48rpx;
 		width: 100%;
+		font-size: 34rpx;
+		font-family: PingFangSC-Medium;
+		font-weight: bold;
+		color: #352026;
 	}
 	.myPage .testItem .testCon .time{
-		height: 30rpx;
-		line-height: 30rpx;
+		height: 36rpx;
+		line-height: 36rpx;
 		width: 100%;
+		font-size: 26rpx;
+		font-family: PingFangSC-Medium;
+		color: #352026;
 	}
 	.myPage .testItem .action{
-		width: 130rpx;
+		width: 200rpx;
 		text-align: right;
 	}
-	.myPage .testItem .action u-button{
+	.myPage .testItem .action button{
 		display: inline-block;
+		vertical-align: middle;
+		width: 190rpx;
+		height: 74rpx;
+		border-radius: 74rpx;
+		border: 2rpx solid #ff6867;
+		font-size: 26rpx;
+		font-family: PingFangSC-Medium;
+		color: #ff5454;
+	}
+	.myPage .testItem .action button image{
+		width: 26rpx;
+		height: 26rpx;
+		display: inline-block;
+		vertical-align: middle;
 	}
 </style>

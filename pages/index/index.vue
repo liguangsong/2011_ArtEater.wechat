@@ -96,76 +96,25 @@
 				</view>
 			</view>
 		</u-popup>
+		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="isShowLogin=false" :to="toUrl"></login>
 	</view>
 </template>
 
 <script>
-	// import Parse from 'parse/weapp'
-	
+	import login from '../../components/login/login.vue'
 	export default {
+		components:{
+			login
+		},
 		data() {
 			return {
 				openid: '',
 				userInfo: {},
+				isShowLogin: false,
+				toUrl:'',
 				isShowImportBuy: false,
 				title: 'Hello',
-				subjects: [
-					// {
-					// 	"objectId":"FGXwa0hCBr",
-					// 	"subject_name":"中国美术史",
-					// 	"content":"",
-					// 	"price":"86.48",
-					// 	"level":0,
-					// 	"parent_ID":"0",
-					// 	"has_down_level":true,
-					// 	"createdAt":"2020-11-24T08:08:32.845Z",
-					// 	"updatedAt":"2020-11-24T09:46:45.965Z"
-					// },
-					// {
-					// 	"objectId":"34EXyuIXzY",
-					// 	"subject_name":"中国童话故事",
-					// 	"content":"<p>222222</p>",
-					// 	"price":"20.00",
-					// 	"level":0,
-					// 	"parent_ID":"0",
-					// 	"has_down_level":true,
-					// 	"createdAt":"2020-11-24T08:08:52.234Z",
-					// 	"updatedAt":"2020-11-24T09:48:30.386Z"
-					// },
-					// {
-					// 	"objectId":"JqLnBUsUyS",
-					// 	"subject_name":"中国鬼故事",
-					// 	"content":"",
-					// 	"price":"0",
-					// 	"level":0,
-					// 	"parent_ID":"0",
-					// 	"has_down_level":false,
-					// 	"createdAt":"2020-11-25T11:57:15.084Z",
-					// 	"updatedAt":"2020-11-25T11:57:15.084Z"
-					// },
-					// {
-					// 	"objectId":"FuwDGurtTv",
-					// 	"subject_name":"科技文艺",
-					// 	"content":"",
-					// 	"price":"0",
-					// 	"level":0,
-					// 	"parent_ID":"0",
-					// 	"has_down_level":false,
-					// 	"createdAt":"2020-11-25T11:57:38.993Z",
-					// 	"updatedAt":"2020-11-25T11:57:38.993Z"
-					// },
-					// {
-					// 	"objectId":"DQ2wbrtbFT",
-					// 	"subject_name":"外国美术史",
-					// 	"content":"",
-					// 	"price":"0",
-					// 	"level":0,
-					// 	"parent_ID":"0",
-					// 	"has_down_level":false,
-					// 	"createdAt":"2020-11-25T11:57:51.426Z",
-					// 	"updatedAt":"2020-11-25T11:57:51.426Z"
-					// }
-				]
+				subjects: []
 			}
 		},
 		onShow() {
@@ -201,9 +150,8 @@
 						url:'../mine/note'
 					})
 				} else {
-					uni.navigateTo({
-						url:'../login/login'
-					})
+					this.isShowLogin = true
+					this.toUrl = '/pages/mine/note'
 				}
 			},
 			/*重点题库*/
@@ -212,11 +160,9 @@
 					uni.navigateTo({
 						url:'../important/index'
 					})
-					// this.isShowImportBuy = true
 				} else {
-					uni.navigateTo({
-						url:'../login/login'
-					})
+					this.isShowLogin = true
+					this.toUrl = '/pages/important/index'
 				}
 			},
 			/*考试*/
@@ -226,9 +172,8 @@
 						url:'../exam/index'
 					})
 				} else {
-					uni.navigateTo({
-						url:'../login/login'
-					})
+					this.isShowLogin = true
+					this.toUrl = '/pages/exam/index'
 				}
 			},
 			/* 点击“我” */
@@ -238,17 +183,21 @@
 						url:'../mine/mine'
 					})
 				} else {
-					uni.navigateTo({
-						url:'../login/login'
-					})
+					this.isShowLogin = true
+					this.toUrl = '/pages/mine/mine'
 				}
 			},
 			/*点击科目*/
 			handleSubjectClick(e){
 				var item = e.currentTarget.dataset.item
-				uni.navigateTo({
-					url:'../subject/subject?sid='+item.objectId
-				})
+				if(this.userInfo&&this.userInfo.openid){
+					uni.navigateTo({
+						url:'../subject/subject?sid='+item.objectId
+					})
+				} else {
+					this.isShowLogin = true
+					this.toUrl = '/pages/subject/subject?sid='+item.objectId
+				}
 			}
 		}
 	}

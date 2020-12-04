@@ -23,12 +23,13 @@
 						resolve(res.data)
 					}
 				},
-				fail: () => {
+				fail: (error) => {
 					uni.showToast({
 						icon: 'none',
 						title: '登录失败',
 						duration: 2000
 					})
+					console.log(error)
 				}
 			});
 		})

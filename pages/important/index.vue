@@ -49,29 +49,30 @@
 <style>
 	page{
 		background-color: #fbfbfb;
-		padding: 22rpx 36rpx;
 	}
 	.myPage{
-		width: calc(100% - 80rpx);
-		padding: 40rpx;
-		background-color: #FFFFFF;
-		border-radius: 46rpx;
+		padding:0 34rpx 0 36rpx;
 	}
 	.myPage .subjectItem{
-		padding: 0 36rpx;
+		margin-top: 24rpx;
 		display: flex;
-		height: 106rpx;
-		line-height: 106rpx;
-		border-bottom: 1rpx solid #eeeeee;
+		height: 116rpx;
+		line-height: 116rpx;
+		border-radius: 20rpx;
+		background-color: #ffffff;
 	}
 	.myPage .subjectItem:last-child{
 		border: 0;
 	}
 	.myPage .subjectItem .subjectName{
 		flex: 1;
+		padding: 0 16rpx;
+		font-family: PingFangSC-Medium;
+		font-size: 34rpx;
+		font-weight: bold;
 	}
 	.myPage .subjectItem .icon{
-		width: 50rpx;
-		text-align: right;
+		width: 84rpx;
+		text-align: center;
 	}
 </style>

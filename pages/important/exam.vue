@@ -21,6 +21,7 @@
 					</block>
 					<block v-else>
 						<input v-if="i!=questionDetail.cinputs.length-1" :style="{width: (options[i].value[0].txt.length * 34 + 60) + 'rpx;'}" :data-index="i" @input="handleAnswerChange" @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />
+						<view v-if="i!=questionDetail.cinputs.length-1" class="tips">({{options[i].value[0].txt.length}}个字)</view>
 					</block>
 				</block>
 			</view>
@@ -33,7 +34,9 @@
 					<view v-for="s in options">{{s.rightAnswer}}</view>
 				</view>
 				<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
-				<view class="comment">答案解析：{{questionDetail.comments}}</view>
+				<view class="comment">答案解析：
+					<u-parse :html="questionDetail.comments"></u-parse>
+				</view>
 			</view>
 		</view>
 		<view v-if="count > 0" class="actionView">	
@@ -128,7 +131,7 @@
 					}
 					
 					var cquery = new this.Parse.Query("TestQuestions")
-					cquery.equalTo("subjects", this.subjectId)
+					cquery.containsAll("subjects", [self.subjectId])
 					cquery.equalTo("isImportant", 1)
 					cquery.count().then(cres=>{
 						if(cres==0) {
@@ -143,7 +146,7 @@
 						self.count = cres
 					})
 					var query = new this.Parse.Query("TestQuestions")
-					query.equalTo("subjects", this.subjectId)
+					query.containsAll("subjects", [self.subjectId])
 					query.equalTo("isImportant", 1)
 					query.ascending("index")
 					if(hres){
@@ -346,6 +349,13 @@
 		margin-top: 24rpx;
 		font-size: 34rpx;
 		color: #352026;
+		font-size: PingFangSC-Medium;
+		line-height: 80rpx;
+	}
+	.questionView .title .tips{
+		display: inline;
+		font-size: 26rpx;
+		color: rgb(53,32,38,0.4);
 		font-size: PingFangSC-Medium;
 		line-height: 80rpx;
 	}
