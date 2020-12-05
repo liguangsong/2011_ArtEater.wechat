@@ -161,7 +161,8 @@
             "path" : "pages/mine/message",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "消息列表",
+				"navigationBarBackgroundColor":"#fbfbfb",
+                "navigationBarTitleText": "消息",
                 "enablePullDownRefresh": false
             }
             

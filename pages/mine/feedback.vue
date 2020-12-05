@@ -56,7 +56,10 @@
 						opinion.set("openid", self.userInfo.openid);
 						opinion.set("content", self.form.content);
 						opinion.save().then(res=>{
-						  debugger
+							self.form.content = ''
+							uni.showToast({
+								title:'提交成功！'
+							})
 						})
 					} else {
 						console.log('验证失败');

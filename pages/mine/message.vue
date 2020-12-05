@@ -1,17 +1,16 @@
 <template>
 	<view class="myPage u-demo-area">
 		<view class="readAllView">
-			<button @click="handleReadAll">全部标记为已读</button>
+			<button @click="handleReadAll">全部已读</button>
 		</view>
 		<view class="msgItem u-badge-wrap" v-for="msg in msgList" @click="handleMsgClick" :data-item="msg">
-			<u-badge v-if="msg.isRead==0" size="mini" type="error" is-dot :size="'default'" :offset="[-8, -8]"></u-badge>
 			<view class="conView">
 				<view class="title">{{msg.title}}</view>
 				<view class="content">{{msg.content}}</view>
 			</view>
-			<!-- <view class="icon">
-				<u-icon name="arrow-right" color="#f4f4f4" size="32"></u-icon>
-			</view> -->
+			<view class="icon">
+				<image  v-if="msg.isRead==0" src="../../static/icon/icon_dot.png"></image>
+			</view>
 		</view>
 		<view class="loadmore">
 			<u-loadmore @loadmore="handleLoadMore" :status="status" :load-text="loadText" />
@@ -43,6 +42,13 @@
 					this.userInfo = res.data
 					this.bindData()
 				}
+			})
+			uni.loadFontFace ({
+			  family: 'PingFangSC-Medium',
+			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  success: function(){
+				  console.log('load font success')
+			  }
 			})
 		},
 		methods: {
@@ -108,7 +114,8 @@
 						if(!id){
 							ids.push(msgid)
 							his.set('MessageIds', ids)
-							his.save().then(res=>{
+							his.save().then(res=> {
+								self.msgList = []
 								self.bindData()
 							})
 						}
@@ -119,6 +126,7 @@
 						_history.set('MessageIds', [msgid])
 						_history.save().then(his => {
 							self.readHistory = his
+							self.msgList = []
 							self.bindData()
 						})						
 					}
@@ -139,6 +147,7 @@
 				_history.set('openid', this.userInfo.openid)
 				_history.set('MessageIds', ids)
 				_history.save().then(his => {
+					self.msgList = []
 					self.bindData()
 				})	
 			}
@@ -151,22 +160,49 @@
 		background-color: #fbfbfb;
 	}
 	.myPage{
-		padding: 36rpx;
+		padding: 40rpx;
+	}
+	.myPage .readAllView{
+		width: 100%;
+		padding: 20rpx 0;
+		text-align: right;
+	}
+	.myPage .readAllView button{
+		width: 154rpx;
+		height: 50rpx;
+		line-height: 50rpx;
+		border-radius: 50rpx;
+		text-align: center;
+		font-size: 26rpx;
+		font-family: PingFangSC-Medium;
+		color: #ff9d83;
+		border: 2rpx solid #ff9d83;
+		background-color: #ffffff;
+		display: inline-block;
+		padding: 0;
 	}
 	.myPage .msgItem{
 		position: relative;
 		display: flex;
 		border-radius: 20rpx;
-		background-color: #ffffff;
-		padding: 20rpx 40rpx;
-		margin: 22rpx 0;
+		/* background-color: #ffffff; */
+		/* padding: 20rpx 0; */
+		/* margin: 22rpx 0; */
+		border-bottom: 1rpx solid #f4f4f4;
+		height: 170rpx;
 	}
 	.myPage .msgItem .conView{
 		flex: 1;
+		padding-top: 32rpx;
+		padding-bottom: 34rpx;
 	}
 	.myPage .msgItem .conView .title{
 		font-size: 34rpx;
+		height: 48rpx;
+		line-height: 48rpx;
 		font-weight: bold;
+		color: #352026;
+		font-family: PingFangSC-Medium;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
@@ -174,7 +210,12 @@
 		-webkit-box-orient: vertical;
 	}
 	.myPage .msgItem .conView .content{
-		font-size: 22rpx;
+		margin-top: 14rpx;
+		font-size: 30rpx;
+		height: 42rpx;
+		line-height: 42rpx;
+		color: #352026;
+		font-family: PingFangSC-Medium;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
@@ -183,5 +224,14 @@
 	}
 	.myPage .msgItem .icon{
 		width: 50rpx;
+		height: 170rpx;
+		line-height: 170rpx;
+		text-align: right;
+	}
+	.myPage .msgItem .icon image{
+		width: 20rpx;
+		height: 20rpx;
+		display: inline-block;
+		vertical-align: middle;
 	}
 </style>
