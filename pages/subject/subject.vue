@@ -12,8 +12,8 @@
 					<view class="conView">
 						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}</view>
 						<view class="listAction">
-							<image @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
-							<image @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_pencle.png"></image>
+							<image v-if="sub.price>0&&!hasBuyed" @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
+							<image v-else @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_pencle.png"></image>
 						</view>
 					</view>
 					<view class="children" v-if="subject.extend">
@@ -23,8 +23,8 @@
 								<view class="conView">
 									<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
 									<view class="listAction">
-										<image @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
-										<image @click="handleTestClick" :data-item="sub" src="../../static/icon/icon_pencle.png"></image>
+										<image v-if="sub.price>0&&!hasBuyed" @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
+										<image v-else @click="handleTestClick" :data-item="sub" src="../../static/icon/icon_pencle.png"></image>
 									</view>
 								</view>
 							</view>
@@ -65,35 +65,15 @@
 	export default {
 		data() {
 			return {
-				subjectTree:
-				[
-					// {id:'2313dsa', subject_name:'原始、古代美术', extend: false, children:[
-					// 	{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
-					// 	{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
-					// 	{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
-					// ]},
-					// {id:'2313dsa', subject_name:'欧洲中世纪的美术', extend: false, children:[
-					// 	{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
-					// 	{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
-					// 	{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
-					// ]},
-					// {id:'2313dsa', subject_name:'欧洲文艺复兴时期的...风格', extend: false, children:[
-					// 	{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
-					// 	{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
-					// 	{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
-					// ]},
-					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
-					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
-					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
-					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]}
-				],
+				subjectTree:[],
 				userInfo: null,
 				subjectId:'',
 				subjectDetail: null,
 				currSubjectDetail: null,
 				isShowSubjectDetail: false,
 				isShowSubjectBuy: false,
-				screenHeight:0
+				screenHeight:0,
+				hasBuyed: false
 			}
 		},
 		onLoad(options) {
@@ -105,6 +85,7 @@
 			})
 			if(options.sid){
 				this.subjectId = options.sid
+				this.bindOrder()
 				this.bindSubjectDetail()
 				this.bindSubjectTree()
 			}
@@ -133,11 +114,24 @@
 					self.subjectDetail = res
 				})
 			},
+			/*查询是否已购买本章节*/
+			bindOrder(){
+				var self = this
+				var query = new this.Parse.Query("Order")
+				query.equalTo('subjectId',this.subjectId)
+				query.equalTo('state', 1)
+				query.first().then(res=>{
+					if(res){
+						self.hasBuyed = true
+					}
+				})
+			},
 			/* 加载科目树*/
 			bindSubjectTree(){
 				var self = this
 				var query = new this.Parse.Query("Subjects")
 				// query.equalTo("parent_ID", this.subjectId)
+				query.ascending('createdAt')
 				query.find().then(res=>{
 					var tree = self.initSubjectTree(res, self.subjectId)
 					self.subjectTree = tree
@@ -154,6 +148,7 @@
 					let subject = {
 						subject_name: _subject.get('subject_name'),
 						content: _subject.get('content'),
+						price: _subject.get('price'),
 						extend: false,
 						has_down_level: _subject.get('has_down_level'),
 						value: _subject.id,
@@ -223,9 +218,10 @@
 			},
 			/*做题*/
 			handleTestClick(e){
+				var self = this
 				var item = e.currentTarget.dataset.item
 				uni.navigateTo({
-					url:'exam?sid=' + item.value
+					url:'exam?bsid='+self.subjectId+'&sid=' + item.value
 				})
 			}
 		}

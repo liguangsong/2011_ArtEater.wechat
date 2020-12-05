@@ -283,6 +283,9 @@
 		font-size: 34rpx;
 		border: 0;
 	}
+	.actionView button::after{
+		border: 0;
+	}
 	.actionView button.noAnswer{
 		background-color: #ffe8e8;
 	}

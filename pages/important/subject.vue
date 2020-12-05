@@ -136,6 +136,7 @@
 				var self = this
 				var query = new this.Parse.Query("Subjects")
 				// query.equalTo("parent_ID", this.subjectId)
+				query.ascending('createdAt')
 				query.find().then(res=>{
 					var tree = self.initSubjectTree(res, self.subjectId)
 					self.subjectTree = tree
@@ -152,6 +153,7 @@
 					let subject = {
 						subject_name: _subject.get('subject_name'),
 						content: _subject.get('content'),
+						price: _subject.get('price'),
 						extend: false,
 						has_down_level: _subject.get('has_down_level'),
 						value: _subject.id,

@@ -138,30 +138,56 @@
 							self.count = 0
 							return
 						}
-						if(hres && hres.get('subjectIndex') >= cres) {
-							uni.navigateTo({
-								url:'complate'
-							})
+						if(hres && hres.get('subjectIndex') >= cres) {							
+							self.subjectIndex = hres.get('subjectIndex')
+							hres.set('questIndex',hres.get('questIndex')-1)
+							self.canSubmit = false
+							self.hasSubmit = true
+							self.complate()
+							// uni.navigateTo({
+							// 	url:'complate'
+							// })
 						}
 						self.count = cres
-					})
-					var query = new this.Parse.Query("TestQuestions")
-					query.containsAll("subjects", [self.subjectId])
-					query.equalTo("isImportant", 1)
-					query.ascending("index")
-					if(hres){
-						query.greaterThan("index", hres.get('questIndex'))	
-					}
-					query.first().then(res=>{
-						if(res){
-							if(res.get('type') == 3){
-								res.set('cinputs', res.get('title').split('____'))
-							}
-							self.questionDetail = res
-							let _options = JSON.parse(JSON.stringify(res.get('options')))
-							self.options =  _options
+						var query = new this.Parse.Query("TestQuestions")
+						query.containsAll("subjects", [self.subjectId])
+						query.equalTo("isImportant", 1)
+						query.ascending("index")
+						if(hres){
+							query.greaterThan("index", hres.get('questIndex'))	
 						}
+						query.first().then(res=>{
+							if(res){
+								if(res.get('type') == 3){
+									res.set('cinputs', res.get('title').split('____'))
+								}
+								self.questionDetail = res
+								let _options = JSON.parse(JSON.stringify(res.get('options')))
+								self.options =  _options
+							}
+						})
 					})
+				})
+			},
+			/*已答完*/
+			complate(){
+				var self = this
+				uni.showModal({
+					content:'当前科目下所有试题已经答完，是否选择重新答题',
+					success(res) {
+						if(res.confirm) {
+							self.subjectIndex = 1
+							self.currAnswer = [] // 当前答案
+							self.hasSubmit = false;
+							self.canSubmit = false;
+							self.history.destroy().then(res=>{
+								self.history = null
+								self.bindQuestion()
+							})
+						} else if(res.cancel) {
+							
+						}
+					}
 				})
 			},
 			/*选择答案*/
@@ -251,6 +277,9 @@
 					_history.set('subjectIndex', this.history?(this.history.get('subjectIndex') + 1) : 1)
 					_history.save().then(his => {
 						self.history = his
+						if(his.get('subjectIndex') >= self.count){
+							self.complate()
+						}
 						console.log('保存成功')
 					},(error)=>{
 						console.log(error)
@@ -422,6 +451,9 @@
 		color: #ffffff;
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
+		border: 0;
+	}
+	.actionView button::after{
 		border: 0;
 	}
 	.actionView button.noAnswer{

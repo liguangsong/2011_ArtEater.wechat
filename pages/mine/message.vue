@@ -229,9 +229,12 @@
 		text-align: right;
 	}
 	.myPage .msgItem .icon image{
-		width: 20rpx;
-		height: 20rpx;
+		width: 32rpx;
+		height: 32rpx;
 		display: inline-block;
 		vertical-align: middle;
+	}
+	.myPage .loadmore{
+		margin-top: 20rpx;
 	}
 </style>

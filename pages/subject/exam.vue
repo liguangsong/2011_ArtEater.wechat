@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<view class="buytipsView">
-			<view class="tipView">
+		<view class="buytipsView" v-if="baseSubjectDetail.price>0&&!hasBuyed">
+			<view class="tipView" @click="isShowSubjectBuy = true">
 				<view class="txt">
 					本章为免费内容，学习更多知识，请点击购买全部章节
 				</view>
@@ -53,6 +53,21 @@
 			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
 			<button v-if="hasSubmit&&subjectIndex < count" @click="handleNext" class="next">下一题</button>
 		</view>
+		<u-popup v-model="isShowSubjectBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
+			<view class="buylView" style="padding:74rpx 40rpx;">
+				<view class="title">{{baseSubjectDetail.subject_name}}</view>
+				<view class="price">¥{{baseSubjectDetail.price}}</view>
+				<view class="tips">
+					您购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
+				</view>
+				<view class="tips">
+					购买后可在【个人中心-已购项目】中查看
+				</view>
+				<view class="btnActions">
+					<button @click="handleBuyBtnClick">确认购买</button>
+				</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -65,6 +80,8 @@
 		data() {
 			return {
 				subjectIndex: 1, // 当前答题序号
+				isShowSubjectBuy: false,
+				hasBuyed: false, // 是否已购买本科目
 				count:0, // 总题数
 				options: [],
 				currAnswer:[], // 当前答案
@@ -74,6 +91,8 @@
 				inputHeight:328, // 软键盘高度
 				userInfo: null,
 				subjectId:'',
+				baseSubjectId: '',
+				baseSubjectDetail:null,
 				subjectDetail: null,
 				questionDetail: null,
 				history:null
@@ -83,7 +102,10 @@
 			var self = this
 			if(options.sid){
 				this.subjectId = options.sid
+				this.baseSubjectId = options.bsid
 				this.bindSubjectDetail()
+				this.bindBaseSubjectDetail()
+				this.bindOrder()
 			}
 			uni.getStorage({
 				key:'userInfo',
@@ -127,6 +149,27 @@
 					self.subjectDetail = res
 				})
 			},
+			/*加载顶级科目详情*/
+			bindBaseSubjectDetail(){
+				var self = this
+				var query = new this.Parse.Query("Subjects")
+				query.get(this.baseSubjectId).then(res=>{
+					self.baseSubjectDetail = res
+				})
+			},
+			
+			/*查询是否已购买本章节*/
+			bindOrder(){
+				var self = this
+				var query = new this.Parse.Query("Order")
+				query.equalTo('subjectId',this.baseSubjectId)
+				query.equalTo('state', 1)
+				query.first().then(res=>{
+					if(res){
+						self.hasBuyed = true
+					}
+				})
+			},
 			/*加载题目*/
 			bindQuestion(){
 				var self = this
@@ -148,31 +191,54 @@
 							return
 						}
 						if(hres && hres.get('subjectIndex') >= cres) {
-							uni.navigateTo({
-								url:'complate'
-							})
+							self.subjectIndex = hres.get('subjectIndex')
+							hres.set('questIndex',hres.get('questIndex')-1)
+							self.canSubmit = false
+							self.hasSubmit = true
+							self.complate()
 						}
 						self.count = cres
-					})
-					var query = new this.Parse.Query("TestQuestions")
-					query.containsAll("subjects", [self.subjectId])
-					query.equalTo("isImportant", 0)
-					query.ascending("index")
-					if(hres){
-						query.greaterThan("index", hres.get('questIndex'))	
-					}
-					query.first().then(res=>{
-						if(res){
-							if(res.get('type') == 3){
-								res.set('cinputs', res.get('title').split('____'))
-							}
-							self.questionDetail = res
-							let _options = JSON.parse(JSON.stringify(res.get('options')))
-							self.options =  _options
+						
+						var query = new this.Parse.Query("TestQuestions")
+						query.containsAll("subjects", [self.subjectId])
+						query.equalTo("isImportant", 0)
+						query.ascending("index")
+						if(hres){
+							query.greaterThan("index", hres.get('questIndex'))	
 						}
+						query.first().then(res=>{
+							if(res){
+								if(res.get('type') == 3){
+									res.set('cinputs', res.get('title').split('____'))
+								}
+								self.questionDetail = res
+								let _options = JSON.parse(JSON.stringify(res.get('options')))
+								self.options =  _options
+							}
+						})
 					})
-				},error=>{
-					debugger
+				})
+			},
+			/*已答完*/
+			complate(){
+				var self = this
+				uni.showModal({
+					content:'当前科目下所有试题已经答完，是否选择重新答题',
+					success(res) {
+						if(res.confirm) {
+							debugger
+							self.subjectIndex = 1
+							self.currAnswer = [] // 当前答案
+							self.hasSubmit = false;
+							self.canSubmit = false;
+							self.history.destroy().then(res=>{
+								self.history = null
+								self.bindQuestion()
+							})
+						} else if(res.cancel) {
+							
+						}
+					}
 				})
 			},
 			/*选择答案*/
@@ -262,13 +328,15 @@
 					_history.set('subjectIndex', this.history?(this.history.get('subjectIndex') + 1) : 1)
 					_history.save().then(his => {
 						self.history = his
+						if(his.get('subjectIndex') >= self.count){
+							self.complate()
+						}
 						console.log('保存成功')
 					},(error)=>{
 						console.log(error)
 					})
 					if(!result) { // 答错
 						/*错题记录*/
-						
 						var queryNote = this.Parse.Object.extend("ErrorHistory")
 						var query = new queryNote()
 						query.equalTo('openid', this.userInfo.openid)
@@ -435,6 +503,9 @@
 		font-size: 34rpx;
 		border: 0;
 	}
+	.actionView button::after{
+		border: 0;
+	}
 	.actionView button.noAnswer{
 		background-color: #ffe8e8;
 	}
@@ -465,5 +536,40 @@
 		background-color: #FFFFFF;
 		border: 2rpx solid #ffb9b8;
 		color: #f16564;
+	}
+	
+	
+	.buylView {
+		width: 100%;
+	}
+	.buylView .title{
+		font-size: 38rpx;
+		font-weight: bold;
+		font-family: PingFangSC-Medium;
+		color: #352026;
+	}
+	.buylView .price{
+		font-size: 34rpx;
+		margin-top: 12rpx;
+		font-family: PingFangSC-Medium;
+		color: #ed3535;
+	}
+	.buylView .tips{		
+		font-size: 26rpx;
+		margin-top: 54rpx;
+		font-family: PingFangSC-Medium;
+		color: rgba(53,32,38,0.4);
+	}
+	.buylView .btnActions{
+		margin-top: 96rpx;
+	}
+	.buylView .btnActions button{
+		width: 100%;
+		height: 92rpx;
+		border-radius: 46rpx;
+		background-color: #ED3535;
+		color: #ffffff;
+		font-family: PingFangSC-Medium;
+		font-size: 34rpx;
 	}
 </style>
