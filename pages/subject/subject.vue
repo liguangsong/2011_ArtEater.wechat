@@ -61,6 +61,7 @@
 </template>
 
 <script>
+	import config from '../../static/config/index.js'
 	import { dateFormat, GetRandomNum } from '../../js/common.js'
 	export default {
 		data() {
@@ -179,42 +180,72 @@
 			handleBuyClick(){
 				this.isShowSubjectBuy = true
 			},
+			createWechatPay(user,price,ip) {
+				return new Promise((resolve, reject) => {
+					// var _config = config
+					// uni.request({
+					// 	method: 'POST',
+					// 	url: `${_config.parseRestBaseUrl}/api/createWechatPay`,
+					// 	data: {user, price, ip},
+					// 	header: {
+					// 		'X-Parse-Application-Id': _config.ParseAppId,
+					// 		'X-Parse-REST-API-Key': _config.parseRestApiKey,
+					// 	},
+					// 	success: res => {
+					// 		if (res.data.code === 200) {
+					// 			resolve(res.data)
+					// 		}
+					// 	},
+					// 	fail: (error) => {
+					// 		uni.showToast({
+					// 			icon: 'none',
+					// 			title: '登录失败',
+					// 			duration: 2000
+					// 		})
+					// 		console.log(error)
+					// 	}
+					// });
+				})
+			},
 			/*点击购买按钮*/
 			handleBuyBtnClick(){
 				var self = this
 				var _subject = this.currSubjectDetail
-				var dbOrder = this.Parse.Object.extend("Order")
-				var order = new dbOrder()
-				var orderNo = dateFormat(new Date(),'yyyyMMddHHmmss'+ GetRandomNum(3))
-				order.set('orderNo', orderNo)
-				order.set("subjectId",  this.subjectId)
-				order.set("subjectName",  this.subjectDetail.get('subject_name'))
-				order.set("price",  this.subjectDetail.get('price'))
-				order.set("openId", this.userInfo.openid)
-				order.set("state", 0)
-				order.set("wechatPayOrderId", '') // 支付流水号
-				order.save().then(_order => {
-					this.$Message.success('保存成功')
-				},(error)=>{
-					console.log(error)
-					this.$Message.error('保存失败')
-				})
-				uni.requestPayment({
-				  appId: '',
-				  timeStamp: '',
-				  nonceStr: '',
-				  package: '',
-				  signType: '',
-				  paySign: '',
-				  success (res) {
-					 //  uni.reLaunch({
-						// url: 'paysuccess?orderNo=' + result.orderNo,
-					 //  })
-				  },
-				  fail (res) {
-					console.log("支付失败"+ JSON.stringify(res))
-				  }
-				})
+				// self.createWechatPay(self.Parse.User.current(),self.subjectDetail.get('price'),'').then(res={
+				// 	console.log(res)
+				// });
+				// var dbOrder = this.Parse.Object.extend("Order")
+				// var order = new dbOrder()
+				// var orderNo = dateFormat(new Date(),'yyyyMMddHHmmss'+ GetRandomNum(3))
+				// order.set('orderNo', orderNo)
+				// order.set("subjectId",  this.subjectId)
+				// order.set("subjectName",  this.subjectDetail.get('subject_name'))
+				// order.set("price",  this.subjectDetail.get('price'))
+				// order.set("openId", this.userInfo.openid)
+				// order.set("state", 0)
+				// order.set("wechatPayOrderId", '') // 支付流水号
+				// order.save().then(_order => {
+				// 	this.$Message.success('保存成功')
+				// },(error)=>{
+				// 	console.log(error)
+				// 	this.$Message.error('保存失败')
+				// })
+				// uni.requestPayment({
+				//   appId: '',
+				//   timeStamp: '',
+				//   nonceStr: '',
+				//   package: '',
+				//   signType: '',
+				//   paySign: '',
+				//   success (res) {
+				// 	 //  uni.reLaunch({
+				// 		// url: 'paysuccess?orderNo=' + result.orderNo,
+				// 	 //  })
+				//   },
+				//   fail (res) {
+				// 	console.log("支付失败"+ JSON.stringify(res))
+				//   }
+				// })
 			},
 			/*做题*/
 			handleTestClick(e){
