@@ -1,30 +1,17 @@
 <template>
 	<view class="myPage">
 		<view class="orderView">
-			<view class="orderItem">
+			<view class="orderItem" v-for="order in orderList">
 				<view class="headView">
 					<view class="icon">
 						<u-icon name="checkmark-circle" color="#143a44" size="28"></u-icon>
 					</view>
 					<view class="state">购买成功</view>
-					<view class="date">2020.11.26</view>
+					<view class="date">{{order.createDate}}</view>
 				</view>
 				<view class="conView">
-					<view class="subject">中国美术史</view>
-					<view class="price">实付：¥299</view>
-				</view>
-			</view>
-			<view class="orderItem">
-				<view class="headView">
-					<view class="icon">
-						<u-icon name="checkmark-circle" color="#143a44" size="28"></u-icon>
-					</view>
-					<view class="state">购买成功</view>
-					<view class="date">2020.11.26</view>
-				</view>
-				<view class="conView">
-					<view class="subject">中国美术史</view>
-					<view class="price">实付：¥299</view>
+					<view class="subject">{{order.subjectName}}</view>
+					<view class="price">实付：¥{{order.price}}</view>
 				</view>
 			</view>
 		</view>
@@ -32,13 +19,16 @@
 </template>
 
 <script>
+	import { formatDate, dateFormat} from '../../js/common.js'
 	export default {
 		data() {
 			return {
-				
+				userInfo:{},
+				orderList:[]
 			}
 		},
 		onLoad() {
+			var self = this
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
 			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
@@ -46,9 +36,27 @@
 				  console.log('load font success')
 			  }
 			})
+			uni.getStorage({
+				key:'userInfo',
+				success:function(res){
+					self.userInfo = res.data
+					self.bindOrders()
+				}
+			})
 		},
 		methods: {
-			
+			bindOrders(){
+				var self = this
+				var query = new this.Parse.Query("Order")
+				query.equalTo('openId', self.userInfo.openid)
+				query.descending('createdAt')
+				query.find().then(list=>{
+					list.forEach(item=>{
+						item.createDate = item.createdAt.Format('yyyy.MM.dd hh:mm:ss') //, 'yyyy.MM.dd HH:mm:ss')
+					})
+					self.orderList = list
+				})
+			}
 		}
 	}
 </script>

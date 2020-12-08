@@ -13,7 +13,7 @@
 						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}</view>
 						<view class="listAction">
 							<image v-if="subjectDetail.price>0&&!hasBuyed" @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
-							<image v-if="subject.price==0" @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_pencle.png"></image>
+							<image v-if="subject.price==0||hasBuyed" @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_pencle.png"></image>
 						</view>
 					</view>
 					<view class="children" v-if="subject.extend">
@@ -24,7 +24,7 @@
 									<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
 									<view class="listAction">
 										<image v-if="subjectDetail.price>0&&!hasBuyed" @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
-										<image v-if="sub.price==0" @click="handleTestClick" :data-item="sub" src="../../static/icon/icon_pencle.png"></image>
+										<image v-if="sub.price==0||hasBuyed" @click="handleTestClick" :data-item="sub" src="../../static/icon/icon_pencle.png"></image>
 									</view>
 								</view>
 							</view>
@@ -82,14 +82,14 @@
 				key:'userInfo',
 				success: res => {
 					this.userInfo = res.data
+					if(options.sid){
+						this.subjectId = options.sid
+						this.bindOrder()
+						this.bindSubjectDetail()
+						this.bindSubjectTree()
+					}
 				}
 			})
-			if(options.sid){
-				this.subjectId = options.sid
-				this.bindOrder()
-				this.bindSubjectDetail()
-				this.bindSubjectTree()
-			}
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
 			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
@@ -119,6 +119,7 @@
 			bindOrder(){
 				var self = this
 				var query = new this.Parse.Query("Order")
+				query.equalTo('openId', self.userInfo.openid)
 				query.equalTo('subjectId',this.subjectId)
 				query.equalTo('state', 1)
 				query.first().then(res=>{
@@ -183,9 +184,10 @@
 			/*点击购买按钮*/
 			handleBuyBtnClick(){
 				var self = this
+				uni.showLoading()
 				var _subject = this.currSubjectDetail
 				var user = self.Parse.User.current()
-				var price = 1 //self.subjectDetail.get('price') * 100
+				var price = self.subjectDetail.get('price') * 100
 				this.Parse.Cloud.run('initiatePayment',
 					{price: price,},
 					{sessionToken: user.get('sessToken'),}).then(res=>{
@@ -199,26 +201,27 @@
 					  signType: payload.signType,
 					  paySign: payload.paySign,
 					  success (res) {
+						  debugger
 						var dbOrder = self.Parse.Object.extend("Order")
 						var order = new dbOrder()
 						order.set('orderNo', tradeId)
-						order.set("subjectId",  this.subjectId)
-						order.set("subjectName",  this.subjectDetail.get('subject_name'))
-						order.set("price",  this.subjectDetail.get('price'))
-						order.set("openId", this.userInfo.openid)
+						order.set("subjectId",  self.subjectId)
+						order.set("subjectName",  self.subjectDetail.get('subject_name'))
+						order.set("price",  self.subjectDetail.get('price'))
+						order.set("openId", self.userInfo.openid)
 						order.set("state", 1)
 						order.set("wechatPayOrderId", '') // 支付流水号
 						order.save().then(_order => {
-							debugger
-							this.$Message.success('支付成功')
+							uni.hideLoading()
+							self.isShowSubjectBuy = false
+							self.bindOrder()
 						},(error)=>{
-							debugger
+							uni.hideLoading()
 						  	console.log(error)
-						  	// this.$Message.error('失败')
 						})
-						debugger
 					  },
 					  fail (res) {
+						uni.hideLoading()
 						console.log("支付失败"+ JSON.stringify(res))
 					  }
 					})
