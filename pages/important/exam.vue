@@ -11,7 +11,7 @@
 				<view class="countView">{{subjectIndex}}/{{count}}</view>
 			</view>
 			<view class="imgView">
-				<image mode="widthFix" src="../../static/banner.png"></image>
+				<image v-if="questionDetail.images" mode="widthFix" :src="questionDetail.images"></image>
 			</view>
 			<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
 			<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
@@ -54,6 +54,7 @@
 		},
 		data() {
 			return {
+				isOnload: true,
 				subjectIndex: 1, // 当前答题序号
 				count:0, // 总题数
 				options: [],
@@ -127,7 +128,15 @@
 				hisQuery.first().then(hres=>{
 					if(hres){
 						self.history = hres
-						self.subjectIndex = hres.get('subjectIndex') + 1
+						self.subjectIndex = hres.get('subjectIndex')==0?1:hres.get('subjectIndex')
+						if(self.isOnload && self.history && self.history.get('count')>0){ // 已答完一次，二次进入答题
+							self.isOnload = false
+							uni.showModal({
+								content:'该科目已完成,本次为答题复习',
+								showCancel:false,
+								success(res) {}
+							})
+						}
 					}
 					
 					var cquery = new this.Parse.Query("TestQuestions")
@@ -138,16 +147,16 @@
 							self.count = 0
 							return
 						}
-						if(hres && hres.get('subjectIndex') >= cres) {							
-							self.subjectIndex = hres.get('subjectIndex')
-							hres.set('questIndex',hres.get('questIndex')-1)
-							self.canSubmit = false
-							self.hasSubmit = true
-							self.complate()
-							// uni.navigateTo({
-							// 	url:'complate'
-							// })
-						}
+						// if(hres && hres.get('subjectIndex') >= cres) {							
+						// 	self.subjectIndex = hres.get('subjectIndex')
+						// 	hres.set('questIndex',hres.get('questIndex')-1)
+						// 	self.canSubmit = false
+						// 	self.hasSubmit = true
+						// 	self.complate()
+						// 	// uni.navigateTo({
+						// 	// 	url:'complate'
+						// 	// })
+						// }
 						self.count = cres
 						var query = new this.Parse.Query("TestQuestions")
 						query.containsAll("subjects", [self.subjectId])
@@ -170,25 +179,38 @@
 				})
 			},
 			/*已答完*/
-			complate(){
+			handleComplate(){
 				var self = this
-				uni.showModal({
-					content:'当前科目下所有试题已经答完，是否选择重新答题',
-					success(res) {
-						if(res.confirm) {
-							self.subjectIndex = 1
-							self.currAnswer = [] // 当前答案
-							self.hasSubmit = false;
-							self.canSubmit = false;
-							self.history.destroy().then(res=>{
-								self.history = null
-								self.bindQuestion()
-							})
-						} else if(res.cancel) {
-							
-						}
-					}
+				self.history.set('count', 1)
+				self.history.save().then(his=>{
+					self.history = his
 				})
+				if(!self.isOnload){
+					uni.showModal({
+						content:'当前科目下所有试题已经答完，是否选择重新答题',
+						success(res) {
+							if(res.confirm){
+								self.isOnload = false
+								self.subjectIndex = 1
+								self.currAnswer = [] // 当前答案
+								self.hasSubmit = false;
+								self.canSubmit = false;	
+								self.history.set('subjectIndex',1)
+								self.history.set('questIndex',1)
+								self.history.save().then(res=>{
+									self.history = res
+									self.bindQuestion()
+								})
+							} else {
+								self.history.set('subjectIndex',1)
+								self.history.set('questIndex',1)
+								self.history.save()
+							}
+						},
+						complete() {
+						}
+					})
+				}
 			},
 			/*选择答案*/
 			handleChooseOption(options){
@@ -277,8 +299,9 @@
 					_history.set('subjectIndex', this.history?(this.history.get('subjectIndex') + 1) : 1)
 					_history.save().then(his => {
 						self.history = his
-						if(his.get('subjectIndex') >= self.count){
-							self.complate()
+						if(his.get('subjectIndex') > self.count){
+							self.isOnload = false
+							self.handleComplate()
 						}
 						console.log('保存成功')
 					},(error)=>{
@@ -288,7 +311,7 @@
 						/*错题记录*/
 						
 						var queryNote = this.Parse.Object.extend("ErrorHistory")
-						var query = new queryNote()
+						var query = new self.Parse.Query(queryNote)
 						query.equalTo('openid', this.userInfo.openid)
 						query.equalTo('questionId', this.questionDetail.id)
 						query.count().then(count=>{
@@ -301,6 +324,7 @@
 								note.set('questionId', this.questionDetail.id)
 								note.set('title', this.questionDetail.get('title'))
 								note.set('options', this.questionDetail.get('options'))
+								note.set('count', 0)
 								note.save().then(_note => {
 									console.log('保存成功')
 								},(error)=>{
@@ -308,11 +332,49 @@
 								})
 							}
 						})
+					} else {
+						var queryRight = self.Parse.Object.extend("RightHistory")
+						var query = new self.Parse.Query(queryRight)
+						query.equalTo('openid', self.userInfo.openid)
+						query.first().then(rhis=>{
+							debugger
+							var queryNote = self.Parse.Object.extend("ErrorHistory")
+							var query1 = new self.Parse.Query(queryNote)
+							query1.equalTo('openid', self.userInfo.openid)
+							query1.find().then(notes => {
+								let note = notes.find(t=> {
+									return t.get('questionId') == self.questionDetail.id
+								})
+								
+								if(rhis){ // 已存在正确记录
+									if(!note){ // 不在错误记录中，添加至正确记录中
+										let _questionId = rhis.get('questions').find(t=>{
+											return t == self.questionDetail.id
+										})
+										if(!_questionId){ // 不存在正确记录中，保存至正确记录
+											let _questionIds = rhis.get('questions')
+											_questionIds.push(self.questionDetail.id)
+											rhis.set('questions',_questionIds)
+											rhis.save()
+										}
+									}
+								} else {
+									if(!note){ // 不在错误记录中，添加至正确记录中
+										let _questionIds = [self.questionDetail.id]
+										var dbRight = new queryRight()
+										dbRight.set('openid', self.userInfo.openid)
+										dbRight.set('questions',_questionIds)
+										dbRight.save()
+									}
+								}
+							})
+						})
 					}
 				}
 			},
 			/*下一题*/
 			handleNext(){
+				this.isOnload = false
 				this.subjectIndex = this.history.get('subjectIndex')
 				this.currAnswer = [] // 当前答案
 				this.hasSubmit = false;

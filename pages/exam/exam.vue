@@ -11,7 +11,7 @@
 				<view class="countView">{{index}}/{{count}}</view>
 			</view>
 			<view class="imgView">
-				<image mode="widthFix" src="../../static/banner.png"></image>
+				<image v-if="questionDetail.images" mode="widthFix" :src="questionDetail.images"></image>
 			</view>
 			<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
 			<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
@@ -258,6 +258,66 @@
 					}
 					if(result){
 						self.score += parseFloat(_option.score)
+						var queryRight = self.Parse.Object.extend("RightHistory")
+						var query = new self.Parse.Query(queryRight)
+						query.equalTo('openid', self.userInfo.openid)
+						query.first().then(rhis=>{
+							debugger
+							var queryNote = self.Parse.Object.extend("ErrorHistory")
+							var query1 = new self.Parse.Query(queryNote)
+							query1.equalTo('openid', self.userInfo.openid)
+							query1.find().then(notes => {
+								let note = notes.find(t=> {
+									return t.get('questionId') == self.questionDetail.id
+								})
+								
+								if(rhis){ // 已存在正确记录
+									if(!note){ // 不在错误记录中，添加至正确记录中
+										let _questionId = rhis.get('questions').find(t=>{
+											return t == self.questionDetail.id
+										})
+										if(!_questionId){ // 不存在正确记录中，保存至正确记录
+											let _questionIds = rhis.get('questions')
+											_questionIds.push(self.questionDetail.id)
+											rhis.set('questions',_questionIds)
+											rhis.save()
+										}
+									}
+								} else {
+									if(!note){ // 不在错误记录中，添加至正确记录中
+										let _questionIds = [self.questionDetail.id]
+										var dbRight = new queryRight()
+										dbRight.set('openid', self.userInfo.openid)
+										dbRight.set('questions',_questionIds)
+										dbRight.save()
+									}
+								}
+							})
+						})
+					} else{
+						/*错题记录*/
+						var queryNote = self.Parse.Object.extend("ErrorHistory")
+						var query = new self.Parse.Query(queryNote)
+						query.equalTo('openid', self.userInfo.openid)
+						query.equalTo('questionId', self.questionDetail.id)
+						query.count().then(count=>{
+							if(count && count > 0){ // 已存在错误记录
+								
+							} else {
+								var dbNote = self.Parse.Object.extend("ErrorHistory")
+								var note = new dbNote()
+								note.set('openid', self.userInfo.openid)
+								note.set('questionId', self.questionDetail.id)
+								note.set('title', self.questionDetail.get('title'))
+								note.set('options', self.questionDetail.get('options'))
+								note.set('count', 0)
+								note.save().then(_note => {
+									console.log('保存成功')
+								},(error)=>{
+									console.log(error)
+								})
+							}
+						})
 					}
 					self.answers[self.index-1] = { answer: JSON.parse(JSON.stringify(self.currAnswer)), result:result}
 					if(self.index==self.examDetail.get('questions').length){
@@ -276,7 +336,7 @@
 						_history.set('allscore', self.examDetail.get('score'))
 						_history.save().then(his => {
 							self.isComplate = true
-							uni.navigateTo({
+							uni.reLaunch({
 								url:'/pages/mine/testresult?eid='+ his.id+'&from=exam'
 							})
 							console.log('保存成功')

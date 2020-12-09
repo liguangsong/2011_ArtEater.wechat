@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="buytipsView" v-if="baseSubjectDetail.price>0&&!hasBuyed">
+		<view class="buytipsView" v-if="baseSubjectDetail.price>0 && !hasBuyed">
 			<view class="tipView" @click="isShowSubjectBuy = true">
 				<view class="txt">
 					本章为免费内容，学习更多知识，请点击购买全部章节
@@ -21,7 +21,7 @@
 				<view class="countView">{{subjectIndex}}/{{count}}</view>
 			</view>
 			<view class="imgView">
-				<image mode="widthFix" src="../../static/banner.png"></image>
+				<image v-if="questionDetail.images" mode="widthFix" :src="questionDetail.images"></image>
 			</view>
 			<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
 			<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
@@ -79,6 +79,7 @@
 		},
 		data() {
 			return {
+				isOnload: true,
 				subjectIndex: 1, // 当前答题序号
 				isShowSubjectBuy: false,
 				hasBuyed: false, // 是否已购买本科目
@@ -100,18 +101,18 @@
 		},
 		onLoad(options) {
 			var self = this
-			if(options.sid){
-				this.subjectId = options.sid
-				this.baseSubjectId = options.bsid
-				this.bindSubjectDetail()
-				this.bindBaseSubjectDetail()
-				this.bindOrder()
-			}
 			uni.getStorage({
 				key:'userInfo',
 				success: res => {
-					this.userInfo = res.data
-					self.bindQuestion()
+					self.userInfo = res.data
+					if(options.sid){
+						self.subjectId = options.sid
+						self.baseSubjectId = options.bsid
+						self.bindQuestion()
+						self.bindSubjectDetail()
+						self.bindBaseSubjectDetail()
+						self.bindOrder()
+					}
 				}
 			})
 			uni.getSystemInfo({
@@ -162,6 +163,7 @@
 			bindOrder(){
 				var self = this
 				var query = new this.Parse.Query("Order")
+				query.equalTo('openId',this.userInfo.openid)
 				query.equalTo('subjectId',this.baseSubjectId)
 				query.equalTo('state', 1)
 				query.first().then(res=>{
@@ -180,28 +182,36 @@
 				hisQuery.first().then(hres=>{
 					if(hres){
 						self.history = hres
-						self.subjectIndex = hres.get('subjectIndex') + 1
+						self.subjectIndex = hres.get('subjectIndex')==0?1:hres.get('subjectIndex')
+						if(self.isOnload && self.history && self.history.get('count')>0){ // 已答完一次，二次进入答题
+							self.isOnload = false
+							uni.showModal({
+								content:'该科目已完成,本次为答题复习',
+								showCancel:false,
+								success(res) {}
+							})
+						}
 					}
 					var cquery = new self.Parse.Query("TestQuestions")
 					cquery.containsAll("subjects", [self.subjectId])
-					cquery.equalTo("isImportant", 0)
+					// cquery.equalTo("isImportant", 0)
 					cquery.count().then(cres=>{
 						if(cres==0) {
 							self.count = 0
 							return
 						}
-						if(hres && hres.get('subjectIndex') >= cres) {
-							self.subjectIndex = hres.get('subjectIndex')
-							hres.set('questIndex',hres.get('questIndex')-1)
-							self.canSubmit = false
-							self.hasSubmit = true
-							self.complate()
-						}
+						// if(hres && hres.get('subjectIndex') >= cres) {
+						// 	self.subjectIndex = hres.get('subjectIndex')
+						// 	hres.set('questIndex',hres.get('questIndex')-1)
+						// 	self.canSubmit = false
+						// 	self.hasSubmit = true
+						// 	self.complate()
+						// }
 						self.count = cres
 						
 						var query = new this.Parse.Query("TestQuestions")
 						query.containsAll("subjects", [self.subjectId])
-						query.equalTo("isImportant", 0)
+						// query.equalTo("isImportant", 0)
 						query.ascending("index")
 						if(hres){
 							query.greaterThan("index", hres.get('questIndex'))	
@@ -220,26 +230,38 @@
 				})
 			},
 			/*已答完*/
-			complate(){
+			handleComplate(){
 				var self = this
-				uni.showModal({
-					content:'当前科目下所有试题已经答完，是否选择重新答题',
-					success(res) {
-						if(res.confirm) {
-							debugger
-							self.subjectIndex = 1
-							self.currAnswer = [] // 当前答案
-							self.hasSubmit = false;
-							self.canSubmit = false;
-							self.history.destroy().then(res=>{
-								self.history = null
-								self.bindQuestion()
-							})
-						} else if(res.cancel) {
-							
-						}
-					}
+				self.history.set('count', 1)
+				self.history.save().then(his=>{
+					self.history = his
 				})
+				if(!self.isOnload){
+					uni.showModal({
+						content:'当前科目下所有试题已经答完，是否选择重新答题',
+						success(res) {
+							if(res.confirm){
+								self.isOnload = false
+								self.subjectIndex = 1
+								self.currAnswer = [] // 当前答案
+								self.hasSubmit = false;
+								self.canSubmit = false;	
+								self.history.set('subjectIndex',1)
+								self.history.set('questIndex',1)
+								self.history.save().then(res=>{
+									self.history = res
+									self.bindQuestion()
+								})
+							} else {
+								self.history.set('subjectIndex',1)
+								self.history.set('questIndex',1)
+								self.history.save()
+							}
+						},
+						complete() {
+						}
+					})
+				}
 			},
 			/*选择答案*/
 			handleChooseOption(options){
@@ -319,17 +341,18 @@
 					var dbHistory = this.Parse.Object.extend("QuestionHistory")
 					var _history = new dbHistory()
 					if(this.history){
-						_history.set('id', this.history.id)
+						_history.set('id', self.history.id)
 					}
-					_history.set('openid', this.userInfo.openid)
-					_history.set('subjectId', this.subjectDetail.id)
+					_history.set('openid', self.userInfo.openid)
+					_history.set('subjectId', self.subjectDetail.id)
 					_history.set('isImportant', 0)
-					_history.set('questIndex', this.questionDetail.get('index'))
-					_history.set('subjectIndex', this.history?(this.history.get('subjectIndex') + 1) : 1)
+					_history.set('questIndex', self.questionDetail.get('index'))
+					_history.set('subjectIndex', self.history?(self.history.get('subjectIndex') + 1) : 1)
 					_history.save().then(his => {
 						self.history = his
-						if(his.get('subjectIndex') >= self.count){
-							self.complate()
+						if(his.get('subjectIndex') > self.count){
+							self.isOnload = false
+							self.handleComplate()
 						}
 						console.log('保存成功')
 					},(error)=>{
@@ -338,7 +361,7 @@
 					if(!result) { // 答错
 						/*错题记录*/
 						var queryNote = this.Parse.Object.extend("ErrorHistory")
-						var query = new queryNote()
+						var query = new self.Parse.Query(queryNote)
 						query.equalTo('openid', this.userInfo.openid)
 						query.equalTo('questionId', this.questionDetail.id)
 						query.count().then(count=>{
@@ -351,12 +374,50 @@
 								note.set('questionId', this.questionDetail.id)
 								note.set('title', this.questionDetail.get('title'))
 								note.set('options', this.questionDetail.get('options'))
+								note.set('count', 0)
 								note.save().then(_note => {
 									console.log('保存成功')
 								},(error)=>{
 									console.log(error)
 								})
 							}
+						})
+					} else {
+						var queryRight = self.Parse.Object.extend("RightHistory")
+						var query = new self.Parse.Query(queryRight)
+						query.equalTo('openid', self.userInfo.openid)
+						query.first().then(rhis=>{
+							debugger
+							var queryNote = self.Parse.Object.extend("ErrorHistory")
+							var query1 = new self.Parse.Query(queryNote)
+							query1.equalTo('openid', self.userInfo.openid)
+							query1.find().then(notes => {
+								let note = notes.find(t=> {
+									return t.get('questionId') == self.questionDetail.id
+								})
+								
+								if(rhis){ // 已存在正确记录
+									if(!note){ // 不在错误记录中，添加至正确记录中
+										let _questionId = rhis.get('questions').find(t=>{
+											return t == self.questionDetail.id
+										})
+										if(!_questionId){ // 不存在正确记录中，保存至正确记录
+											let _questionIds = rhis.get('questions')
+											_questionIds.push(self.questionDetail.id)
+											rhis.set('questions',_questionIds)
+											rhis.save()
+										}
+									}
+								} else {
+									if(!note){ // 不在错误记录中，添加至正确记录中
+										let _questionIds = [self.questionDetail.id]
+										var dbRight = new queryRight()
+										dbRight.set('openid', self.userInfo.openid)
+										dbRight.set('questions',_questionIds)
+										dbRight.save()
+									}
+								}
+							})
 						})
 					}
 				}
@@ -368,6 +429,55 @@
 				this.hasSubmit = false;
 				this.canSubmit = false;
 				this.bindQuestion()
+			},
+			/*购买当前科目*/
+			handleBuyBtnClick(){
+				var self = this
+				uni.showLoading()
+				var _subject = this.baseSubjectDetail
+				var user = self.Parse.User.current()
+				var price = self.baseSubjectDetail.get('price') * 100
+				this.Parse.Cloud.run('initiatePayment',
+					{price: price,},
+					{sessionToken: user.get('sessToken'),}).then(res=>{
+					var payload = res.payload
+					var tradeId = res.tradeId
+					uni.requestPayment({
+					  appId: payload.appId,
+					  timeStamp: payload.timeStamp,
+					  nonceStr: payload.nonceStr,
+					  package: payload.package,
+					  signType: payload.signType,
+					  paySign: payload.paySign,
+					  success (res) {
+						var dbOrder = self.Parse.Object.extend("Order")
+						var order = new dbOrder()
+						order.set('orderNo', tradeId)
+						order.set("subjectId",  self.baseSubjectId)
+						order.set("subjectName",  self.baseSubjectDetail.get('subject_name'))
+						order.set("price",  self.baseSubjectDetail.get('price'))
+						order.set("openId", self.userInfo.openid)
+						order.set("state", 1)
+						order.set("wechatPayOrderId", '') // 支付流水号
+						order.save().then(_order => {
+							uni.hideLoading()
+							self.isShowSubjectBuy = false
+							self.bindOrder()
+							uni.showModal({
+								content:'恭喜，购买成功',
+								showCancel: false
+							})
+						},(error)=>{
+							uni.hideLoading()
+							console.log(error)
+						})
+					  },
+					  fail (res) {
+						uni.hideLoading()
+						console.log("支付失败"+ JSON.stringify(res))
+					  }
+					})
+				})
 			}
 		}
 	}

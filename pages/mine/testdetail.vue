@@ -8,7 +8,7 @@
 				<view class="countView"></view>
 			</view>
 			<view class="imgView">
-				<image mode="widthFix" src="../../static/banner.png"></image>
+				<image v-if="questionDetail.images" mode="widthFix" :src="questionDetail.images"></image>
 			</view>
 			<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
 				<block v-for="(c,i) in questionDetail.cinputs">{{c}}
@@ -111,7 +111,11 @@
 						self.questionDetail = res
 						let _options = JSON.parse(JSON.stringify(res.get('options')))
 						_options.forEach((_itm,_idx)=>{
-							_itm.content = self.answers[self.index].answer[_idx]
+							if(res.get('type') == 3){
+								_itm.content = self.answers[self.index].answer[_idx]
+							} else {
+								self.currAnswer = self.answers[self.index]
+							}
 						})
 						self.options =  _options
 						self.calcResult()
@@ -144,7 +148,7 @@
 					})
 				} else {
 					this.options.forEach((item)=>{
-						var choose = self.currAnswer.find(function(t){
+						var choose = self.currAnswer.answer.find(function(t){
 							return t == item.code
 						})
 						if((item.value == '0'|| item.value == '') && choose) { // 选中错误答案

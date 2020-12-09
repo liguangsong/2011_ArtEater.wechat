@@ -25,6 +25,7 @@
 	export default {
 		data() {
 			return {
+				userInfo:{},
 				testHistory: []
 			}
 		},
@@ -37,23 +38,35 @@
 			  }
 			})
 			var self = this
-			const history = this.Parse.Object.extend("TestHistory")
-			const query = new this.Parse.Query(history)
-			query.find().then(list => {
-				list.forEach(item=>{
-					item.set('createdDate', dateFormat(item.createdAt,'yyyy-MM-dd HH:mm:ss'))
-					item.set('minutes', self.createMinutes(item.get('seconds')))
-				})
-				self.testHistory = list
+			uni.getStorage({
+				key:'userInfo',
+				success:function(res){
+					self.userInfo = res.data
+					self.bindData()
+				}
 			})
 		},
 		methods: {
+			bindData(){
+				var self = this
+				const history = this.Parse.Object.extend("TestHistory")
+				const query = new this.Parse.Query(history)
+				query.descending('createdAt')
+				query.equalTo('openid',self.userInfo.openid)
+				query.find().then(list => {
+					list.forEach(item=>{
+						item.set('createdDate', dateFormat(item.createdAt,'yyyy-MM-dd HH:mm:ss'))
+						item.set('minutes', self.createMinutes(item.get('seconds')))
+					})
+					self.testHistory = list
+				})
+			},
 			createMinutes(seconds){
 				return Math.floor(seconds/60)+'分钟'+(seconds%60)+'秒'
 			},
 			handleItemClick(e){
 				var _item = e.currentTarget.dataset.item
-				uni.navigateTo({
+				uni.redirectTo({
 					url:'./testresult?eid=' + _item.objectId
 				})
 			}

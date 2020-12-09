@@ -63,28 +63,7 @@
 	export default {
 		data() {
 			return {
-				subjectTree:
-				[
-					// {id:'2313dsa', subject_name:'原始、古代美术', extend: false, children:[
-					// 	{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
-					// 	{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
-					// 	{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
-					// ]},
-					// {id:'2313dsa', subject_name:'欧洲中世纪的美术', extend: false, children:[
-					// 	{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
-					// 	{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
-					// 	{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
-					// ]},
-					// {id:'2313dsa', subject_name:'欧洲文艺复兴时期的...风格', extend: false, children:[
-					// 	{id:'2313dsa', subject_name:'17世纪巴洛克时代的美术风格要点分析', children:[]},
-					// 	{id:'2313dsa', subject_name:'20世纪的现代主义运动', children:[]},
-					// 	{id:'2313dsa', subject_name:'巴拉格斯学派', children:[]},
-					// ]},
-					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
-					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
-					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]},
-					// {id:'2313dsa', subject_name:'原始、古代美术ddasdsadsa萨达撒放大', extend: false, children:[]}
-				],
+				subjectTree:[],
 				userInfo: null,
 				subjectId:'',
 				subjectDetail: null,
@@ -175,10 +154,10 @@
 			/*查看详情*/
 			handleNameClick(e){
 				var item = e.currentTarget.dataset.item
-				// if(item.content){
+				if(item.content){
 					this.currSubjectDetail = item
 					this.isShowSubjectDetail = true
-				// }
+				}
 			},
 			/*弹出购买界面*/
 			handleBuyClick(){

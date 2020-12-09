@@ -17,6 +17,7 @@
 			</view>
 		</view>
 		<button open-type="share" class="btnShare">分享</button>
+		<button v-if="from=='exam'" @click="handHomePage" class="btnPrev">返回</button>
 	</view>
 </template>
 
@@ -49,23 +50,30 @@
 					self.history = res
 				})
 			}
+			uni.showShareMenu({
+				withShareTicket: true,
+				  menus: ['shareAppMessage', 'shareTimeline']
+			})
 		},
 		
 		  /**
 		   * 生命周期函数--监听页面隐藏
 		   */
 		onHide: function () {
+			debugger
 		},
 		
 		  /**
 		   * 生命周期函数--监听页面卸载
 		   */
 		onUnload: function () {
-			if(this.from == 'exam'){
-				uni.navigateBack({
-					delta: 1
-				})
-			}
+			// var routers =  getCurrentPages()
+			// var prevRouter = routers[routers.length-2]
+			// if(prevRouter.route == 'pages/exam/exam'){
+			// 	uni.navigateBack({
+			// 		delta: 1
+			// 	})
+			// }
 		},
 		methods: {
 			/*点击题目*/
@@ -73,6 +81,12 @@
 				var _index = e.currentTarget.dataset.index
 				uni.navigateTo({
 					url:'./testdetail?tid=' + this.examId + '&index=' + _index
+				})
+			},
+			/*返回首页*/
+			handHomePage(){
+				uni.reLaunch({
+					url:'/pages/exam/index'
 				})
 			}
 		},
@@ -174,6 +188,18 @@
 		background-color: #ff776f;
 		border-radius: 94rpx;
 		color: #ffffff;
+		font-size: 34rpx;
+		font-family: PingFangSC-Medium;
+		margin: 32rpx;
+	}
+	.btnPrev{
+		height: 92rpx;
+		line-height: 92rpx;
+		border: 2rpx solid #ff776f;
+		border-radius: 92rpx;
+		background-color: #ffffff;
+		border-radius: 94rpx;
+		color: #ff776f;
 		font-size: 34rpx;
 		font-family: PingFangSC-Medium;
 		margin: 32rpx;

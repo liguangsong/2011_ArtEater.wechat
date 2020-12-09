@@ -52,7 +52,7 @@
 				query.descending('createdAt')
 				query.find().then(list=>{
 					list.forEach(item=>{
-						item.createDate = item.createdAt.Format('yyyy.MM.dd hh:mm:ss') //, 'yyyy.MM.dd HH:mm:ss')
+						item.set('createDate', item.createdAt.Format('yyyy.MM.dd hh:mm:ss')) //, 'yyyy.MM.dd HH:mm:ss')
 					})
 					self.orderList = list
 				})
@@ -83,11 +83,12 @@
 	.headView .state{
 		flex: 1;
 		font-size: 26rpx;
+		font-weight: bold;
 		color: #143a44;
 		font-family: PingFangSC-Medium;
 	}
 	.headView .date{
-		width: 140rpx;
+		width: 270rpx;
 		text-align: right;
 		font-size: 26rpx;
 		color: #143a44;

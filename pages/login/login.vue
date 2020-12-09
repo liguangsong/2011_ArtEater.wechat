@@ -198,7 +198,9 @@
 													key:'userInfo',
 													data: lres
 												})
-												uni.navigateBack()
+												uni.reLaunch({
+													url:'/pages/index/index'
+												})
 											})
 										} else {
 											self.hasLogin = true // 打开补全信息界面
@@ -259,7 +261,9 @@
 								key:'userInfo',
 								data: ruser
 							})
-							uni.navigateBack()
+							uni.reLaunch({
+								url:'/pages/index/index'
+							})
 							const eventChannel = self.getOpenerEventChannel()
 							eventChannel.emit('back', {});
 						},(error)=> {

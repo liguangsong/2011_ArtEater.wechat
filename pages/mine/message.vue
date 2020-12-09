@@ -95,7 +95,7 @@
 					url:'./msgdetail?mid=' + item.objectId,
 					success: function(res) {
 						// 通过eventChannel向被打开页面传送数据
-						res.eventChannel.emit('content', { data: item.content })
+						res.eventChannel.emit('content', { title: item.title,data: item.content })
 						self.readMsg(item.objectId)
 					}
 				})

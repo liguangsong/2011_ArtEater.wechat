@@ -12,8 +12,10 @@
 					<view class="conView">
 						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}</view>
 						<view class="listAction">
-							<image v-if="subjectDetail.price>0&&!hasBuyed" @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
-							<image v-if="subject.price==0||hasBuyed" @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_pencle.png"></image>
+							<!-- <image v-if="subjectDetail.price>0&&!hasBuyed" @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
+							<image v-if="subject.price==0||hasBuyed" @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_pencle.png"></image> -->
+							<image v-if="subject.content" @click="handleNameClick" :data-item="subject" src="../../static/icon/icon_order.png"></image>
+							<image v-if="subject.quesCount > 0" @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_pencle.png"></image>
 						</view>
 					</view>
 					<view class="children" v-if="subject.extend">
@@ -23,8 +25,8 @@
 								<view class="conView">
 									<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
 									<view class="listAction">
-										<image v-if="subjectDetail.price>0&&!hasBuyed" @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
-										<image v-if="sub.price==0||hasBuyed" @click="handleTestClick" :data-item="sub" src="../../static/icon/icon_pencle.png"></image>
+										<image v-if="sub.content" @click="handleNameClick" :data-item="sub" src="../../static/icon/icon_order.png"></image>
+										<image v-if="sub.quesCount > 0" @click="handleTestClick" :data-item="sub" src="../../static/icon/icon_pencle.png"></image>
 									</view>
 								</view>
 							</view>
@@ -34,9 +36,9 @@
 			</view>
 		</view>
 		<u-popup v-model="isShowSubjectDetail" width="674rpx" :closeable="true" mode="center" border-radius="40">
-			<view class="detailView" style="padding:74rpx 50rpx;">
+			<view class="detailView" style="padding:74rpx 30rpx;">
 				<scroll-view scroll-y="true" :style="'max-height:'+(screenHeight - 600)+'rpx;'">
-					<view>
+					<view style="margin: 0 20rpx;">
 						<u-parse :html="currSubjectDetail.content"></u-parse>
 					</view>
 				</scroll-view>
@@ -77,19 +79,19 @@
 				hasBuyed: false
 			}
 		},
-		onLoad(options) {
+		onShow() {
+			var self = this
 			uni.getStorage({
 				key:'userInfo',
 				success: res => {
-					this.userInfo = res.data
-					if(options.sid){
-						this.subjectId = options.sid
-						this.bindOrder()
-						this.bindSubjectDetail()
-						this.bindSubjectTree()
-					}
+					self.userInfo = res.data
+					self.bindOrder()
+					self.bindSubjectDetail()
+					self.bindSubjectTree()
 				}
 			})
+		},
+		onLoad(options) {
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
 			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
@@ -97,6 +99,10 @@
 				  console.log('load font success')
 			  }
 			})
+			
+			if(options.sid){
+				this.subjectId = options.sid
+			}
 			var self = this
 			uni.getSystemInfo({
 			  success: res => {
@@ -135,8 +141,22 @@
 				// query.equalTo("parent_ID", this.subjectId)
 				query.ascending('createdAt')
 				query.find().then(res=>{
-					var tree = self.initSubjectTree(res, self.subjectId)
-					self.subjectTree = tree
+					var ids = []
+					res.forEach(t=>{
+						ids.push(t.id)
+					})
+					var quesQuery = new self.Parse.Query("TestQuestions")
+					quesQuery.containedIn('subjects', ids)
+					quesQuery.find().then(ques=>{
+						res.forEach(item => {
+							let questions = ques.filter(t=>{
+								return t.get('subjects').indexOf(item.id)!=-1
+							})
+							item.quesCount = questions.length
+						})
+						var tree = self.initSubjectTree(res, self.subjectId)
+						self.subjectTree = tree
+					})
 				})
 			},
 			/** 构造树形科目 */
@@ -151,6 +171,7 @@
 						subject_name: _subject.get('subject_name'),
 						content: _subject.get('content'),
 						price: _subject.get('price'),
+						quesCount: _subject.quesCount,
 						extend: false,
 						has_down_level: _subject.get('has_down_level'),
 						value: _subject.id,
@@ -172,10 +193,10 @@
 			/*查看详情*/
 			handleNameClick(e){
 				var item = e.currentTarget.dataset.item
-				// if(item.content){
+				if(item.content){
 					this.currSubjectDetail = item
 					this.isShowSubjectDetail = true
-				// }
+				}
 			},
 			/*弹出购买界面*/
 			handleBuyClick(){
@@ -201,7 +222,6 @@
 					  signType: payload.signType,
 					  paySign: payload.paySign,
 					  success (res) {
-						  debugger
 						var dbOrder = self.Parse.Object.extend("Order")
 						var order = new dbOrder()
 						order.set('orderNo', tradeId)
@@ -213,6 +233,10 @@
 						order.set("wechatPayOrderId", '') // 支付流水号
 						order.save().then(_order => {
 							uni.hideLoading()
+							uni.showModal({
+								content:'恭喜，购买成功',
+								showCancel: false
+							})
 							self.isShowSubjectBuy = false
 							self.bindOrder()
 						},(error)=>{
@@ -226,30 +250,18 @@
 					  }
 					})
 				})
-				// var dbOrder = this.Parse.Object.extend("Order")
-				// var order = new dbOrder()
-				// var orderNo = dateFormat(new Date(),'yyyyMMddHHmmss'+ GetRandomNum(3))
-				// order.set('orderNo', orderNo)
-				// order.set("subjectId",  this.subjectId)
-				// order.set("subjectName",  this.subjectDetail.get('subject_name'))
-				// order.set("price",  this.subjectDetail.get('price'))
-				// order.set("openId", this.userInfo.openid)
-				// order.set("state", 0)
-				// order.set("wechatPayOrderId", '') // 支付流水号
-				// order.save().then(_order => {
-				// 	this.$Message.success('保存成功')
-				// },(error)=>{
-				// 	console.log(error)
-				// 	this.$Message.error('保存失败')
-				// })
 			},
 			/*做题*/
 			handleTestClick(e){
 				var self = this
-				var item = e.currentTarget.dataset.item
-				uni.navigateTo({
-					url:'exam?bsid='+self.subjectId+'&sid=' + item.value
-				})
+				if(self.subjectDetail.get('price') > 0 && !self.hasBuyed) {
+					this.isShowSubjectBuy = true
+				} else {
+					var item = e.currentTarget.dataset.item
+					uni.navigateTo({
+						url:'exam?bsid='+self.subjectId+'&sid=' + item.value
+					})
+				}
 			}
 		}
 	}

@@ -11,9 +11,7 @@
 			uni.request({
 				method: 'POST',
 				url: `${_config.parseRestBaseUrl}/wx/getOpenId`,
-				data: {
-					code
-				},
+				data: { code },
 				header: {
 					'X-Parse-Application-Id': _config.ParseAppId,
 					'X-Parse-REST-API-Key': _config.parseRestApiKey,

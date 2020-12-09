@@ -59,6 +59,7 @@
 			handleGetuserinfo({detail}){
 				var self = this
 				console.log('开始授权，openid:' + self.openid)
+				uni.showLoading()
 				uni.getStorage({
 					key:'openid',
 					success:function(res){
@@ -91,7 +92,9 @@
 													})
 													self.$emit('ok')
 													console.log('登录成功')
+													uni.hideLoading()
 												}, error=>{
+													uni.hideLoading()
 													console.log('登录失败，' + error)
 												})
 											} else {
@@ -102,11 +105,13 @@
 									  }
 									})
 								} else {
+									uni.hideLoading()
 									console.log('未授权')
 									// 未授权
 								}
 							},
 							fail(e) {
+								uni.hideLoading()
 								console.log('获取授权信息失败,'+e)
 							}
 						})
@@ -126,6 +131,7 @@
 				user.set("score", 0);
 				user.set("amount", 0);
 				user.signUp().then((ruser)=> {
+					uni.hideLoading()
 					var postACL = new self.Parse.ACL();
 					postACL.setRoleWriteAccess("admin", true);
 					postACL.setPublicReadAccess(true);
@@ -136,7 +142,7 @@
 								key:'userInfo',
 								data: lres
 							})
-							uni.navigateTo({
+							uni.reLaunch({
 								url: '/pages/login/login',
 								events:{
 									back:function(data){
@@ -165,7 +171,8 @@
 						})
 					})
 				},(error)=> {
-				  console.log("Error: " + error.code + " " + error.message);
+					uni.hideLoading()
+					console.log("Error: " + error.code + " " + error.message);
 				});
 			}
 		}

@@ -13,11 +13,11 @@
 			<view class="scoreView">
 				<view class="content">
 					<view class="scoreItem">
-						<view class="score">0</view>
+						<view class="score">{{rightCount}}</view>
 						<view class="title">答题量</view>
 					</view>
-					<view class="scoreItem">
-						<view class="score">0</view>
+					<view class="scoreItem" @click="handleNoteClick">
+						<view class="score">{{errorCount}}</view>
 						<view class="title">错题集</view>
 					</view>
 					<view class="scoreItem">
@@ -103,17 +103,31 @@
 	export default {
 		data() {
 			return {
-				userInfo:{}
+				userInfo: {},
+				rightCount: 0,
+				errorCount: 0
 			}
 		},
-		onLoad() {
+		onShow() {			
 			var self = this
 			uni.getStorage({
 				key:'userInfo',
 				success:function(res){
 					self.userInfo = res.data
+					var query = new self.Parse.Query("ErrorHistory")
+					query.equalTo('openid',self.userInfo.openid)
+					query.count().then(count=>{
+						self.errorCount = count
+					})
+					var query = new self.Parse.Query("RightHistory")
+					query.equalTo('openid',self.userInfo.openid)
+					query.first().then(r=>{
+						self.rightCount = r.get('questions').length
+					})
 				}
 			})
+		},
+		onLoad() {
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
 			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
@@ -164,6 +178,23 @@
 				uni.navigateTo({
 					url:'./feedback'
 				})
+			},
+			/*错题集*/
+			handleNoteClick(){
+				if(this.userInfo&&this.userInfo.openid){
+					if(this.userInfo.phone){
+						uni.navigateTo({
+							url:'../mine/note'
+						})
+					} else {
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
+				} else {
+					this.isShowLogin = true
+					this.toUrl = '/pages/mine/note'
+				}
 			}
 		}
 	}

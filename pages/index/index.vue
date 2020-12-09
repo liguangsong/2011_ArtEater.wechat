@@ -46,7 +46,7 @@
 		<!--热门专题 start-->
 		<view class="groupView">
 			<view class="subjectView">
-				<view class="subjectItem" @click="handleSubjectClick" :data-item="item" v-for="(item,index) in subjects">
+				<view class="subjectItem" @click="handleSubjectClick" :data-item="item" v-for="(item,index) in subjects" :key='item.id'>
 					<image :src="item.backgroundImg"></image>
 					<!-- <view class="txt">{{item.subject_name}}</view> -->
 				</view>
@@ -80,11 +80,11 @@
 			</view>
 		</view>
 		<!--精品推荐 end-->
-		
+		<!--购买重点题库 start-->
 		<u-popup v-model="isShowImportBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
 			<view class="buylView" style="padding:74rpx 40rpx;">
-				<view class="title">{{subjectDetail.subject_name}}</view>
-				<view class="price">¥{{subjectDetail.price}}</view>
+				<view class="title">{{zdtkConfig.action}}</view>
+				<view class="price">¥{{zdtkConfig.price}}</view>
 				<view class="tips">
 					您购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
 				</view>
@@ -92,10 +92,29 @@
 					购买后可在【个人中心-已购项目】中查看
 				</view>
 				<view class="btnActions">
-					<button @click="handleBuyBtnClick">确认购买</button>
+					<button @click="handleBuyZDTKClick">确认购买</button>
 				</view>
 			</view>
 		</u-popup>
+		<!--购买重点题库 end-->
+		
+		<!--购买重点题库 start-->
+		<u-popup v-model="isShowTestBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
+			<view class="buylView" style="padding:74rpx 40rpx;">
+				<view class="title">{{mnksConfig.action}}</view>
+				<view class="price">¥{{mnksConfig.price}}</view>
+				<view class="tips">
+					您购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
+				</view>
+				<view class="tips">
+					购买后可在【个人中心-已购项目】中查看
+				</view>
+				<view class="btnActions">
+					<button @click="handleBuyMNKSClick">确认购买</button>
+				</view>
+			</view>
+		</u-popup>
+		<!--购买重点题库 end-->
 		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="isShowLogin=false" :to="toUrl"></login>
 	</view>
 </template>
@@ -113,15 +132,23 @@
 				isShowLogin: false,
 				toUrl:'',
 				isShowImportBuy: false,
+				isShowTestBuy: false,
 				title: 'Hello',
-				subjects: []
+				subjects: [],
+				actionConfig:{},
+				zdtkConfig:{}, // 重点题库配置
+				mnksConfig:{}, // 模拟考试配置
+				hasBuyedZDTK:false, // 是否购买了重点题库
+				hasBuyedMNKS:false, // 是否购买了模拟考试
 			}
 		},
 		onShow() {
+			var self = this
 			uni.getStorage({
 				key:'userInfo',
 				success: res => {
-					this.userInfo = res.data
+					self.userInfo = res.data
+					self.bindConfig()
 				}
 			})
 		},
@@ -143,12 +170,50 @@
 			})
 		},
 		methods: {
+			/*加载配置*/
+			bindConfig(){
+				var self = this
+				const query1 = new this.Parse.Query('ActionConfig')
+				query1.ascending("createdAt")
+				query1.find().then(configList=>{
+					self.zdtkConfig = configList.find(t=>{
+						return t.get('code') == 'zhongdiantiku'
+					})
+					self.mnksConfig = configList.find(t=>{
+						return t.get('code') == 'monishiti'
+					})
+					self.bindOrder()
+				})
+			},
+			bindOrder(){
+				var self = this
+				const query2 = new self.Parse.Query('Order')
+				query2.equalTo('openId', self.userInfo.openid)
+				query2.equalTo('state', 1)==''
+				query2.ascending("createdAt")
+				query2.find().then(orderList=>{
+					let zdtkOrder = orderList.find(t=> {
+						return t.get('subjectId')==self.zdtkConfig.id
+					})
+					self.hasBuyedZDTK = zdtkOrder?true:false
+					let mnksOrder = orderList.find(t=> {
+						return t.get('subjectId')==self.mnksConfig.id
+					})
+					self.hasBuyedMNKS = mnksOrder?true:false
+				})
+			},
 			/*错题集*/
 			handleNoteClick(){
 				if(this.userInfo&&this.userInfo.openid){
-					uni.navigateTo({
-						url:'../mine/note'
-					})
+					if(this.userInfo.phone){
+						uni.navigateTo({
+							url:'../mine/note'
+						})
+					} else {
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
 				} else {
 					this.isShowLogin = true
 					this.toUrl = '/pages/mine/note'
@@ -157,9 +222,19 @@
 			/*重点题库*/
 			handleImportantClick(){
 				if(this.userInfo&&this.userInfo.openid){
-					uni.navigateTo({
-						url:'../important/index'
-					})
+					if(this.userInfo.phone){ // 已绑定手机号
+						if(this.zdtkConfig.get('isNeedPay')==1&&!this.hasBuyedZDTK){ // 需要购买，但是没买
+							this.isShowImportBuy = true
+						} else {
+							uni.navigateTo({
+								url:'../important/index'
+							})							
+						}
+					} else { // 未绑定手机号，跳转至绑定页
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
 				} else {
 					this.isShowLogin = true
 					this.toUrl = '/pages/important/index'
@@ -168,9 +243,19 @@
 			/*考试*/
 			handleExamClick() {
 				if(this.userInfo&&this.userInfo.openid){
-					uni.navigateTo({
-						url:'../exam/index'
-					})
+					if(this.userInfo.phone){
+						if(this.mnksConfig.get('isNeedPay')==1&&!this.hasBuyedMNKS){ // 需要购买，但是没买
+							this.isShowTestBuy = true
+						} else {
+							uni.navigateTo({
+								url:'../exam/index'
+							})
+						}
+					} else {
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
 				} else {
 					this.isShowLogin = true
 					this.toUrl = '/pages/exam/index'
@@ -179,9 +264,15 @@
 			/* 点击“我” */
 			handleMyClick(){
 				if(this.userInfo&&this.userInfo.openid){
-					uni.navigateTo({
-						url:'../mine/mine'
-					})
+					if(this.userInfo.phone){
+						uni.navigateTo({
+							url:'../mine/mine'
+						})
+					} else {
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
 				} else {
 					this.isShowLogin = true
 					this.toUrl = '/pages/mine/mine'
@@ -191,13 +282,117 @@
 			handleSubjectClick(e){
 				var item = e.currentTarget.dataset.item
 				if(this.userInfo&&this.userInfo.openid){
-					uni.navigateTo({
-						url:'../subject/subject?sid='+item.objectId
-					})
+					if(this.userInfo.phone){
+						uni.navigateTo({
+							url:'../subject/subject?sid='+item.objectId
+						})
+					} else {
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
 				} else {
 					this.isShowLogin = true
 					this.toUrl = '/pages/subject/subject?sid='+item.objectId
 				}
+			},
+			/*确认购买重点题库*/
+			handleBuyZDTKClick(){
+				var self = this
+				uni.showLoading()
+				// var _subject = this.currSubjectDetail
+				var user = self.Parse.User.current()
+				var price = self.zdtkConfig.get('price') * 100
+				this.Parse.Cloud.run('initiatePayment',
+					{price: price,},
+					{sessionToken: user.get('sessToken'),}).then(res=>{
+					var payload = res.payload
+					var tradeId = res.tradeId
+					uni.requestPayment({
+					  appId: payload.appId,
+					  timeStamp: payload.timeStamp,
+					  nonceStr: payload.nonceStr,
+					  package: payload.package,
+					  signType: payload.signType,
+					  paySign: payload.paySign,
+					  success (res) {
+						var dbOrder = self.Parse.Object.extend("Order")
+						var order = new dbOrder()
+						order.set('orderNo', tradeId)
+						order.set("subjectId",  self.zdtkConfig.id)
+						order.set("subjectName",  self.zdtkConfig.get('action'))
+						order.set("price",  self.zdtkConfig.get('price'))
+						order.set("openId", self.userInfo.openid)
+						order.set("state", 1)
+						order.set("wechatPayOrderId", '') // 支付流水号
+						order.save().then(_order => {
+							uni.hideLoading()
+							self.isShowImportBuy = false
+							uni.showModal({
+								content:'恭喜，购买成功',
+								showCancel: false
+							})
+							self.bindOrder()
+						},(error)=>{
+							uni.hideLoading()
+							console.log(error)
+						})
+					  },
+					  fail (res) {
+						uni.hideLoading()
+						console.log("支付失败"+ JSON.stringify(res))
+					  }
+					})
+				})
+			},
+			/*确认购买模拟考试*/
+			handleBuyMNKSClick(){
+				var self = this
+				uni.showLoading()
+				// var _subject = this.currSubjectDetail
+				var user = self.Parse.User.current()
+				var price = self.mnksConfig.get('price') * 100
+				this.Parse.Cloud.run('initiatePayment',
+					{price: price,},
+					{sessionToken: user.get('sessToken'),}).then(res=>{
+					var payload = res.payload
+					var tradeId = res.tradeId
+					uni.requestPayment({
+					  appId: payload.appId,
+					  timeStamp: payload.timeStamp,
+					  nonceStr: payload.nonceStr,
+					  package: payload.package,
+					  signType: payload.signType,
+					  paySign: payload.paySign,
+					  success (res) {
+						var dbOrder = self.Parse.Object.extend("Order")
+						var order = new dbOrder()
+						order.set('orderNo', tradeId)
+						order.set("subjectId",  self.mnksConfig.id)
+						order.set("subjectName",  self.mnksConfig.get('action'))
+						order.set("price",  self.mnksConfig.get('price'))
+						order.set("openId", self.userInfo.openid)
+						order.set("state", 1)
+						order.set("wechatPayOrderId", '') // 支付流水号
+						order.save().then(_order => {
+							uni.hideLoading()
+							self.isShowTestBuy = false
+							uni.showModal({
+								content:'恭喜，购买成功',
+								showCancel: false
+							})
+							self.bindOrder()
+						},(error)=>{
+							uni.hideLoading()
+							console.log(error)
+						})
+					  },
+					  fail (res) {
+						uni.hideLoading()
+						console.log("支付失败"+ JSON.stringify(res))
+					  }
+					})
+				})
 			}
 		}
 	}
@@ -360,5 +555,40 @@
 		font-family: PingFangSC-Medium;
 		font-size: 30rpx;
 		color: #352026;
+	}
+	
+	
+	.buylView {
+		width: 100%;
+	}
+	.buylView .title{
+		font-size: 38rpx;
+		font-weight: bold;
+		font-family: PingFangSC-Medium;
+		color: #352026;
+	}
+	.buylView .price{
+		font-size: 34rpx;
+		margin-top: 12rpx;
+		font-family: PingFangSC-Medium;
+		color: #ed3535;
+	}
+	.buylView .tips{		
+		font-size: 26rpx;
+		margin-top: 54rpx;
+		font-family: PingFangSC-Medium;
+		color: rgba(53,32,38,0.4);
+	}
+	.buylView .btnActions{
+		margin-top: 96rpx;
+	}
+	.buylView .btnActions button{
+		width: 100%;
+		height: 92rpx;
+		border-radius: 46rpx;
+		background-color: #ED3535;
+		color: #ffffff;
+		font-family: PingFangSC-Medium;
+		font-size: 34rpx;
 	}
 </style>

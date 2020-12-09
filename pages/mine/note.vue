@@ -11,7 +11,7 @@
 				<view class="countView">{{index}}/{{count}}</view>
 			</view>
 			<view class="imgView">
-				<image mode="widthFix" src="../../static/banner.png"></image>
+				<image v-if="questionDetail.images" mode="widthFix" :src="questionDetail.images"></image>
 			</view>
 			<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
 			<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
@@ -110,7 +110,6 @@
 				var hisQuery = new this.Parse.Query("ErrorHistory")
 				hisQuery.equalTo("openid", this.userInfo.openid)
 				hisQuery.find().then(hres=>{
-					debugger
 					if(hres) {
 						self.index = 1
 						self.count = hres.length
@@ -213,10 +212,38 @@
 						/*错题记录*/
 						var query = new this.Parse.Query("ErrorHistory")
 						query.get(self.currnote.id).then((note)=>{
-							// 删除当前题目
-							note.destroy().then((delete_result)=>{
-								console.log('答对了，删除错题记录')
-							})
+							if(note.get('count')==2){
+								// 删除当前题目
+								note.destroy().then((delete_result)=>{
+									console.log('答对了，删除错题记录')
+									var queryRight = self.Parse.Object.extend("RightHistory")
+									var query = new self.Parse.Query(queryRight)
+									query.equalTo('openid', self.userInfo.openid)
+									query.first().then(rhis=>{
+										if(rhis){ // 已存在正确记录
+											let _questionId = rhis.get('questions').find(t=>{
+												return t == self.questionDetail.id
+											})
+											if(!_questionId){ // 不存在正确记录中，保存至正确记录
+												let _questionIds = rhis.get('questions')
+												_questionIds.push(self.questionDetail.id)
+												rhis.set('questions',_questionIds)
+												rhis.save()
+											}
+										} else {
+											let _questionIds = [self.questionDetail.id]
+											var dbRight = new queryRight()
+											dbRight.set('openid', self.userInfo.openid)
+											dbRight.set('questions',_questionIds)
+											dbRight.save()											
+										}
+										
+									})
+								})								
+							} else {
+								note.set('count',note.get('count')+1)
+								note.save()
+							}
 						})
 					}
 				}
@@ -228,7 +255,7 @@
 				this.currAnswer = [] // 当前答案
 				this.hasSubmit = false;
 				this.canSubmit = false;
-				this.currnote = this.notes[this.index]
+				this.currnote = this.notes[this.index-1]
 				var cquery = new this.Parse.Query("TestQuestions")
 				cquery.get(this.currnote.get('questionId')).then(res=>{
 					if(res){
