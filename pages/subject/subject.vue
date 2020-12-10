@@ -14,8 +14,12 @@
 						<view class="listAction">
 							<!-- <image v-if="subjectDetail.price>0&&!hasBuyed" @click="handleBuyClick" src="../../static/icon/icon_order.png"></image>
 							<image v-if="subject.price==0||hasBuyed" @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_pencle.png"></image> -->
-							<image v-if="subject.content" @click="handleNameClick" :data-item="subject" src="../../static/icon/icon_order.png"></image>
-							<image v-if="subject.quesCount > 0" @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_pencle.png"></image>
+							<view class="action" @click="handleNameClick" :data-item="subject">
+								<image v-if="subject.content" src="../../static/icon/icon_order.png"></image>
+							</view>
+							<view class="action" @click="handleTestClick" :data-item="subject">
+								<image v-if="subject.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+							</view>
 						</view>
 					</view>
 					<view class="children" v-if="subject.extend">
@@ -25,8 +29,12 @@
 								<view class="conView">
 									<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
 									<view class="listAction">
-										<image v-if="sub.content" @click="handleNameClick" :data-item="sub" src="../../static/icon/icon_order.png"></image>
-										<image v-if="sub.quesCount > 0" @click="handleTestClick" :data-item="sub" src="../../static/icon/icon_pencle.png"></image>
+										<view class="action" @click="handleNameClick" :data-item="sub">
+											<image v-if="sub.content" src="../../static/icon/icon_order.png"></image>
+										</view>
+										<view class="action" @click="handleTestClick" :data-item="sub">
+											<image v-if="sub.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+										</view>
 									</view>
 								</view>
 							</view>
@@ -243,6 +251,14 @@
 							uni.hideLoading()
 						  	console.log(error)
 						})
+						var user = self.Parse.User.current()
+						user.set('amount', user.get('amount') + parseFloat(self.subjectDetail.get('price')))
+						user.save().then(ruser=>{
+							uni.setStorage({
+								key: 'userInfo',
+								data: ruser
+							})
+						})
 					  },
 					  fail (res) {
 						uni.hideLoading()
@@ -338,16 +354,16 @@
 		-webkit-line-clamp: 2;
 		font-family: PingFangSC-Medium;
 	}
-	.treeItem .listAction image{
-		margin-left: 40rpx;
+	.treeItem .listAction .action image{
+		/* margin-left: 40rpx; */
 		display: inline-block;
 		width: 32rpx;
 		height: 32rpx;
 		vertical-align: middle;
 	}
-	.treeItem .listAction image:last-child{
+	/* .treeItem .listAction image:last-child{
 		margin-right: 20rpx;
-	}
+	} */
 	.buylView {
 		width: 100%;
 	}
@@ -380,5 +396,11 @@
 		color: #ffffff;
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
+	}
+	.action{
+		width: 80rpx;
+		height: 50rpx;
+		text-align: center;
+		display: inline-block;
 	}
 </style>

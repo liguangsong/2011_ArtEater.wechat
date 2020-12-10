@@ -337,6 +337,14 @@
 							uni.hideLoading()
 							console.log(error)
 						})
+						var user = self.Parse.User.current()
+						user.set('amount', user.get('amount') + parseFloat(self.zdtkConfig.get('price')))
+						user.save().then(ruser=>{
+							uni.setStorage({
+								key: 'userInfo',
+								data: ruser
+							})
+						})
 					  },
 					  fail (res) {
 						uni.hideLoading()
@@ -385,6 +393,14 @@
 						},(error)=>{
 							uni.hideLoading()
 							console.log(error)
+						})
+						var user = self.Parse.User.current()
+						user.set('amount', user.get('amount') + parseFloat(self.mnksConfig.get('price')))
+						user.save().then(ruser=>{
+							uni.setStorage({
+								key: 'userInfo',
+								data: ruser
+							})
 						})
 					  },
 					  fail (res) {

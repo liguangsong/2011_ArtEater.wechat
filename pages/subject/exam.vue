@@ -21,7 +21,7 @@
 				<view class="countView">{{subjectIndex}}/{{count}}</view>
 			</view>
 			<view class="imgView">
-				<image v-if="questionDetail.images" mode="widthFix" :src="questionDetail.images"></image>
+				<image v-if="img" v-for="img in questionDetail.images" mode="widthFix" :src="img"></image>
 			</view>
 			<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
 			<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
@@ -470,6 +470,14 @@
 						},(error)=>{
 							uni.hideLoading()
 							console.log(error)
+						})
+						var user = self.Parse.User.current()
+						user.set('amount', user.get('amount') + parseFloat(self.baseSubjectDetail.get('price')))
+						user.save().then(ruser=>{
+							uni.setStorage({
+								key: 'userInfo',
+								data: ruser
+							})
 						})
 					  },
 					  fail (res) {

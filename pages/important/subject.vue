@@ -12,7 +12,9 @@
 					<view class="conView">
 						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}</view>
 						<view class="listAction">
-							<image @click="handleTestClick" :data-item="subject" src="../../static/icon/icon_order.png"></image>
+							<view class="action" @click="handleTestClick" :data-item="subject">
+								<image src="../../static/icon/icon_order.png"></image>
+							</view>
 						</view>
 					</view>
 					<view class="children" v-if="subject.extend">
@@ -22,7 +24,9 @@
 								<view class="conView">
 									<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
 									<view class="listAction">
-										<image @click="handleTestClick" :data-item="sub" src="../../static/icon/icon_order.png"></image>
+										<view class="action" @click="handleTestClick" :data-item="sub">
+											<image src="../../static/icon/icon_order.png"></image>
+										</view>
 									</view>
 								</view>
 							</view>
@@ -282,16 +286,16 @@
 		-webkit-line-clamp: 2;
 		font-family: PingFangSC-Medium;
 	}
-	.treeItem .listAction image{
-		margin-left: 40rpx;
+	.treeItem .listAction .action image{
+		/* margin-left: 40rpx; */
 		display: inline-block;
 		width: 32rpx;
 		height: 32rpx;
 		vertical-align: middle;
 	}
-	.treeItem .listAction image:last-child{
+	/* .treeItem .listAction image:last-child{
 		margin-right: 20rpx;
-	}
+	} */
 	.buylView {
 		width: 100%;
 	}
@@ -324,5 +328,11 @@
 		color: #ffffff;
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
+	}
+	.action{
+		width: 80rpx;
+		height: 50rpx;
+		text-align: center;
+		display: inline-block;
 	}
 </style>
