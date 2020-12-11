@@ -241,6 +241,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/index/news",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

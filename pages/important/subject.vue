@@ -1,11 +1,14 @@
 <template>
 	<view class="myPage">
 		<view class="treeView">
+			<!--二级-->
 			<view v-for="(subject,index) in subjectTree" class="treeItem">
-				<view class="listIcon"  @click="handleExtend(subject)">
+				<view class="listIcon">
 					<template v-if="subject.has_down_level">
-						<image v-if="!subject.extend" src="../../static/icon/icon_add.png"></image>
-						<image v-else src="../../static/icon/icon_remove.png"></image>
+						<view class="actionExtend" style="left: 0;text-align: right;" @click="handleExtend(subject)">
+							<image v-if="!subject.extend" src="../../static/icon/icon_add.png"></image>
+							<image v-else src="../../static/icon/icon_remove.png"></image>
+						</view>
 					</template>
 				</view>
 				<view class="content">
@@ -13,19 +16,144 @@
 						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}</view>
 						<view class="listAction">
 							<view class="action" @click="handleTestClick" :data-item="subject">
-								<image src="../../static/icon/icon_order.png"></image>
+								<image v-if="subject.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
 							</view>
 						</view>
 					</view>
+					<!--三级-->
 					<view class="children" v-if="subject.extend">
 						<view v-for="(sub,idx) in subject.children" class="treeItem">
-							<view class="listIcon">·</view>
+							<view class="listIcon">
+								<template v-if="sub.has_down_level">
+									<view class="actionExtend"  @click="handleExtend(sub)">
+										<image v-if="!sub.extend" src="../../static/icon/icon_add.png"></image>
+										<image v-else src="../../static/icon/icon_remove.png"></image>
+									</view>
+								</template>
+							</view>
 							<view class="content">
 								<view class="conView">
 									<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
 									<view class="listAction">
 										<view class="action" @click="handleTestClick" :data-item="sub">
-											<image src="../../static/icon/icon_order.png"></image>
+											<image v-if="sub.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+										</view>
+									</view>
+								</view>
+								<!--四级-->
+								<view class="children" v-if="sub.extend">
+									<view v-for="sub1 in sub.children" class="treeItem">
+										<view class="listIcon">
+											<template v-if="sub1.has_down_level">
+												<view class="actionExtend" @click="handleExtend(sub1)">
+													<image v-if="!sub1.extend" src="../../static/icon/icon_add.png"></image>
+													<image v-else src="../../static/icon/icon_remove.png"></image>
+												</view>
+											</template>
+										</view>
+										<view class="content">
+											<view class="conView">
+												<view class="listTxt" @click="handleNameClick" :data-item="sub1">{{sub1.subject_name}}</view>
+												<view class="listAction">
+													<view class="action" @click="handleTestClick" :data-item="sub1">
+														<image v-if="sub1.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+													</view>
+												</view>
+											</view>
+											
+											<!--5级-->
+											<view class="children" v-if="sub1.extend">
+												<view v-for="sub2 in sub1.children" class="treeItem">
+													<view class="listIcon">
+														<template v-if="sub2.has_down_level">
+															<view class="actionExtend" @click="handleExtend(sub2)">
+																<image v-if="!sub2.extend" src="../../static/icon/icon_add.png"></image>
+																<image v-else src="../../static/icon/icon_remove.png"></image>
+															</view>
+														</template>
+													</view>
+													<view class="content">
+														<view class="conView">
+															<view class="listTxt" @click="handleNameClick" :data-item="sub2">{{sub2.subject_name}}</view>
+															<view class="listAction">
+																<view class="action" @click="handleTestClick" :data-item="sub2">
+																	<image v-if="sub2.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																</view>
+															</view>
+														</view>
+														<!--6级-->
+														<view class="children" v-if="sub2.extend">
+															<view v-for="sub3 in sub2.children" class="treeItem">
+																<view class="listIcon">
+																	<template v-if="sub3.has_down_level">
+																		<view class="actionExtend" @click="handleExtend(sub3)">
+																			<image v-if="!sub3.extend" src="../../static/icon/icon_add.png"></image>
+																			<image v-else src="../../static/icon/icon_remove.png"></image>
+																		</view>
+																	</template>
+																</view>
+																<view class="content">
+																	<view class="conView">
+																		<view class="listTxt" @click="handleNameClick" :data-item="sub3">{{sub3.subject_name}}</view>
+																		<view class="listAction">
+																			<view class="action" @click="handleTestClick" :data-item="sub3">
+																				<image v-if="sub3.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																			</view>
+																		</view>
+																	</view>
+																	<!--7级-->
+																	<view class="children" v-if="sub3.extend">
+																		<view v-for="sub4 in sub3.children" class="treeItem">
+																			<view class="listIcon">
+																				<template v-if="sub4.has_down_level">
+																					<view class="actionExtend" @click="handleExtend(sub4)">
+																						<image v-if="!sub4.extend" src="../../static/icon/icon_add.png"></image>
+																						<image v-else src="../../static/icon/icon_remove.png"></image>
+																					</view>
+																				</template>
+																			</view>
+																			<view class="content">
+																				<view class="conView">
+																					<view class="listTxt" @click="handleNameClick" :data-item="sub4">{{sub4.subject_name}}</view>
+																					<view class="listAction">
+																						<view class="action" @click="handleTestClick" :data-item="sub4">
+																							<image v-if="sub4.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																						</view>
+																					</view>
+																				</view>
+																				
+																				<!--8级-->
+																				<view class="children" v-if="sub4.extend">
+																					<view v-for="sub5 in sub4.children" class="treeItem">
+																						<view class="listIcon">
+																							<template v-if="sub5.has_down_level">
+																								<view class="actionExtend" @click="handleExtend(sub5)">
+																									<image v-if="!sub5.extend" src="../../static/icon/icon_add.png"></image>
+																									<image v-else src="../../static/icon/icon_remove.png"></image>
+																								</view>
+																							</template>
+																						</view>
+																						<view class="content">
+																							<view class="conView">
+																								<view class="listTxt" @click="handleNameClick" :data-item="sub5">{{sub5.subject_name}}</view>
+																								<view class="listAction">
+																									<view class="action" @click="handleTestClick" :data-item="sub5">
+																										<image v-if="sub5.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																									</view>
+																								</view>
+																							</view>
+																						</view>
+																					</view>
+																				</view>
+																			</view>
+																		</view>
+																	</view>
+																</view>
+															</view>
+														</view>
+													</view>
+												</view>
+											</view>
 										</view>
 									</view>
 								</view>
@@ -35,7 +163,7 @@
 				</view>
 			</view>
 		</view>
-		<u-popup v-model="isShowSubjectDetail" width="674rpx" :closeable="true" mode="center" border-radius="40">
+		<u-popup v-model="isShowSubjectDetail" width="674rpx" mode="center" border-radius="40">
 			<view class="detailView" style="padding:74rpx 50rpx;">
 				<scroll-view scroll-y="true" :style="'max-height:'+(screenHeight - 600)+'rpx;'">
 					<view>
@@ -121,8 +249,23 @@
 				// query.equalTo("parent_ID", this.subjectId)
 				query.ascending('createdAt')
 				query.find().then(res=>{
-					var tree = self.initSubjectTree(res, self.subjectId)
-					self.subjectTree = tree
+					var ids = []
+					res.forEach(t=>{
+						ids.push(t.id)
+					})
+					var quesQuery = new self.Parse.Query("TestQuestions")
+					quesQuery.equalTo('isImportant', 1)
+					quesQuery.containedIn('subjects', ids)
+					quesQuery.find().then(ques=>{
+						res.forEach(item => {
+							let questions = ques.filter(t=>{
+								return t.get('subjects').indexOf(item.id)!=-1
+							})
+							item.quesCount = questions.length
+						})
+						var tree = self.initSubjectTree(res, self.subjectId)
+						self.subjectTree = tree
+					})
 				})
 			},
 			/** 构造树形科目 */
@@ -137,6 +280,7 @@
 						subject_name: _subject.get('subject_name'),
 						content: _subject.get('content'),
 						price: _subject.get('price'),
+						quesCount: _subject.quesCount,
 						extend: false,
 						has_down_level: _subject.get('has_down_level'),
 						value: _subject.id,
@@ -234,13 +378,21 @@
 		width: 70rpx;
 		height: 50rpx;
 		line-height: 40rpx;
+		text-align: right;
+	}
+	
+	.treeView .treeItem .listIcon .actionExtend{
+		width: 50rpx;
+		position: relative;
+		left: -30rpx;
 		text-align: center;
 	}
-	.treeView .treeItem .listIcon image{
+	.treeView .treeItem .listIcon .actionExtend image{
 		display: inline-block;
 		vertical-align: middle;
 		width: 30rpx;
 		height: 30rpx;
+		justify-items: legacy;
 	}
 	.treeView .treeItem .content{
 		flex: 1;
@@ -258,15 +410,16 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
-		-webkit-line-clamp: 1;
-		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 1!important;
+		-webkit-box-orient: vertical!important;
 		font-family: PingFangSC-Medium;
 	}
 	.treeView .treeItem .content .conView .listAction{
-		width: 164rpx;
+		width: 82rpx;
 		height: 50rpx;
 		line-height: 50rpx;
 		text-align: right;
+		display: flex;
 	}
 	.children{
 		margin-top: 20rpx;
@@ -276,9 +429,9 @@
 	}
 	.children .treeItem .listIcon{
 		font-weight: bold;
-		width: 30rpx;
+		width: 20rpx;
 		line-height: 50rpx;
-		text-align: left;
+		text-align: center;
 	}
 	.children .treeItem .content .conView .listTxt{
 		font-size: 30rpx;

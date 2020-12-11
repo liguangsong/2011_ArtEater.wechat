@@ -6,7 +6,7 @@
 				<swiper class="swiper" :autoplay="true">
 					<swiper-item>
 						<view class="swiperItem">
-							<image src="../../static/banner.png"></image>
+							<image src="../../static/banner.jpg"></image>
 						</view>
 					</swiper-item>
 				</swiper>
@@ -59,22 +59,22 @@
 				<view class="title">推荐</view>
 			</view>
 			<view class="newsView">
-				<view class="newsItem">
+				<view class="newsItem" @click="handleToOtherMiniApp">
 					<view class="imgView">
-						<image src="../../static/banner.png"></image>
+						<image src="../../static/tuijian1.jpg"></image>
 					</view>
 					<view class="conView">
-						<view class="title">欧洲文艺复兴时期的...风格</view>
-						<view class="content">17世纪巴洛克时代的美术风格要点分析</view>
+						<view class="title">仅考一科，就上央美！央美中法超级课程来喽</view>
+						<view class="content"></view>
 					</view>
 				</view>
-				<view class="newsItem">
+				<view class="newsItem" @click="handleToOtherMiniApp">
 					<view class="imgView">
-						<image src="../../static/banner.png"></image>
+						<image src="../../static/tuijian2.jpg"></image>
 					</view>
 					<view class="conView">
-						<view class="title">欧洲文艺复兴时期的...风格</view>
-						<view class="content">17世纪巴洛克时代的美术风格要点分析</view>
+						<view class="title">艺术史论免费试听课第一讲《原始古代文明》</view>
+						<view class="content"></view>
 					</view>
 				</view>
 			</view>
@@ -295,6 +295,12 @@
 					this.isShowLogin = true
 					this.toUrl = '/pages/subject/subject?sid='+item.objectId
 				}
+			},
+			/*点击推荐*/
+			handleToOtherMiniApp(){
+				uni.navigateTo({
+					url:'./news'
+				})
 			},
 			/*确认购买重点题库*/
 			handleBuyZDTKClick(){

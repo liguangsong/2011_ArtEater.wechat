@@ -16,8 +16,18 @@
 					v-for="(item, index) in history.answers" :data-index="index">{{index + 1}}</view>
 			</view>
 		</view>
-		<button open-type="share" class="btnShare">分享</button>
+		<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
+		<button @click="handleBuild" class="btnShare">分享</button>
 		<button v-if="from=='exam'" @click="handHomePage" class="btnPrev">返回</button>
+		
+		<u-mask :show="isShowPicImg" @click="isShowPicImg = false">
+			<view class="warp">
+				<view class="rect">
+					<image @tap.stop v-if="sharePicImg" :src="sharePicImg" mode="aspectFit" style="width: 450rpx; height: 800rpx;"></image>
+					<button class="download" @click="handleSaveImg">保存并分享</button>
+				</view>
+			</view>
+		</u-mask>
 	</view>
 </template>
 
@@ -25,18 +35,29 @@
 	export default {
 		data() {
 			return {
+				userInfo:{},
 				history:{},
 				from:'',
-				examId:''
+				examId:'',
+				screenHeight:0,
+				isShowPicImg: false,
+				sharePicImg: ''
 			}
 		},
 		onLoad(options) {
+			var self = this
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
 			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
+			})
+			uni.getStorage({
+				key:'userInfo',
+				success(res) {
+					self.userInfo = res.data
+				}
 			})
 			if(options.from){
 				this.from = options.from
@@ -47,6 +68,7 @@
 				const history = this.Parse.Object.extend("TestHistory")
 				const query = new this.Parse.Query(history)
 				query.get(options.eid).then(res => {
+					res.set('minutes', self.createMinutes(res.get('seconds')))
 					self.history = res
 				})
 			}
@@ -54,6 +76,7 @@
 				withShareTicket: true,
 				  menus: ['shareAppMessage', 'shareTimeline']
 			})
+			// this.handleBuild()
 		},
 		
 		  /**
@@ -61,19 +84,6 @@
 		   */
 		onHide: function () {
 			debugger
-		},
-		
-		  /**
-		   * 生命周期函数--监听页面卸载
-		   */
-		onUnload: function () {
-			// var routers =  getCurrentPages()
-			// var prevRouter = routers[routers.length-2]
-			// if(prevRouter.route == 'pages/exam/exam'){
-			// 	uni.navigateBack({
-			// 		delta: 1
-			// 	})
-			// }
 		},
 		methods: {
 			/*点击题目*/
@@ -83,10 +93,183 @@
 					url:'./testdetail?tid=' + this.examId + '&index=' + _index
 				})
 			},
+			createMinutes(seconds){
+				return Math.floor(seconds/60)+'分钟'+(seconds%60)+'秒'
+			},
 			/*返回首页*/
 			handHomePage(){
 				uni.reLaunch({
 					url:'/pages/exam/index'
+				})
+			},
+			/**
+			 * 画一个圆角矩形
+			 */
+			roundRect(ctx, x, y, w, h, r) {
+				ctx.save()
+				// 开始绘制
+				ctx.beginPath()
+				ctx.setFillStyle('rgba(255,255,255,0.69)')
+				// ctx.setStrokeStyle('transparent')
+				// 绘制左上角圆弧
+				ctx.arc(x + r, y + r, r, Math.PI, Math.PI * 1.5)
+			
+				// 绘制border-top
+				ctx.moveTo(x + r, y)
+				ctx.lineTo(x + w - r, y)
+				ctx.lineTo(x + w, y + r)
+				// 绘制右上角圆弧
+				ctx.arc(x + w - r, y + r, r, Math.PI * 1.5, Math.PI * 2)
+			
+				// 绘制border-right
+				ctx.lineTo(x + w, y + h - r)
+				ctx.lineTo(x + w - r, y + h)
+				// 绘制右下角圆弧
+				ctx.arc(x + w - r, y + h - r, r, 0, Math.PI * 0.5)
+			
+				// 绘制border-bottom
+				ctx.lineTo(x + r, y + h)
+				ctx.lineTo(x, y + h - r)
+				// 绘制左下角圆弧
+				ctx.arc(x + r, y + h - r, r, Math.PI * 0.5, Math.PI)
+			
+				// 绘制border-left
+				ctx.lineTo(x, y + r)
+				ctx.lineTo(x + r, y)
+				
+				ctx.fill()
+				// ctx.stroke()
+				ctx.closePath()
+				// 剪切
+				ctx.clip()
+				ctx.restore()
+			},
+			/* 绘制头像圆型范围 */
+			headPic(ctx, url, avatarurl_width, avatarurl_x, avatarurl_y,factor){
+				ctx.save()
+				ctx.beginPath(); //开始绘制
+				//先画个圆   前两个参数确定了圆心 （x,y） 坐标  第三个参数是圆的半径  四参数是绘图方向  默认是false，即顺时针
+				ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_width / 2 + avatarurl_y, avatarurl_width / 2, 0, Math.PI * 2, false);
+				ctx.clip();//画好了圆 剪切  原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内 这也是我们要save上下文的原因
+			},
+			/* 生成图片 */
+			handleBuild(){
+				var self = this
+				uni.showLoading()
+				uni.downloadFile({
+					url: self.userInfo.avatarUrl,
+					success (headRes) {
+						const sysInfo = uni.getSystemInfoSync();
+						const screenWidth = sysInfo.screenWidth;
+						var factor = screenWidth / 750;
+						let picWidth = 750
+						let picHeight = 1340
+						var bili = picWidth / 750
+						self.screenHeight= picHeight/factor*bili
+						const context = uni.createCanvasContext('mycanvas')
+						context.fillRect(0, 0, 750 * factor, picHeight * factor)
+						context.drawImage('../../static/sharebg.png', 0, 0, picWidth, picHeight);
+						context.setFillStyle('black')
+						self.roundRect(context, 30*factor, 220 * factor, 690 * factor, 1072 * factor, 40 * factor) // 绘制半透明的圆角背景
+						
+						
+						context.restore()
+						// context.font = 'bold'
+						// 考试名称
+						context.setFontSize(54*factor)
+						context.setFillStyle('#352026')
+						context.font = 'normal bold ' + (54 * factor) + 'px PingFangSC-Medium'
+						let examName = self.history.get('examName')
+						const m1 = context.measureText(examName)
+						context.fillText(examName, (750 - m1.width / factor) / 2 * factor, 506*factor )
+						// 考试用时
+						context.setFontSize(30*factor)
+						context.font = 'normal normal ' + (30 * factor) + 'px PingFangSC-Medium'
+						let time = '考试时间：' + self.history.get('minutes')
+						const m2 = context.measureText(time)
+						context.fillText(time, (750 - m2.width / factor) / 2 * factor, 556*factor )
+						
+						// 用户
+						context.setFontSize(34*factor)
+						context.font = 'normal normal ' + (34 * factor) + 'px PingFangSC-Medium'
+						let user = self.userInfo.nickName
+						const m3 = context.measureText(user)
+						context.fillText(user, (750 - m3.width / factor) / 2 * factor, 666*factor )
+						
+						
+						// 用户
+						context.setFontSize(34*factor)
+						context.font = 'normal normal ' + (34 * factor) + 'px PingFangSC-Medium'
+						let _user = '本次考试得分：'
+						const m_3 = context.measureText(_user)
+						context.fillText(_user, (750 - m_3.width / factor) / 2 * factor, 726*factor )
+						
+						// 得分				
+						context.setFontSize(160*factor)
+						context.setFillStyle('#ff6867')
+						context.font = 'normal bold ' + (160 * factor) + 'px PingFangSC-Medium'
+						let score = self.history.get('score')
+						const m4 = context.measureText(score + "")
+						context.fillText(score+"", (750 - m4.width / factor) / 2 * factor, 886*factor )
+						
+						// 分
+						context.setFontSize(34*factor)
+						context.setFillStyle('#352026')
+						context.font = 'normal normal ' + (34 * factor) + 'px PingFangSC-Medium'
+						const m5 = context.measureText('分')
+						context.fillText('分', ((750 - (m4.width / factor)) / 2 * factor) + (m4.width), 886*factor )
+						
+						// 绘制二维码
+						context.drawImage('../../static/qrcode.png', 224 * factor, 946 * factor, 300 * factor,300 * factor);
+						
+						self.headPic(context, '', 240 * factor, 256 * factor, 100 * factor, factor) // 绘制头像外层框
+						context.drawImage(headRes.tempFilePath, 256 * factor, 100 * factor,240 * factor,240 * factor); // 将头像装进头像框
+						// context.draw(true)
+						context.draw(true,function(){
+							// setTimeout(function () {
+								wx.canvasToTempFilePath({
+									x:0,
+									y:0,
+									width: 750,
+									height: self.screenHeight,
+									fileType: 'jpg',
+									quality: 1,
+									canvasId: 'mycanvas',
+									success: function (res) {
+										uni.hideLoading()
+										console.log(res.tempFilePath)
+										self.sharePicImg = res.tempFilePath
+										self.isShowPicImg = true
+									}
+								})
+							// }, 500)
+						})
+					}
+				})
+			},
+			/* 保存图片至本地 */
+			handleSaveImg(){
+				var self = this
+				uni.saveImageToPhotosAlbum({
+					filePath: self.sharePicImg,
+					success(res) {
+						console.log(res);
+						uni.showModal({
+							title: '图片保存成功',
+							content: '图片成功保存到相册了，去发圈噻~',
+							showCancel: false,
+							confirmText: '好哒',
+							confirmColor: '#72B9C3',
+							success: function (res) {
+							  if (res.confirm) {
+								console.log('用户点击确定');
+							  }
+							  that.setData({
+								canvasHidden: true
+							  })
+							}
+						})
+					}
 				})
 			}
 		},
@@ -203,5 +386,34 @@
 		font-size: 34rpx;
 		font-family: PingFangSC-Medium;
 		margin: 32rpx;
+	}
+	.download{
+		height: 80rpx;
+		line-height: 80rpx;
+		border-radius: 94rpx;
+		color: #ff776f;
+		font-size: 34rpx;
+		font-family: PingFangSC-Medium;
+		border: 2rpx solid #ff776f;
+		border-radius: 92rpx;
+		background-color: #ffffff;
+	}
+	.canvas{
+		width:750rpx;margin:0 auto;
+		position:fixed;
+		left:1000px;
+		height: 1340rpx;
+	}
+	.warp {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+	}
+
+	.rect {
+		width: 450rpx;
+		height: 890rpx;
+		/* background-color: #fff; */
 	}
 </style>

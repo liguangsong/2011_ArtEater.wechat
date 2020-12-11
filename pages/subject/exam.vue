@@ -182,7 +182,7 @@
 				hisQuery.first().then(hres=>{
 					if(hres){
 						self.history = hres
-						self.subjectIndex = hres.get('subjectIndex')==0?1:hres.get('subjectIndex')
+						self.subjectIndex = hres.get('subjectIndex') + 1 // hres.get('subjectIndex')==0?1:hres.get('subjectIndex')
 						if(self.isOnload && self.history && self.history.get('count')>0){ // 已答完一次，二次进入答题
 							self.isOnload = false
 							uni.showModal({
@@ -246,14 +246,14 @@
 								self.currAnswer = [] // 当前答案
 								self.hasSubmit = false;
 								self.canSubmit = false;	
-								self.history.set('subjectIndex',1)
+								self.history.set('subjectIndex',0)
 								self.history.set('questIndex',1)
 								self.history.save().then(res=>{
 									self.history = res
 									self.bindQuestion()
 								})
 							} else {
-								self.history.set('subjectIndex',1)
+								self.history.set('subjectIndex',0)
 								self.history.set('questIndex',1)
 								self.history.save()
 							}
@@ -350,7 +350,7 @@
 					_history.set('subjectIndex', self.history?(self.history.get('subjectIndex') + 1) : 1)
 					_history.save().then(his => {
 						self.history = his
-						if(his.get('subjectIndex') > self.count){
+						if(his.get('subjectIndex') >= self.count){
 							self.isOnload = false
 							self.handleComplate()
 						}
@@ -517,7 +517,7 @@
 	.questionView{
 		padding: 0 36rpx;
 		margin-top: 42rpx;
-		padding-bottom: 200rpx;
+		/* padding-bottom: 200rpx; */
 	}
 	.questionView .headView{
 		display: flex;
@@ -607,9 +607,7 @@
 	.actionView{
 		margin-top: 50rpx;
 		width: 100%;
-		padding: 0 36rpx;
-		position: fixed;
-		bottom: 100rpx;
+		padding: 36rpx;
 	}
 	.actionView button{
 		width: 100%;

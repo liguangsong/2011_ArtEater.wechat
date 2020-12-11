@@ -298,7 +298,7 @@
 	.questionView{
 		padding: 0 36rpx;
 		margin-top: 42rpx;
-		padding-bottom: 200rpx;
+		/* padding-bottom: 200rpx; */
 	}
 	.questionView .headView{
 		display: flex;
@@ -386,11 +386,14 @@
 		padding: 20rpx 0;
 	}
 	.actionView{
-		margin-top: 50rpx;
+/* 		margin-top: 50rpx;
 		width: 100%;
 		padding: 0 36rpx;
 		position: fixed;
-		bottom: 100rpx;
+		bottom: 100rpx; */
+		margin-top: 50rpx;
+		width: 100%;
+		padding: 36rpx;
 	}
 	.actionView button{
 		width: 100%;

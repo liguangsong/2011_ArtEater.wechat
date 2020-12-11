@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="timeView">
-			考试剩余时间：<u-count-down color="#b1b1b1" font-size="26" separator="zh" separator-size="26" separator-color="#b1b1b1" @change="handleChange" :timestamp="endTime"></u-count-down>
+			考试剩余时间：<u-count-down color="#b1b1b1" font-size="26" separator="zh" separator-size="26" @end='handleTimeOut' separator-color="#b1b1b1" @change="handleChange" :timestamp="endTime"></u-count-down>
 		</view>
 		<view class="questionView">
 			<view class="headView">
@@ -355,9 +355,18 @@
 				this.canSubmit = false;
 				this.bindQuestion()
 			},
+			/*超时自动提交*/
+			handleTimeOut(){
+				this.submit(function(his){
+					uni.reLaunch({
+						url:'/pages/mine/testresult?eid='+ his.id+'&from=exam'
+					})
+				})
+			},
 			/* 提交 */
-			submit(){
+			submit(callback){
 				var self = this
+				this.isComplate = true
 				// 最后一题
 				/*保存答题记录*/
 				var dbHistory = this.Parse.Object.extend("TestHistory")
@@ -373,6 +382,9 @@
 				_history.set('allscore', self.examDetail.get('score'))
 				_history.save().then(his => {
 					console.log('保存成功')
+					if(callback){
+						callback(his)
+					}
 				},(error)=>{
 					console.log(error)
 				})
@@ -397,7 +409,7 @@
 	.questionView{
 		padding: 0 36rpx;
 		margin-top: 42rpx;
-		padding-bottom: 200rpx;
+		/* padding-bottom: 200rpx; */
 	}
 	.questionView .headView{
 		display: flex;
@@ -487,9 +499,7 @@
 	.actionView{
 		margin-top: 50rpx;
 		width: 100%;
-		padding: 0 36rpx;
-		position: fixed;
-		bottom: 100rpx;
+		padding: 36rpx;
 	}
 	.actionView button{
 		width: 100%;
