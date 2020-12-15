@@ -8,6 +8,7 @@
 				<view v-if="questionDetail.type==1" class="queType">单选题</view>
 				<view v-if="questionDetail.type==2" class="queType">多选题</view>
 				<view v-if="questionDetail.type==3" class="queType">填空题</view>
+				<view v-if="questionDetail.type==4" class="queType">多项选择题</view>
 				<view class="countView">{{index}}/{{count}}</view>
 			</view>
 			<view class="imgView">
@@ -25,13 +26,24 @@
 					</block>
 				</block>
 			</view>
+			<view class="title" v-else-if="questionDetail.type==4">
+				<block v-for="(c,i) in questionDetail.cinputs">{{c}}<text v-if="i<questionDetail.cinputs.length-1">({{i+1}})</text></block>
+			</view>
 			<view class="title" v-else>{{questionDetail.title}}</view>
-			<view class="options" v-if="questionDetail.type!=3">
+			<view class="options" v-if="questionDetail.type==1||questionDetail.type==2">
 				<my-radio-group :disabled="hasSubmit" :options="options" :type="questionDetail.type==1?'radio':'check'" @change="handleChooseOption"></my-radio-group>
 			</view>
+			<view class="options" v-if="questionDetail.type==4">
+				<view class="multisCheckView" v-for="(_option,_index) in options">
+					<view class="head">({{_index + 1}})</view>
+					<view class="content">						
+						<my-radio-group :disabled="hasSubmit" :options="_option.options" :index="_index" type="radio" @change="handleChooseMultisOption"></my-radio-group>
+					</view>
+				</view>
+			</view>
 			<view class="commentView" v-if="hasSubmit">
-				<view v-if="questionDetail.type==3" class="rightAnswer">正确答案：
-					<view v-for="s in options">{{s.rightAnswer}}</view>
+				<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
+					<view style="display:inline-block;" v-for="s in options">{{s.rightAnswer}}</view>
 				</view>
 				<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
 				<view class="comment">答案解析：
@@ -124,6 +136,9 @@
 								if(res.get('type') == 3){
 									res.set('cinputs', res.get('title').split('____'))
 								}
+								if(res.get('type') == 4){
+									res.set('cinputs', res.get('title').split('()'))
+								}
 								self.questionDetail = res
 								let _options = JSON.parse(JSON.stringify(res.get('options')))
 								self.options =  _options
@@ -148,6 +163,25 @@
 					this.canSubmit = _currAnswer.length > 1
 				} else if(type == 1) {
 					this.canSubmit = _currAnswer.length == 1
+				}
+			},
+			/*多项选择选择答案*/
+			handleChooseMultisOption(options,_index){
+				var item = options.find(t=>{
+					return t.state == 2
+				})
+				this.currAnswer[_index] = item.code
+				var checkCount = 0
+				for(var i=0;i<this.options.length;i++){
+					var item = this.currAnswer[i]
+					if(item){
+						checkCount++
+					}
+				}
+				if(checkCount==this.options.length){
+					this.canSubmit = true
+				} else {
+					this.canSubmit = false
 				}
 			},
 			/*填空题填写答案*/
@@ -189,6 +223,23 @@
 								} 
 							})
 							item.rightAnswer = item.value[0].txt + (item.value.length > 1 ? ('(备选：' + _currTxt + ')'):'')
+						})
+					} else if(this.questionDetail.get('type') == 4){
+						this.options.forEach((_option,_index)=>{
+							_option.options.forEach((item)=>{
+								var choose = self.currAnswer[_index] == item.code
+								if((item.value == '0'|| item.value == '') && choose) { // 选中错误答案
+									result = false
+									item.state = 4
+								} else if(item.value == '1'&& choose) { // 选中正确答案
+									item.state = 6
+								} else if(item.value == '1'&& !choose){ // 未选中正确答案
+									result = false
+									item.state = 5
+								} else { // 未选中的错误答案
+									item.state = 3
+								}
+							})
 						})
 					} else {
 						this.options.forEach((item)=>{

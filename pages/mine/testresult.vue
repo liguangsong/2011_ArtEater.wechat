@@ -13,7 +13,7 @@
 			<view class="title">答题卡</view>
 			<view class="rView">
 				<view @click="handleResultClick" :class="'resultItem '+ ((item.answer.length==0||item.answer==null)? '': (item.result?'right':'error'))" 
-					v-for="(item, index) in history.answers" :data-index="index">{{index + 1}}</view>
+					v-for="(item, index) in history.answers" :data-item="item" :data-index="index">{{index + 1}}</view>
 			</view>
 		</view>
 		<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
@@ -78,20 +78,21 @@
 			})
 			// this.handleBuild()
 		},
-		
-		  /**
-		   * 生命周期函数--监听页面隐藏
-		   */
-		onHide: function () {
-			debugger
-		},
 		methods: {
 			/*点击题目*/
 			handleResultClick(e){
 				var _index = e.currentTarget.dataset.index
-				uni.navigateTo({
-					url:'./testdetail?tid=' + this.examId + '&index=' + _index
-				})
+				var _item = e.currentTarget.dataset.item
+				if(_item==null || _item.answer == null) {
+					uni.showToast({
+						title:'该题目未作答',
+						icon:'none'
+					})
+				} else {
+					uni.navigateTo({
+						url:'./testdetail?tid=' + this.examId + '&index=' + _index
+					})
+				}
 			},
 			createMinutes(seconds){
 				return Math.floor(seconds/60)+'分钟'+(seconds%60)+'秒'
@@ -167,6 +168,7 @@
 						var bili = picWidth / 750
 						self.screenHeight= picHeight/factor*bili
 						const context = uni.createCanvasContext('mycanvas')
+						context.draw() // 先清空画布
 						context.fillRect(0, 0, 750 * factor, picHeight * factor)
 						context.drawImage('../../static/sharebg.png', 0, 0, picWidth, picHeight);
 						context.setFillStyle('black')
@@ -178,20 +180,20 @@
 						// 考试名称
 						context.setFontSize(54*factor)
 						context.setFillStyle('#352026')
-						context.font = 'normal bold ' + (54 * factor) + 'px PingFangSC-Medium'
+						context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
 						let examName = self.history.get('examName')
 						const m1 = context.measureText(examName)
 						context.fillText(examName, (750 - m1.width / factor) / 2 * factor, 506*factor )
 						// 考试用时
 						context.setFontSize(30*factor)
-						context.font = 'normal normal ' + (30 * factor) + 'px PingFangSC-Medium'
+						context.font = 'normal normal ' + parseInt(30 * factor) + 'px Arial, Helvetica, sans-serif'
 						let time = '考试时间：' + self.history.get('minutes')
 						const m2 = context.measureText(time)
 						context.fillText(time, (750 - m2.width / factor) / 2 * factor, 556*factor )
 						
 						// 用户
 						context.setFontSize(34*factor)
-						context.font = 'normal normal ' + (34 * factor) + 'px PingFangSC-Medium'
+						context.font = 'normal normal ' + parseInt(34 * factor) + 'px Arial, Helvetica, sans-serif'
 						let user = self.userInfo.nickName
 						const m3 = context.measureText(user)
 						context.fillText(user, (750 - m3.width / factor) / 2 * factor, 666*factor )
@@ -199,7 +201,7 @@
 						
 						// 用户
 						context.setFontSize(34*factor)
-						context.font = 'normal normal ' + (34 * factor) + 'px PingFangSC-Medium'
+						context.font = 'normal normal ' + parseInt(34 * factor) + 'px Arial, Helvetica, sans-serif'
 						let _user = '本次考试得分：'
 						const m_3 = context.measureText(_user)
 						context.fillText(_user, (750 - m_3.width / factor) / 2 * factor, 726*factor )
@@ -207,7 +209,7 @@
 						// 得分				
 						context.setFontSize(160*factor)
 						context.setFillStyle('#ff6867')
-						context.font = 'normal bold ' + (160 * factor) + 'px PingFangSC-Medium'
+						context.font = 'normal bold ' + parseInt(160 * factor) + 'px Arial, Helvetica, sans-serif'
 						let score = self.history.get('score')
 						const m4 = context.measureText(score + "")
 						context.fillText(score+"", (750 - m4.width / factor) / 2 * factor, 886*factor )
@@ -215,7 +217,7 @@
 						// 分
 						context.setFontSize(34*factor)
 						context.setFillStyle('#352026')
-						context.font = 'normal normal ' + (34 * factor) + 'px PingFangSC-Medium'
+						context.font = 'normal normal ' + parseInt(34 * factor) + 'px Arial, Helvetica, sans-serif'
 						const m5 = context.measureText('分')
 						context.fillText('分', ((750 - (m4.width / factor)) / 2 * factor) + (m4.width), 886*factor )
 						
@@ -226,8 +228,8 @@
 						context.drawImage(headRes.tempFilePath, 256 * factor, 100 * factor,240 * factor,240 * factor); // 将头像装进头像框
 						// context.draw(true)
 						context.draw(true,function(){
-							// setTimeout(function () {
-								wx.canvasToTempFilePath({
+							setTimeout(function () {
+								uni.canvasToTempFilePath({
 									x:0,
 									y:0,
 									width: 750,
@@ -242,7 +244,7 @@
 										self.isShowPicImg = true
 									}
 								})
-							// }, 500)
+							}, 500)
 						})
 					}
 				})

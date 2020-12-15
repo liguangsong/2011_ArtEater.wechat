@@ -66,8 +66,8 @@
 			},
 			handleItemClick(e){
 				var _item = e.currentTarget.dataset.item
-				uni.redirectTo({
-					url:'./testresult?eid=' + _item.objectId
+				uni.navigateTo({
+					url:'/pages/mine/testresult?eid=' + _item.objectId
 				})
 			}
 		}

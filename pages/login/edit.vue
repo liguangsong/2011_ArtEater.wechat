@@ -149,7 +149,6 @@
 			handleGetPhoneNumber(e){
 				var self = this
 				var _config = config
-				debugger
 				var pc = new WXBizDataCrypt(_config.AppId, self.sessionKey)
 				var data = pc.decryptData(e.detail.encryptedData, e.detail.iv)
 				self.form.phone = data.phoneNumber

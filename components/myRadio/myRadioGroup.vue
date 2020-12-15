@@ -16,6 +16,10 @@
 				type: Array,
 				default: []
 			},
+			index:{
+				type: Number,
+				default: 0
+			},
 			value: {
 				type: String,
 				default: ''
@@ -77,7 +81,7 @@
 						}
 					})
 				}
-				this.$emit('change', this.myOptions)
+				this.$emit('change', this.myOptions, this.index)
 			}
 		}
 	}

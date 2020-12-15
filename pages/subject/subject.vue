@@ -5,7 +5,7 @@
 			<view v-for="(subject,index) in subjectTree" class="treeItem">
 				<view class="listIcon">
 					<template v-if="subject.has_down_level">
-						<view class="actionExtend" style="left: 0;text-align: right;" @click="handleExtend(subject)">
+						<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;left: 10rpx;" @click="handleExtend(subject)">
 							<image v-if="!subject.extend" src="../../static/icon/icon_add.png"></image>
 							<image v-else src="../../static/icon/icon_remove.png"></image>
 						</view>
@@ -289,6 +289,7 @@
 				var query = new this.Parse.Query("Subjects")
 				// query.equalTo("parent_ID", this.subjectId)
 				query.ascending('createdAt')
+				query.limit(10000)
 				query.find().then(res=>{
 					var ids = []
 					res.forEach(t=>{

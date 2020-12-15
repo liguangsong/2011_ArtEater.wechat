@@ -4,7 +4,6 @@ export default{
 	// parseServerJsKey:'123456',
 	
 	parseRestBaseUrl: 'https://sys.aoekids.cn',
-	// parseRestBaseUrl: 'http://101.200.34.189:1401',
 	parseRestApiKey:'47d8ecg6a77aa2981b9c',
 	
 	parseServerBaseUrl: 'https://sys.aoekids.cn/api/1',

@@ -122,7 +122,9 @@
 					var query = new self.Parse.Query("RightHistory")
 					query.equalTo('openid',self.userInfo.openid)
 					query.first().then(r=>{
-						self.rightCount = r.get('questions').length
+						if(r){
+							self.rightCount = r.get('questions').length
+						}
 					})
 				}
 			})
@@ -158,7 +160,7 @@
 			/*查看考试记录*/
 			handleTestHisClick(){
 				uni.navigateTo({
-					url:'./testhistory'
+					url:'/pages/mine/testhistory'
 				})
 			},
 			/* 消息中心 */

@@ -8,14 +8,15 @@
 				<view v-if="questionDetail.type==1" class="queType">单选题</view>
 				<view v-if="questionDetail.type==2" class="queType">多选题</view>
 				<view v-if="questionDetail.type==3" class="queType">填空题</view>
+				<view v-if="questionDetail.type==4" class="queType">多项选择题</view>
 				<view class="countView">{{index}}/{{count}}</view>
 			</view>
 			<view class="imgView">
-				<image v-if="img" v-for="img in questionDetail.images" mode="widthFix" :src="img"></image>
+				<image v-if="img" v-for="img in questionDetail.images" mode="widthFix" :src="img" :key="img"></image>
 			</view>
 			<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
 			<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
-				<block v-for="(c,i) in questionDetail.cinputs">{{c}}
+				<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c}}
 					<block v-if="hasSubmit">
 						<view v-if="i!=questionDetail.cinputs.length-1" :class="'txt '+ (options[i].state==1?'success':'error')">{{options[i].content}}</view>
 					</block>
@@ -25,13 +26,24 @@
 					</block>
 				</block>
 			</view>
+			<view class="title" v-else-if="questionDetail.type==4">
+				<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c}}<text v-if="i<questionDetail.cinputs.length-1">({{i+1}})</text></block>
+			</view>
 			<view class="title" v-else>{{questionDetail.title}}</view>
-			<view class="options" v-if="questionDetail.type!=3">
+			<view class="options" v-if="questionDetail.type==1||questionDetail.type==2">
 				<my-radio-group :disabled="hasSubmit" :options="options" :type="questionDetail.type==1?'radio':'check'" @change="handleChooseOption"></my-radio-group>
 			</view>
+			<view class="options" v-if="questionDetail.type==4">
+				<view class="multisCheckView" v-for="(_option,_index) in options" :key="_index">
+					<view class="head">({{_index + 1}})</view>
+					<view class="content">						
+						<my-radio-group :disabled="hasSubmit" :options="_option.options" :index="_index" type="radio" @change="handleChooseMultisOption"></my-radio-group>
+					</view>
+				</view>
+			</view>
 			<view class="commentView" v-if="hasSubmit">
-				<view v-if="questionDetail.type==3" class="rightAnswer">正确答案：
-					<view v-for="s in options">{{s.rightAnswer}}</view>
+				<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
+					<view style="display:inline-block;" v-for="s in options" :key="s.code">{{s.rightAnswer}}</view>
 				</view>
 				<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
 				<view class="comment">答案解析：
@@ -49,6 +61,7 @@
 <script>
 	import myRadioGroup from '../../components/myRadio/myRadioGroup.vue'
 	import { dateFormat, toDateFromString,addMonths, addDays, addSeconds, GetRandomNum } from '../../js/common.js'
+	const codes = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	export default {
 		components:{
 			myRadioGroup
@@ -72,6 +85,7 @@
 				currTime:0, // 多去多少时间（秒）
 				score:0,
 				isComplate: false, // 是否已正常提交
+				questions:[], // 需要答题的题目Id
 			}
 		},
 		onLoad(options) {
@@ -151,6 +165,14 @@
 					self.endTime = minutes * 60
 					self.count = questions.length
 					self.answers = new Array(questions.length)
+					let way = res.get('way')
+					if(way == '3' || way == '4') {
+						self.questions = self.examDetail.get('questions').sort(()=> {
+							return Math.random() - 0.5
+						})
+					} else {
+						self.questions = self.examDetail.get('questions')
+					}
 					self.bindQuestion()
 				})
 			},
@@ -158,15 +180,48 @@
 			bindQuestion(){
 				var self = this
 				var query = new this.Parse.Query("TestQuestions")
-				let id = self.examDetail.get('questions')[self.index-1]
+				let id = self.questions[self.index-1]
 				// query.equalTo('id', id)
 				query.get(id).then(res=>{
 					if(res){
-						if(res.get('type') == 3){
+						let type = res.get('type')
+						if(type == 3){
 							res.set('cinputs', res.get('title').split('____'))
+						}
+						if(type == 4){
+							res.set('cinputs', res.get('title').split('()'))
 						}
 						self.questionDetail = res
 						let _options = JSON.parse(JSON.stringify(res.get('options')))
+						let way = self.examDetail.get('way')
+						if(type == 1 || type == 2) {
+							if(way == '2' || way == '4'){
+								_options = _options.sort(()=> {
+									return Math.random() > 0.5 ? 1 : -1;
+								})
+							}
+							_options.forEach((_item, _idx)=>{
+								_item.oldcode = '' + _item.code
+								_item.code = codes[_idx]
+							})
+						} else if(type==4){
+							if(way == '2' || way == '4'){
+								_options.forEach((_item,_idx)=> {
+									_item.options = _item.options.sort(()=> {
+										return Math.random() > 0.5 ? 1 : -1;
+									})
+								})
+							}
+							_options.forEach((item,_idx)=> {
+								item.options.forEach((_item, _idx)=>{
+									_item.oldcode = '' + _item.code
+									_item.code = codes[_idx]
+									if(_item.value=='1'){
+										item.rightAnswer = _item.code
+									}
+								})
+							})
+						}
 						self.options =  _options
 					}
 				})
@@ -185,6 +240,25 @@
 					this.canSubmit = _currAnswer.length > 1
 				} else if(type == 1) {
 					this.canSubmit = _currAnswer.length == 1
+				}
+			},
+			/*多项选择选择答案*/
+			handleChooseMultisOption(options,_index){
+				var item = options.find(t=>{
+					return t.state == 2
+				})
+				this.currAnswer[_index] = item.code
+				var checkCount = 0
+				for(var i=0;i<this.options.length;i++){
+					var item = this.currAnswer[i]
+					if(item){
+						checkCount++
+					}
+				}
+				if(checkCount==this.options.length){
+					this.canSubmit = true
+				} else {
+					this.canSubmit = false
 				}
 			},
 			/*填空题填写答案*/
@@ -208,9 +282,8 @@
 					let _score = 0
 					let _examOptions = self.examDetail.get('options')
 					let _type = self.questionDetail.get('type')
-					let _typeTxt = (_type==1?'单选':(_type==2?'多选':(_type==3?'填空':'')))
 					let _option = _examOptions.find(t=>{
-						return t.type == _typeTxt
+						return t.type == parseInt(_type)
 					})
 					if(this.questionDetail.get('type') == 3) {
 						self.currAnswer=[]
@@ -237,6 +310,23 @@
 								} 
 							})
 							item.rightAnswer = item.value[0].txt + (item.value.length > 1 ? ('(备选：' + _currTxt + ')'):'')
+						})
+					} else if(this.questionDetail.get('type') == 4){
+						this.options.forEach((_option,_index)=>{
+							_option.options.forEach((item)=>{
+								var choose = self.currAnswer[_index] == item.code
+								if((item.value == '0'|| item.value == '') && choose) { // 选中错误答案
+									result = false
+									item.state = 4
+								} else if(item.value == '1'&& choose) { // 选中正确答案
+									item.state = 6
+								} else if(item.value == '1'&& !choose){ // 未选中正确答案
+									result = false
+									item.state = 5
+								} else { // 未选中的错误答案
+									item.state = 3
+								}
+							})
 						})
 					} else {
 						this.options.forEach((item)=>{
@@ -319,7 +409,7 @@
 							}
 						})
 					}
-					self.answers[self.index-1] = { answer: JSON.parse(JSON.stringify(self.currAnswer)), result:result}
+					self.answers[self.index-1] = {questionId: self.questions[self.index - 1], options: JSON.parse(JSON.stringify(self.options)) ,answer: JSON.parse(JSON.stringify(self.currAnswer)), result:result}
 					if(self.index==self.examDetail.get('questions').length){
 						// 最后一题
 						/*保存答题记录*/
