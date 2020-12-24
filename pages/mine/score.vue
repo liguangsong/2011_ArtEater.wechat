@@ -4,6 +4,7 @@
 			<view class="title">排名</view>
 			<view class="title">积分</view>
 		</view>
+		<view style="height: 80rpx;"></view>
 		<view class="scoreItem" v-for="(user,index) in scoreList">
 			<view v-if="index==0" class="index first">{{index + 1}}</view>
 			<view v-if="index==1" class="index second">{{index + 1}}</view>
@@ -81,7 +82,13 @@
 </script>
 
 <style>
+	page{
+		background-color: #fbfbfa;
+	}
 	.myPage .headView{
+		position: fixed;
+		top: 0;
+		width: 100%;
 		padding: 0 30rpx;
 		margin-bottom: 18rpx;
 		height: 74rpx;
@@ -91,6 +98,8 @@
 		font-family: PingFangSC-Medium;
 		display: flex;
 		border-bottom: 2rpx solid #f2f2f2;
+		background-color: #fbfbfa;
+		z-index: 3;
 	}
 	.myPage .headView .title:first-child{
 		text-align: left;

@@ -92,7 +92,7 @@
 		display: inline-block;
 		width: 100%;
 		border: 2rpx solid #fbfbfb;
-		border-radius: 10rpx;
+		border-radius: 0rpx;
 		margin-top: 10rpx;
 	}
 	.myCom .item:last-child,.myCom .item.state1:last-child,.myCom .item.state3:last-child,.myCom .item.state5:last-child{

@@ -125,8 +125,8 @@
 		line-height: 100rpx;
 	}
 	.checkGroup .checkItem .icon image{
-		width: 48rpx;
-		height: 48rpx;
+		width: 32rpx;
+		height: 32rpx;
 		display: inline-block;
 		vertical-align: middle;
 	}

@@ -116,9 +116,15 @@
 		font-weight: bold;
 		color: #352026;
 		font-family: PingFangSC-Medium;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1!important;
+		-webkit-box-orient: vertical!important;
 	}
 	.mView .score{
-		flex: 1;
+		/* flex: 1; */
+		width: 150rpx;
 		text-align: right;
 		font-size: 30rpx;
 		font-weight: bold;

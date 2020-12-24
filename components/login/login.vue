@@ -226,6 +226,8 @@
 		font-family: PingFangSC-Medium;
 		background-color: #ffffff;
 		border: 1rpx solid #ffffff;
+		display: inline-block;
+		vertical-align: middle;
 	}
 	.btnConfirm::after{
 		border: none;

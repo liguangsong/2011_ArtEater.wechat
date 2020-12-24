@@ -34,6 +34,10 @@
 	}
 	export default {
 		onLaunch: function() {
+			console.log('App onLaunch')
+			uni.reLaunch({
+				url:'/pages/index/lunch'
+			})
 			uni.checkSession({
 				success(e) {
 					// 已登录

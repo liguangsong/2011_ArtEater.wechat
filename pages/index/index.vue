@@ -1,5 +1,5 @@
 <template>
-	<view class="myPage">
+	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll'}">
 		<!--轮播 start-->
 		<view class="page-section">
 			<view class="page-section-spacing">
@@ -54,7 +54,7 @@
 		</view>
 		<!--热门专题 end-->
 		<!--精品推荐 start-->
-		<view class="groupView">
+		<view class="groupView" style="margin-top: 24rpx;">
 			<view class="headView">
 				<view class="title">推荐</view>
 			</view>
@@ -116,6 +116,106 @@
 		</u-popup>
 		<!--购买重点题库 end-->
 		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="isShowLogin=false" :to="toUrl"></login>
+		<u-mask :custom-style="{'background': 'rgba(255, 255, 255, 0.7)'}" :show="isShowTips" :mask-click-able="false" :zoom="false" @click="show = false">
+			<view v-show="step==1" class="step step1">
+				<view class="navItem">
+					<view class="img">
+						<image src="../../static/icon/icon_errorques.png"></image>
+					</view>
+					<view class="title">错题集</view>
+				</view>
+			</view>
+			<view v-show="step==1" class="tooltip tip1">
+				<view class="timg">
+					<image src="../../static/icon/icon_tips_left.png"></image>
+				</view>
+				<view class="tooltiptext">
+					<view class="content">
+						<text>你的错题集中营，
+						帮你扫除知识盲区。</text>
+					</view>
+					<view class="action" @click="handleStep">我知道了</view>
+				</view>
+			</view>
+			<view v-show="step==2" class="step step2">
+				<view class="navItem">
+					<view class="img">
+						<image src="../../static/icon/icon_question.png"></image>
+					</view>
+					<view class="title">重点题库</view>
+				</view>
+			</view>
+			<view v-show="step==2" class="tooltip tip2">
+				<view class="timg">
+					<image src="../../static/icon/icon_tips_left.png"></image>
+				</view>
+				<view class="tooltiptext">
+					<view class="content">
+						<text>权威名师替你缩小复习范围，
+						锁定必考知识点，
+						有的放矢，事半功倍。</text>
+					</view>
+					<view class="action" @click="handleStep">我知道了</view>
+				</view>
+			</view>
+			<view v-show="step==3" class="step step3">
+				<view class="navItem">
+					<view class="img">
+						<image src="../../static/icon/icon_test.png"></image>
+					</view>
+					<view class="title">模拟试卷</view>
+				</view>
+			</view>
+			<view v-show="step==3" class="tooltip tip3">
+				<view class="timg" style="left: 250rpx;">
+					<image src="../../static/icon/icon_tips_right.png"></image>
+				</view>
+				<view class="tooltiptext">
+					<view class="content">
+						<text>记得来这里检验一下，
+						你的学习效果。</text>
+					</view>
+					<view class="action" @click="handleStep">我知道了</view>
+				</view>
+			</view>
+			<view v-show="step==4" class="step step4">
+				<view class="navItem">
+					<view class="img">
+						<image src="../../static/icon/icon_mine.png"></image>
+					</view>
+					<view class="title">个人中心</view>
+				</view>
+			</view>
+			<view v-show="step==4" class="tooltip tip4">
+				<view class="timg" style="left: 270rpx;">
+					<image src="../../static/icon/icon_tips_right.png"></image>
+				</view>
+				<view class="tooltiptext">
+					<view class="content">
+						<text>你的个人中心在这里哦！</text>
+					</view>
+					<view class="action" @click="handleStep">我知道了</view>
+				</view>
+			</view>
+			
+			
+			<view v-show="step==5" class="step step5">
+				<view class="subjectItem">
+					<image v-if="subjects && subjects.length > 3" :src="subjects[3].backgroundImg"></image>
+				</view>
+			</view>
+			<view v-show="step==5" class="tooltip tip5">
+				<view class="timg" style="left: 30rpx;">
+					<image src="../../static/icon/icon_tips_left.png"></image>
+				</view>
+				<view class="tooltiptext">
+					<view class="content">
+						<text>实验艺术专用</text>
+					</view>
+					<view class="action" @click="handleStep">我知道了</view>
+				</view>
+			</view>
+		</u-mask>
 	</view>
 </template>
 
@@ -130,6 +230,8 @@
 				openid: '',
 				userInfo: {},
 				isShowLogin: false,
+				isShowTips: false,
+				step: 1,
 				toUrl:'',
 				isShowImportBuy: false,
 				isShowTestBuy: false,
@@ -140,6 +242,7 @@
 				mnksConfig:{}, // 模拟考试配置
 				hasBuyedZDTK:false, // 是否购买了重点题库
 				hasBuyedMNKS:false, // 是否购买了模拟考试
+				windowHeight: 0
 			}
 		},
 		onShow() {
@@ -154,8 +257,22 @@
 		},
 		onLoad() {
 			var self = this
+			uni.getStorage({
+				key:'hasHomeTiped',
+				success:(res)=>{
+					self.isShowTips = res.data ? false : true
+				},
+				fail() {
+					self.isShowTips = true
+				}
+			})
 			const Subjects = this.Parse.Object.extend("Subjects")
 			const query = new this.Parse.Query('Subjects')
+			uni.getSystemInfo({
+			   success: res => {
+			 	self.windowHeight = res.windowHeight
+			   }
+			})
 			query.ascending("createdAt")
 			query.equalTo("parent_ID", "0")
 			query.find().then(list => {
@@ -415,6 +532,16 @@
 					  }
 					})
 				})
+			},
+			handleStep(){
+				this.step += 1
+				if(this.step > 5){
+					uni.setStorage({
+						key:'hasHomeTiped',
+						data: true
+					})
+					this.isShowTips = false	
+				}
 			}
 		}
 	}
@@ -423,6 +550,7 @@
 <style>
 	page{
 		background-color: #fbf8f7;
+		overflow: hidden;
 	}
 	.myPage{
 		/* padding: 0 30rpx; */
@@ -483,7 +611,7 @@
 	.groupView{
 		/* width: calc(100% - 40rpx); */
 		/* padding: 30rpx; */
-		margin-top: 38rpx;
+		margin-top: 6rpx;
 	}
 	.groupView .headView{
 		display: flex;
@@ -578,8 +706,6 @@
 		font-size: 30rpx;
 		color: #352026;
 	}
-	
-	
 	.buylView {
 		width: 100%;
 	}
@@ -612,5 +738,147 @@
 		color: #ffffff;
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
+	}
+	
+	.step .navItem{
+		flex: 1;
+		width: 100%;
+		text-align: center;
+	}
+	.step .navItem .img{
+		width: 130rpx;
+		height: 130rpx;
+		display: block;
+		text-align: center;
+		margin: auto;
+	}
+	.step .navItem .img image{
+		width: 130rpx;
+		height: 130rpx;
+	}
+	.step .navItem .title{
+		width: 130rpx;
+		height: 30rpx;
+		line-height: 30rpx;
+		display: inline-block;
+		text-align: center;
+		font-family: PingFangSC-Medium;
+		font-weight: bold;
+		font-size: 22rpx;
+		color: #352026;
+		display: block;
+		margin: auto;
+	}
+	.step .subjectItem{
+		display: inline-block;
+		width: 336rpx;
+		height: 152rpx;
+		text-align: center;
+		border-radius: 56rpx;
+	}
+	.step .subjectItem image{
+		width: 336rpx;
+		height: 152rpx;
+		border-radius: 56rpx;
+	}
+	.tooltip {
+	    position: absolute;
+	    display: inline-block;
+	}
+	.tooltip .timg{
+		position: relative;
+		top: 18rpx;
+		left: 35rpx;
+	}
+	.tooltip .timg image{
+		width: 32rpx;
+		height: 32rpx;
+	}
+	.tooltip .tooltiptext {
+	    visibility: visible;
+	    background-color: #ff6867;
+	    color: #ffffff;
+	    text-align: center;
+		border-radius: 30rpx;
+	    z-index: 1;
+	}
+	.tooltip .tooltiptext .content{
+		padding: 20rpx 32rpx 10rpx 32rpx;
+		font-size: 26rpx;
+		color: #fbfbfa;
+		text-align: left;
+	}
+	
+	.tooltip .tooltiptext .action{
+		padding-top: 10rpx;
+		padding-bottom: 20rpx;
+		font-size: 26rpx;
+	}
+	
+	.step1{
+		width: 130rpx;
+		height: 167rpx;
+		position: absolute;
+		top: 359rpx;
+		left: 30rpx;
+	}
+	
+	.step2{
+		width: 130rpx;
+		height: 167rpx;
+		position: absolute;
+		top: 359rpx;
+		left: 218rpx;
+	}
+	
+	.step3{
+		width: 130rpx;
+		height: 167rpx;
+		position: absolute;
+		top: 359rpx;
+		left: 405rpx;
+	}
+	
+	.step4{
+		width: 130rpx;
+		height: 167rpx;
+		position: absolute;
+		top: 359rpx;
+		left: 593rpx;
+	}
+	
+	
+	.step5{
+		width: 336rpx;
+		height: 152rpx;
+		position: absolute;
+		top: 722rpx;
+		left: 381rpx;
+	}
+	
+	.tip1{
+		width: 290rpx;
+		left: 115rpx;
+		top: 490rpx;
+	}
+	.tip2{
+		width: 395rpx;
+		left: 300rpx;
+		top: 490rpx;
+	}
+	.tip3{
+		width: 320rpx;
+		left: 135rpx;
+		top: 490rpx;
+	}
+	.tip4{
+		width: 344rpx;
+		left: 315rpx;
+		top: 490rpx;
+	}
+	.tip5{
+		width: 220rpx;
+		left: 496rpx;
+		top: 860rpx;
 	}
 </style>

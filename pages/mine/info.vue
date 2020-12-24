@@ -3,28 +3,36 @@
 		<view class="editForm">
 			<u-form :model="form" ref="uForm" :rules="rules">
 				<u-form-item label="头像" :label-width="150" prop="realname">
-					<image class="headIcon" slot="right" :src="form.avatarUrl"></image>
+					<view  slot="right" style="padding-right: 36rpx;">
+						<image class="headIcon" :src="form.avatarUrl"></image>
+					</view>
 				</u-form-item>
 				<u-form-item label="昵称" :label-width="150">
-					<label class="txt" slot="right">{{form.nickName}}</label>
+					<view  slot="right" style="padding-right: 36rpx;">
+						<label class="txt">{{form.nickName}}</label>
+					</view>
 				</u-form-item>
 				<u-form-item label="手机号码" :label-width="150" prop="phone">
-					<label class="txt" slot="right">{{form.phone}}</label>
+					<view  slot="right" style="padding-right: 36rpx;">
+						<label class="txt">{{form.phone}}</label>
+					</view>
 				</u-form-item>
 				<u-form-item label="真实姓名" :label-width="150" prop="realname">
-					<label class="txt" slot="right">{{form.realname}}</label>
+					<view  slot="right" style="padding-right: 36rpx;">
+						<label class="txt">{{form.realname}}</label>
+					</view>
 				</u-form-item>
 				<u-form-item label="所在地区" :label-width="150" prop="areaTxt">
 					<u-select v-model="isShowArea" mode="mutil-column-auto" confirm-color="#352026" value-name="code" label-name="name" :list="provices" @confirm="confirm"></u-select>
 					<u-input v-model="form.areaTxt" :custom-style="custStyle" :disabled="true" input-align="right" maxlength='30' placeholder="请选择所在地区"  @click="bindOpenArea" />
-					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item">
+					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item" style="padding-left: -2rpx;">
 						<u-icon name="arrow-right" size="26" color="#c0c4cc"></u-icon>
 					</view>
 				</u-form-item>
 				<u-form-item label="报考专业" :label-width="150" prop="speciality">
 					<u-select v-model="isShowSpeciality" mode="single-column" confirm-color="#352026" value-name="code" label-name="name" :list="specialitys" @confirm="spConfirm"></u-select>
 					<u-input v-model="form.speciality" :custom-style="custStyle" :disabled="true" input-align="right" maxlength='20' placeholder="请选择报考专业"  @click="isShowSpeciality=true" />
-					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item">
+					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item" style="padding-left: -2rpx;">
 						<u-icon name="arrow-right" size="26" color="#c0c4cc"></u-icon>
 					</view>
 				</u-form-item>
@@ -32,15 +40,19 @@
 					<!-- <u-select v-model="isShowUniversity" mode="single-column" confirm-color="#352026" value-name="code" label-name="name" :list="universities" @confirm="unConfirm"></u-select> -->
 					<checkunivercity :visiable="isShowUniversity" @cancle="handleCancel"  @complate="handleComplate" :value="form.university"></checkunivercity>
 					<u-input v-model="form.university" @click="handleUnClick" :custom-style="custStyle" :disabled="true" input-align="right" maxlength='30' placeholder="请选择目标院校" />
-					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item">
+					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item" style="padding-left: -2rpx;">
 						<u-icon name="arrow-right" size="26" color="#c0c4cc"></u-icon>
 					</view>
 				</u-form-item>
 				<u-form-item label="消费金额" :label-width="150">
-					<label slot="right">{{form.amount}}</label>
+					<view  slot="right" style="padding-right: 36rpx;">
+						<label style="color: rgba(53,32,38,0.7);">{{form.amount}}</label>
+					</view>
 				</u-form-item>
 				<u-form-item label="积分" :label-width="150">
-					<label slot="right">{{form.score}}</label>
+					<view  slot="right" style="padding-right: 36rpx;">
+						<label style="color: rgba(53,32,38,0.7);">{{form.score}}</label>
+					</view>
 				</u-form-item>
 			</u-form>
 			<!-- <u-button @click="submit">提交</u-button> -->

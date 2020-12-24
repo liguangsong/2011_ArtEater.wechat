@@ -1,6 +1,22 @@
 <template>
 	<view class="myPage">
 		<view class="treeView">
+			<!--一级-->
+			<view class="treeItem" style="margin-left: 16rpx;margin-top: 12rpx;margin-bottom: 60rpx;">
+				<view class="content">
+					<view class="conView">
+						<view class="listTxt" @click="handleNameClick" :data-item="subjectDetail">{{subjectDetail.subject_name}}</view>
+						<view class="listAction">
+							<view class="action" @click="handleNameClick" :data-item="subjectDetail">
+								<image v-if="subjectDetail.content" src="../../static/icon/icon_order.png"></image>
+							</view>
+							<view class="action" @click="handleTestClick" :data-item="subjectDetail">
+								<image v-if="subjectDetail.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
 			<!--二级-->
 			<view v-for="(subject,index) in subjectTree" class="treeItem">
 				<view class="listIcon">
@@ -26,8 +42,13 @@
 							<view class="listIcon">
 								<template v-if="sub.has_down_level">
 									<view class="actionExtend"  @click="handleExtend(sub)">
-										<image v-if="!sub.extend" src="../../static/icon/icon_add.png"></image>
-										<image v-else src="../../static/icon/icon_remove.png"></image>
+										<image v-if="!sub.extend" src="../../static/icon/icon_add_child.png"></image>
+										<image v-else src="../../static/icon/icon_remove_children.png"></image>
+									</view>
+								</template>
+								<template v-else>
+									<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+										<image src="../../static/icon/icon_nochild.png"></image>
 									</view>
 								</template>
 							</view>
@@ -46,8 +67,13 @@
 										<view class="listIcon">
 											<template v-if="sub1.has_down_level">
 												<view class="actionExtend" @click="handleExtend(sub1)">
-													<image v-if="!sub1.extend" src="../../static/icon/icon_add.png"></image>
-													<image v-else src="../../static/icon/icon_remove.png"></image>
+													<image v-if="!sub1.extend" src="../../static/icon/icon_add_child.png"></image>
+													<image v-else src="../../static/icon/icon_remove_children.png"></image>
+												</view>
+											</template>
+											<template v-else>
+												<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+													<image src="../../static/icon/icon_nochild.png"></image>
 												</view>
 											</template>
 										</view>
@@ -67,8 +93,13 @@
 													<view class="listIcon">
 														<template v-if="sub2.has_down_level">
 															<view class="actionExtend" @click="handleExtend(sub2)">
-																<image v-if="!sub2.extend" src="../../static/icon/icon_add.png"></image>
-																<image v-else src="../../static/icon/icon_remove.png"></image>
+																<image v-if="!sub2.extend" src="../../static/icon/icon_add_child.png"></image>
+																<image v-else src="../../static/icon/icon_remove_children.png"></image>
+															</view>
+														</template>
+														<template v-else>
+															<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																<image src="../../static/icon/icon_nochild.png"></image>
 															</view>
 														</template>
 													</view>
@@ -87,8 +118,13 @@
 																<view class="listIcon">
 																	<template v-if="sub3.has_down_level">
 																		<view class="actionExtend" @click="handleExtend(sub3)">
-																			<image v-if="!sub3.extend" src="../../static/icon/icon_add.png"></image>
-																			<image v-else src="../../static/icon/icon_remove.png"></image>
+																			<image v-if="!sub3.extend" src="../../static/icon/icon_add_child.png"></image>
+																			<image v-else src="../../static/icon/icon_remove_children.png"></image>
+																		</view>
+																	</template>
+																	<template v-else>
+																		<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																			<image src="../../static/icon/icon_nochild.png"></image>
 																		</view>
 																	</template>
 																</view>
@@ -107,8 +143,13 @@
 																			<view class="listIcon">
 																				<template v-if="sub4.has_down_level">
 																					<view class="actionExtend" @click="handleExtend(sub4)">
-																						<image v-if="!sub4.extend" src="../../static/icon/icon_add.png"></image>
-																						<image v-else src="../../static/icon/icon_remove.png"></image>
+																						<image v-if="!sub4.extend" src="../../static/icon/icon_add_child.png"></image>
+																						<image v-else src="../../static/icon/icon_remove_children.png"></image>
+																					</view>
+																				</template>
+																				<template v-else>
+																					<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																						<image src="../../static/icon/icon_nochild.png"></image>
 																					</view>
 																				</template>
 																			</view>
@@ -128,8 +169,13 @@
 																						<view class="listIcon">
 																							<template v-if="sub5.has_down_level">
 																								<view class="actionExtend" @click="handleExtend(sub5)">
-																									<image v-if="!sub5.extend" src="../../static/icon/icon_add.png"></image>
-																									<image v-else src="../../static/icon/icon_remove.png"></image>
+																									<image v-if="!sub5.extend" src="../../static/icon/icon_add_child.png"></image>
+																									<image v-else src="../../static/icon/icon_remove_children.png"></image>
+																								</view>
+																							</template>
+																							<template v-else>
+																								<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																									<image src="../../static/icon/icon_nochild.png"></image>
 																								</view>
 																							</template>
 																						</view>
@@ -245,6 +291,9 @@
 			/* 加载科目树*/
 			bindSubjectTree(){
 				var self = this
+				uni.showLoading({
+					title:'加载中……'
+				})
 				var query = new this.Parse.Query("Subjects")
 				// query.equalTo("parent_ID", this.subjectId)
 				query.ascending('createdAt')
@@ -257,6 +306,8 @@
 					var quesQuery = new self.Parse.Query("TestQuestions")
 					quesQuery.equalTo('isImportant', 1)
 					quesQuery.containedIn('subjects', ids)
+					quesQuery.limit(10000)
+					quesQuery.select('objectId','subjects')
 					quesQuery.find().then(ques=>{
 						res.forEach(item => {
 							let questions = ques.filter(t=>{
@@ -268,6 +319,7 @@
 						console.log(res)
 						console.log(tree)
 						self.subjectTree = tree
+						uni.hideLoading()
 					})
 				})
 			},
@@ -393,8 +445,8 @@
 	.treeView .treeItem .listIcon .actionExtend image{
 		display: inline-block;
 		vertical-align: middle;
-		width: 30rpx;
-		height: 30rpx;
+		width: 32rpx;
+		height: 32rpx;
 		justify-items: legacy;
 	}
 	.treeView .treeItem .content{
@@ -410,9 +462,9 @@
 		font-weight: bold;
 		/* height: 50rpx; */
 		line-height: 50rpx;
-		overflow: hidden;
+		/* overflow: hidden; */
 		text-overflow: ellipsis;
-		display: -webkit-box;
+		/* display: -webkit-box; */
 		-webkit-line-clamp: 1!important;
 		-webkit-box-orient: vertical!important;
 		font-family: PingFangSC-Medium;

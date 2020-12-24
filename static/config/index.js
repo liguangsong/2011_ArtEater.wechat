@@ -3,10 +3,10 @@ export default{
 	// ParseAppId:'myAppId',
 	// parseServerJsKey:'123456',
 	
-	parseRestBaseUrl: 'https://sys.aoekids.cn',
+	parseRestBaseUrl: 'https://www.arteater.cn',
 	parseRestApiKey:'47d8ecg6a77aa2981b9c',
 	
-	parseServerBaseUrl: 'https://sys.aoekids.cn/api/1',
+	parseServerBaseUrl: 'https://www.arteater.cn/api/1',
 	ParseAppId:'8IXBcjIkgHNQ2v9k',
 	parseServerJsKey:'1uGXsOnrM70ElEuwWaxm1lp1zsE6nxJj',
 	

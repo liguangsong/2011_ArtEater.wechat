@@ -1,6 +1,22 @@
 <template>
-	<view class="myPage">
+	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll'}">
 		<view class="treeView">
+			<!--一级-->
+			<view class="treeItem" style="margin-left: 16rpx;margin-top: 12rpx;margin-bottom: 60rpx;">
+				<view class="content">
+					<view class="conView">
+						<view class="listTxt" @click="handleNameClick" :data-item="subjectDetail">{{subjectDetail.subject_name}}</view>
+						<view class="listAction">
+							<view class="action" @click="handleNameClick" :data-item="subjectDetail">
+								<image v-if="subjectDetail.content" src="../../static/icon/icon_order.png"></image>
+							</view>
+							<view class="action" @click="handleTestClick" :data-item="subjectDetail">
+								<image v-if="subjectDetail.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
 			<!--二级-->
 			<view v-for="(subject,index) in subjectTree" class="treeItem">
 				<view class="listIcon">
@@ -29,8 +45,13 @@
 							<view class="listIcon">
 								<template v-if="sub.has_down_level">
 									<view class="actionExtend"  @click="handleExtend(sub)">
-										<image v-if="!sub.extend" src="../../static/icon/icon_add.png"></image>
-										<image v-else src="../../static/icon/icon_remove.png"></image>
+										<image v-if="!sub.extend" src="../../static/icon/icon_add_child.png"></image>
+										<image v-else src="../../static/icon/icon_remove_children.png"></image>
+									</view>
+								</template>
+								<template v-else>
+									<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+										<image src="../../static/icon/icon_nochild.png"></image>
 									</view>
 								</template>
 							</view>
@@ -52,8 +73,13 @@
 										<view class="listIcon">
 											<template v-if="sub1.has_down_level">
 												<view class="actionExtend" @click="handleExtend(sub1)">
-													<image v-if="!sub1.extend" src="../../static/icon/icon_add.png"></image>
-													<image v-else src="../../static/icon/icon_remove.png"></image>
+													<image v-if="!sub1.extend" src="../../static/icon/icon_add_child.png"></image>
+													<image v-else src="../../static/icon/icon_remove_children.png"></image>
+												</view>
+											</template>
+											<template v-else>
+												<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+													<image src="../../static/icon/icon_nochild.png"></image>
 												</view>
 											</template>
 										</view>
@@ -76,8 +102,13 @@
 													<view class="listIcon">
 														<template v-if="sub2.has_down_level">
 															<view class="actionExtend" @click="handleExtend(sub2)">
-																<image v-if="!sub2.extend" src="../../static/icon/icon_add.png"></image>
-																<image v-else src="../../static/icon/icon_remove.png"></image>
+																<image v-if="!sub2.extend" src="../../static/icon/icon_add_child.png"></image>
+																<image v-else src="../../static/icon/icon_remove_children.png"></image>
+															</view>
+														</template>
+														<template v-else>
+															<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																<image src="../../static/icon/icon_nochild.png"></image>
 															</view>
 														</template>
 													</view>
@@ -99,8 +130,13 @@
 																<view class="listIcon">
 																	<template v-if="sub3.has_down_level">
 																		<view class="actionExtend" @click="handleExtend(sub3)">
-																			<image v-if="!sub3.extend" src="../../static/icon/icon_add.png"></image>
-																			<image v-else src="../../static/icon/icon_remove.png"></image>
+																			<image v-if="!sub3.extend" src="../../static/icon/icon_add_child.png"></image>
+																			<image v-else src="../../static/icon/icon_remove_children.png"></image>
+																		</view>
+																	</template>
+																	<template v-else>
+																		<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																			<image src="../../static/icon/icon_nochild.png"></image>
 																		</view>
 																	</template>
 																</view>
@@ -122,8 +158,13 @@
 																			<view class="listIcon">
 																				<template v-if="sub4.has_down_level">
 																					<view class="actionExtend" @click="handleExtend(sub4)">
-																						<image v-if="!sub4.extend" src="../../static/icon/icon_add.png"></image>
-																						<image v-else src="../../static/icon/icon_remove.png"></image>
+																						<image v-if="!sub4.extend" src="../../static/icon/icon_add_child.png"></image>
+																						<image v-else src="../../static/icon/icon_remove_children.png"></image>
+																					</view>
+																				</template>
+																				<template v-else>
+																					<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																						<image src="../../static/icon/icon_nochild.png"></image>
 																					</view>
 																				</template>
 																			</view>
@@ -146,8 +187,13 @@
 																						<view class="listIcon">
 																							<template v-if="sub5.has_down_level">
 																								 <view class="actionExtend" @click="handleExtend(sub5)">
-																									<image v-if="!sub5.extend" src="../../static/icon/icon_add.png"></image>
-																									<image v-else src="../../static/icon/icon_remove.png"></image>
+																									<image v-if="!sub5.extend" src="../../static/icon/icon_add_child.png"></image>
+																									<image v-else src="../../static/icon/icon_remove_children.png"></image>
+																								</view>
+																							</template>
+																							<template v-else>
+																								<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																									<image src="../../static/icon/icon_nochild.png"></image>
 																								</view>
 																							</template>
 																						</view>
@@ -208,6 +254,40 @@
 				</view>
 			</view>
 		</u-popup>
+		<u-mask :custom-style="{'background': 'rgba(255, 255, 255, 0.7)'}" :show="isShowTips" :mask-click-able="false" :zoom="false" @click="show = false">
+			<view v-show="step==1" class="step step1">
+				<view class="action">
+					<image src="../../static/icon/icon_order.png"></image>
+				</view>
+			</view>
+			<view v-show="step==1" class="tooltip tip1">
+				<view class="timg" style="left: 150rpx;">
+					<image src="../../static/icon/icon_tips_right.png"></image>
+				</view>
+				<view class="tooltiptext">
+					<view class="content">
+						<text>单元知识摘要</text>
+					</view>
+					<view class="action" @click="handleStep">我知道了</view>
+				</view>
+			</view>
+			<view v-show="step==2" class="step step2">
+				<view class="action">
+					<image src="../../static/icon/icon_pencle.png"></image>
+				</view>
+			</view>
+			<view v-show="step==2" class="tooltip tip2">
+				<view class="timg" style="left: 124rpx;">
+					<image src="../../static/icon/icon_tips_right.png"></image>
+				</view>
+				<view class="tooltiptext">
+					<view class="content">
+						<text>单元练习题</text>
+					</view>
+					<view class="action" @click="handleStep">我知道了</view>
+				</view>
+			</view>
+		</u-mask>
 	</view>
 </template>
 
@@ -219,28 +299,22 @@
 			return {
 				subjectTree:[],
 				userInfo: null,
+				isShowTips: false,
+				step: 1,
 				subjectId:'',
 				subjectDetail: null,
 				currSubjectDetail: null,
 				isShowSubjectDetail: false,
 				isShowSubjectBuy: false,
 				screenHeight:0,
-				hasBuyed: false
+				hasBuyed: false,
+				windowHeight: 0
 			}
 		},
 		onShow() {
-			var self = this
-			uni.getStorage({
-				key:'userInfo',
-				success: res => {
-					self.userInfo = res.data
-					self.bindOrder()
-					self.bindSubjectDetail()
-					self.bindSubjectTree()
-				}
-			})
 		},
 		onLoad(options) {
+			var self = this
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
 			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
@@ -249,10 +323,32 @@
 			  }
 			})
 			
+			uni.getSystemInfo({
+			   success: res => {
+			 	self.windowHeight = res.windowHeight
+			   }
+			})
+			uni.getStorage({
+				key:'hasSubjectTiped',
+				success:(res)=>{
+					self.isShowTips = res.data ? false : true
+				},
+				fail() {
+					self.isShowTips = true
+				}
+			})
 			if(options.sid){
 				this.subjectId = options.sid
+				uni.getStorage({
+					key:'userInfo',
+					success: res => {
+						self.userInfo = res.data
+						self.bindOrder()
+						self.bindSubjectDetail()
+						self.bindSubjectTree()
+					}
+				})
 			}
-			var self = this
 			uni.getSystemInfo({
 			  success: res => {
 				console.log(res)
@@ -286,6 +382,9 @@
 			/* 加载科目树*/
 			bindSubjectTree(){
 				var self = this
+				uni.showLoading({
+					title:'加载中……'
+				})
 				var query = new this.Parse.Query("Subjects")
 				// query.equalTo("parent_ID", this.subjectId)
 				query.ascending('createdAt')
@@ -297,6 +396,8 @@
 					})
 					var quesQuery = new self.Parse.Query("TestQuestions")
 					quesQuery.containedIn('subjects', ids)
+					quesQuery.limit(10000)
+					quesQuery.select('objectId','subjects')
 					quesQuery.find().then(ques=>{
 						res.forEach(item => {
 							let questions = ques.filter(t=>{
@@ -306,6 +407,7 @@
 						})
 						var tree = self.initSubjectTree(res, self.subjectId)
 						self.subjectTree = tree
+						uni.hideLoading()
 					})
 				})
 			},
@@ -412,13 +514,30 @@
 			/*做题*/
 			handleTestClick(e){
 				var self = this
-				if(self.subjectDetail.get('price') > 0 && !self.hasBuyed) {
+				var item = e.currentTarget.dataset.item
+				if(item.price > 0 && !self.hasBuyed) {
 					this.isShowSubjectBuy = true
 				} else {
 					var item = e.currentTarget.dataset.item
 					uni.navigateTo({
-						url:'exam?bsid='+self.subjectId+'&sid=' + item.value
+						url:'exam?bsid='+self.subjectId+'&sid=' + item.value,
+						events: {
+							buySuccess: function(data) {
+								debugger
+								self.bindOrder()
+							}
+						}
 					})
+				}
+			},
+			handleStep(){
+				this.step += 1
+				if(this.step > 2){
+					uni.setStorage({
+						key:'hasSubjectTiped',
+						data: true
+					})
+					this.isShowTips = false	
 				}
 			}
 		}
@@ -428,6 +547,7 @@
 <style>
 	page{
 		background-color: #fbfbfb;
+		overflow: hidden;
 	}
 	.treeView{
 		padding: 30rpx;
@@ -455,8 +575,8 @@
 	.treeView .treeItem .listIcon .actionExtend image{
 		display: inline-block;
 		vertical-align: middle;
-		width: 30rpx;
-		height: 30rpx;
+		width: 32rpx;
+		height: 32rpx;
 		justify-items: legacy;
 	}
 	.treeView .treeItem .content{
@@ -472,9 +592,9 @@
 		font-weight: bold;
 		/* height: 50rpx; */
 		line-height: 50rpx;
-		overflow: hidden;
+		/* overflow: hidden; */
 		text-overflow: ellipsis;
-		display: -webkit-box;
+		/* display: -webkit-box; */
 		-webkit-line-clamp: 1!important;
 		-webkit-box-orient: vertical!important;
 		font-family: PingFangSC-Medium;
@@ -547,10 +667,69 @@
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
 	}
-	.action{
+	.listAction .action{
 		width: 80rpx;
 		height: 50rpx;
 		text-align: center;
 		display: inline-block;
+	}
+	.tooltip {
+	    position: absolute;
+	    display: inline-block;
+	}
+	.tooltip .timg{
+		position: relative;
+		top: 18rpx;
+		left: 35rpx;
+	}
+	.tooltip .timg image{
+		width: 32rpx;
+		height: 32rpx;
+	}
+	.tooltip .tooltiptext {
+	    visibility: visible;
+	    background-color: #ff6867;
+	    color: #ffffff;
+	    text-align: center;
+		border-radius: 30rpx;
+	    z-index: 1;
+	}
+	.tooltip .tooltiptext .content{
+		padding: 20rpx 32rpx 10rpx 32rpx;
+		font-size: 26rpx;
+		color: #fbfbfa;
+		text-align: left;
+	}
+	
+	.tooltip .tooltiptext .action{
+		padding-top: 10rpx;
+		padding-bottom: 20rpx;
+		font-size: 26rpx;
+	}
+	.step .action image{
+		display: inline-block;
+		width: 32rpx;
+		height: 32rpx;
+		vertical-align: middle;
+	}
+	.step1{
+		position: absolute;
+		left: 586rpx;
+		top: 36rpx;
+	}
+	.step2{
+		position: absolute;
+		left: 664rpx;
+		top: 36rpx;
+	}
+	.tip1{
+		position: absolute;
+		top: 60rpx;
+		left: 405rpx;
+	}
+	.tip2{
+		position: absolute;
+		top: 60rpx;
+		left: 510rpx;
 	}
 </style>

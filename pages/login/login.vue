@@ -58,7 +58,7 @@
 		data() {
 			return {
 				customStyle:{'border-radius':'40rpx','min-height':'10rpx','height':'74rpx'},
-				labelStyle:{'height':'36rpx','margin-top':'30rpx','text-indent':'28rpx','font-size':'26rpx','color':'rgba(53,32,38,0.7)','font-family':'PingFangSC-Medium'},
+				labelStyle:{'height':'36rpx','margin-top':'30rpx','margin-bottom':'-3rpx','text-indent':'28rpx','font-size':'26rpx','color':'rgba(53,32,38,0.7)','font-family':'PingFangSC-Medium'},
 				openid:'',
 				sessionKey:'',
 				isShowArea: false,

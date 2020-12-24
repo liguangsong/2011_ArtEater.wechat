@@ -246,7 +246,7 @@
 	}
 	.myView .headView .scoreView{
 		/* width: calc(100% - 40rpx); */
-		padding-top: 30rpx;
+		padding-top: 40rpx;
 	}
 	.myView .headView .scoreView .content{
 		width: 100%;
@@ -275,7 +275,7 @@
 	}
 	.myView .actionView{
 		margin-top: 24rpx;
-		padding: 30rpx 40rpx;
+		padding: 8rpx 40rpx;
 		border-radius: 40rpx;
 		background-color: #ffffff;
 	}

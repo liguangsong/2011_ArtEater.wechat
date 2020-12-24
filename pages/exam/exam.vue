@@ -17,13 +17,15 @@
 			<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
 			<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
 				<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c}}
-					<block v-if="hasSubmit">
+					<!-- <block v-if="hasSubmit">
 						<view v-if="i!=questionDetail.cinputs.length-1" :class="'txt '+ (options[i].state==1?'success':'error')">{{options[i].content}}</view>
 					</block>
-					<block v-else>
+					<block v-else> -->
+					<block v-if="!hasSubmit">
 						<input v-if="i!=questionDetail.cinputs.length-1" :style="{width: (options[i].value[0].txt.length * 34 + 60) + 'rpx;'}" :data-index="i" @input="handleAnswerChange" @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />
-						<view v-if="i!=questionDetail.cinputs.length-1" class="tips">({{options[i].value[0].txt.length}}个字)</view>
+						<view v-if="i!=questionDetail.cinputs.length-1" class="tips">{{options[i].value[0].txt.length}}个字</view>
 					</block>
+					<!-- </block> -->
 				</block>
 			</view>
 			<view class="title" v-else-if="questionDetail.type==4">
@@ -41,19 +43,22 @@
 					</view>
 				</view>
 			</view>
-			<view class="commentView" v-if="hasSubmit">
+			<!-- <view class="commentView" v-if="hasSubmit">
 				<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
 					<view style="display:inline-block;" v-for="s in options" :key="s.code">{{s.rightAnswer}}</view>
 				</view>
 				<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
 				<view class="comment">答案解析：
-					<u-parse :html="questionDetail.comments"></u-parse>
+					<u-parse v-if="isShowComments" :html="questionDetail.comments"></u-parse>
+					<u-parse v-else html="暂未开放"></u-parse>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<view v-if="count > 0" class="actionView">	
-			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
-			<button v-if="hasSubmit&&index < count" @click="handleNext" class="next">下一题</button>
+			<!-- <button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
+			<button v-if="hasSubmit&&index < count" @click="handleNext" class="next">下一题</button> -->
+			<button v-if="index < count" @click="handleSubmit" :class="canSubmit?'next':'noAnswer'">下一题</button>
+			<button v-else @click="handleSubmit" :class="canSubmit?'next':'noAnswer'">提交</button>
 		</view>
 	</view>
 </template>
@@ -70,6 +75,7 @@
 			return {
 				index: 1, // 当前答题序号
 				count:0, // 总题数
+				isShowComments: true, // 是否显示答案解析
 				options: [],
 				currAnswer:[], // 当前答案
 				hasSubmit: false,
@@ -124,13 +130,6 @@
 			})
 		},
 		/**
-		  * 生命周期函数--监听页面隐藏
-		  */
-		onHide: function () {
-			debugger
-		},
-		
-		/**
 		  * 生命周期函数--监听页面卸载
 		  */
 		onUnload: function () {
@@ -149,6 +148,25 @@
 			inputBlur(e) {
 				this.inputHeight = 0
 			    console.log('键盘收起')
+			},
+			/* 判断当前是否显示答案解析 */
+			existsQuestiionComments(question){
+				var self = this
+				var subjects = question.get('subjects')
+				if(subjects && subjects.length > 0){
+					var query = new this.Parse.Query("Subjects")
+					query.containedIn('objectId', JSON.parse(JSON.stringify(subjects)))
+					query.greaterThan('price', 0)
+					query.first().then(res=>{
+						if(res) {
+							self.isShowComments = false
+						} else {
+							self.isShowComments = true
+						}
+					})
+				} else {
+					self.isShowComments = false
+				}
 			},
 			/*倒计时*/
 			handleChange(timestamp){
@@ -184,6 +202,8 @@
 				// query.equalTo('id', id)
 				query.get(id).then(res=>{
 					if(res){
+						self.questionDetail=null
+						self.existsQuestiionComments(res)
 						let type = res.get('type')
 						if(type == 3){
 							res.set('cinputs', res.get('title').split('____'))
@@ -203,6 +223,10 @@
 							_options.forEach((_item, _idx)=>{
 								_item.oldcode = '' + _item.code
 								_item.code = codes[_idx]
+							})
+						} else if(type==3){
+							_options.forEach((_item, _idx)=>{
+								_item.content = ''
 							})
 						} else if(type==4){
 							if(way == '2' || way == '4'){
@@ -295,10 +319,10 @@
 								return t.txt == item.content
 							})
 							if(!answer) { // 错误
-								item.state = 2
+								// item.state = 2
 								result = false
 							} else {
-								item.state = 1
+								// item.state = 1
 							}
 							let _currTxt = ''
 							item.value.forEach((t,i)=>{
@@ -317,14 +341,14 @@
 								var choose = self.currAnswer[_index] == item.code
 								if((item.value == '0'|| item.value == '') && choose) { // 选中错误答案
 									result = false
-									item.state = 4
+									// item.state = 4
 								} else if(item.value == '1'&& choose) { // 选中正确答案
-									item.state = 6
+									// item.state = 6
 								} else if(item.value == '1'&& !choose){ // 未选中正确答案
 									result = false
-									item.state = 5
+									// item.state = 5
 								} else { // 未选中的错误答案
-									item.state = 3
+									// item.state = 3
 								}
 							})
 						})
@@ -335,14 +359,14 @@
 							})
 							if((item.value == '0'|| item.value == '') && choose) { // 选中错误答案
 								result = false
-								item.state = 4
+								// item.state = 4
 							} else if(item.value == '1'&& choose) { // 选中正确答案
-								item.state = 6
+								// item.state = 6
 							} else if(item.value == '1'&& !choose){ // 未选中正确答案
 								result = false
-								item.state = 5
+								// item.state = 5
 							} else { // 未选中的错误答案
-								item.state = 3
+								// item.state = 3
 							}
 						})
 					}
@@ -352,7 +376,6 @@
 						var query = new self.Parse.Query(queryRight)
 						query.equalTo('openid', self.userInfo.openid)
 						query.first().then(rhis=>{
-							debugger
 							var queryNote = self.Parse.Object.extend("ErrorHistory")
 							var query1 = new self.Parse.Query(queryNote)
 							query1.equalTo('openid', self.userInfo.openid)
@@ -431,9 +454,16 @@
 							})
 							console.log('保存成功')
 						},(error)=>{
-							debugger
 							console.log(error)
 						})
+					} else {
+						setTimeout(function(){
+							self.index = self.index + 1
+							self.currAnswer = [] // 当前答案
+							self.hasSubmit = false;
+							self.canSubmit = false;
+							self.bindQuestion()
+						},300)
 					}
 				}
 			},
@@ -495,11 +525,13 @@
 		color: #b1b1b1;
 		font-family: PingFangSC-Medium;
 		background-color: #ffffff;
+		position: fixed;
+		top: 0;
+		width: 100%;
 	}
 	.questionView{
 		padding: 0 36rpx;
-		margin-top: 42rpx;
-		/* padding-bottom: 200rpx; */
+		margin-top: 104rpx;
 	}
 	.questionView .headView{
 		display: flex;
@@ -510,6 +542,8 @@
 		font-weight: bold;
 		color: #352026;
 		font-size: PingFangSC-Medium;
+		line-height: 50rpx;
+		height: 50rpx;
 	}
 	.questionView .headView .countView{
 		width: 150rpx;
@@ -517,9 +551,11 @@
 		font-size: 26rpx;
 		color: #352026;
 		font-size: PingFangSC-Medium;
+		line-height: 50rpx;
+		height: 50rpx;
 	}
 	.questionView .imgView{
-		margin-top: 40rpx;
+		margin-top: 60rpx;
 	}
 	.questionView .imgView image{
 		width: 100%;
@@ -614,6 +650,7 @@
 		background-color: #FFFFFF;
 		border-radius: 46rpx;
 		padding: 60rpx 40rpx;
+		margin-top: 10rpx;
 	}
 	.commentView .rightAnswer{
 		font-size: 30rpx;

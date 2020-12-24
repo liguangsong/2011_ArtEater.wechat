@@ -37,7 +37,8 @@
 				</view>
 				<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
 				<view class="comment">答案解析：
-					<u-parse :html="questionDetail.comments"></u-parse>
+					<u-parse v-if="isShowComments" :html="questionDetail.comments"></u-parse>
+					<u-parse v-else html="暂未开放"></u-parse>
 				</view>
 			</view>
 		</view>
@@ -56,6 +57,7 @@
 				index: 0, // 当前答题序号
 				count:0, // 总题数
 				options: [],
+				isShowComments: true, // 是否显示答案解析
 				currAnswer:[], // 当前答案
 				screenWidth: 0,
 				inputHeight:328, // 软键盘高度
@@ -109,6 +111,25 @@
 					self.bindQuestion()
 				})
 			},
+			/* 判断当前是否显示答案解析 */
+			existsQuestiionComments(question){
+				var self = this
+				var subjects = question.get('subjects')
+				if(subjects && subjects.length > 0){
+					var query = new this.Parse.Query("Subjects")
+					query.containedIn('objectId', JSON.parse(JSON.stringify(subjects)))
+					query.greaterThan('price', 0)
+					query.first().then(res=>{
+						if(res) {
+							self.isShowComments = false
+						} else {
+							self.isShowComments = true
+						}
+					})
+				} else {
+					self.isShowComments = false
+				}
+			},
 			/*加载题目*/
 			bindQuestion(){
 				var self = this
@@ -117,6 +138,7 @@
 				// query.equalTo('id', id)
 				query.get(id).then(res=>{
 					if(res){
+						self.existsQuestiionComments(res)
 						if(res.get('type') == 3){
 							res.set('cinputs', res.get('title').split('____'))
 						}
@@ -224,6 +246,8 @@
 		font-weight: bold;
 		color: #352026;
 		font-size: PingFangSC-Medium;
+		line-height: 50rpx;
+		height: 50rpx;
 	}
 	.questionView .headView .countView{
 		width: 150rpx;
@@ -231,9 +255,11 @@
 		font-size: 26rpx;
 		color: #352026;
 		font-size: PingFangSC-Medium;
+		line-height: 50rpx;
+		height: 50rpx;
 	}
 	.questionView .imgView{
-		margin-top: 40rpx;
+		margin-top: 60rpx;
 	}
 	.questionView .imgView image{
 		width: 100%;
@@ -328,6 +354,7 @@
 		background-color: #FFFFFF;
 		border-radius: 46rpx;
 		padding: 60rpx 40rpx;
+		margin-top: 10rpx;
 	}
 	.commentView .rightAnswer{
 		font-size: 30rpx;
