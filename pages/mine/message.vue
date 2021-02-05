@@ -1,24 +1,29 @@
 <template>
 	<view class="myPage u-demo-area">
 		<view class="readAllView">
-			<button @click="handleReadAll">全部已读</button>
+			<button v-if="notReadCount > 0" @click="handleReadAll">全部已读</button>
+			<button v-else class="read">全部已读</button>
 		</view>
 		<view class="msgItem u-badge-wrap" v-for="msg in msgList" @click="handleMsgClick" :data-item="msg">
 			<view class="conView">
-				<view class="title">{{msg.title}}</view>
+				<view class="head">
+					<view class="title">{{msg.title}}</view>
+					<view class="date">{{msg.CreateTime}}</view>
+				</view>
 				<view class="content">{{msg.content}}</view>
 			</view>
 			<view class="icon">
 				<image  v-if="msg.isRead==0" src="../../static/icon/icon_dot.png"></image>
 			</view>
 		</view>
-		<view class="loadmore">
+		<view class="loadmore" v-if="msgList.length >= pageSize">
 			<u-loadmore @loadmore="handleLoadMore" :status="status" :load-text="loadText" />
 		</view>
 	</view>
 </template>
 
 <script>
+	import {dateFormat} from '../../js/common.js'
 	export default {
 		data() {
 			return {
@@ -27,25 +32,28 @@
 				pageSize: 20,
 				status:'loadmore',
 				loadText:{
-					loadmore: '点击或上拉加载更多',
+					loadmore: '点击加载更多',
 					loading:'正在拼命加载中',
 					nomore:'没有更多了'
 				},
+				notReadCount: 0,
 				msgList:[],
 				readHistory:[]
 			}
 		},
 		onLoad() {
+			var self = this
 			uni.getStorage({
 				key:'userInfo',
 				success: res => {
-					this.userInfo = res.data
-					this.bindData()
+					self.userInfo = res.data
+					
+					self.bindData()
 				}
 			})
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
@@ -77,7 +85,9 @@
 									item.set('isRead', 1)
 								} else {
 									item.set('isRead', 0)
+									self.notReadCount += 1
 								}
+								item.set('CreateTime', dateFormat(item.createdAt,'yyyy-MM-dd'))
 							})
 							self.status = 'loadmore'
 							self.msgList = self.msgList.concat(mres)
@@ -95,7 +105,7 @@
 					url:'./msgdetail?mid=' + item.objectId,
 					success: function(res) {
 						// 通过eventChannel向被打开页面传送数据
-						res.eventChannel.emit('content', { title: item.title,data: item.content })
+						res.eventChannel.emit('content', { title: item.title,data: item.content,createdAt: item.CreateTime })
 						self.readMsg(item.objectId)
 					}
 				})
@@ -148,6 +158,7 @@
 				_history.set('MessageIds', ids)
 				_history.save().then(his => {
 					self.msgList = []
+					self.notReadCount = 0
 					self.bindData()
 				})	
 			}
@@ -170,7 +181,7 @@
 	.myPage .readAllView button{
 		width: 154rpx;
 		height: 50rpx;
-		line-height: 50rpx;
+		line-height: 48rpx;
 		border-radius: 50rpx;
 		text-align: center;
 		font-size: 26rpx;
@@ -180,6 +191,24 @@
 		background-color: #ffffff;
 		display: inline-block;
 		padding: 0;
+	}
+	.myPage .readAllView button::after{
+		border: 0;
+	}
+	.myPage .readAllView button.read{
+		width: 154rpx;
+		height: 50rpx;
+		line-height: 50rpx;
+		border-radius: 50rpx;
+		text-align: center;
+		font-size: 26rpx;
+		font-family: PingFangSC-Medium;
+		color: #d6d6d6;
+		border: solid 2rpx #d6d6d6;
+		background-color: #ffffff;
+		display: inline-block;
+		padding: 0;
+		
 	}
 	.myPage .msgItem{
 		position: relative;
@@ -196,12 +225,31 @@
 		padding-top: 32rpx;
 		padding-bottom: 34rpx;
 	}
-	.myPage .msgItem .conView .title{
+	.myPage .msgItem .conView .head{
+		display: inline-flex;
+		width: 100%;
+	}
+	.myPage .msgItem .conView .head .title{
+		flex: 1;
 		font-size: 34rpx;
 		height: 48rpx;
 		line-height: 48rpx;
 		font-weight: bold;
 		color: #352026;
+		font-family: PingFangSC-Medium;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+	}
+	.myPage .msgItem .conView .head .date{
+		width: 160rpx;
+		text-align: right;
+		height: 42rpx;
+		line-height: 42rpx;
+		font-size: 26rpx;
+		color: #143a44;
 		font-family: PingFangSC-Medium;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -222,6 +270,7 @@
 		-webkit-line-clamp: 1;
 		-webkit-box-orient: vertical;
 	}
+	
 	.myPage .msgItem .icon{
 		width: 50rpx;
 		height: 170rpx;
@@ -235,6 +284,6 @@
 		vertical-align: middle;
 	}
 	.myPage .loadmore{
-		margin-top: 20rpx;
+		margin: 50rpx 0;
 	}
 </style>

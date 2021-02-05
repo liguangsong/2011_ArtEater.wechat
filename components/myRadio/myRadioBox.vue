@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="optionItem" @click="handlechange">
+		<view :class="'optionItem color' + state" @click="handlechange">
 			<view class="icon">
 				<image v-if="state==1" src="../../static/icon/icon_answer_nocheck.png"></image>
 				<image v-if="state==2" src="../../static/icon/icon_answer_checked.png"></image>
@@ -66,13 +66,15 @@
 		text-align: center;
 		padding-top: 5rpx;
 		height: 48rpx;
-		line-height: 48rpx;
+		line-height: 54rpx;
+		font-size: 0;
 	}
 	.optionItem .icon image{
 		width: 32rpx;
 		height: 32rpx;
 		display: inline-block;
 		vertical-align: middle;
+		padding-top: 10rpx;
 	}
 	.optionItem .txt{
 		flex: 1;
@@ -95,5 +97,18 @@
 	.optionItem .txt.color6{
 		color: #3cc0da;
 	}
-		
+/* 	.optionItem.color2,.optionItem.color3,.optionItem.color4,.optionItem.color5,.optionItem.color6{
+		padding: 0;
+	}
+	
+	.optionItem.color2 .icon,.optionItem.color3 .icon,.optionItem.color4 .icon,.optionItem.color5 .icon,.optionItem.color6 .icon{
+		height: 92rpx;
+		line-height: 92rpx;
+		font-size: 0;
+	}
+	.optionItem .txt.color2,.optionItem .txt.color3,.optionItem .txt.color4,.optionItem .txt.color5,.optionItem .txt.color6{
+		height: 92rpx;
+		line-height: 92rpx;
+		padding-top: 0;
+	} */
 </style>

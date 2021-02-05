@@ -30,7 +30,7 @@
 			var self = this
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }

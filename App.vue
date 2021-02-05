@@ -34,10 +34,15 @@
 	}
 	export default {
 		onLaunch: function() {
-			console.log('App onLaunch')
-			uni.reLaunch({
-				url:'/pages/index/lunch'
+			
+			uni.showShareMenu({
+				withShareTicket: true,
+				  menus: ['shareAppMessage', 'shareTimeline']
 			})
+			console.log('App onLaunch')
+			// uni.reLaunch({
+			// 	url:'/pages/index/lunch'
+			// })
 			uni.checkSession({
 				success(e) {
 					// 已登录
@@ -62,7 +67,55 @@
 			})
 		},
 		onShow: function() {
-			console.log('App Show')
+			// var self = this
+			// var ExamRecords = new self.Parse.Object.extend('ExamRecord')
+			// var query = new self.Parse.Query("TestQuestions")
+			
+			// query.doesNotExist('accuracy')
+			// query.limit(10000)
+			// query.find().then(questions=>{
+			// 	questions.forEach(_question=>{
+			// 		var examRecordQuery = new self.Parse.Query(ExamRecords)
+			// 		examRecordQuery.equalTo('questionId', _question.id)
+			// 		examRecordQuery.count().then(examCount=>{
+			// 			var examRecordRightQuery = new self.Parse.Query(ExamRecords)
+			// 			examRecordRightQuery.equalTo('questionId', _question.id)
+			// 			examRecordRightQuery.equalTo('result', true)
+			// 			examRecordRightQuery.count().then(rightCount=>{
+			// 				console.log('正确率：'+ rightCount+'/'+ examCount)
+			// 				_question.set('accuracy', 0)
+			// 				_question.save()
+			// 			})
+			// 		})
+			// 	})
+			// })
+			var self = this
+			// var query = new self.Parse.Query("CouponInfo");
+			// var CouponRecords = self.Parse.Object.extend("CouponRecord");
+			// query.greaterThan('useEndTime', new Date())
+			// query.find().then(coupons=>{
+			// 	coupons.forEach(couponInfo=>{
+			// 		var query1 = new self.Parse.Query("CouponRecord");
+			// 		query1.equalTo('mode', 'all')
+			// 		query1.first().then(record=>{
+			// 			if(record) { // 已全部发送
+			// 				var couponRecord = new CouponRecords();
+			// 				couponRecord.set("couponName", couponInfo.get('couponName'));
+			// 				couponRecord.set("amount", parseFloat(couponInfo.get('amount')));
+			// 				couponRecord.set("useEndTime", couponInfo.get('useEndTime'));
+			// 				couponRecord.set("tipName", couponInfo.get('tipName'));
+			// 				couponRecord.set("tipContent", couponInfo.get('tipContent'));
+			// 				couponRecord.set("openid", 'aaaaa');
+			// 				couponRecord.set("mode", 'all');
+			// 				couponRecord.set("productType", couponInfo.get('productType'));
+			// 				couponRecord.set("state", 0);
+			// 				couponRecord.set("orderNo", '');
+			// 				couponRecord.set("useTime", new Date());
+			// 				couponRecord.save()
+			// 			}
+			// 		})
+			// 	})
+			// })
 		},
 		onHide: function() {
 			console.log('App Hide')

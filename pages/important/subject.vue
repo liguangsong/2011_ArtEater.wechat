@@ -1,38 +1,33 @@
 <template>
-	<view class="myPage">
+	<view class="myPage" style="overflow-x: hidden;">
+		<view class="headView">
+			<image :src="subjectDetail.headImg" style="width: 750rpx;height: 396rpx;"></image>
+		</view>
+		<view class="baseProgress">
+			<u-line-progress :percent="subjectTree.progress*100/subjectTree.childrenCount" :show-percent="false" height="10" active-color="#ff6867"></u-line-progress>
+			<view class="tips">{{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}} 题目已完成</view>
+		</view>
 		<view class="treeView">
-			<!--一级-->
-			<view class="treeItem" style="margin-left: 16rpx;margin-top: 12rpx;margin-bottom: 60rpx;">
-				<view class="content">
-					<view class="conView">
-						<view class="listTxt" @click="handleNameClick" :data-item="subjectDetail">{{subjectDetail.subject_name}}</view>
-						<view class="listAction">
-							<view class="action" @click="handleNameClick" :data-item="subjectDetail">
-								<image v-if="subjectDetail.content" src="../../static/icon/icon_order.png"></image>
-							</view>
-							<view class="action" @click="handleTestClick" :data-item="subjectDetail">
-								<image v-if="subjectDetail.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
 			<!--二级-->
-			<view v-for="(subject,index) in subjectTree" class="treeItem">
-				<view class="listIcon">
-					<template v-if="subject.has_down_level">
-						<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;left: 10rpx;" @click="handleExtend(subject)">
-							<image v-if="!subject.extend" src="../../static/icon/icon_add.png"></image>
-							<image v-else src="../../static/icon/icon_remove.png"></image>
-						</view>
-					</template>
-				</view>
-				<view class="content">
+			<view v-for="(subject,index) in subjectTree.children">
+				<view class="treeItem">
+					<view class="listIcon" style="padding-left: 0;">
+						<template v-if="subject.has_down_level">
+							<view class="actionExtend" style="text-align: center;height: 50rpx;line-height: 50rpx;position: relative;left: 10rpx;" @click="handleExtend(subject)">
+								<image v-if="!subject.extend" src="../../static/icon/icon_add.png"></image>
+								<image v-else src="../../static/icon/icon_remove.png"></image>
+							</view>
+						</template>
+					</view>
+					<view class="content" style="padding-left: 0;">
 					<view class="conView">
 						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}</view>
 						<view class="listAction">
 							<view class="action" @click="handleTestClick" :data-item="subject">
-								<image v-if="subject.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+								<image src="../../static/icon/icon_pencle.png"></image>
+								<view class="progress">
+									<u-line-progress :percent="subject.progress*100/subject.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -57,7 +52,10 @@
 									<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
 									<view class="listAction">
 										<view class="action" @click="handleTestClick" :data-item="sub">
-											<image v-if="sub.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+											<image src="../../static/icon/icon_pencle.png"></image>
+											<view class="progress">
+												<u-line-progress :percent="sub.progress*100/sub.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+											</view>
 										</view>
 									</view>
 								</view>
@@ -82,7 +80,10 @@
 												<view class="listTxt" @click="handleNameClick" :data-item="sub1">{{sub1.subject_name}}</view>
 												<view class="listAction">
 													<view class="action" @click="handleTestClick" :data-item="sub1">
-														<image v-if="sub1.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+														<image src="../../static/icon/icon_pencle.png"></image>
+														<view class="progress">
+															<u-line-progress :percent="sub1.progress*100/sub1.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+														</view>
 													</view>
 												</view>
 											</view>
@@ -108,7 +109,10 @@
 															<view class="listTxt" @click="handleNameClick" :data-item="sub2">{{sub2.subject_name}}</view>
 															<view class="listAction">
 																<view class="action" @click="handleTestClick" :data-item="sub2">
-																	<image v-if="sub2.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																	<image src="../../static/icon/icon_pencle.png"></image>
+																	<view class="progress">
+																		<u-line-progress :percent="sub2.progress*100/sub2.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																	</view>
 																</view>
 															</view>
 														</view>
@@ -133,7 +137,10 @@
 																		<view class="listTxt" @click="handleNameClick" :data-item="sub3">{{sub3.subject_name}}</view>
 																		<view class="listAction">
 																			<view class="action" @click="handleTestClick" :data-item="sub3">
-																				<image v-if="sub3.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																				<image src="../../static/icon/icon_pencle.png"></image>
+																				<view class="progress">
+																					<u-line-progress :percent="sub3.progress*100/sub3.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																				</view>
 																			</view>
 																		</view>
 																	</view>
@@ -158,7 +165,10 @@
 																					<view class="listTxt" @click="handleNameClick" :data-item="sub4">{{sub4.subject_name}}</view>
 																					<view class="listAction">
 																						<view class="action" @click="handleTestClick" :data-item="sub4">
-																							<image v-if="sub4.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																							<image src="../../static/icon/icon_pencle.png"></image>
+																							<view class="progress">
+																								<u-line-progress :percent="sub4.progress*100/sub4.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																							</view>
 																						</view>
 																					</view>
 																				</view>
@@ -184,7 +194,10 @@
 																								<view class="listTxt" @click="handleNameClick" :data-item="sub5">{{sub5.subject_name}}</view>
 																								<view class="listAction">
 																									<view class="action" @click="handleTestClick" :data-item="sub5">
-																										<image v-if="sub5.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																										<image src="../../static/icon/icon_pencle.png"></image>
+																										<view class="progress">
+																											<u-line-progress :percent="sub5.progress*100/sub5.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																										</view>
 																									</view>
 																								</view>
 																							</view>
@@ -207,6 +220,8 @@
 						</view>
 					</view>
 				</view>
+				</view>
+				<u-line style="position: relative;top: -32rpx;left: 70rpx;" :hair-line="false" class="u-line" color="#f6f6f6"></u-line>
 			</view>
 		</view>
 		<u-popup v-model="isShowSubjectDetail" width="674rpx" mode="center" border-radius="40">
@@ -216,21 +231,6 @@
 						<u-parse :html="currSubjectDetail.content"></u-parse>
 					</view>
 				</scroll-view>
-			</view>
-		</u-popup>
-		<u-popup v-model="isShowSubjectBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
-			<view class="buylView" style="padding:74rpx 40rpx;">
-				<view class="title">{{subjectDetail.subject_name}}</view>
-				<view class="price">¥{{subjectDetail.price}}</view>
-				<view class="tips">
-					您购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
-				</view>
-				<view class="tips">
-					购买后可在【个人中心-已购项目】中查看
-				</view>
-				<view class="btnActions">
-					<button @click="handleBuyBtnClick">确认购买</button>
-				</view>
 			</view>
 		</u-popup>
 	</view>
@@ -247,8 +247,9 @@
 				subjectDetail: null,
 				currSubjectDetail: null,
 				isShowSubjectDetail: false,
-				isShowSubjectBuy: false,
-				screenHeight:0
+				screenHeight:0,
+				questionHistory: [],
+				subjectProgress: []
 			}
 		},
 		onLoad(options) {
@@ -261,11 +262,10 @@
 			if(options.sid){
 				this.subjectId = options.sid
 				this.bindSubjectDetail()
-				this.bindSubjectTree()
 			}
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
@@ -275,7 +275,7 @@
 			  success: res => {
 				console.log(res)
 				let screenWidth = res.screenWidth
-				this.screenHeight = res.screenHeight*750/res.screenWidth
+				this.screenHeight = res.screenHeight * 750 / res.screenWidth
 			  }
 			})
 		},
@@ -284,8 +284,11 @@
 			bindSubjectDetail(){
 				var self = this
 				var query = new this.Parse.Query("Subjects")
-				query.get(this.subjectId).then(res=>{
+				query.get(this.subjectId).then(res => {
+					res.set('progress', 0)
+					res.set('childrenCount', 0)
 					self.subjectDetail = res
+					self.bindSubjectTree()
 				})
 			},
 			/* 加载科目树*/
@@ -299,32 +302,38 @@
 				query.ascending('createdAt')
 				query.limit(10000)
 				query.find().then(res=>{
-					var ids = []
-					res.forEach(t=>{
-						ids.push(t.id)
-					})
-					var quesQuery = new self.Parse.Query("TestQuestions")
-					quesQuery.equalTo('isImportant', 1)
-					quesQuery.containedIn('subjects', ids)
-					quesQuery.limit(10000)
-					quesQuery.select('objectId','subjects')
-					quesQuery.find().then(ques=>{
-						res.forEach(item => {
-							let questions = ques.filter(t=>{
-								return t.get('subjects').indexOf(item.id)!=-1
+					self.subjects = res
+					var queryProgress = new self.Parse.Query("SubjectProgress")
+					queryProgress.equalTo('openid',self.userInfo.openid)
+					queryProgress.equalTo('isImportant', 1)
+					queryProgress.limit(10000)
+					queryProgress.find().then(pres=>{
+							self.subjectProgress = pres
+							var hisQuery = new self.Parse.Query("QuestionHistory")
+							hisQuery.equalTo("isImportant", 1)
+							hisQuery.equalTo("openid", self.userInfo.openid)
+							hisQuery.find().then(questionHistory=>{
+								self.questionHistory = questionHistory
+								var tree = self.initSubjectTree(res, self.subjectId, pres)
+								self.subjectTree = tree
+								self.subjectTree = {
+									subject_name: self.subjectDetail.get('subject_name'),
+									content: self.subjectDetail.get('content'),
+									price: self.subjectDetail.get('price'),
+									quesCount: self.subjectDetail.quesCount,
+									extend: false,
+									has_down_level: self.subjectDetail.get('has_down_level'),
+									value: self.subjectDetail.id,
+									children: tree
+								}
+								self.handleGetTestCount(self.subjectTree)
+								uni.hideLoading()
 							})
-							item.quesCount = questions.length
-						})
-						var tree = self.initSubjectTree(res, self.subjectId)
-						console.log(res)
-						console.log(tree)
-						self.subjectTree = tree
-						uni.hideLoading()
 					})
 				})
 			},
 			/** 构造树形科目 */
-			initSubjectTree(subjects, parentId){
+			initSubjectTree(subjects, parentId, subjectProgress){
 				var self = this
 				var treeValue = []
 				let _subjects = subjects.filter((_item)=>{
@@ -343,16 +352,126 @@
 					let childrens = subjects.filter(_item=>{
 						return _item.get('parent_ID') == _subject.id
 					})
-					if(childrens.length>0){
-						subject.children = self.initSubjectTree(subjects, _subject.id)
+					subject.progress = 0
+					subject.childrenCount = 0
+					if(childrens.length > 0) { // 有子集
+						subject.children = self.initSubjectTree(subjects, _subject.id, subjectProgress)
+						let subjectIds = []
+						if(subject.children&&subject.children.length>0){
+							subject.children.forEach(t=>{
+								subjectIds.push(t.value)
+							})
+							let quesIndex = 0
+							let quesCount = 0
+							subjectProgress.forEach(t=>{
+								if(subjectIds.indexOf(t.get('subjectId'))!=-1){
+									quesIndex+= t.get('subjectIndex')
+									quesCount+= t.get('quesCount')
+								}
+							})
+							subject.progress = (quesIndex ? quesIndex : 0)
+							if(quesCount>0){
+								subject.childrenCount = quesCount
+							}
+						}
 					}
 					treeValue.push(subject)
 				})
 				return treeValue
 			},
+			getSubjectIds(tree, subjectId, subjectIds){
+				var self = this
+				if(tree){
+					tree.forEach(item=>{
+						if(item.value == subjectId){
+							subjectIds.push(item.value)
+							self.getSubjectChildIds(item.children, subjectIds)
+						} else {
+							if(item.children){
+								self.getSubjectIds(item.children, subjectId, subjectIds)
+							}
+						}
+					})
+				}
+			},
+			getSubjectChildIds(tree, subjectIds){
+				var self = this
+				if(tree){
+					tree.forEach(item=>{
+						subjectIds.push(item.value)
+						if(item.children){
+							self.getSubjectChildIds(item.children, subjectIds)
+						}
+					})
+				}
+			},
 			/*展开关闭*/
 			handleExtend(subject){
 				subject.extend = !subject.extend
+				if(subject.extend&&!subject.loadCount){
+					this.handleGetTestCount(subject)
+					subject.loadCount = true
+				}
+			},
+			/*查看科目下题目数量*/
+			handleGetTestCount(subject){
+				var self = this
+				var ids = []
+				ids.push(subject.value)
+				self.getSubjectChildIds(subject.children, ids)
+				uni.showLoading({
+					title:'加载中……'
+				})
+				var quesQuery = new self.Parse.Query("TestQuestions")
+				quesQuery.equalTo('isImportant', 1)
+				quesQuery.containedIn('subjects', ids)
+				quesQuery.limit(10000)
+				quesQuery.find().then(ques=>{
+					subject.childrenCount = ques.length
+					self.subjectProgress.forEach(t=>{
+						if(t.get('subjectId') == subject.value){
+							if(t.get('subjectIndex')){
+								subject.progress = t.get('subjectIndex')
+							} else {
+								subject.progress = 0
+							}
+						}
+					})
+					let subIndex = 0
+					if(subject.children && subject.children.length > 0) {
+						subject.children.forEach(item => {
+							let _quesCount = 0
+							let _ids = []
+							_ids.push(item.value)
+							self.getSubjectChildIds(item.children, _ids)
+							ques.forEach(t=>{
+								_ids.forEach(id=>{
+									if(t.get('subjects').indexOf(id)!=-1){
+										_quesCount++
+									}
+								})
+							})
+							item.quesCount = _quesCount //questions.length
+							if(item.quesCount > 0) {
+								item.childrenCount = item.quesCount
+								let quesIndex = 0
+								self.subjectProgress.forEach(t=>{
+									if(t.get('subjectId') == item.value){
+										if(t.get('subjectIndex')){
+											quesIndex += t.get('subjectIndex')
+										}
+									}
+								})
+								item.progress = (quesIndex ? quesIndex : 0)
+							}
+							subIndex+=item.progress
+						})
+					}
+					if(subIndex>0&&subject.progress==0){
+						subject.progress = subIndex
+					}
+					uni.hideLoading()
+				})
 			},
 			/*查看详情*/
 			handleNameClick(e){
@@ -362,52 +481,20 @@
 					this.isShowSubjectDetail = true
 				}
 			},
-			/*弹出购买界面*/
-			handleBuyClick(){
-				this.isShowSubjectBuy = true
-			},
-			/*点击购买按钮*/
-			handleBuyBtnClick(){
-				var self = this
-				var _subject = this.currSubjectDetail
-				var dbOrder = this.Parse.Object.extend("Order")
-				var order = new dbOrder()
-				var orderNo = dateFormat(new Date(),'yyyyMMddHHmmss'+ GetRandomNum(3))
-				order.set('orderNo', orderNo)
-				order.set("subjectId",  this.subjectId)
-				order.set("subjectName",  this.subjectDetail.get('subject_name'))
-				order.set("price",  this.subjectDetail.get('price'))
-				order.set("openId", this.userInfo.openid)
-				order.set("state", 0)
-				order.set("wechatPayOrderId", '') // 支付流水号
-				order.save().then(_order => {
-					this.$Message.success('保存成功')
-				},(error)=>{
-					console.log(error)
-					this.$Message.error('保存失败')
-				})
-				uni.requestPayment({
-				  appId: '',
-				  timeStamp: '',
-				  nonceStr: '',
-				  package: '',
-				  signType: '',
-				  paySign: '',
-				  success (res) {
-					 //  uni.reLaunch({
-						// url: 'paysuccess?orderNo=' + result.orderNo,
-					 //  })
-				  },
-				  fail (res) {
-					console.log("支付失败"+ JSON.stringify(res))
-				  }
-				})
-			},
-			/*做题*/
 			handleTestClick(e){
+				var self = this
 				var item = e.currentTarget.dataset.item
 				uni.navigateTo({
-					url:'exam?sid=' + item.value
+					url:'exam?bsid='+self.subjectId+'&sid=' + item.value,
+					success(res) {
+						res.eventChannel.emit('subjectTree', item)
+					},
+					events: {
+						buySuccess: function(data) {
+							// self.bindOrder()
+							self.bindSubjectTree()
+						}
+					}
 				})
 			}
 		}
@@ -418,9 +505,28 @@
 	page{
 		background-color: #fbfbfb;
 	}
+	.headView{
+		display: inline-flex;
+	}
+	.baseProgress{
+		padding: 0 40rpx;
+		position: relative;
+		top: -17rpx;
+		height: 46rpx;
+	}
+	.baseProgress .tips{
+		font-family: PingFangSC-Regular;
+		font-size: 18rpx;
+		font-weight: normal;
+		font-stretch: normal;
+		letter-spacing: 0rpx;
+		color: rgba(53, 32, 38, 0.7);
+	}
 	.treeView{
 		padding: 30rpx;
+		padding-left: 20rpx;
 		line-height: 66rpx;
+		padding-bottom: 100rpx;
 	}
 	.treeView .treeItem {
 		display: flex;
@@ -434,6 +540,7 @@
 		height: 50rpx;
 		line-height: 40rpx;
 		text-align: right;
+		padding-left: 14rpx;
 	}
 	
 	.treeView .treeItem .listIcon .actionExtend{
@@ -441,6 +548,7 @@
 		position: relative;
 		left: -30rpx;
 		text-align: center;
+		font-size: 0;
 	}
 	.treeView .treeItem .listIcon .actionExtend image{
 		display: inline-block;
@@ -451,6 +559,7 @@
 	}
 	.treeView .treeItem .content{
 		flex: 1;
+		padding-left: 14rpx;
 	}
 	.treeView .treeItem .content .conView{
 		display: flex;
@@ -500,6 +609,15 @@
 		width: 32rpx;
 		height: 32rpx;
 		vertical-align: middle;
+		/* position: absolute; */
+	}
+	.treeItem .listAction .action .progress{
+		width: 32rpx;
+		height: 4rpx;
+		position: relative;
+		text-align: center;
+		left: 25rpx;
+		top: -35rpx;
 	}
 	/* .treeItem .listAction image:last-child{
 		margin-right: 20rpx;
@@ -537,10 +655,11 @@
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
 	}
-	.action{
+	.listAction .action{
 		width: 80rpx;
 		height: 50rpx;
 		text-align: center;
 		display: inline-block;
+		position: relative;
 	}
 </style>

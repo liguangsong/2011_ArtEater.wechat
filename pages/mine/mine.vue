@@ -20,7 +20,7 @@
 						<view class="score">{{errorCount}}</view>
 						<view class="title">错题集</view>
 					</view>
-					<view class="scoreItem">
+					<view class="scoreItem" @click="handleScoreRecord">
 						<view class="score">{{userInfo.score}}</view>
 						<view class="title">总积分</view>
 					</view>
@@ -55,7 +55,20 @@
 					<image src="../../static/icon/icon_action_yigou.png"></image>
 				</view>
 				<view class="cont">
-					<view class="title">已购项目</view>
+					<view class="title">会员中心</view>
+					<view class="icon">
+						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
+					</view>
+				</view>
+			</view>
+			<view class="actionItem" @click="handleCouponClick">
+				<view class="licon">
+					<image src="../../static/icon/icon_action_mycoupon.png"></image>
+				</view>
+				<view class="cont">
+					<view class="title" style="position: relative;">我的优惠券
+						<u-badge v-if="couponCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="couponCount"></u-badge>
+					</view>
 					<view class="icon">
 						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
 					</view>
@@ -74,12 +87,29 @@
 			</view>
 		</view>
 		<view class="actionView">
+			<view class="actionItem" @click="handleInvitationClick">
+				<view class="licon">
+					<image src="../../static/icon/icon_action_share.png"></image>
+				</view>
+				<view class="cont">
+					<view class="title">
+						<view style="position: relative;width: 140rpx;">分享给好友</view>
+					</view>
+					<view class="icon">
+						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
+					</view>
+				</view>
+			</view>
 			<view class="actionItem" @click="handleMessageClick">
 				<view class="licon">
 					<image src="../../static/icon/icon_action_xiaoxi.png"></image>
 				</view>
 				<view class="cont">
-					<view class="title">消息中心</view>
+					<view class="title">
+						<view style="position: relative;">消息中心
+							<u-badge v-if="msgCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="msgCount"></u-badge>
+						</view>
+					</view>
 					<view class="icon">
 						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
 					</view>
@@ -105,26 +135,56 @@
 			return {
 				userInfo: {},
 				rightCount: 0,
-				errorCount: 0
+				errorCount: 0,
+				msgCount: 0,
+				couponCount: 0,
 			}
 		},
 		onShow() {			
 			var self = this
+			var userQuery = new self.Parse.Query(self.Parse.User)
+			userQuery.equalTo('openid',self.Parse.User.current().get('openid'))
+			userQuery.first().then(res=>{
+				uni.setStorage({
+					key:'userInfo',
+					data:res
+				})
+				self.userInfo = res
+				var query = new self.Parse.Query("ErrorHistory")
+				query.equalTo('openid',self.userInfo.get('openid'))
+				query.count().then(count=>{
+					self.errorCount = count
+				})
+				var query = new self.Parse.Query("RightHistory")
+				query.equalTo('openid',self.userInfo.get('openid'))
+				query.first().then(r=>{
+					if(r){
+						self.rightCount = r.get('questions').length
+					}
+				})
+			})
 			uni.getStorage({
-				key:'userInfo',
-				success:function(res){
-					self.userInfo = res.data
-					var query = new self.Parse.Query("ErrorHistory")
-					query.equalTo('openid',self.userInfo.openid)
-					query.count().then(count=>{
-						self.errorCount = count
-					})
-					var query = new self.Parse.Query("RightHistory")
-					query.equalTo('openid',self.userInfo.openid)
-					query.first().then(r=>{
-						if(r){
-							self.rightCount = r.get('questions').length
+				key:'openid',
+				success(ores) {
+					var query =  new self.Parse.Query('MessageReadHistory')
+					query.equalTo('openid', ores.data)
+					query.first().then(res=>{
+						var msgQuery = new self.Parse.Query("Message")
+						if(res){
+							self.readHistory = res
+							msgQuery.notContainedIn('objectId',res.get('MessageIds'))
 						}
+						msgQuery.count().then(count=>{
+							self.msgCount = count
+						})
+					})
+					let cquery = new self.Parse.Query('CouponRecord')
+					cquery.equalTo('openid', ores.data)
+					cquery.equalTo('state', 0)
+					cquery.greaterThan('useEndTime', new Date())
+					cquery.descending('useEndTime', 'state')
+					cquery.count().then(count=>{
+						self.couponCount = count
 					})
 				}
 			})
@@ -132,7 +192,7 @@
 		onLoad() {
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
@@ -142,7 +202,13 @@
 			/*查看已购项目*/
 			handleOrderClick(){
 				uni.navigateTo({
-					url:'order'
+					url:'./order'
+				})
+			},
+			/*查看我的优惠券*/
+			handleCouponClick(){
+				uni.navigateTo({
+					url:'./mycoupon'
 				})
 			},
 			/*签到*/
@@ -161,6 +227,11 @@
 			handleTestHisClick(){
 				uni.navigateTo({
 					url:'/pages/mine/testhistory'
+				})
+			},
+			handleInvitationClick(){
+				uni.navigateTo({
+					url: './invitation'
 				})
 			},
 			/* 消息中心 */
@@ -186,7 +257,7 @@
 				if(this.userInfo&&this.userInfo.openid){
 					if(this.userInfo.phone){
 						uni.navigateTo({
-							url:'../mine/note'
+							url:'../error/index'
 						})
 					} else {
 						uni.reLaunch({
@@ -195,8 +266,13 @@
 					}
 				} else {
 					this.isShowLogin = true
-					this.toUrl = '/pages/mine/note'
+					this.toUrl = '/pages/error/index'
 				}
+			},
+			handleScoreRecord(){
+				uni.navigateTo({
+					url:'./scorerecord'
+				})
 			}
 		}
 	}
@@ -215,6 +291,9 @@
 		border-radius: 40rpx;
 		background-color: #ffffff;
 		padding: 40rpx 40rpx 22rpx 40rpx;
+		box-shadow: 0rpx 8rpx 16rpx 0rpx 
+			rgba(238, 160, 160, 0.05);
+		border-radius: 40rpx;
 	}
 	.myView .headView .headCon{
 		display: flex;
@@ -231,7 +310,7 @@
 	}
 	.myView .headView .headCon .nickName{
 		flex: 1;
-		padding: 0 40rpx;
+		padding-left: 30rpx;
 		height: 128rpx;
 		line-height: 128rpx;
 		font-size: 38rpx;
@@ -278,6 +357,9 @@
 		padding: 8rpx 40rpx;
 		border-radius: 40rpx;
 		background-color: #ffffff;
+		box-shadow: 0rpx 8rpx 16rpx 0rpx 
+			rgba(238, 160, 160, 0.05);
+		border-radius: 40rpx;
 	}
 	.myView .actionView .actionItem{
 		display: flex;
@@ -315,5 +397,11 @@
 		height: 108rpx;
 		line-height: 108rpx;
 		text-align: right;
+	}
+	.u-badge-dot{
+		border-radius: 50%!important;
+	}
+	.u-badge{
+		min-width: 32rpx;
 	}
 </style>

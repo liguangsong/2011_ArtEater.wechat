@@ -77,24 +77,29 @@
 				custStyle:{
 					'color:':'rgba(53,32,38, 0.7)',
 					'font-size':'28rpx!important',
-					'font-family':'PingFangSC-Medium'
+					'font-family':'PingFangSC-Medium',
+					'padding-top':'2rpx'
 				},
 				isShowSpeciality: false,
 				specialitys:[
+					{code:'美术学',name:'美术学'},
+					{code:'艺术史论',name:'艺术史论'},
 					{code:'实验艺术',name:'实验艺术'},
-					{code:'艺术史论',name:'艺术史论'}
+					{code:'艺术学理论',name:'艺术学理论'},
+					{code:'艺术与设计管理（中法）',name:'艺术与设计管理（中法）'},
+					{code:'艺术品保护与修复',name:'艺术品保护与修复'}
 				],
 				universities:[
-					{code:'中央美术学院',name:'中央美术学院',checked:'checked'},
-					{code:'中国美术学院',name:'中国美术学院'},
-					{code:'清华美术学院',name:'清华美术学院',checked:'checked'},
-					{code:'西安美术学院',name:'西安美术学院'},
-					{code:'四川美术学院',name:'四川美术学院'},
-					{code:'鲁迅美术学院',name:'鲁迅美术学院',checked:'checked'},
-					{code:'湖北美术学院',name:'湖北美术学院'},
-					{code:'天津美术学院',name:'天津美术学院'},
-					{code:'广州美术学院',name:'广州美术学院'},
-					{code:'其它',name:'其它'}
+					{code:'中央美术学院',name:'中央美术学院'},
+					// {code:'中国美术学院',name:'中国美术学院'},
+					{code:'清华大学美术学院',name:'清华大学美术学院'},
+					// {code:'西安美术学院',name:'西安美术学院'},
+					// {code:'四川美术学院',name:'四川美术学院'},
+					// {code:'鲁迅美术学院',name:'鲁迅美术学院',checked:'checked'},
+					// {code:'湖北美术学院',name:'湖北美术学院'},
+					// {code:'天津美术学院',name:'天津美术学院'},
+					// {code:'广州美术学院',name:'广州美术学院'},
+					// {code:'其它',name:'其它'}
 				],
 				provices: provice,
 				cities: cities,
@@ -171,7 +176,7 @@
 			var self = this
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
@@ -280,6 +285,7 @@
 							user.set("phone", self.form.phone);
 							user.set("role", '学生');
 							user.set("score", 0);
+							user.set("score_all", 0);
 							user.set("amount", parseFloat(0));
 							user.set("speciality", self.form.speciality);
 							user.set("university", self.form.university);

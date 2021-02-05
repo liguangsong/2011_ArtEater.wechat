@@ -4,11 +4,26 @@
 		<view class="page-section">
 			<view class="page-section-spacing">
 				<swiper class="swiper" :autoplay="true">
-					<swiper-item>
+					<swiper-item v-for="item in banners" @click="handleBannerClick" :data-item="item">
 						<view class="swiperItem">
-							<image src="../../static/banner.jpg"></image>
+							<image :src="item.img"></image>
 						</view>
 					</swiper-item>
+					<!-- <swiper-item>
+						<view class="swiperItem">
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210122%209.9%E5%85%83%E7%A7%92%E6%9D%80%E5%9B%BE-02.jpg"></image>
+						</view>
+					</swiper-item>
+					<swiper-item>
+						<view class="swiperItem">
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210106%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A6%96%E9%A1%B5%E5%9B%BE_%E7%94%BB%E6%9D%BF%201%20%E5%89%AF%E6%9C%AC%204.jpg"></image>
+						</view>
+					</swiper-item>
+					<swiper-item>
+						<view class="swiperItem">
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210106%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A6%96%E9%A1%B5%E5%9B%BE_%E7%94%BB%E6%9D%BF%201%20%E5%89%AF%E6%9C%AC%205.jpg"></image>
+						</view>
+					</swiper-item> -->
 				</swiper>
 			</view>
 		</view>
@@ -26,7 +41,7 @@
 					<view class="img">
 						<image src="../../static/icon/icon_question.png"></image>
 					</view>
-					<view class="title">重点题库</view>
+					<view class="title">必考题库</view>
 				</view>
 				<view class="navItem" @click="handleExamClick">
 					<view class="img">
@@ -35,8 +50,11 @@
 					<view class="title">模拟试卷</view>
 				</view>
 				<view class="navItem" @click="handleMyClick">
-					<view class="img">
+					<view class="img" style="position: relative;">
 						<image src="../../static/icon/icon_mine.png"></image>
+						<view style="position: absolute;top: 30rpx;left: 22rpx;width: 100rpx;height: 100rpx;">
+							<u-badge v-if="(msgCount+couponCount) > 0" fontSize="24" size="mini" type="error" bgColor="#ff7c7c" :offset="[-15,-10]" :count="(msgCount+couponCount)"></u-badge>
+						</view>
 					</view>
 					<view class="title">个人中心</view>
 				</view>
@@ -59,24 +77,42 @@
 				<view class="title">推荐</view>
 			</view>
 			<view class="newsView">
-				<view class="newsItem" @click="handleToOtherMiniApp">
+				<view class="newsItem" v-for="item in recommends" @click="handleToOtherMiniApp" :data-item="item">
 					<view class="imgView">
-						<image src="../../static/tuijian1.jpg"></image>
+						<image :src="item.headImg"></image>
 					</view>
 					<view class="conView">
-						<view class="title">仅考一科，就上央美！央美中法超级课程来喽</view>
+						<view class="title">{{item.title}}</view>
 						<view class="content"></view>
 					</view>
 				</view>
-				<view class="newsItem" @click="handleToOtherMiniApp">
+				<!-- <view class="newsItem" @click="handleToOtherMiniApp" data-url="https://mp.weixin.qq.com/s/7JIUt_qVXGOLiTM80r8Maw">
 					<view class="imgView">
-						<image src="../../static/tuijian2.jpg"></image>
+						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210121%E9%A3%9F%E8%89%BA%E5%85%BD%E5%B0%8F%E7%B2%BE%E7%81%B5%E5%AE%98%E6%96%B9%E5%AE%A2%E6%9C%8D-02.jpg"></image>
 					</view>
 					<view class="conView">
-						<view class="title">艺术史论免费试听课第一讲《原始古代文明》</view>
+						<view class="title">食艺兽官方客服：【食艺兽小精灵】</view>
 						<view class="content"></view>
 					</view>
 				</view>
+				<view class="newsItem" @click="handleToOtherMiniApp" data-url="https://mp.weixin.qq.com/s/F72bE0bqjt8aFAtNWTQ9OA">
+					<view class="imgView">
+						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210106%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A6%96%E9%A1%B5%E5%9B%BE-09.jpg"></image>
+					</view>
+					<view class="conView">
+						<view class="title">考纲题库更多免费体验已开放！即刻开刷！</view>
+						<view class="content"></view>
+					</view>
+				</view>
+				<view class="newsItem" @click="handleToOtherMiniApp" data-url="https://mp.weixin.qq.com/s/P0uaebj8kBGLNR90k-wIxA">
+					<view class="imgView">
+						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210115%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C-07.jpg"></image>
+					</view>
+					<view class="conView">
+						<view class="title">【食艺兽2.0】小程序操作手册</view>
+						<view class="content"></view>
+					</view>
+				</view> -->
 			</view>
 		</view>
 		<!--精品推荐 end-->
@@ -115,8 +151,8 @@
 			</view>
 		</u-popup>
 		<!--购买重点题库 end-->
-		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="isShowLogin=false" :to="toUrl"></login>
-		<u-mask :custom-style="{'background': 'rgba(255, 255, 255, 0.7)'}" :show="isShowTips" :mask-click-able="false" :zoom="false" @click="show = false">
+		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl"></login>
+		<u-mask :custom-style="{'background': 'rgba(255, 255, 255, 0.7)'}" :show="isShowTips" :mask-click-able="true" :zoom="false" @click="handleStep">
 			<view v-show="step==1" class="step step1">
 				<view class="navItem">
 					<view class="img">
@@ -134,7 +170,7 @@
 						<text>你的错题集中营，
 						帮你扫除知识盲区。</text>
 					</view>
-					<view class="action" @click="handleStep">我知道了</view>
+					<view class="action">我知道了</view>
 				</view>
 			</view>
 			<view v-show="step==2" class="step step2">
@@ -142,7 +178,7 @@
 					<view class="img">
 						<image src="../../static/icon/icon_question.png"></image>
 					</view>
-					<view class="title">重点题库</view>
+					<view class="title">必考题库</view>
 				</view>
 			</view>
 			<view v-show="step==2" class="tooltip tip2">
@@ -155,7 +191,7 @@
 						锁定必考知识点，
 						有的放矢，事半功倍。</text>
 					</view>
-					<view class="action" @click="handleStep">我知道了</view>
+					<view class="action">我知道了</view>
 				</view>
 			</view>
 			<view v-show="step==3" class="step step3">
@@ -175,7 +211,7 @@
 						<text>记得来这里检验一下，
 						你的学习效果。</text>
 					</view>
-					<view class="action" @click="handleStep">我知道了</view>
+					<view class="action">我知道了</view>
 				</view>
 			</view>
 			<view v-show="step==4" class="step step4">
@@ -194,7 +230,7 @@
 					<view class="content">
 						<text>你的个人中心在这里哦！</text>
 					</view>
-					<view class="action" @click="handleStep">我知道了</view>
+					<view class="action">我知道了</view>
 				</view>
 			</view>
 			
@@ -212,7 +248,7 @@
 					<view class="content">
 						<text>实验艺术专用</text>
 					</view>
-					<view class="action" @click="handleStep">我知道了</view>
+					<view class="action">我知道了</view>
 				</view>
 			</view>
 		</u-mask>
@@ -237,12 +273,16 @@
 				isShowTestBuy: false,
 				title: 'Hello',
 				subjects: [],
+				banners: [], // 轮播图
+				recommends: [], // 推荐
 				actionConfig:{},
 				zdtkConfig:{}, // 重点题库配置
 				mnksConfig:{}, // 模拟考试配置
 				hasBuyedZDTK:false, // 是否购买了重点题库
 				hasBuyedMNKS:false, // 是否购买了模拟考试
-				windowHeight: 0
+				windowHeight: 0,
+				msgCount: 0,
+				couponCount: 0
 			}
 		},
 		onShow() {
@@ -251,9 +291,31 @@
 				key:'userInfo',
 				success: res => {
 					self.userInfo = res.data
-					self.bindConfig()
+					
+					var query =  new self.Parse.Query('MessageReadHistory')
+					query.equalTo('openid', self.userInfo.openid)
+					query.first().then(res=>{
+						var msgQuery = new self.Parse.Query("Message")
+						if(res){
+							// self.readHistory = res
+							msgQuery.notContainedIn('objectId',res.get('MessageIds'))
+						}
+						msgQuery.count().then(count=>{
+							self.msgCount = count
+						})
+					})
+					
+					let cquery = new self.Parse.Query('CouponRecord')
+					cquery.equalTo('openid', self.userInfo.openid)
+					cquery.equalTo('state', 0)
+					cquery.greaterThan('useEndTime', new Date())
+					cquery.descending('useEndTime', 'state')
+					cquery.count().then(count=>{
+						self.couponCount = count
+					})
 				}
 			})
+			self.bindConfig()
 		},
 		onLoad() {
 			var self = this
@@ -280,10 +342,21 @@
 			})
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
+			})
+			var bannerQuery = new this.Parse.Query('Banner')
+			bannerQuery.equalTo('state', 1)
+			bannerQuery.ascending('sort')
+			bannerQuery.find().then(banners=>{
+				self.banners = banners
+			})
+			var recommendQuery = new this.Parse.Query('Recommend')
+			recommendQuery.descending('createdAt')
+			recommendQuery.find().then(recommends=>{
+				self.recommends = recommends
 			})
 		},
 		methods: {
@@ -293,24 +366,35 @@
 				const query1 = new this.Parse.Query('ActionConfig')
 				query1.ascending("createdAt")
 				query1.find().then(configList=>{
-					self.zdtkConfig = configList.find(t=>{
+					var app = getApp()
+					app.globalData.zdtkConfig = configList.find(t=>{
 						return t.get('code') == 'zhongdiantiku'
 					})
-					self.mnksConfig = configList.find(t=>{
+					app.globalData.mnksConfig = configList.find(t=>{
 						return t.get('code') == 'monishiti'
 					})
+					app.globalData.dajxConfig = configList.find(t=>{
+						return t.get('code') == 'daanjiexi'
+					})
+					self.zdtkConfig = app.globalData.zdtkConfig
+					self.mnksConfig = app.globalData.mnksConfig
 					self.bindOrder()
 				})
 			},
+			/* 登录完成 */
+			handleLoginComplate(){
+				this.isShowLogin = false
+				// this.bindConfig()
+			},
 			bindOrder(){
 				var self = this
-				const query2 = new self.Parse.Query('Order')
+				const query2 = new self.Parse.Query("Order")
 				query2.equalTo('openId', self.userInfo.openid)
-				query2.equalTo('state', 1)==''
+				query2.equalTo('state', 1)
 				query2.ascending("createdAt")
 				query2.find().then(orderList=>{
 					let zdtkOrder = orderList.find(t=> {
-						return t.get('subjectId')==self.zdtkConfig.id
+						return t.get('subjectId').indexOf(self.zdtkConfig.id)!=-1
 					})
 					self.hasBuyedZDTK = zdtkOrder?true:false
 					let mnksOrder = orderList.find(t=> {
@@ -324,7 +408,7 @@
 				if(this.userInfo&&this.userInfo.openid){
 					if(this.userInfo.phone){
 						uni.navigateTo({
-							url:'../mine/note'
+							url:'../error/index'
 						})
 					} else {
 						uni.reLaunch({
@@ -333,7 +417,7 @@
 					}
 				} else {
 					this.isShowLogin = true
-					this.toUrl = '/pages/mine/note'
+					this.toUrl = '/pages/error/index'
 				}
 			},
 			/*重点题库*/
@@ -341,7 +425,15 @@
 				if(this.userInfo&&this.userInfo.openid){
 					if(this.userInfo.phone){ // 已绑定手机号
 						if(this.zdtkConfig.get('isNeedPay')==1&&!this.hasBuyedZDTK){ // 需要购买，但是没买
-							this.isShowImportBuy = true
+							// this.isShowImportBuy = true
+							uni.navigateTo({
+								url:'/pages/buy/buy?subjectId=' + this.zdtkConfig.id,
+								event:{
+									reloadOrder: function(data){
+										self.bindOrder()
+									}
+								}
+							})
 						} else {
 							uni.navigateTo({
 								url:'../important/index'
@@ -362,7 +454,15 @@
 				if(this.userInfo&&this.userInfo.openid){
 					if(this.userInfo.phone){
 						if(this.mnksConfig.get('isNeedPay')==1&&!this.hasBuyedMNKS){ // 需要购买，但是没买
-							this.isShowTestBuy = true
+							// this.isShowTestBuy = true
+							uni.navigateTo({
+								url:'/pages/buy/buy?subjectId=' + this.mnksConfig.id,
+								event:{
+									reloadOrder: function(data){
+										self.bindOrder()
+									}
+								}
+							})
 						} else {
 							uni.navigateTo({
 								url:'../exam/index'
@@ -414,123 +514,41 @@
 				}
 			},
 			/*点击推荐*/
-			handleToOtherMiniApp(){
-				uni.navigateTo({
-					url:'./news'
-				})
-			},
-			/*确认购买重点题库*/
-			handleBuyZDTKClick(){
-				var self = this
-				uni.showLoading()
-				// var _subject = this.currSubjectDetail
-				var user = self.Parse.User.current()
-				var price = self.zdtkConfig.get('price') * 100
-				this.Parse.Cloud.run('initiatePayment',
-					{price: price,},
-					{sessionToken: user.get('sessToken'),}).then(res=>{
-					var payload = res.payload
-					var tradeId = res.tradeId
-					uni.requestPayment({
-					  appId: payload.appId,
-					  timeStamp: payload.timeStamp,
-					  nonceStr: payload.nonceStr,
-					  package: payload.package,
-					  signType: payload.signType,
-					  paySign: payload.paySign,
-					  success (res) {
-						var dbOrder = self.Parse.Object.extend("Order")
-						var order = new dbOrder()
-						order.set('orderNo', tradeId)
-						order.set("subjectId",  self.zdtkConfig.id)
-						order.set("subjectName",  self.zdtkConfig.get('action'))
-						order.set("price",  self.zdtkConfig.get('price'))
-						order.set("openId", self.userInfo.openid)
-						order.set("state", 1)
-						order.set("wechatPayOrderId", '') // 支付流水号
-						order.save().then(_order => {
-							uni.hideLoading()
-							self.isShowImportBuy = false
-							uni.showModal({
-								content:'恭喜，购买成功',
-								showCancel: false
+			handleToOtherMiniApp(e){
+				var _item = e.currentTarget.dataset.item
+				this.Parse.Config.get().then(config=>{
+					let isShowVideo = config.get('isShowVideo')
+					if(isShowVideo) {
+					// if(false) {
+						if(this.userInfo&&this.userInfo.openid){
+							uni.navigateTo({
+								url: '/pages/course/course?rid=' + _item.objectId
 							})
-							self.bindOrder()
-						},(error)=>{
-							uni.hideLoading()
-							console.log(error)
-						})
-						var user = self.Parse.User.current()
-						user.set('amount', user.get('amount') + parseFloat(self.zdtkConfig.get('price')))
-						user.save().then(ruser=>{
-							uni.setStorage({
-								key: 'userInfo',
-								data: ruser
+						} else {
+							this.isShowLogin = true
+							this.toUrl = '/pages/course/course?rid=' + _item.objectId
+						}
+					} else {
+						if(_item.href.indexOf('http')==0) {
+							uni.navigateTo({
+								url:'./news?url=' + _item.href
 							})
-						})
-					  },
-					  fail (res) {
-						uni.hideLoading()
-						console.log("支付失败"+ JSON.stringify(res))
-					  }
-					})
-				})
-			},
-			/*确认购买模拟考试*/
-			handleBuyMNKSClick(){
-				var self = this
-				uni.showLoading()
-				// var _subject = this.currSubjectDetail
-				var user = self.Parse.User.current()
-				var price = self.mnksConfig.get('price') * 100
-				this.Parse.Cloud.run('initiatePayment',
-					{price: price,},
-					{sessionToken: user.get('sessToken'),}).then(res=>{
-					var payload = res.payload
-					var tradeId = res.tradeId
-					uni.requestPayment({
-					  appId: payload.appId,
-					  timeStamp: payload.timeStamp,
-					  nonceStr: payload.nonceStr,
-					  package: payload.package,
-					  signType: payload.signType,
-					  paySign: payload.paySign,
-					  success (res) {
-						var dbOrder = self.Parse.Object.extend("Order")
-						var order = new dbOrder()
-						order.set('orderNo', tradeId)
-						order.set("subjectId",  self.mnksConfig.id)
-						order.set("subjectName",  self.mnksConfig.get('action'))
-						order.set("price",  self.mnksConfig.get('price'))
-						order.set("openId", self.userInfo.openid)
-						order.set("state", 1)
-						order.set("wechatPayOrderId", '') // 支付流水号
-						order.save().then(_order => {
-							uni.hideLoading()
-							self.isShowTestBuy = false
-							uni.showModal({
-								content:'恭喜，购买成功',
-								showCancel: false
+						} else if(_item.href.indexOf('/pages')==0){
+							uni.navigateTo({
+								url: _item.href
 							})
-							self.bindOrder()
-						},(error)=>{
-							uni.hideLoading()
-							console.log(error)
-						})
-						var user = self.Parse.User.current()
-						user.set('amount', user.get('amount') + parseFloat(self.mnksConfig.get('price')))
-						user.save().then(ruser=>{
-							uni.setStorage({
-								key: 'userInfo',
-								data: ruser
-							})
-						})
-					  },
-					  fail (res) {
-						uni.hideLoading()
-						console.log("支付失败"+ JSON.stringify(res))
-					  }
-					})
+						}
+						// else {
+						// 	if(this.userInfo&&this.userInfo.openid){
+						// 		uni.navigateTo({
+						// 			url: '/pages/course/course?rid=' + _item.objectId
+						// 		})
+						// 	} else {
+						// 		this.isShowLogin = true
+						// 		this.toUrl = '/pages/course/course?rid=' + _item.objectId
+						// 	}
+						// }	
+					}
 				})
 			},
 			handleStep(){
@@ -542,6 +560,22 @@
 					})
 					this.isShowTips = false	
 				}
+			},
+			/*点击banner图*/
+			handleBannerClick(e){
+				var _item = e.currentTarget.dataset.item
+				if(_item.src){
+					if(_item.src.indexOf('http')==0) {
+						uni.navigateTo({
+							url:'./news?url=' + _item.src
+						})
+					} else if(_item.src.indexOf('/pages')==0){
+						uni.navigateTo({
+							url: _item.src
+						})
+						console.log('2'+ _item.src)
+					}
+				}
 			}
 		}
 	}
@@ -549,32 +583,39 @@
 
 <style>
 	page{
-		background-color: #fbf8f7;
+		background-color: #fbfbfa;
 		overflow: hidden;
 	}
 	.myPage{
-		/* padding: 0 30rpx; */
+		padding-bottom: 50rpx;
 	}
 	.swiper{
-		margin-top: 20rpx;
+		/* margin-top: 20rpx; */
 		border-radius: 20rpx;
 		/* width: 690rpx; */
-		width: calc(100% - 60rpx);
-		height: 320rpx;
-		padding: 0 30rpx;
+		/* width: calc(100% - 60rpx); */
+		height: 368rpx;
+		line-height: 360rpx;
+		/* padding: 0 30rpx; */
+		text-align: center;
 	}
 	.swiperItem{
 		height: 320rpx;
 		border-radius: 30rpx;
+		display: inline-block;
+		vertical-align: middle;
 	}
 	.swiperItem image{
 		width: 690rpx;
 		height: 320rpx;
-		border-radius: 30rpx;
+		border-radius: 40rpx;
+		background-color: #ffcec9;
+		box-shadow: 0rpx 8rpx 22rpx 0rpx 
+			rgba(180, 102, 102, 0.24);
 	}
 	.navView{
 		/* width: calc(100% - 40rpx); */
-		margin-top:20rpx;
+		/* margin-top:20rpx; */
 	}
 	.navView .navSection{
 		display: flex;
@@ -585,19 +626,19 @@
 		text-align: center;
 	}
 	.navView .navSection .navItem .img{
-		width: 130rpx;
-		height: 130rpx;
+		width: 150rpx;
+		height: 150rpx;
 		display: block;
 		text-align: center;
 		margin: auto;
 	}
 	.navView .navSection .navItem .img image{
-		width: 130rpx;
-		height: 130rpx;
+		width: 150rpx;
+		height: 150rpx;
 	}
 	.navView .navSection .navItem .title{
 		width: 130rpx;
-		height: 30rpx;
+		height: 10rpx;
 		line-height: 30rpx;
 		display: inline-block;
 		text-align: center;
@@ -607,11 +648,13 @@
 		color: #352026;
 		display: block;
 		margin: auto;
+		position: relative;
+		top: -20rpx;
 	}
 	.groupView{
 		/* width: calc(100% - 40rpx); */
 		/* padding: 30rpx; */
-		margin-top: 6rpx;
+		/* margin-top: 6rpx; */
 	}
 	.groupView .headView{
 		display: flex;
@@ -626,27 +669,75 @@
 	}
 	.groupView .subjectView{
 		width: 100%;
-		padding: 20rpx 0;
+		/* padding: 20rpx 0; */
+		padding-top: 40rpx;
 	}
 	.groupView .subjectView .subjectItem{
 		display: inline-block;
-		width: 336rpx;
-		height: 152rpx;
-		margin-left: 30rpx;
+		width: 354rpx;
+		height: 172rpx;
+		/* margin-left: 30rpx; */
 		text-align: center;
 		/* border: 1rpx solid #2C405A; */
-		border-radius: 56rpx;
+		border-radius: 64rpx;
 		position: relative;
 	}
-	.groupView .subjectView .subjectItem:nth-child(2n){
-		margin-left: 18rpx;
+	.groupView .subjectView .subjectItem:nth-child(2n-1){
+		margin-left: 30rpx;
 	}
 	.groupView .subjectView .subjectItem image{
 		width: 336rpx;
 		height: 152rpx;
-		border-radius: 56rpx;
+		border-radius: 64rpx;
 		position: absolute;
 		left: 0;
+	}
+	.groupView .subjectView .subjectItem:nth-child(1) image{
+		background-image: linear-gradient(0deg, 
+				#ce203d 0%, 
+				#e02222 4%, 
+				#da3c4b 38%, 
+				#da3c4b 92%, 
+				#d95457 100%);
+		box-shadow: 0rpx 8rpx 16rpx 0rpx 
+			rgba(230, 58, 76, 0.19);
+	}
+	.groupView .subjectView .subjectItem:nth-child(2) image{
+		background-image: linear-gradient(0deg, 
+			#e06121 0%, 
+			#dd884f 5%, 
+			#dd6a46 35%, 
+			#e16840 92%, 
+			#df662e 100%);
+		box-shadow: 0rpx 8rpx 16rpx 0rpx 
+			rgba(229, 201, 184, 0.34);
+	}
+	.groupView .subjectView .subjectItem:nth-child(3) image{
+		background-image: linear-gradient(0deg, 
+			#ddbe39 0%, 
+			#d6d265 4%, 
+			#e6bf3d 38%, 
+			#ffb659 92%, 
+			#f9bc54 100%);
+		box-shadow: 0rpx 8rpx 16rpx 0rpx 
+			rgba(236, 174, 63, 0.15);
+	}
+	.groupView .subjectView .subjectItem:nth-child(4) image{
+		background-image: linear-gradient(0deg, 
+			#4287a3 0%, 
+			#619bbd 4%, 
+			#53afb4 38%, 
+			#46999a 92%, 
+			#46899a 100%);
+		box-shadow: 0rpx 8rpx 16rpx 0rpx 
+			rgba(173, 194, 199, 0.28), 
+			0rpx 8rpx 16rpx 0rpx 
+			rgba(173, 194, 199, 0.28);
+	}
+	.groupView .subjectView .subjectItem .progress{
+		position: absolute;
+		top: 145rpx;
+		width: 100%;
 	}
 	.groupView .subjectView .subjectItem .txt{
 		width: 336rpx;
@@ -662,20 +753,24 @@
 		/* font-weight: bold; */
 	}
 	.groupView .subjectView .subjectItem:nth-child(n+2){
-		margin-top: 12rpx;
+		/* margin-top: 12rpx; */
 	}
 	
 	.newsView{
 		padding: 0 30rpx;
 	}
 	.newsView .newsItem{
-		background-color: #ffffff;
+		/* background-color: #ffffff; */
 		border-radius: 30rpx;
 		margin: 18rpx 0;
 		display: flex;
 		width: 690rpx;
 		height: 214rpx;
 		padding: 25rpx;
+		background-color: #ffffff;
+		box-shadow: 0rpx 16rpx 44rpx 0rpx 
+			rgba(226, 171, 166, 0.21);
+		border-radius: 40rpx;
 	}
 	.newsView .newsItem .imgView{
 		width: 208rpx;
@@ -746,19 +841,19 @@
 		text-align: center;
 	}
 	.step .navItem .img{
-		width: 130rpx;
-		height: 130rpx;
+		width: 150rpx;
+		height: 150rpx;
 		display: block;
 		text-align: center;
 		margin: auto;
 	}
 	.step .navItem .img image{
-		width: 130rpx;
-		height: 130rpx;
+		width: 150rpx;
+		height: 150rpx;
 	}
 	.step .navItem .title{
 		width: 130rpx;
-		height: 30rpx;
+		height: 10rpx;
 		line-height: 30rpx;
 		display: inline-block;
 		text-align: center;
@@ -768,6 +863,8 @@
 		color: #352026;
 		display: block;
 		margin: auto;
+		position: relative;
+		top: -20rpx;
 	}
 	.step .subjectItem{
 		display: inline-block;
@@ -816,35 +913,35 @@
 	}
 	
 	.step1{
-		width: 130rpx;
+		width: 150rpx;
 		height: 167rpx;
 		position: absolute;
-		top: 359rpx;
-		left: 30rpx;
+		top: 368rpx;
+		left: 20rpx;
 	}
 	
 	.step2{
-		width: 130rpx;
+		width: 150rpx;
 		height: 167rpx;
 		position: absolute;
-		top: 359rpx;
-		left: 218rpx;
+		top: 368rpx;
+		left: 207rpx;
 	}
 	
 	.step3{
-		width: 130rpx;
+		width: 150rpx;
 		height: 167rpx;
 		position: absolute;
-		top: 359rpx;
-		left: 405rpx;
+		top: 368rpx;
+		left: 395rpx;
 	}
 	
 	.step4{
-		width: 130rpx;
+		width: 150rpx;
 		height: 167rpx;
 		position: absolute;
-		top: 359rpx;
-		left: 593rpx;
+		top: 368rpx;
+		left: 583rpx;
 	}
 	
 	
@@ -852,33 +949,41 @@
 		width: 336rpx;
 		height: 152rpx;
 		position: absolute;
-		top: 722rpx;
-		left: 381rpx;
+		top: 745rpx;
+		left: 382rpx;
 	}
 	
 	.tip1{
 		width: 290rpx;
 		left: 115rpx;
-		top: 490rpx;
+		top: 498rpx;
 	}
 	.tip2{
 		width: 395rpx;
 		left: 300rpx;
-		top: 490rpx;
+		top: 498rpx;
 	}
 	.tip3{
 		width: 320rpx;
 		left: 135rpx;
-		top: 490rpx;
+		top: 498rpx;
 	}
 	.tip4{
 		width: 344rpx;
 		left: 315rpx;
-		top: 490rpx;
+		top: 498rpx;
 	}
 	.tip5{
 		width: 220rpx;
 		left: 496rpx;
-		top: 860rpx;
+		top: 883rpx;
+	}
+	
+	.u-badge-dot{
+		border-radius: 50%!important;
+	}
+	.u-badge{
+		min-width: 32rpx;
+		min-height: 32rpx;
 	}
 </style>

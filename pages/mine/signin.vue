@@ -46,21 +46,22 @@
 			<view v-if="isNeedSign" @click="handleSign" class="action">立即签到</view>
 			<view v-else class="action disabled">已签到</view>
 			<view v-if="isNeedSign" class="tips">
-				签到成功获得10积分
+				签到成功获得{{signUpScore}}积分
 				<view class="tipicon"></view>
 			</view>
 		</view>
-		<view class="scoreView">
+		<view class="scoreView" @click="handleScoreRecordClick">
 			当前积分：{{userInfo.score}}
 		</view>
 	</view>
 </template>
 <script>
-	import { dateFormat, toDateFromString,addMonths, addDays, addSeconds, GetRandomNum } from '../../js/common.js'
+	import { dateFormat, toDateFromString,addMonths, addDays, addSeconds, GetRandomNum,utc2beijing } from '../../js/common.js'
 	export default {
 		data() {
 			return {
 				userInfo:{},
+				signUpScore:0,
 				date:'',
 				today:'',
 				checkday:'',
@@ -91,10 +92,14 @@
 			this.build()
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
+			})
+			
+			self.Parse.Config.get().then(config=>{
+				self.signUpScore = config.get('signUpScore') // 签到送积分
 			})
 		},
 		watch:{
@@ -131,6 +136,7 @@
 				signInQuery.find().then(res=>{
 					if(res.length > 0) {
 						res.forEach((date)=>{
+							// console.log(dateFormat(date.createdAt,'yyyy-MM-dd HH:mm:ss'))
 							if(today == dateFormat(date.createdAt,'yyyy-MM-dd')){ // 今天已打卡
 								self.isNeedSign = false
 							}
@@ -142,24 +148,57 @@
 			/*签到*/
 			handleSign(){
 				var self = this
-				var dbHistory = this.Parse.Object.extend("SignInHistory")
-				var _history = new dbHistory()
-				_history.set('openid', this.userInfo.openid)
-				_history.save().then(his => {
-					var user = self.Parse.User.current()
-					user.set('score', user.get('score') + 10)
-					user.save().then(ures => {
-						self.userInfo.score = ures.get('score')
-						uni.setStorage({
-							key: 'userInfo',
-							data: ures
-						})
-						self.bindSignInHistory()
-						console.log('保存成功')
+				if(self.isNeedSign){
+					self.isNeedSign = false
+					var dbHistory = this.Parse.Object.extend("SignInHistory")
+					var signInQuery = new this.Parse.Query("SignInHistory")
+					signInQuery.equalTo('openid',self.userInfo.openid)
+					var now = new Date()
+					signInQuery.greaterThan('createdAt', new Date(now.getFullYear(),now.getMonth(),now.getDate()))
+					signInQuery.count().then(res=>{
+						if(res==0){
+							var _history = new dbHistory()
+							_history.set('openid', this.userInfo.openid)
+							_history.save() //.then(his => {
+							
+							if(self.signUpScore>0){
+								// 添加积分记录
+								var ScoreRecords = this.Parse.Object.extend("ScoreRecord")
+								var scoreRecord = new ScoreRecords()
+								scoreRecord.set('openid',self.userInfo.openid)
+								scoreRecord.set('channel', 'signin')
+								scoreRecord.set('extend', '') // 首次答题
+								scoreRecord.set('score', self.signUpScore)
+								scoreRecord.save()
+								// 修改用户积分
+								var userQuery = new self.Parse.Query(self.Parse.User)
+								userQuery.get(self.Parse.User.current().id).then(user=>{
+									user.set('score', user.get('score') + self.signUpScore)
+									if(user.score > 0 && (!user.get('score_all') || user.get('score_all') == 0)) {
+										user.set('score_all', user.get('score') + self.signUpScore)
+									} else {
+										user.set('score_all', user.get('score_all') + self.signUpScore)
+									}
+									user.save().then(ures => {
+										self.userInfo.score = ures.get('score')
+										self.userInfo.score_all = ures.get('score_all')
+										uni.setStorage({
+											key: 'userInfo',
+											data: ures
+										})
+										self.bindSignInHistory()
+										console.log('保存成功')
+									})
+								})
+							}
+							// },(error)=>{
+							// 	console.log(error)
+							// })
+						}
+					},error=>{
+						
 					})
-				},(error)=>{
-					console.log(error)
-				})
+				}
 			},
 			build(){
 				var self = this
@@ -255,6 +294,11 @@
 				  self.checkday = dateItem.dateStr
 				}
 			  }
+			},
+			handleScoreRecordClick(){
+				uni.navigateTo({
+					url:'./scorerecord'
+				})
 			}
 		}
 	}
@@ -282,7 +326,7 @@
 	}
 	.actionView .tips .tipicon{
 		position: absolute;
-		top: 76rpx;
+		top: 73rpx;
 		left: 40rpx;
 		border-width: 14rpx;
 		border-style: solid dashed dashed dashed;
@@ -308,9 +352,20 @@
 		color: #ffffff;
 		font-family: PingFangSC-Medium;
 		font-size: 42rpx;
+		
+		background-image: linear-gradient(180deg, 
+				#ffa48d 0%, 
+				#ff8e6f 8%, 
+				#ff6666 74%, 
+				#fc4c4c 93%, 
+				#f93131 100%);
+			box-shadow: 0px 4px 8px 0px 
+				rgba(255, 126, 108, 0.27);
 	}
 	.actionView .action.disabled{
 		background-color: #dcdcdc;
+		background-image:none;
+		box-shadow:none;
 	}
 	.mydatepicker{
 	  height: 100%;

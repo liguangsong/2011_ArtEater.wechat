@@ -12,7 +12,10 @@
 				<view class="countView">{{index}}/{{count}}</view>
 			</view>
 			<view class="imgView">
-				<image v-if="img" v-for="img in questionDetail.images" mode="widthFix" :src="img" :key="img"></image>
+				<view class="imgItem" v-for="img in questionDetail.images">
+					<image v-if="img"  mode="widthFix" :src="img"></image>
+					<view class="vtips">{{version}}</view>
+				</view>
 			</view>
 			<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
 			<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
@@ -29,7 +32,7 @@
 				</block>
 			</view>
 			<view class="title" v-else-if="questionDetail.type==4">
-				<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c}}<text v-if="i<questionDetail.cinputs.length-1">({{i+1}})</text></block>
+				<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c===''?' ':c}}<text v-if="i<questionDetail.cinputs.length-1">({{i+1}})</text></block>
 			</view>
 			<view class="title" v-else>{{questionDetail.title}}</view>
 			<view class="options" v-if="questionDetail.type==1||questionDetail.type==2">
@@ -45,7 +48,7 @@
 			</view>
 			<!-- <view class="commentView" v-if="hasSubmit">
 				<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
-					<view style="display:inline-block;" v-for="s in options" :key="s.code">{{s.rightAnswer}}</view>
+					<view style="display:inline-block;margin-right: 10rpx;" v-for="s in options" :key="s.code">{{s.rightAnswer}}</view>
 				</view>
 				<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
 				<view class="comment">答案解析：
@@ -91,7 +94,8 @@
 				currTime:0, // 多去多少时间（秒）
 				score:0,
 				isComplate: false, // 是否已正常提交
-				questions:[], // 需要答题的题目Id
+				questions:[], // 需要答题的题目Id,
+				version: ''
 			}
 		},
 		onLoad(options) {
@@ -115,7 +119,7 @@
 
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
@@ -127,6 +131,9 @@
 					
 				},
 				fail: error=>{}
+			})
+			self.Parse.Config.get().then(_config=>{
+				self.version = _config.get('version')
 			})
 		},
 		/**
@@ -199,7 +206,7 @@
 				var self = this
 				var query = new this.Parse.Query("TestQuestions")
 				let id = self.questions[self.index-1]
-				// query.equalTo('id', id)
+				// query.equalTo('id', id)				
 				query.get(id).then(res=>{
 					if(res){
 						self.questionDetail=null
@@ -333,7 +340,7 @@
 									}
 								} 
 							})
-							item.rightAnswer = item.value[0].txt + (item.value.length > 1 ? ('(备选：' + _currTxt + ')'):'')
+							item.rightAnswer = item.value[0].txt + (item.value.length > 1 ? ('(备选：' + _currTxt + ')'):'') + ' '
 						})
 					} else if(this.questionDetail.get('type') == 4){
 						this.options.forEach((_option,_index)=>{
@@ -449,7 +456,7 @@
 						_history.set('allscore', self.examDetail.get('score'))
 						_history.save().then(his => {
 							self.isComplate = true
-							uni.reLaunch({
+							uni.redirectTo({
 								url:'/pages/mine/testresult?eid='+ his.id+'&from=exam'
 							})
 							console.log('保存成功')
@@ -465,6 +472,112 @@
 							self.bindQuestion()
 						},300)
 					}
+					
+					let _questionId =  self.questionDetail.id
+					
+					// 答题记录和赠送积分
+					self.Parse.Config.get().then(config=>{
+						let firstExamScore = config.get('firstExamScore') // 第一次答题赠送积分
+						let secondExamScore = config.get('secondExamScore') // 第二次或多次答题赠送积分
+						var examRecordQuery = new self.Parse.Query('ExamRecord') // 答题记录
+						examRecordQuery.equalTo('openid', self.userInfo.openid)
+						examRecordQuery.equalTo('questionId', _questionId)
+						examRecordQuery.count().then(examRecordCount=>{
+							var ScoreRecords = this.Parse.Object.extend("ScoreRecord")
+							var scoreRecord = new ScoreRecords()
+							scoreRecord.set('openid',self.userInfo.openid)
+							scoreRecord.set('channel', 'exam')
+							if(examRecordCount == 0) { // 第一次答题
+								scoreRecord.set('score', firstExamScore)
+								scoreRecord.set('extend', 'first') // 首次答题
+							} else { // 非第一次答题
+								scoreRecord.set('score', secondExamScore)
+							}
+							scoreRecord.save()
+							
+							// 修改用户积分
+							var userQuery = new self.Parse.Query(self.Parse.User)
+							userQuery.get(self.Parse.User.current().id).then(user=>{
+								if(user.score > 0 && (!user.get('score_all') || user.get('score_all') == 0)) {
+									user.set('score_all', user.get('score') + scoreRecord.get('score'))
+								} else {
+									user.set('score_all', user.get('score_all') + scoreRecord.get('score'))
+								}
+								user.set('score', user.get('score') + scoreRecord.get('score'))
+								user.save().then(ures => {
+									self.userInfo.score = ures.get('score')
+									self.userInfo.score_all = ures.get('score_all')
+									uni.setStorage({
+										key: 'userInfo',
+										data: ures
+									})
+									console.log('保存成功')
+								})
+							})
+							var ExamRecords = this.Parse.Object.extend("ExamRecord")
+							var examRecord = new ExamRecords()
+							examRecord.set('openid', self.userInfo.openid)
+							examRecord.set('questionId', _questionId)
+							examRecord.set('subjectId', self.questionDetail.get('subjects')[0])
+							examRecord.set('result', result)
+							examRecord.save().then(()=>{
+								var examRecordQuery = new self.Parse.Query(ExamRecords)
+								examRecordQuery.equalTo('questionId', _questionId)
+								examRecordQuery.count().then(examCount=>{
+									var examRecordRightQuery = new self.Parse.Query(ExamRecords)
+									examRecordRightQuery.equalTo('questionId', _questionId)
+									examRecordRightQuery.equalTo('result', true)
+									examRecordRightQuery.count().then(rightCount=>{
+										console.log('正确率：'+ rightCount+'/'+ examCount)
+										var Questions = self.Parse.Object.extend("TestQuestions")
+										var quesQuery = new self.Parse.Query(Questions)
+										quesQuery.get(_questionId).then(_question=>{
+											_question.set('accuracy', parseFloat((rightCount / examCount).toFixed(4)))
+											_question.save()
+										})
+									})
+								})
+								
+								var examRecordQuery = new self.Parse.Query(ExamRecords)
+								let now = new Date()
+								let y = now.getFullYear()
+								let m = now.getMonth()
+								let d = now.getDate()
+								let start = new Date(y, m, d, 0, 0, 0)
+								let end = new Date(y, m, d, 23, 59, 59)
+								examRecordQuery.equalTo('questionId', _questionId)
+								examRecordQuery.greaterThanOrEqualTo('createdAt', start)
+								examRecordQuery.lessThanOrEqualTo('createdAt', end)
+								examRecordQuery.count().then(examCount=>{
+									var examRecordRightQuery = new self.Parse.Query(ExamRecords)
+									examRecordRightQuery.equalTo('questionId', _questionId)
+									examRecordRightQuery.equalTo('result', false)
+									examRecordRightQuery.greaterThanOrEqualTo('createdAt', start)
+									examRecordRightQuery.lessThanOrEqualTo('createdAt', end)
+									examRecordRightQuery.count().then(errorCount=>{
+										console.log('错误率：'+ errorCount + '/' + examCount)
+										var QuestReports = self.Parse.Object.extend("QuestReport")
+										let reportQuery = new self.Parse.Query(QuestReports)
+										let date = y+'-'+m+'-'+d
+										reportQuery.equalTo('questionId', _questionId)
+										reportQuery.equalTo('date', date)
+										reportQuery.first().then(report=>{
+											if(report){
+												report.set('accuracy', parseFloat((errorCount / examCount).toFixed(4)))
+												report.save()
+											} else {
+												report = new QuestReports()
+												report.set('questionId', _questionId)
+												report.set('date', date)
+												report.set('accuracy', parseFloat((errorCount / examCount).toFixed(4)))
+												report.save()
+											}
+										})
+									})
+								})
+							})
+						})
+					})
 				}
 			},
 			/*下一题*/
@@ -474,11 +587,14 @@
 				this.hasSubmit = false;
 				this.canSubmit = false;
 				this.bindQuestion()
+				wx.pageScrollTo({
+					scrollTop: 0
+				})
 			},
 			/*超时自动提交*/
 			handleTimeOut(){
 				this.submit(function(his){
-					uni.reLaunch({
+					uni.redirectTo({
 						url:'/pages/mine/testresult?eid='+ his.id+'&from=exam'
 					})
 				})
@@ -532,6 +648,7 @@
 	.questionView{
 		padding: 0 36rpx;
 		margin-top: 104rpx;
+		padding-bottom: 200rpx;
 	}
 	.questionView .headView{
 		display: flex;
@@ -579,7 +696,7 @@
 		border-radius: 20rpx;
 		background-color: #FFFFFF;
 		height: 64rpx;
-		line-height: 64rpx;
+		line-height: 60rpx;
 		max-width: 630rpx;
 		min-width: 80rpx;
 		width: 80rpx;
@@ -597,7 +714,7 @@
 		border-radius: 20rpx;
 		background-color: #FFFFFF;
 		height: 64rpx;
-		line-height: 64rpx;
+		line-height: 60rpx;
 		min-width: 80rpx;
 		padding: 0 30rpx;
 		display: inline-block;
@@ -623,9 +740,14 @@
 		padding: 20rpx 0;
 	}
 	.actionView{
-		margin-top: 50rpx;
+		/* margin-top: 50rpx; */
 		width: 100%;
 		padding: 36rpx;
+		height: 196rpx;
+		position: fixed;
+		bottom: 0;
+		padding-top: 12rpx;
+		background-color: #fbfbfa;
 	}
 	.actionView button{
 		width: 100%;
@@ -659,6 +781,7 @@
 		line-height: 42rpx;
 		font-family: PingFangSC-Medium;
 		color: #352026;
+		margin-right: 10rpx;
 	}
 	.commentView .comment{
 		margin-top: 32rpx;
@@ -671,5 +794,16 @@
 		background-color: #FFFFFF;
 		border: 2rpx solid #ffb9b8;
 		color: #f16564;
+	}
+	.vtips{
+		text-align: right;
+		font-size: 18rpx;
+		font-weight: normal;
+		font-stretch: normal;
+		letter-spacing: 0rpx;
+		color: rgba(53, 32, 38, 0.7);
+	}
+	.imgView .imgItem{
+		margin-bottom: 20rpx;
 	}
 </style>

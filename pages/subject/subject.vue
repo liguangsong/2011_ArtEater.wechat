@@ -1,41 +1,40 @@
 <template>
-	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll'}">
+	<view class="myPage" :style="{'overflow-x':'hidden', 'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll'}">
+		<view class="headView">
+			<image :src="subjectDetail.headImg" style="width: 750rpx;height: 396rpx;"></image>
+		</view>
+		<view class="baseProgress">
+			<u-line-progress :percent="subjectTree.progress*100/subjectTree.childrenCount" :show-percent="false" height="10" active-color="#ff6867"></u-line-progress>
+			<view class="tips">{{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}} 题目已完成</view>
+		</view>
 		<view class="treeView">
-			<!--一级-->
-			<view class="treeItem" style="margin-left: 16rpx;margin-top: 12rpx;margin-bottom: 60rpx;">
-				<view class="content">
-					<view class="conView">
-						<view class="listTxt" @click="handleNameClick" :data-item="subjectDetail">{{subjectDetail.subject_name}}</view>
-						<view class="listAction">
-							<view class="action" @click="handleNameClick" :data-item="subjectDetail">
-								<image v-if="subjectDetail.content" src="../../static/icon/icon_order.png"></image>
-							</view>
-							<view class="action" @click="handleTestClick" :data-item="subjectDetail">
-								<image v-if="subjectDetail.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
 			<!--二级-->
-			<view v-for="(subject,index) in subjectTree" class="treeItem">
-				<view class="listIcon">
-					<template v-if="subject.has_down_level">
-						<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;left: 10rpx;" @click="handleExtend(subject)">
-							<image v-if="!subject.extend" src="../../static/icon/icon_add.png"></image>
-							<image v-else src="../../static/icon/icon_remove.png"></image>
-						</view>
-					</template>
-				</view>
-				<view class="content">
+			<view v-for="(subject,index) in subjectTree.children">
+				<view class="treeItem">
+					<view class="listIcon" style="padding-left: 0;">
+						<template v-if="subject.has_down_level">
+							<view class="actionExtend" style="text-align: center;height: 50rpx;line-height: 50rpx;position: relative;left: 10rpx;" @click="handleExtend(subject)">
+								<image v-if="!subject.extend" src="../../static/icon/icon_add.png"></image>
+								<image v-else src="../../static/icon/icon_remove.png"></image>
+							</view>
+						</template>
+					</view>
+					<view class="content" style="padding-left: 0;">
 					<view class="conView">
-						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}</view>
+						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}
+						<!-- ({{subject.progress}}/{{subject.childrenCount}}) -->
+							<view v-if="subject.price==0" class="free">免费</view>
+						</view>
 						<view class="listAction">
 							<view class="action" @click="handleNameClick" :data-item="subject">
 								<image v-if="subject.content" src="../../static/icon/icon_order.png"></image>
 							</view>
+							<!-- <view v-if="subject.quesCount > 0" class="action" @click="handleTestClick" :data-item="subject"> -->
 							<view class="action" @click="handleTestClick" :data-item="subject">
-								<image v-if="subject.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+								<image src="../../static/icon/icon_pencle.png"></image>
+								<view class="progress">
+									<u-line-progress :percent="subject.progress*100/subject.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -63,7 +62,10 @@
 											<image v-if="sub.content" src="../../static/icon/icon_order.png"></image>
 										</view>
 										<view class="action" @click="handleTestClick" :data-item="sub">
-											<image v-if="sub.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+											<image src="../../static/icon/icon_pencle.png"></image>
+											<view class="progress">
+												<u-line-progress :percent="sub.progress*100/sub.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+											</view>
 										</view>
 									</view>
 								</view>
@@ -91,7 +93,10 @@
 														<image v-if="sub1.content" src="../../static/icon/icon_order.png"></image>
 													</view>
 													<view class="action" @click="handleTestClick" :data-item="sub1">
-														<image v-if="sub1.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+														<image src="../../static/icon/icon_pencle.png"></image>
+														<view class="progress">
+															<u-line-progress :percent="sub1.progress*100/sub1.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+														</view>
 													</view>
 												</view>
 											</view>
@@ -120,7 +125,10 @@
 																	<image v-if="sub2.content" src="../../static/icon/icon_order.png"></image>
 																</view>
 																<view class="action" @click="handleTestClick" :data-item="sub2">
-																	<image v-if="sub2.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																	<image src="../../static/icon/icon_pencle.png"></image>
+																	<view class="progress">
+																		<u-line-progress :percent="sub2.progress*100/sub2.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																	</view>
 																</view>
 															</view>
 														</view>
@@ -148,7 +156,10 @@
 																				<image v-if="sub3.content" src="../../static/icon/icon_order.png"></image>
 																			</view>
 																			<view class="action" @click="handleTestClick" :data-item="sub3">
-																				<image v-if="sub3.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																				<image src="../../static/icon/icon_pencle.png"></image>
+																				<view class="progress">
+																					<u-line-progress :percent="sub3.progress*100/sub3.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																				</view>
 																			</view>
 																		</view>
 																	</view>
@@ -176,7 +187,10 @@
 																							<image v-if="sub4.content" src="../../static/icon/icon_order.png"></image>
 																						</view>
 																						<view class="action" @click="handleTestClick" :data-item="sub4">
-																							<image v-if="sub4.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																							<image src="../../static/icon/icon_pencle.png"></image>
+																							<view class="progress">
+																								<u-line-progress :percent="sub4.progress*100/sub4.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																							</view>
 																						</view>
 																					</view>
 																				</view>
@@ -205,7 +219,10 @@
 																										<image v-if="sub5.content" src="../../static/icon/icon_order.png"></image>
 																									</view>
 																									<view class="action" @click="handleTestClick" :data-item="sub5">
-																										<image v-if="sub5.quesCount > 0" src="../../static/icon/icon_pencle.png"></image>
+																										<image src="../../static/icon/icon_pencle.png"></image>
+																										<view class="progress">
+																											<u-line-progress :percent="sub5.progress*100/sub5.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																										</view>
 																									</view>
 																								</view>
 																							</view>
@@ -228,6 +245,8 @@
 						</view>
 					</view>
 				</view>
+				</view>
+				<u-line style="position: relative;top: -32rpx;left: 70rpx;" :hair-line="false" class="u-line" color="#f6f6f6"></u-line>
 			</view>
 		</view>
 		<u-popup v-model="isShowSubjectDetail" width="674rpx" mode="center" border-radius="40">
@@ -254,7 +273,7 @@
 				</view>
 			</view>
 		</u-popup>
-		<u-mask :custom-style="{'background': 'rgba(255, 255, 255, 0.7)'}" :show="isShowTips" :mask-click-able="false" :zoom="false" @click="show = false">
+		<u-mask :custom-style="{'background': 'rgba(255, 255, 255, 0.7)'}" :show="isShowTips" :mask-click-able="true" :zoom="false" @click="handleStep">
 			<view v-show="step==1" class="step step1">
 				<view class="action">
 					<image src="../../static/icon/icon_order.png"></image>
@@ -268,7 +287,7 @@
 					<view class="content">
 						<text>单元知识摘要</text>
 					</view>
-					<view class="action" @click="handleStep">我知道了</view>
+					<view class="action">我知道了</view>
 				</view>
 			</view>
 			<view v-show="step==2" class="step step2">
@@ -284,7 +303,7 @@
 					<view class="content">
 						<text>单元练习题</text>
 					</view>
-					<view class="action" @click="handleStep">我知道了</view>
+					<view class="action">我知道了</view>
 				</view>
 			</view>
 		</u-mask>
@@ -308,7 +327,10 @@
 				isShowSubjectBuy: false,
 				screenHeight:0,
 				hasBuyed: false,
-				windowHeight: 0
+				windowHeight: 0,
+				subjects: [],
+				questionHistory: [],
+				subjectProgress: []
 			}
 		},
 		onShow() {
@@ -317,7 +339,7 @@
 			var self = this
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
@@ -345,7 +367,6 @@
 						self.userInfo = res.data
 						self.bindOrder()
 						self.bindSubjectDetail()
-						self.bindSubjectTree()
 					}
 				})
 			}
@@ -363,7 +384,10 @@
 				var self = this
 				var query = new this.Parse.Query("Subjects")
 				query.get(this.subjectId).then(res=>{
+					res.set('progress', 0)
+					res.set('childrenCount', 0)
 					self.subjectDetail = res
+					self.bindSubjectTree()
 				})
 			},
 			/*查询是否已购买本章节*/
@@ -371,7 +395,7 @@
 				var self = this
 				var query = new this.Parse.Query("Order")
 				query.equalTo('openId', self.userInfo.openid)
-				query.equalTo('subjectId',this.subjectId)
+				query.contains('subjectId',this.subjectId)
 				query.equalTo('state', 1)
 				query.first().then(res=>{
 					if(res){
@@ -390,29 +414,39 @@
 				query.ascending('createdAt')
 				query.limit(10000)
 				query.find().then(res=>{
-					var ids = []
-					res.forEach(t=>{
-						ids.push(t.id)
-					})
-					var quesQuery = new self.Parse.Query("TestQuestions")
-					quesQuery.containedIn('subjects', ids)
-					quesQuery.limit(10000)
-					quesQuery.select('objectId','subjects')
-					quesQuery.find().then(ques=>{
-						res.forEach(item => {
-							let questions = ques.filter(t=>{
-								return t.get('subjects').indexOf(item.id)!=-1
+					self.subjects = res
+					var queryProgress = new self.Parse.Query("SubjectProgress")
+					queryProgress.equalTo('openid',self.userInfo.openid)
+					queryProgress.equalTo('isImportant', 0)
+					queryProgress.limit(10000)
+					queryProgress.find().then(pres=>{
+							self.subjectProgress = pres
+							var hisQuery = new self.Parse.Query("QuestionHistory")
+							hisQuery.equalTo("isImportant", 0)
+							hisQuery.equalTo("openid", self.userInfo.openid)
+							hisQuery.find().then(questionHistory=>{
+								self.questionHistory = questionHistory
+								var tree = self.initSubjectTree(res, self.subjectId, pres)
+								self.subjectTree = {
+									subject_name: self.subjectDetail.get('subject_name'),
+									content: self.subjectDetail.get('content'),
+									price: self.subjectDetail.get('price'),
+									quesCount: self.subjectDetail.quesCount,
+									extend: false,
+									has_down_level: self.subjectDetail.get('has_down_level'),
+									value: self.subjectDetail.id,
+									progress: 0,
+									childrenCount: 0,
+									children: tree
+								}
+								self.handleGetTestCount(self.subjectTree)
+								uni.hideLoading()
 							})
-							item.quesCount = questions.length
-						})
-						var tree = self.initSubjectTree(res, self.subjectId)
-						self.subjectTree = tree
-						uni.hideLoading()
 					})
 				})
 			},
 			/** 构造树形科目 */
-			initSubjectTree(subjects, parentId){
+			initSubjectTree(subjects, parentId, subjectProgress){
 				var self = this
 				var treeValue = []
 				let _subjects = subjects.filter((_item)=>{
@@ -427,20 +461,131 @@
 						extend: false,
 						has_down_level: _subject.get('has_down_level'),
 						value: _subject.id,
+						progress: 0,
+						childrenCount: 0
 					}
 					let childrens = subjects.filter(_item=>{
 						return _item.get('parent_ID') == _subject.id
 					})
-					if(childrens.length>0){
-						subject.children = self.initSubjectTree(subjects, _subject.id)
+					subject.progress = 0
+					subject.childrenCount = 0
+					if(childrens.length > 0) { // 有子集
+						subject.children = self.initSubjectTree(subjects, _subject.id, subjectProgress)
+						let subjectIds = []
+						if(subject.children&&subject.children.length>0){
+							subject.children.forEach(t=>{
+								subjectIds.push(t.value)
+							})
+							let quesIndex = 0
+							let quesCount = 0
+							subjectProgress.forEach(t=>{
+								if(subjectIds.indexOf(t.get('subjectId'))!=-1){
+									quesIndex+= t.get('subjectIndex')
+									quesCount+= t.get('quesCount')
+								}
+							})
+							subject.progress = (quesIndex ? quesIndex : 0)
+							if(quesCount>0){
+								subject.childrenCount = quesCount
+							}
+						}
 					}
 					treeValue.push(subject)
 				})
 				return treeValue
 			},
+			getSubjectIds(tree, subjectId, subjectIds){
+				var self = this
+				if(tree){
+					tree.forEach(item=>{
+						if(item.value == subjectId){
+							subjectIds.push(item.value)
+							self.getSubjectChildIds(item.children, subjectIds)
+						} else {
+							if(item.children){
+								self.getSubjectIds(item.children, subjectId, subjectIds)
+							}
+						}
+					})
+				}
+			},
+			getSubjectChildIds(tree, subjectIds){
+				var self = this
+				if(tree){
+					tree.forEach(item=>{
+						subjectIds.push(item.value)
+						if(item.children){
+							self.getSubjectChildIds(item.children, subjectIds)
+						}
+					})
+				}
+			},
 			/*展开关闭*/
 			handleExtend(subject){
 				subject.extend = !subject.extend
+				if(subject.extend&&!subject.loadCount){
+					this.handleGetTestCount(subject)
+					subject.loadCount = true
+				}
+			},
+			/*查看科目下题目数量*/
+			handleGetTestCount(subject){
+				var self = this
+				var ids = []
+				ids.push(subject.value)
+				self.getSubjectChildIds(subject.children, ids)
+				uni.showLoading({
+					title:'加载中……'
+				})
+				var quesQuery = new self.Parse.Query("TestQuestions")
+				quesQuery.containedIn('subjects', ids)
+				quesQuery.limit(10000)
+				quesQuery.find().then(ques=>{
+					subject.childrenCount = ques.length
+					self.subjectProgress.forEach(t=>{
+						if(t.get('subjectId') == subject.value){
+							if(t.get('subjectIndex')){
+								subject.progress = t.get('subjectIndex')
+							} else {
+								subject.progress = 0
+							}
+						}
+					})
+					let subIndex = 0
+					if(subject.children && subject.children.length > 0) {
+						subject.children.forEach(item => {
+							let _quesCount = 0
+							let _ids = []
+							_ids.push(item.value)
+							self.getSubjectChildIds(item.children, _ids)
+							ques.forEach(t=>{
+								_ids.forEach(id=>{
+									if(t.get('subjects').indexOf(id)!=-1){
+										_quesCount++
+									}
+								})
+							})
+							item.quesCount = _quesCount //questions.length
+							if(item.quesCount > 0) {
+								item.childrenCount = item.quesCount
+								let quesIndex = 0
+								self.subjectProgress.forEach(t=>{
+									if(t.get('subjectId') == item.value){
+										if(t.get('subjectIndex')){
+											quesIndex += t.get('subjectIndex')
+										}
+									}
+								})
+								item.progress = (quesIndex ? quesIndex : 0)
+							}
+							subIndex+=item.progress
+						})
+					}
+					if(subIndex>0&&subject.progress==0){
+						subject.progress = subIndex
+					}
+					uni.hideLoading()
+				})
 			},
 			/*查看详情*/
 			handleNameClick(e){
@@ -450,81 +595,32 @@
 					this.isShowSubjectDetail = true
 				}
 			},
-			/*弹出购买界面*/
-			handleBuyClick(){
-				this.isShowSubjectBuy = true
-			},
-			/*点击购买按钮*/
-			handleBuyBtnClick(){
-				var self = this
-				uni.showLoading()
-				var _subject = this.currSubjectDetail
-				var user = self.Parse.User.current()
-				var price = self.subjectDetail.get('price') * 100
-				this.Parse.Cloud.run('initiatePayment',
-					{price: price,},
-					{sessionToken: user.get('sessToken'),}).then(res=>{
-					var payload = res.payload
-					var tradeId = res.tradeId
-					uni.requestPayment({
-					  appId: payload.appId,
-					  timeStamp: payload.timeStamp,
-					  nonceStr: payload.nonceStr,
-					  package: payload.package,
-					  signType: payload.signType,
-					  paySign: payload.paySign,
-					  success (res) {
-						var dbOrder = self.Parse.Object.extend("Order")
-						var order = new dbOrder()
-						order.set('orderNo', tradeId)
-						order.set("subjectId",  self.subjectId)
-						order.set("subjectName",  self.subjectDetail.get('subject_name'))
-						order.set("price",  self.subjectDetail.get('price'))
-						order.set("openId", self.userInfo.openid)
-						order.set("state", 1)
-						order.set("wechatPayOrderId", '') // 支付流水号
-						order.save().then(_order => {
-							uni.hideLoading()
-							uni.showModal({
-								content:'恭喜，购买成功',
-								showCancel: false
-							})
-							self.isShowSubjectBuy = false
-							self.bindOrder()
-						},(error)=>{
-							uni.hideLoading()
-						  	console.log(error)
-						})
-						var user = self.Parse.User.current()
-						user.set('amount', user.get('amount') + parseFloat(self.subjectDetail.get('price')))
-						user.save().then(ruser=>{
-							uni.setStorage({
-								key: 'userInfo',
-								data: ruser
-							})
-						})
-					  },
-					  fail (res) {
-						uni.hideLoading()
-						console.log("支付失败"+ JSON.stringify(res))
-					  }
-					})
-				})
-			},
 			/*做题*/
 			handleTestClick(e){
 				var self = this
 				var item = e.currentTarget.dataset.item
 				if(item.price > 0 && !self.hasBuyed) {
-					this.isShowSubjectBuy = true
+					// this.isShowSubjectBuy = true
+					var self = this
+					uni.navigateTo({
+						url:'/pages/buy/buy?subjectId=' + this.subjectDetail.id,
+						event:{
+							reloadOrder: function(data){
+								self.bindOrder()
+							}
+						}
+					})
 				} else {
 					var item = e.currentTarget.dataset.item
 					uni.navigateTo({
 						url:'exam?bsid='+self.subjectId+'&sid=' + item.value,
+						success(res) {
+							res.eventChannel.emit('subjectTree', item)
+						},
 						events: {
 							buySuccess: function(data) {
-								debugger
 								self.bindOrder()
+								self.bindSubjectTree()
 							}
 						}
 					})
@@ -549,9 +645,28 @@
 		background-color: #fbfbfb;
 		overflow: hidden;
 	}
+	.headView{
+		display: inline-flex;
+	}
+	.baseProgress{
+		padding: 0 40rpx;
+		position: relative;
+		top: -17rpx;
+		height: 46rpx;
+	}
+	.baseProgress .tips{
+		font-family: PingFangSC-Regular;
+		font-size: 18rpx;
+		font-weight: normal;
+		font-stretch: normal;
+		letter-spacing: 0rpx;
+		color: rgba(53, 32, 38, 0.7);
+	}
 	.treeView{
 		padding: 30rpx;
+		padding-left: 20rpx;
 		line-height: 66rpx;
+		padding-bottom: 100rpx;
 	}
 	.treeView .treeItem {
 		display: flex;
@@ -565,12 +680,14 @@
 		height: 50rpx;
 		line-height: 40rpx;
 		text-align: right;
+		padding-left: 14rpx;
 	}
 	.treeView .treeItem .listIcon .actionExtend{
 		width: 50rpx;
 		position: relative;
 		left: -30rpx;
 		text-align: center;
+		font-size: 0;
 	}
 	.treeView .treeItem .listIcon .actionExtend image{
 		display: inline-block;
@@ -581,6 +698,7 @@
 	}
 	.treeView .treeItem .content{
 		flex: 1;
+		padding-left: 14rpx;
 	}
 	.treeView .treeItem .content .conView{
 		display: flex;
@@ -598,6 +716,30 @@
 		-webkit-line-clamp: 1!important;
 		-webkit-box-orient: vertical!important;
 		font-family: PingFangSC-Medium;
+		/*进度？*/
+		/* background-color: #007AFF;
+		border-radius: 20rpx;
+		position: relative;
+		left:-10rpx;
+		text-indent: 10rpx; */
+	}
+	.treeView .treeItem .content .conView .listTxt .free{
+		width: 44rpx;
+		height: 22rpx;
+		line-height: 22rpx;
+		text-align: center;
+		background-color: #ffe8e8;
+		border-radius: 4rpx;
+		font-family: PingFangSC-Medium;
+		font-size: 14rpx;
+		font-weight: normal;
+		font-stretch: normal;
+		letter-spacing: 0rpx;
+		color: #ff6867;
+		display: inline-block;
+		position: relative;
+		top: -20rpx;
+		left: 15rpx;
 	}
 	.treeView .treeItem .content .conView .listAction{
 		width: 164rpx;
@@ -630,6 +772,15 @@
 		width: 32rpx;
 		height: 32rpx;
 		vertical-align: middle;
+		/* position: absolute; */
+	}
+	.treeItem .listAction .action .progress{
+		width: 32rpx;
+		height: 4rpx;
+		position: relative;
+		text-align: center;
+		left: 25rpx;
+		top: -35rpx;
 	}
 	/* .treeItem .listAction image:last-child{
 		margin-right: 20rpx;
@@ -670,8 +821,10 @@
 	.listAction .action{
 		width: 80rpx;
 		height: 50rpx;
+		line-height: 50rpx;
 		text-align: center;
 		display: inline-block;
+		position: relative;
 	}
 	.tooltip {
 	    position: absolute;
@@ -679,7 +832,7 @@
 	}
 	.tooltip .timg{
 		position: relative;
-		top: 18rpx;
+		top: 20rpx;
 		left: 35rpx;
 	}
 	.tooltip .timg image{
@@ -714,22 +867,22 @@
 	}
 	.step1{
 		position: absolute;
-		left: 586rpx;
-		top: 36rpx;
+		left: 582rpx;
+		top: 484rpx;
 	}
 	.step2{
 		position: absolute;
-		left: 664rpx;
-		top: 36rpx;
+		left: 662rpx;
+		top: 484rpx;
 	}
 	.tip1{
 		position: absolute;
-		top: 60rpx;
-		left: 405rpx;
+		top: 511rpx;
+		left: 407rpx;
 	}
 	.tip2{
 		position: absolute;
-		top: 60rpx;
-		left: 510rpx;
+		top: 511rpx;
+		left: 507rpx;
 	}
 </style>

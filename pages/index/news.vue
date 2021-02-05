@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<web-view src="https://mp.weixin.qq.com/s/ioFO2eCizfmDY1W7P2aUcA"></web-view>
+		<web-view :src="src"></web-view>
 	</view>
 </template>
 
@@ -8,7 +8,12 @@
 	export default {
 		data() {
 			return {
-				
+				src:''
+			}
+		},
+		onLoad(options) {
+			if(options.url){
+				this.src = options.url
 			}
 		},
 		methods: {

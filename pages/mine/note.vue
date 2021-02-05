@@ -1,54 +1,105 @@
 <template>
 	<view>
-		<view v-if="count==0" style="text-align: center;">
-			<u-empty text="数据为空" mode="data"></u-empty>
-		</view>
-		<view v-else class="questionView">
-			<view class="headView">
-				<view v-if="questionDetail.type==1" class="queType">单选题</view>
-				<view v-if="questionDetail.type==2" class="queType">多选题</view>
-				<view v-if="questionDetail.type==3" class="queType">填空题</view>
-				<view v-if="questionDetail.type==4" class="queType">多项选择题</view>
-				<view class="countView">{{index}}/{{count}}</view>
+		<view style="padding-bottom: 200rpx;">
+			<view v-if="count==0" style="text-align: center;">
+				<u-empty text="网络不理想，请耐心等待" mode="data"></u-empty>
 			</view>
-			<view class="imgView">
-				<image v-if="img" v-for="img in questionDetail.images" mode="widthFix" :src="img"></image>
-			</view>
-			<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
-			<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
-				<block v-for="(c,i) in questionDetail.cinputs">{{c}}
-					<block v-if="hasSubmit">
-						<view v-if="i!=questionDetail.cinputs.length-1" :class="'txt '+ (options[i].state==1?'success':'error')">{{options[i].content}}</view>
+			<view v-else class="questionView">
+				<view class="headView">
+					<view v-if="questionDetail.type==1" class="queType">单选题</view>
+					<view v-if="questionDetail.type==2" class="queType">多选题</view>
+					<view v-if="questionDetail.type==3" class="queType">填空题</view>
+					<view v-if="questionDetail.type==4" class="queType">多项选择题</view>
+					<view class="countView">{{index}}/{{count}}</view>
+				</view>
+				<view class="imgView">
+					<view class="imgItem" v-for="img in questionDetail.images">
+						<image v-if="img"  mode="widthFix" :src="img"></image>
+						<view class="vtips">{{version}}</view>
+					</view>
+				</view>
+				<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
+				<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
+					<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c}}
+						<block v-if="hasSubmit">
+							<view v-if="i!=questionDetail.cinputs.length-1" :class="'txt '+ (options[i].state==1?'success':'error')">{{options[i].content}}</view>
+						</block>
+						<block v-else>
+							<input v-if="i!=questionDetail.cinputs.length-1" :style="{width: (options[i].value[0].txt.length * 34 + 60) + 'rpx;'}" :data-index="i" @input="handleAnswerChange" @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />
+							<view v-if="i!=questionDetail.cinputs.length-1" class="tips">{{options[i].value[0].txt.length}}个字</view>
+						</block>
 					</block>
-					<block v-else>
-						<input v-if="i!=questionDetail.cinputs.length-1" :style="{width: (options[i].value[0].txt.length * 34 + 60) + 'rpx;'}" :data-index="i" @input="handleAnswerChange" @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />
-						<view v-if="i!=questionDetail.cinputs.length-1" class="tips">{{options[i].value[0].txt.length}}个字</view>
-					</block>
-				</block>
-			</view>
-			<view class="title" v-else-if="questionDetail.type==4">
-				<block v-for="(c,i) in questionDetail.cinputs">{{c}}<text v-if="i<questionDetail.cinputs.length-1">({{i+1}})</text></block>
-			</view>
-			<view class="title" v-else>{{questionDetail.title}}</view>
-			<view class="options" v-if="questionDetail.type==1||questionDetail.type==2">
-				<my-radio-group :disabled="hasSubmit" :options="options" :type="questionDetail.type==1?'radio':'check'" @change="handleChooseOption"></my-radio-group>
-			</view>
-			<view class="options" v-if="questionDetail.type==4">
-				<view class="multisCheckView" v-for="(_option,_index) in options">
-					<view class="head">({{_index + 1}})</view>
-					<view class="content">						
-						<my-radio-group :disabled="hasSubmit" :options="_option.options" :index="_index" type="radio" @change="handleChooseMultisOption"></my-radio-group>
+				</view>
+				<view class="title" v-else-if="questionDetail.type==4">
+					<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c===''?' ':c}}<text v-if="i<questionDetail.cinputs.length-1">({{i+1}})</text></block>
+				</view>
+				<view class="title" v-else>{{questionDetail.title}}</view>
+				<view class="options" v-if="questionDetail.type==1||questionDetail.type==2">
+					<my-radio-group :disabled="hasSubmit" :options="options" :type="questionDetail.type==1?'radio':'check'" @change="handleChooseOption"></my-radio-group>
+				</view>
+				<view class="options" v-if="questionDetail.type==4">
+					<view class="multisCheckView" v-for="(_option,_index) in options">
+						<view class="head">({{_index + 1}})</view>
+						<view class="content">						
+							<my-radio-group :disabled="hasSubmit" :options="_option.options" :index="_index" type="radio" @change="handleChooseMultisOption"></my-radio-group>
+						</view>
 					</view>
 				</view>
 			</view>
-			<view class="commentView" v-if="hasSubmit">
-				<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
-					<view style="display:inline-block;" v-for="s in options">{{s.rightAnswer}}</view>
+			<view :class="'commentView ' + ((!isShowComments&&!hasBuyedComments)?'needbuy':'')" v-if="hasSubmit">
+				<view class="bg" v-if="!isShowComments&&!hasBuyedComments">
+					<image src="../../static/dajxbg.png"></image>
 				</view>
-				<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
-				<view class="comment">答案解析：
-					<u-parse v-if="isShowComments" :html="questionDetail.comments"></u-parse>
-					<u-parse v-else html="暂未开放"></u-parse>
+				<view style="position: relative;padding: 60rpx 70rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
+					<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
+						<view style="display:inline-block;margin-right: 10rpx;" v-for="s in options">{{s.rightAnswer}}</view>
+					</view>
+					<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
+					<view class="comment">
+						<view v-if="isShowComments">
+							<view class="accuracy">
+								<view :class="'apercent ' + (questionDetail.aPercent>=percentH?'h':(questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH?'m':'l'))">
+									<view class="icon">
+										<image v-if="questionDetail.aPercent>=percentH" src="../../static/icon/icon_percent_h.png"></image>
+										<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../static/icon/icon_percent_m.png"></image>
+										<image v-if="questionDetail.aPercent<percentM" src="../../static/icon/icon_percent_l.png"></image>
+									</view>
+									<view style="flex: 1;">全民正确率：{{questionDetail.aPercent}}%</view>
+								</view>
+								<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
+								<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
+								<view v-if="questionDetail.aPercent<percentM" class="atips">记住：大家都错了也不是你做错的理由。</view>
+							</view>
+							<u-parse :html="questionDetail.comments?questionDetail.comments:'暂无解析'"></u-parse>
+						</view>
+						<view v-else>
+							<view v-if="!hasBuyedComments">
+								<view class="accuracy" style="margin: 0;">全民正确率：解锁试题解析可见</view>
+								<view  style="text-align: center;margin-top: 120rpx;">
+									<button class="btnComments" type="default" @click="handleBuyComments">
+										<image src="../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
+										<view style="text-indent: 20rpx;display: inline-block;">解锁试题解析</view>
+									</button>
+								</view>
+							</view>
+							<view v-else>
+								<view class="accuracy">
+									<view :class="'apercent ' + (questionDetail.aPercent>=percentH?'h':(questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH?'m':'l'))">
+										<view class="icon">
+											<image v-if="questionDetail.aPercent>=percentH" src="../../static/icon/icon_percent_h.png"></image>
+											<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../static/icon/icon_percent_m.png"></image>
+											<image v-if="questionDetail.aPercent<percentM" src="../../static/icon/icon_percent_l.png"></image>
+										</view>
+										<view style="flex: 1;">全民正确率：{{questionDetail.aPercent}}%</view>
+									</view>
+									<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
+									<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
+									<view v-if="questionDetail.aPercent<percentM" class="atips">记住：大家都错了也不是你做错的理由。</view>
+								</view>
+								<u-parse :html="questionDetail.comments?questionDetail.comments:'暂无解析'"></u-parse>
+							</view>
+						</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -56,6 +107,21 @@
 			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
 			<button v-if="hasSubmit && index < count" @click="handleNext" class="next">下一题</button>
 		</view>
+		<u-popup v-model="isShowCommentBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
+			<view class="buylView" style="padding:74rpx 40rpx;">
+				<view class="title">{{dajxConfig.action}}</view>
+				<view class="price">¥{{dajxConfig.price}}</view>
+				<view class="tips">
+					您购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
+				</view>
+				<view class="tips">
+					购买后可在【个人中心-已购项目】中查看
+				</view>
+				<view class="btnActions">
+					<button @click="handleBuyCommentsBtnClick">确认购买</button>
+				</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -79,7 +145,14 @@
 				userInfo: null,
 				questionDetail: null,
 				currnote:null,
-				notes:[]
+				notes:[],
+				dajxConfig: null, // 答案解析配置
+				hasBuyedComments: false, // 是否购买了答案解析
+				isShowCommentBuy: false,
+				allQuestions:[],
+				version: '',
+				percentH: 0,
+				percentM: 0,
 			}
 		},
 		onLoad(options) {
@@ -88,7 +161,19 @@
 				key:'userInfo',
 				success: res => {
 					this.userInfo = res.data
-					self.bindQuestion()
+					uni.showLoading()
+					var question = new self.Parse.Query("TestQuestions")
+					question.select('objectId')
+					question.limit(10000)
+					question.find().then(res=>{
+						let ids = []
+						res.forEach(t=>{
+							ids.push(t.id)
+						})
+						self.allQuestions = ids
+						self.bindQuestion()
+					})
+					self.bindCommentsOrder()
 				}
 			})
 			uni.getSystemInfo({
@@ -100,10 +185,15 @@
 
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
+			})
+			self.Parse.Config.get().then(_config=>{
+				self.version = _config.get('version')
+				self.percentH = _config.get('percentH')
+				self.percentM = _config.get('percentM')
 			})
 		},
 		methods: {
@@ -121,7 +211,7 @@
 			/* 判断当前是否显示答案解析 */
 			existsQuestiionComments(question){
 				var self = this
-				var subjects = question.get('subjects')
+				var subjects = question.subjects
 				if(subjects && subjects.length > 0){
 					var query = new this.Parse.Query("Subjects")
 					query.containedIn('objectId', JSON.parse(JSON.stringify(subjects)))
@@ -137,11 +227,42 @@
 					self.isShowComments = false
 				}
 			},
+			handleBuyComments(){
+				var self = this
+				uni.navigateTo({
+					url:'/pages/buy/buy?subjectId=' + this.dajxConfig.id,
+					event:{
+						reloadOrder: function(data){
+							self.bindCommentsOrder()
+						}
+					}
+				})
+			},
+			/*查询是否已经购买了答案解析*/
+			bindCommentsOrder(){
+				var self = this
+				var app = getApp()
+				self.dajxConfig = app.globalData.dajxConfig // 答案解析配置
+				if(self.dajxConfig.get('isNeedPay') == 1 && self.dajxConfig.get('price') > 0) { // 需要支付
+					var query = new self.Parse.Query("Order")
+					query.equalTo('openId', self.userInfo.openid)
+					query.contains('subjectId', self.dajxConfig.id)
+					query.equalTo('state', 1)
+					query.first().then(res=>{
+						if(res){
+							self.hasBuyedComments = true // 已经购买了答案解析
+						}
+					})
+				}
+			},
 			/*加载题目*/
 			bindQuestion(){
 				var self = this
 				var hisQuery = new this.Parse.Query("ErrorHistory")
 				hisQuery.equalTo("openid", this.userInfo.openid)
+				hisQuery.containedIn('questionId', self.allQuestions)
+				hisQuery.limit(10000)
+				hisQuery.ascending('createdAt')
 				hisQuery.find().then(hres=>{
 					if(hres) {
 						self.index = 1
@@ -151,23 +272,26 @@
 						});
 						self.currnote = hres[0]
 						self.notes = hres
-						var cquery = new this.Parse.Query("TestQuestions")
+						var cquery = new self.Parse.Query("TestQuestions")
 						cquery.get(self.currnote.get('questionId')).then(res=>{
 							if(res){
-								self.existsQuestiionComments(res)
-								if(res.get('type') == 3){
-									res.set('cinputs', res.get('title').split('____'))
+								var question = JSON.parse(JSON.stringify(res))
+								self.existsQuestiionComments(question)
+								if(question.type == 3){
+									question.cinputs = question.title.split('____')
 								}
-								if(res.get('type') == 4){
-									res.set('cinputs', res.get('title').split('()'))
+								if(question.type == 4){
+									question.cinputs = question.title.split('()')
 								}
-								self.questionDetail = res
-								let _options = JSON.parse(JSON.stringify(res.get('options')))
-								self.options =  _options
+								question.aPercent =  (question.accuracy?(question.accuracy*100).toFixed(2):'0')
+								self.questionDetail = question
+								self.options =  question.options
 							}
+							uni.hideLoading()
 						})
 					} else {
 						self.count = 0
+						uni.hideLoading()
 					}
 				})
 			},
@@ -180,7 +304,7 @@
 					}		
 				})
 				this.currAnswer = _currAnswer
-				let type = this.questionDetail.get('type')
+				let type = this.questionDetail.type
 				if(type == 2) {
 					this.canSubmit = _currAnswer.length > 1
 				} else if(type == 1) {
@@ -224,7 +348,7 @@
 				if(this.canSubmit) {
 					this.hasSubmit = true // 先禁用
 					let result = true
-					if(this.questionDetail.get('type') == 3) {
+					if(this.questionDetail.type == 3) {
 						this.options.forEach(item=>{
 							var answer = item.value.find(t=>{
 								return t.txt == item.content
@@ -244,9 +368,9 @@
 									}
 								} 
 							})
-							item.rightAnswer = item.value[0].txt + (item.value.length > 1 ? ('(备选：' + _currTxt + ')'):'')
+							item.rightAnswer = item.value[0].txt + (item.value.length > 1 ? ('(备选：' + _currTxt + ')'):'') + ' '
 						})
-					} else if(this.questionDetail.get('type') == 4){
+					} else if(this.questionDetail.type == 4){
 						this.options.forEach((_option,_index)=>{
 							_option.options.forEach((item)=>{
 								var choose = self.currAnswer[_index] == item.code
@@ -295,16 +419,16 @@
 									query.first().then(rhis=>{
 										if(rhis){ // 已存在正确记录
 											let _questionId = rhis.get('questions').find(t=>{
-												return t == self.questionDetail.id
+												return t == self.questionDetail.objectId
 											})
 											if(!_questionId){ // 不存在正确记录中，保存至正确记录
 												let _questionIds = rhis.get('questions')
-												_questionIds.push(self.questionDetail.id)
+												_questionIds.push(self.questionDetail.objectId)
 												rhis.set('questions',_questionIds)
 												rhis.save()
 											}
 										} else {
-											let _questionIds = [self.questionDetail.id]
+											let _questionIds = [self.questionDetail.objectId]
 											var dbRight = new queryRight()
 											dbRight.set('openid', self.userInfo.openid)
 											dbRight.set('questions',_questionIds)
@@ -319,6 +443,110 @@
 							}
 						})
 					}
+					
+					let _questionId =  self.questionDetail.objectId
+					// 答题记录和赠送积分
+					self.Parse.Config.get().then(config=>{
+						let firstExamScore = config.get('firstExamScore') // 第一次答题赠送积分
+						let secondExamScore = config.get('secondExamScore') // 第二次或多次答题赠送积分
+						var examRecordQuery = new self.Parse.Query('ExamRecord') // 答题记录
+						examRecordQuery.equalTo('openid', self.userInfo.openid)
+						examRecordQuery.equalTo('questionId', _questionId)
+						examRecordQuery.count().then(examRecordCount=>{
+							var ScoreRecords = self.Parse.Object.extend("ScoreRecord")
+							var scoreRecord = new ScoreRecords()
+							scoreRecord.set('openid',self.userInfo.openid)
+							scoreRecord.set('channel', 'exam')
+							if(examRecordCount == 0) { // 第一次答题
+								scoreRecord.set('score', firstExamScore)
+								scoreRecord.set('extend', 'first') // 首次答题
+							} else { // 非第一次答题
+								scoreRecord.set('score', secondExamScore)
+							}
+							scoreRecord.save()
+							
+							// 修改用户积分
+							var userQuery = new self.Parse.Query(self.Parse.User)
+							userQuery.get(self.Parse.User.current().id).then(user=>{
+								if(user.score > 0 && (!user.get('score_all') || user.get('score_all') == 0)) {
+									user.set('score_all', user.get('score') + scoreRecord.get('score'))
+								} else {
+									user.set('score_all', user.get('score_all') + scoreRecord.get('score'))
+								}
+								user.set('score', user.get('score') + scoreRecord.get('score'))
+								user.save().then(ures => {
+									self.userInfo.score = ures.get('score')
+									self.userInfo.score_all = ures.get('score_all')
+									uni.setStorage({
+										key: 'userInfo',
+										data: ures
+									})
+									console.log('保存成功')
+								})
+							})	
+							var ExamRecords = self.Parse.Object.extend("ExamRecord")
+							var examRecord = new ExamRecords()
+							examRecord.set('openid', self.userInfo.openid)
+							examRecord.set('questionId', _questionId)
+							examRecord.set('subjectId', self.questionDetail.subjects[0])
+							examRecord.set('result', result)
+							examRecord.save().then(()=>{
+								var examRecordQuery = new self.Parse.Query(ExamRecords)
+								examRecordQuery.equalTo('questionId', _questionId)
+								examRecordQuery.count().then(examCount=>{
+									var examRecordRightQuery = new self.Parse.Query(ExamRecords)
+									examRecordRightQuery.equalTo('questionId', _questionId)
+									examRecordRightQuery.equalTo('result', true)
+									examRecordRightQuery.count().then(rightCount=>{
+										console.log('正确率：'+ rightCount+'/'+ examCount)
+										var Questions = self.Parse.Object.extend("TestQuestions")
+										var quesQuery = new self.Parse.Query(Questions)
+										quesQuery.get(_questionId).then(_question=>{
+											_question.set('accuracy', parseFloat((rightCount / examCount).toFixed(4)))
+											_question.save()
+										})
+									})
+								})
+								var examRecordQuery = new self.Parse.Query(ExamRecords)
+								let now = new Date()
+								let y = now.getFullYear()
+								let m = now.getMonth()
+								let d = now.getDate()
+								let start = new Date(y, m, d, 0, 0, 0)
+								let end = new Date(y, m, d, 23, 59, 59)
+								examRecordQuery.equalTo('questionId', _questionId)
+								examRecordQuery.greaterThanOrEqualTo('createdAt', start)
+								examRecordQuery.lessThanOrEqualTo('createdAt', end)
+								examRecordQuery.count().then(examCount=>{
+									var examRecordRightQuery = new self.Parse.Query(ExamRecords)
+									examRecordRightQuery.equalTo('questionId', _questionId)
+									examRecordRightQuery.equalTo('result', false)
+									examRecordRightQuery.greaterThanOrEqualTo('createdAt', start)
+									examRecordRightQuery.lessThanOrEqualTo('createdAt', end)
+									examRecordRightQuery.count().then(errorCount=>{
+										console.log('正确率：'+ errorCount + '/' + examCount)
+										var QuestReports = self.Parse.Object.extend("QuestReport")
+										let reportQuery = new self.Parse.Query(QuestReports)
+										let date = y+'-'+m+'-'+d
+										reportQuery.equalTo('questionId', _questionId)
+										reportQuery.equalTo('date', date)
+										reportQuery.first().then(report=>{
+											if(report){
+												report.set('accuracy', parseFloat((errorCount / examCount).toFixed(4)))
+												report.save()
+											} else {
+												report = new QuestReports()
+												report.set('questionId', _questionId)
+												report.set('date', date)
+												report.set('accuracy', parseFloat((errorCount / examCount).toFixed(4)))
+												report.save()
+											}
+										})
+									})
+								})
+							})
+						})
+					})
 				}
 			},
 			/*下一题*/
@@ -329,18 +557,25 @@
 				this.hasSubmit = false;
 				this.canSubmit = false;
 				this.currnote = this.notes[this.index-1]
-				var cquery = new this.Parse.Query("TestQuestions")
+				var cquery = new self.Parse.Query("TestQuestions")
 				cquery.get(this.currnote.get('questionId')).then(res=>{
 					if(res){
-						if(res.get('type') == 3){
-							res.set('cinputs', res.get('title').split('____'))
+						var question = JSON.parse(JSON.stringify(res))
+						if(question.type == 3) {
+							question.cinputs = question.title.split('____')
 						}
-						self.questionDetail = res
-						let _options = JSON.parse(JSON.stringify(res.get('options')))
-						self.options =  _options
+						if(question.type == 4) {
+							question.cinputs = question.title.split('()')
+						}
+						question.aPercent =  (question.accuracy?(question.accuracy*100).toFixed(2):'0')
+						self.questionDetail = question
+						self.options =  question.options
+						wx.pageScrollTo({
+							scrollTop: 0
+						})
 					}
 				})
-			}
+			},
 		}
 	}
 </script>
@@ -419,7 +654,7 @@
 		border-radius: 20rpx;
 		background-color: #FFFFFF;
 		height: 64rpx;
-		line-height: 64rpx;
+		line-height: 60rpx;
 		max-width: 630rpx;
 		min-width: 80rpx;
 		width: 80rpx;
@@ -437,7 +672,7 @@
 		border-radius: 20rpx;
 		background-color: #FFFFFF;
 		height: 64rpx;
-		line-height: 64rpx;
+		line-height: 60rpx;
 		min-width: 80rpx;
 		padding: 0 30rpx;
 		display: inline-block;
@@ -462,15 +697,16 @@
 	.questionView .options{
 		padding: 20rpx 0;
 	}
+	
 	.actionView{
-/* 		margin-top: 50rpx;
-		width: 100%;
-		padding: 0 36rpx;
-		position: fixed;
-		bottom: 100rpx; */
-		margin-top: 50rpx;
+		/* margin-top: 50rpx; */
 		width: 100%;
 		padding: 36rpx;
+		height: 196rpx;
+		position: fixed;
+		bottom: 0;
+		padding-top: 12rpx;
+		background-color: #fbfbfa;
 	}
 	.actionView button{
 		width: 100%;
@@ -492,11 +728,34 @@
 		background-color: #ED3535;
 	}
 	.commentView{
-		background-color: #FFFFFF;
+		/* background-color: #FFFFFF; */
 		border-radius: 46rpx;
 		padding: 60rpx 40rpx;
-		margin-top: 10rpx;
+		/* margin-top: 10rpx; */
+		/* margin-bottom: 196rpx; */
+		min-height: 472rpx;
 	}
+	.htmlView{
+		background-color: #FFFFFF;
+		padding: 60rpx 40rpx!important;
+		border-radius: 46rpx;
+	}
+	.commentView.needbuy{
+		padding: 0;
+		position: relative;
+		background-color: unset;
+	}
+	.needbuy .bg{
+		position: absolute;
+		left: 0;
+		width: 100%;
+		height: 434rpx;
+	}
+	.needbuy .bg image{
+		width: 100%;
+		height: 434rpx;
+	}
+	
 	.commentView .rightAnswer{
 		font-size: 30rpx;
 		font-weight: bold;
@@ -504,17 +763,131 @@
 		line-height: 42rpx;
 		font-family: PingFangSC-Medium;
 		color: #352026;
+		margin-right: 10rpx;
 	}
 	.commentView .comment{
-		margin-top: 32rpx;
+		/* margin-top: 32rpx; */
 		font-size: 26rpx;
 		line-height: 42rpx;
 		font-family: PingFangSC-Medium;
+		font-weight: normal;
+		font-stretch: normal;
+		line-height: 54rpx;
+		letter-spacing: 0rpx;
 		color: #352026;
+	}
+	.commentView .comment .accuracy{
+		font-family: PingFangSC-Regular;
+		font-size: 26rpx;
+		font-weight: normal;
+		font-stretch: normal;
+		letter-spacing: 0rpx;
+		color: rgba(53, 32, 38, 0.7);
+		margin: 36rpx 0;
+	}
+	.commentView .comment .accuracy .apercent{
+		height: 42rpx;
+		line-height: 42rpx;
+		font-family: PingFangSC-Regular;
+		font-size: 30rpx;
+		font-weight: normal;
+		font-stretch: normal;
+		letter-spacing: 0rpx;
+		color: rgba(76, 192, 143, 0.95);
+		display: flex;
+	}
+	.commentView .comment .accuracy .apercent .icon{
+		width: 42rpx;height: 42rpx;line-height: 45rpx;font-size: 0;
+	}
+	.commentView .comment .accuracy .apercent.h{
+		color: rgba(76, 192, 143, 0.95);
+	}
+	.commentView .comment .accuracy .apercent.m{
+		color: #fbb955;
+	}
+	.commentView .comment .accuracy .apercent.l{
+		color: rgba(237, 53, 53, 0.7);
+	}
+	.commentView .comment .accuracy .apercent image{
+		width: 32rpx;
+		height: 32rpx;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.commentView .comment .accuracy .atips{
+		height: 36rpx;
+		line-height: 36rpx;
+		font-family: PingFangSC-Regular;
+		font-size: 26rpx;
+		font-weight: normal;
+		font-stretch: normal;
+		letter-spacing: 0rpx;
+		color: rgba(53, 32, 38, 0.4);
 	}
 	.actionView button.next{
 		background-color: #FFFFFF;
 		border: 2rpx solid #ffb9b8;
 		color: #f16564;
+	}
+	
+	
+	.buylView {
+		width: 100%;
+	}
+	.buylView .title{
+		font-size: 38rpx;
+		font-weight: bold;
+		font-family: PingFangSC-Medium;
+		color: #352026;
+	}
+	.buylView .price{
+		font-size: 34rpx;
+		margin-top: 12rpx;
+		font-family: PingFangSC-Medium;
+		color: #ed3535;
+	}
+	.buylView .tips{		
+		font-size: 26rpx;
+		margin-top: 54rpx;
+		font-family: PingFangSC-Medium;
+		color: rgba(53,32,38,0.4);
+	}
+	.buylView .btnActions{
+		margin-top: 96rpx;
+	}
+	.buylView .btnActions button{
+		width: 100%;
+		height: 92rpx;
+		border-radius: 46rpx;
+		background-color: #ED3535;
+		color: #ffffff;
+		font-family: PingFangSC-Medium;
+		font-size: 34rpx;
+	}
+	.btnComments{
+		display: inline-block;
+		font-size: 24rpx;
+		font-weight: normal;
+		font-stretch: normal;
+		letter-spacing: 0rpx;
+		color: #ff6867!important;
+		width: 254rpx;
+		height: 62rpx;
+		background-color: #ffe6e6!important;
+		border-radius: 31rpx;
+	}
+	.btnComments::after{
+		border: 0;
+	}
+	.vtips{
+		text-align: right;
+		font-size: 18rpx;
+		font-weight: normal;
+		font-stretch: normal;
+		letter-spacing: 0rpx;
+		color: rgba(53, 32, 38, 0.7);
+	}
+	.imgView .imgItem{
+		margin-bottom: 20rpx;
 	}
 </style>

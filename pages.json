@@ -5,6 +5,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
+				"navigationBarBackgroundColor":"#fbfbfa",
 				"navigationBarTitleText": "食艺兽"
 			}
 		}
@@ -59,7 +60,8 @@
             "path" : "pages/mine/order",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "已购项目",
+				"navigationBarBackgroundColor": "#fbfbfa",
+                "navigationBarTitleText": "会员中心",
                 "enablePullDownRefresh": false
             }
             
@@ -68,8 +70,8 @@
             "path" : "pages/exam/exam",
             "style" :                                                                                    
             {
-				"navigationBarBackgroundColor":"#fbfbfb",
-                "navigationBarTitleText": "答题",
+				"navigationBarBackgroundColor":"#fbfbfa",
+                "navigationBarTitleText": "模拟考试",
                 "enablePullDownRefresh": false
             }
             
@@ -78,7 +80,8 @@
             "path" : "pages/subject/exam",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#fbfbfa",
+                "navigationBarTitleText": "章节练习",
                 "enablePullDownRefresh": false
             }
             
@@ -103,7 +106,7 @@
             "path" : "pages/important/subject",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "重点题库",
+                "navigationBarTitleText": "必考题库",
                 "enablePullDownRefresh": false
             }
         }
@@ -111,7 +114,8 @@
             "path" : "pages/important/exam",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#fbfbfa",
+                "navigationBarTitleText": "章节练习",
                 "enablePullDownRefresh": false
             }
         }
@@ -120,7 +124,7 @@
             "style" :                                                                                    
             {
 				"navigationBarBackgroundColor": "#fbfbfb",
-                "navigationBarTitleText": "重点题库",
+                "navigationBarTitleText": "必考题库",
                 "enablePullDownRefresh": false
             }
         }
@@ -240,6 +244,129 @@
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
+        }
+        ,{
+            "path" : "pages/mine/scorerecord",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "积分记录",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/subject/result",
+            "style" :                                                                                    
+            {
+				"navigationBarBackgroundColor":"#fbfbfa",
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/important/result",
+            "style" :                                                                                    
+            {
+				"navigationBarBackgroundColor":"#fbfbfa",
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/buy/buy",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "购买",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/buy/choosecoupon",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "选择优惠券",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/mycoupon",
+            "style" :                                                                                    
+            {
+				"navigationBarBackgroundColor":"#fbfbfa",
+                "navigationBarTitleText": "我的优惠券",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/error/error",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/error/index",
+            "style" :                                                                                    
+            {
+				"navigationBarBackgroundColor":"#fbfbfa",
+                "navigationBarTitleText": "错题集",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/exam/oldexams",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/error/success",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/course/course",
+            "style" :                                                                                    
+            {
+				"navigationBarBackgroundColor":"#fbfbfa",
+                "navigationBarTitleText": "视频课程",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/invitation",
+            "style" :                                                                                    
+            {
+				"navigationBarBackgroundColor":"#fbfbfa",
+                "navigationBarTitleText": "分享给好友",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/subject/share",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
         }
     ],
 	"globalStyle": {

@@ -1,6 +1,6 @@
 <template>
 	<view class="myCom">
-		<my-radio v-for="option in myOptions" :disabled="disabled" :class="'item state' + option.state" :state="option.state?option.state:1" :code="option.code" :text="option.content" :value="option.value" :checked="option.value=='1'" @valueChange="valueChange"></my-radio>
+		<my-radio v-for="option in myOptions" :key="option" :disabled="disabled" :class="'item state' + option.state" :state="option.state?option.state:1" :code="option.code" :text="option.content" :value="option.value" :checked="option.value=='1'" @valueChange="valueChange"></my-radio>
 	</view>
 </template>
 

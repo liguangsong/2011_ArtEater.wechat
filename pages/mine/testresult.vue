@@ -17,7 +17,7 @@
 			</view>
 		</view>
 		<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
-		<button @click="handleBuild" class="btnShare">分享</button>
+		<button @click="handleShare" class="btnShare">分享</button>
 		<button v-if="from=='exam'" @click="handHomePage" class="btnPrev">返回</button>
 		
 		<u-mask :show="isShowPicImg" @click="isShowPicImg = false">
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+	import config from 'static/config/index.js'
 	export default {
 		data() {
 			return {
@@ -41,14 +42,15 @@
 				examId:'',
 				screenHeight:0,
 				isShowPicImg: false,
-				sharePicImg: ''
+				sharePicImg: '',
+				qrcode:''
 			}
 		},
 		onLoad(options) {
 			var self = this
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			  success: function(){
 				  console.log('load font success')
 			  }
@@ -57,6 +59,29 @@
 				key:'userInfo',
 				success(res) {
 					self.userInfo = res.data
+					var _config = config
+					uni.request({
+						method: 'POST',
+						url: `${_config.parseRestBaseUrl}/wx/getUnlimitedCode`,
+						data: { openid: self.userInfo.openid},
+						header: {
+							'X-Parse-Application-Id': _config.ParseAppId,
+							'X-Parse-REST-API-Key': _config.parseRestApiKey,
+						},
+						success: async res => {
+							if (res.data.code === 200) {
+								self.qrcode = res.data.data
+							}
+						},
+						fail: (error) => {
+							uni.showToast({
+								icon: 'none',
+								title: '生成二维码失败',
+								duration: 2000
+							})
+							console.log(error)
+						}
+					});
 				}
 			})
 			if(options.from){
@@ -99,13 +124,11 @@
 			},
 			/*返回首页*/
 			handHomePage(){
-				uni.reLaunch({
-					url:'/pages/exam/index'
-				})
+				uni.navigateBack()
 			},
 			/**
 			 * 画一个圆角矩形
-			 */
+			 */
 			roundRect(ctx, x, y, w, h, r) {
 				ctx.save()
 				// 开始绘制
@@ -153,6 +176,28 @@
 				ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_width / 2 + avatarurl_y, avatarurl_width / 2, 0, Math.PI * 2, false);
 				ctx.clip();//画好了圆 剪切  原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内 这也是我们要save上下文的原因
 			},
+			
+			/*分享*/
+			handleShare(){
+				var self = this
+				uni.navigateTo({
+					url:'/pages/subject/share',
+					success(res) {
+						let rightCount = 0
+						self.history.get('answers').forEach(item=>{
+							if(item.result==true){
+								rightCount++
+							}
+						})
+						res.eventChannel.emit('data', {
+							title: self.history.get('examName'),
+							time: self.history.get('minutes'),
+							percent: parseInt(rightCount*100/self.history.get('answers').length),
+							action: 'mnst',
+						})
+					},
+				})
+			},
 			/* 生成图片 */
 			handleBuild(){
 				var self = this
@@ -160,92 +205,94 @@
 				uni.downloadFile({
 					url: self.userInfo.avatarUrl,
 					success (headRes) {
-						const sysInfo = uni.getSystemInfoSync();
-						const screenWidth = sysInfo.screenWidth;
-						var factor = screenWidth / 750;
-						let picWidth = 750
-						let picHeight = 1340
-						var bili = picWidth / 750
-						self.screenHeight= picHeight/factor*bili
-						const context = uni.createCanvasContext('mycanvas')
-						context.draw() // 先清空画布
-						context.fillRect(0, 0, 750 * factor, picHeight * factor)
-						context.drawImage('../../static/sharebg.png', 0, 0, picWidth, picHeight);
-						context.setFillStyle('black')
-						self.roundRect(context, 30*factor, 220 * factor, 690 * factor, 1072 * factor, 40 * factor) // 绘制半透明的圆角背景
-						
-						
-						context.restore()
-						// context.font = 'bold'
-						// 考试名称
-						context.setFontSize(54*factor)
-						context.setFillStyle('#352026')
-						context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
-						let examName = self.history.get('examName')
-						const m1 = context.measureText(examName)
-						context.fillText(examName, (750 - m1.width / factor) / 2 * factor, 506*factor )
-						// 考试用时
-						context.setFontSize(30*factor)
-						context.font = 'normal normal ' + parseInt(30 * factor) + 'px Arial, Helvetica, sans-serif'
-						let time = '考试时间：' + self.history.get('minutes')
-						const m2 = context.measureText(time)
-						context.fillText(time, (750 - m2.width / factor) / 2 * factor, 556*factor )
-						
-						// 用户
-						context.setFontSize(34*factor)
-						context.font = 'normal normal ' + parseInt(34 * factor) + 'px Arial, Helvetica, sans-serif'
-						let user = self.userInfo.nickName
-						const m3 = context.measureText(user)
-						context.fillText(user, (750 - m3.width / factor) / 2 * factor, 666*factor )
-						
-						
-						// 用户
-						context.setFontSize(34*factor)
-						context.font = 'normal normal ' + parseInt(34 * factor) + 'px Arial, Helvetica, sans-serif'
-						let _user = '本次考试得分：'
-						const m_3 = context.measureText(_user)
-						context.fillText(_user, (750 - m_3.width / factor) / 2 * factor, 726*factor )
-						
-						// 得分				
-						context.setFontSize(160*factor)
-						context.setFillStyle('#ff6867')
-						context.font = 'normal bold ' + parseInt(160 * factor) + 'px Arial, Helvetica, sans-serif'
-						let score = self.history.get('score')
-						const m4 = context.measureText(score + "")
-						context.fillText(score+"", (750 - m4.width / factor) / 2 * factor, 886*factor )
-						
-						// 分
-						context.setFontSize(34*factor)
-						context.setFillStyle('#352026')
-						context.font = 'normal normal ' + parseInt(34 * factor) + 'px Arial, Helvetica, sans-serif'
-						const m5 = context.measureText('分')
-						context.fillText('分', ((750 - (m4.width / factor)) / 2 * factor) + (m4.width), 886*factor )
-						
-						// 绘制二维码
-						context.drawImage('../../static/qrcode.png', 224 * factor, 946 * factor, 300 * factor,300 * factor);
-						
-						self.headPic(context, '', 240 * factor, 256 * factor, 100 * factor, factor) // 绘制头像外层框
-						context.drawImage(headRes.tempFilePath, 256 * factor, 100 * factor,240 * factor,240 * factor); // 将头像装进头像框
-						// context.draw(true)
-						context.draw(true,function(){
-							setTimeout(function () {
-								uni.canvasToTempFilePath({
-									x:0,
-									y:0,
-									width: 750,
-									height: self.screenHeight,
-									fileType: 'jpg',
-									quality: 1,
-									canvasId: 'mycanvas',
-									success: function (res) {
-										uni.hideLoading()
-										console.log(res.tempFilePath)
-										self.sharePicImg = res.tempFilePath
-										self.isShowPicImg = true
-									}
-								})
-							}, 500)
-						})
+						uni.downloadFile({url: self.qrcode,success (qrcodeRes) {
+							const sysInfo = uni.getSystemInfoSync();
+							const screenWidth = sysInfo.screenWidth;
+							var factor = screenWidth / 750;
+							let picWidth = 750
+							let picHeight = 1340
+							var bili = picWidth / 750
+							self.screenHeight= picHeight/factor*bili
+							const context = uni.createCanvasContext('mycanvas')
+							context.draw() // 先清空画布
+							context.fillRect(0, 0, 750 * factor, picHeight * factor)
+							context.drawImage('../../static/sharebg.png', 0, 0, picWidth, picHeight);
+							context.setFillStyle('black')
+							self.roundRect(context, 30*factor, 220 * factor, 690 * factor, 1072 * factor, 40 * factor) // 绘制半透明的圆角背景
+							
+							
+							context.restore()
+							// context.font = 'bold'
+							// 考试名称
+							context.setFontSize(54*factor)
+							context.setFillStyle('#352026')
+							context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
+							let examName = self.history.get('examName')
+							const m1 = context.measureText(examName)
+							context.fillText(examName, (750 - m1.width / factor) / 2 * factor, 506*factor )
+							// 考试用时
+							context.setFontSize(30*factor)
+							context.font = 'normal normal ' + parseInt(30 * factor) + 'px Arial, Helvetica, sans-serif'
+							let time = '考试时间：' + self.history.get('minutes')
+							const m2 = context.measureText(time)
+							context.fillText(time, (750 - m2.width / factor) / 2 * factor, 556*factor )
+							
+							// 用户
+							context.setFontSize(34*factor)
+							context.font = 'normal normal ' + parseInt(34 * factor) + 'px Arial, Helvetica, sans-serif'
+							let user = self.userInfo.nickName
+							const m3 = context.measureText(user)
+							context.fillText(user, (750 - m3.width / factor) / 2 * factor, 666*factor )
+							
+							
+							// 用户
+							context.setFontSize(34*factor)
+							context.font = 'normal normal ' + parseInt(34 * factor) + 'px Arial, Helvetica, sans-serif'
+							let _user = '本次考试得分：'
+							const m_3 = context.measureText(_user)
+							context.fillText(_user, (750 - m_3.width / factor) / 2 * factor, 726*factor )
+							
+							// 得分				
+							context.setFontSize(160*factor)
+							context.setFillStyle('#ff6867')
+							context.font = 'normal bold ' + parseInt(160 * factor) + 'px Arial, Helvetica, sans-serif'
+							let score = self.history.get('score')
+							const m4 = context.measureText(score + "")
+							context.fillText(score+"", (750 - m4.width / factor) / 2 * factor, 886*factor )
+							
+							// 分
+							context.setFontSize(34*factor)
+							context.setFillStyle('#352026')
+							context.font = 'normal normal ' + parseInt(34 * factor) + 'px Arial, Helvetica, sans-serif'
+							const m5 = context.measureText('分')
+							context.fillText('分', ((750 - (m4.width / factor)) / 2 * factor) + (m4.width), 886*factor )
+							
+							// 绘制二维码
+							context.drawImage(qrcodeRes.tempFilePath, 224 * factor, 946 * factor, 300 * factor,300 * factor);
+							
+							self.headPic(context, '', 240 * factor, 256 * factor, 100 * factor, factor) // 绘制头像外层框
+							context.drawImage(headRes.tempFilePath, 256 * factor, 100 * factor,240 * factor,240 * factor); // 将头像装进头像框
+							// context.draw(true)
+							context.draw(true,function(){
+								setTimeout(function () {
+									uni.canvasToTempFilePath({
+										x:0,
+										y:0,
+										width: 750,
+										height: self.screenHeight,
+										fileType: 'jpg',
+										quality: 1,
+										canvasId: 'mycanvas',
+										success: function (res) {
+											uni.hideLoading()
+											console.log(res.tempFilePath)
+											self.sharePicImg = res.tempFilePath
+											self.isShowPicImg = true
+										}
+									})
+								}, 500)
+							})
+						}})
 					}
 				})
 			},

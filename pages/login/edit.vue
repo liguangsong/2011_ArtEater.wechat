@@ -175,6 +175,7 @@
 							user.set("phone", self.form.phone);
 							user.set("role", '学生');
 							user.set("score", 0);
+							user.set("score_all", 0);
 							user.set("amount", parseFloat(0));
 							user.set("speciality", self.form.speciality);
 							user.set("university", self.form.university);

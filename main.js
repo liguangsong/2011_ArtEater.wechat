@@ -9,6 +9,7 @@ import parse from 'parse/weapp'
 // 注册parse-server服务
 parse.serverURL =config.parseServerBaseUrl
 parse.initialize(config.ParseAppId, config.parseServerJsKey)
+parse.masterKey = config.Master_Key
 
 Vue.prototype.Parse = parse
 Vue.BaseConfig = config

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-popup v-model="visiable" height="1110rpx" mode="bottom" @close="handleCancle" :closeable="true">
+		<u-popup v-model="visiable" height="500rpx" mode="bottom" @close="handleCancle" :closeable="true">
 			<view class="myckView">
 				<view class="checkGroup">
 					<view class="checkItem" v-for="(item, index) in universities" @click="handleCheckItem" :data-item="item">
@@ -33,22 +33,22 @@
 			return {
 				universities:[
 					{code:'中央美术学院',name:'中央美术学院',checked:false},
-					{code:'中国美术学院',name:'中国美术学院',checked:false},
-					{code:'清华美术学院',name:'清华美术学院',checked:false},
-					{code:'西安美术学院',name:'西安美术学院',checked:false},
-					{code:'四川美术学院',name:'四川美术学院',checked:false},
-					{code:'鲁迅美术学院',name:'鲁迅美术学院',checked:false},
-					{code:'湖北美术学院',name:'湖北美术学院',checked:false},
-					{code:'天津美术学院',name:'天津美术学院',checked:false},
-					{code:'广州美术学院',name:'广州美术学院',checked:false},
-					{code:'其它',name:'其它',checked:false}
+					// {code:'中国美术学院',name:'中国美术学院',checked:false},
+					{code:'清华大学美术学院',name:'清华大学美术学院',checked:false},
+					// {code:'西安美术学院',name:'西安美术学院',checked:false},
+					// {code:'四川美术学院',name:'四川美术学院',checked:false},
+					// {code:'鲁迅美术学院',name:'鲁迅美术学院',checked:false},
+					// {code:'湖北美术学院',name:'湖北美术学院',checked:false},
+					// {code:'天津美术学院',name:'天津美术学院',checked:false},
+					// {code:'广州美术学院',name:'广州美术学院',checked:false},
+					// {code:'其它',name:'其它',checked:false}
 				],
 			};
 		},
 		onLoad() {
 			uni.loadFontFace ({
 				family: 'PingFangSC-Medium',
-				source: 'url("https://www.aoekids.cn/font/PingFangSCMedium.ttf")',
+				source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 				success: function(){
 					console.log('load font success')
 				}
@@ -97,7 +97,7 @@
 	.checkGroup{
 		padding: 0 84rpx;text-align: center;
 		margin-top: 90rpx;
-		height: 800rpx;
+		height: 250rpx;
 		overflow-y:auto;
 	}
 	.checkGroup .checkItem{
