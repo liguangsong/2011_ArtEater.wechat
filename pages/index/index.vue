@@ -269,6 +269,7 @@
 				isShowTips: false,
 				step: 1,
 				toUrl:'',
+				toAction:'',
 				isShowImportBuy: false,
 				isShowTestBuy: false,
 				title: 'Hello',
@@ -383,8 +384,21 @@
 			},
 			/* 登录完成 */
 			handleLoginComplate(){
+				var self = this
 				this.isShowLogin = false
-				// this.bindConfig()
+				uni.getStorage({
+					key:'userInfo',
+					success: res => {
+						self.userInfo = res.data
+						debugger
+						if(self.toAction=='exam'){ // 模拟考试
+							self.handleExamClick()
+						}
+						if(self.toAction=='important'){ // 重点题库
+							self.handleImportantClick()
+						}
+					},
+				})
 			},
 			bindOrder(){
 				var self = this
@@ -446,7 +460,7 @@
 					}
 				} else {
 					this.isShowLogin = true
-					this.toUrl = '/pages/important/index'
+					this.toAction = 'important'
 				}
 			},
 			/*考试*/
@@ -475,7 +489,7 @@
 					}
 				} else {
 					this.isShowLogin = true
-					this.toUrl = '/pages/exam/index'
+					this.toAction = 'exam'
 				}
 			},
 			/* 点击“我” */

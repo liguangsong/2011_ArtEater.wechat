@@ -4,6 +4,7 @@
 </style>
 <script>
 	import config from 'static/config/index.js'
+	// var WXBizDataCrypt = require('/js/WXBizDataCrypt')
 	
 	export const getOpenId = (code) => {
 		return new Promise((resolve, reject) => {
@@ -43,28 +44,35 @@
 			// uni.reLaunch({
 			// 	url:'/pages/index/lunch'
 			// })
-			uni.checkSession({
-				success(e) {
-					// 已登录
-				},
-				fail(e) {
-					uni.login({
-						success: coderes => {
-							var _config = config
-							getOpenId(coderes.code).then(user=>{
-								uni.setStorage({
-									key:'openid',
-									data: user.data.openid,
+			// uni.checkSession({
+			// 	success(e) {
+			// 		// 已登录
+			// 	},
+			// 	fail(e) {
+				uni.getStorage({
+					key:'openid',
+					success:function(openidres){
+					},
+					fail: function(error){
+						uni.login({
+							success: coderes => {
+								var _config = config
+								getOpenId(coderes.code).then(user=>{
+									uni.setStorage({
+										key:'openid',
+										data: user.data.openid,
+									})
+									uni.setStorage({
+										key:'sessionKey',
+										data: user.data.session_key
+									})
 								})
-								uni.setStorage({
-									key:'sessionKey',
-									data: user.data.session_key
-								})
-							})
-						}
-					})
-				}
-			})
+							}
+						})
+					}
+				})
+			// 	}
+			// })
 		},
 		onShow: function() {
 			// var self = this
