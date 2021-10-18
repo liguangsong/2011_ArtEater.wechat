@@ -1,5 +1,5 @@
 <template>
-	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll'}">
+	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<!--轮播 start-->
 		<view class="page-section">
 			<view class="page-section-spacing">
@@ -252,17 +252,22 @@
 				</view>
 			</view>
 		</u-mask>
+		<view-tabbar :current="0" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
 
 <script>
+	import Utils from '@/js/utils/index.js'
+	import Tabbar from '@/components/tabBar/tabBar.vue'
 	import login from '../../components/login/login.vue'
 	export default {
 		components:{
-			login
+			login,
+			'view-tabbar': Tabbar
 		},
 		data() {
 			return {
+				pdbtm:0,//兼容iphonexr+
 				openid: '',
 				userInfo: {},
 				isShowLogin: false,
@@ -286,37 +291,15 @@
 				couponCount: 0
 			}
 		},
-		onShow() {
-			var self = this
-			uni.getStorage({
-				key:'userInfo',
-				success: res => {
-					self.userInfo = res.data
-					
-					var query =  new self.Parse.Query('MessageReadHistory')
-					query.equalTo('openid', self.userInfo.openid)
-					query.first().then(res=>{
-						var msgQuery = new self.Parse.Query("Message")
-						if(res){
-							// self.readHistory = res
-							msgQuery.notContainedIn('objectId',res.get('MessageIds'))
-						}
-						msgQuery.count().then(count=>{
-							self.msgCount = count
-						})
-					})
-					
-					let cquery = new self.Parse.Query('CouponRecord')
-					cquery.equalTo('openid', self.userInfo.openid)
-					cquery.equalTo('state', 0)
-					cquery.greaterThan('useEndTime', new Date())
-					cquery.descending('useEndTime', 'state')
-					cquery.count().then(count=>{
-						self.couponCount = count
-					})
-				}
-			})
-			self.bindConfig()
+		async onShow() {
+			uni.hideTabBar({
+				animation: false
+			});	
+			let res=await Utils.getcount(); 
+			    this.userInfo=res.userInfo;
+			    this.msgCount=res.msgCount;
+			    this.couponCount=res.couponCount;
+			    this.bindConfig()
 		},
 		onLoad() {
 			var self = this
@@ -361,6 +344,16 @@
 			})
 		},
 		methods: {
+			// Tab	
+			tabbarChange(item) {
+				if(item.text=='我的'){
+					this.handleMyClick();
+				}else if(item.text=='课程'){
+					this.handleCurriculumClick();
+				}else if(item.text=='题库'){
+					this.handleQuestionBankClick();
+				}
+			},
 			/*加载配置*/
 			bindConfig(){
 				var self = this
@@ -492,11 +485,45 @@
 					this.toAction = 'exam'
 				}
 			},
+			/*课程*/
+			handleCurriculumClick(){
+				if(this.userInfo&&this.userInfo.openid){
+					if(this.userInfo.phone){
+						uni.switchTab({
+							url:'/pages/curriculum/curriculum'
+						})
+					} else {
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
+				} else {
+					this.isShowLogin = true
+					this.toUrl = '/pages/curriculum/curriculum'
+				}
+			},
+			/*题库*/
+			handleQuestionBankClick(){
+				if(this.userInfo&&this.userInfo.openid){
+					if(this.userInfo.phone){
+						uni.switchTab({
+							url:'/pages/questionBank/questionBank'
+						})
+					} else {
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
+				} else {
+					this.isShowLogin = true
+					this.toUrl = '/pages/questionBank/questionBank'
+				}
+			},
 			/* 点击“我” */
 			handleMyClick(){
 				if(this.userInfo&&this.userInfo.openid){
 					if(this.userInfo.phone){
-						uni.navigateTo({
+						uni.switchTab({
 							url:'../mine/mine'
 						})
 					} else {
@@ -601,7 +628,7 @@
 		overflow: hidden;
 	}
 	.myPage{
-		padding-bottom: 50rpx;
+		/* padding-bottom: 125rpx; */
 	}
 	.swiper{
 		/* margin-top: 20rpx; */

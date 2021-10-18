@@ -1,5 +1,6 @@
 <template>
-	<view class="myView">
+	<view class="myView" :style="{'height':windowHeight + 'px','overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
+		<view-tabbar :current="3" @tabbarChange="tabbarChange"></view-tabbar>
 		<view class="headView">
 			<view class="headCon" @click="handleInfoClick">
 				<view class="headIconView">
@@ -130,9 +131,12 @@
 	</view>
 </template>
 <script>
+	import Tabbar from '@/components/tabBar/tabBar.vue'
 	export default {
 		data() {
 			return {
+                pdbtm:0,//兼容iphonexr+
+				windowHeight:0,
 				userInfo: {},
 				rightCount: 0,
 				errorCount: 0,
@@ -140,7 +144,13 @@
 				couponCount: 0,
 			}
 		},
-		onShow() {			
+		components: {
+			'view-tabbar': Tabbar
+		},
+		onShow() {
+			uni.hideTabBar({
+				animation: false
+			});	
 			var self = this
 			var userQuery = new self.Parse.Query(self.Parse.User)
 			userQuery.equalTo('openid',self.Parse.User.current().get('openid'))
@@ -190,6 +200,14 @@
 			})
 		},
 		onLoad() {
+			let app = getApp();
+			this.windowHeight = app.globalData.windowHeight;
+			this.pdbtm=125+app.globalData.paddingBottomHeight;
+			// uni.getSystemInfo({
+			// 			   success: res => {
+			// 				this.windowHeight = res.windowHeight;
+			// 			   }
+			// 			})
 			uni.loadFontFace ({
 			  family: 'PingFangSC-Medium',
 			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
@@ -199,6 +217,11 @@
 			})
 		},
 		methods: {
+			tabbarChange(item) {
+				uni.switchTab({
+					url:item.path
+				})
+			},
 			/*查看已购项目*/
 			handleOrderClick(){
 				uni.navigateTo({

@@ -74,7 +74,32 @@
 			// 	}
 			// })
 		},
-		onShow: function() {
+		onLoad() {
+			
+		},
+		onShow: function() {// 隐藏原生底部tab导航
+		   uni.getSystemInfo({
+			   success: res => {
+				   	this.globalData.paddingBottomHeight=0;
+				   let model = ['X', 'XR', 'XS', '11', '12', '13', '14', '15'];
+				model.forEach(item => {
+				    //适配iphoneX以上的底部，给tabbar一定高度的padding-bottom
+				    if(res.model.indexOf(item) != -1 && res.model.indexOf('iPhone') != -1) {
+						this.globalData.paddingBottomHeight=40;
+				    }
+				})
+				this.globalData.windowHeight = res.windowHeight;
+				
+			   }
+			})
+			// uni.getSystemInfo({
+			//     success: function (res) {
+			        
+			//     }
+			// });
+			uni.hideTabBar({
+				animation: false
+			});		
 			// var self = this
 			// var ExamRecords = new self.Parse.Object.extend('ExamRecord')
 			// var query = new self.Parse.Query("TestQuestions")

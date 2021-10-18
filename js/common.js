@@ -1,5 +1,4 @@
 
-import config from '../static/config/index.js'
 /** 时间：字符串转换成时间 */
 export const toDateFromString = (dateString)=> {
   if (dateString) {
