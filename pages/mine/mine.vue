@@ -231,48 +231,48 @@
 			/*查看我的优惠券*/
 			handleCouponClick(){
 				uni.navigateTo({
-					url:'./mycoupon'
+					url:'/mineSubPackage/pages/mycoupon/mycoupon'
 				})
 			},
 			/*签到*/
 			handleSignInClick(){
 				uni.navigateTo({
-					url:'./signin'
+					url:'/mineSubPackage/pages/signin/signin'
 				})
 			},
 			/*积分排行榜*/
 			handleScoreListClick(){
 				uni.navigateTo({
-					url:'./score'
+					url:'/mineSubPackage/pages/score/score'
 				})
 			},
 			/*查看考试记录*/
 			handleTestHisClick(){
 				uni.navigateTo({
-					url:'/pages/mine/testhistory'
+					url:'/mineSubPackage/pages/testhistory/testhistory'
 				})
 			},
 			handleInvitationClick(){
 				uni.navigateTo({
-					url: './invitation'
+					url: '/mineSubPackage/pages/invitation/invitation'
 				})
 			},
 			/* 消息中心 */
 			handleMessageClick(){
 				uni.navigateTo({
-					url:'./message'
+					url:'/mineSubPackage/pages/message/message'
 				})
 			},
 			/* 查看详情 */
 			handleInfoClick(){
 				uni.navigateTo({
-					url:'./info'
+					url:'/mineSubPackage/pages/info/info'
 				})
 			},
 			/*反馈*/
 			handleFeedBackClick(){
 				uni.navigateTo({
-					url:'./feedback'
+					url:'/mineSubPackage/pages/feedback/feedback'
 				})
 			},
 			/*错题集*/
@@ -294,7 +294,7 @@
 			},
 			handleScoreRecord(){
 				uni.navigateTo({
-					url:'./scorerecord'
+					url:'/mineSubPackage/pages/scorerecord/scorerecord'
 				})
 			}
 		}

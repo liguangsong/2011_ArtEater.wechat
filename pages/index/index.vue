@@ -303,6 +303,9 @@
 		},
 		onLoad() {
 			var self = this
+			let app = getApp();
+			this.windowHeight = app.globalData.windowHeight;
+			this.pdbtm=125+app.globalData.paddingBottomHeight;
 			uni.getStorage({
 				key:'hasHomeTiped',
 				success:(res)=>{
@@ -314,11 +317,12 @@
 			})
 			const Subjects = this.Parse.Object.extend("Subjects")
 			const query = new this.Parse.Query('Subjects')
-			uni.getSystemInfo({
-			   success: res => {
-			 	self.windowHeight = res.windowHeight
-			   }
-			})
+			// uni.getSystemInfo({
+			//    success: res => {
+			//  	self.windowHeight = res.windowHeight
+			//    }
+			// })
+			
 			query.ascending("createdAt")
 			query.equalTo("parent_ID", "0")
 			query.find().then(list => {

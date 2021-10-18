@@ -21,7 +21,7 @@
 </template>
 
 <script>
-	import {dateFormat} from '../../js/common.js'
+	import {dateFormat} from '../../../js/common.js'
 	export default {
 		data() {
 			return {

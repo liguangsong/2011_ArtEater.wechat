@@ -5,7 +5,7 @@
 			<image @tap.stop v-if="sharePicImg" :src="sharePicImg" mode="aspectFill" class="bgImg"></image>
 			<!-- <button class="download" @click="handleSaveImg">保存并分享</button> -->
 			<view @click="handleSaveImg" class="download">
-				<image src="../../static/icon_sharebg.png"></image>
+				<image src="../../../static/icon_sharebg.png"></image>
 				<view class="title">保存并分享</view>
 			</view>
 		</view>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-	import config from 'static/config/index.js'
+	import config from '../../../static/config/index.js'
 	export default {
 		data() {
 			return {

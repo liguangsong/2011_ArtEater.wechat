@@ -61,10 +61,10 @@
 </template>
 
 <script>
-	import config from '../../static/config/index.js'
-	import provice from '../../js/provinces.js'
-	import cities from '../../js/cities.js'
-	import checkunivercity from '../../components/checkunivercity/checkunivercity.vue'
+	import config from '../../../static/config/index.js'
+	import provice from '../../../js/provinces.js'
+	import cities from '../../../js/cities.js'
+	import checkunivercity from '../../../components/checkunivercity/checkunivercity.vue'
 	export default {
 		components:{
 			checkunivercity

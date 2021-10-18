@@ -56,7 +56,7 @@
 	</view>
 </template>
 <script>
-	import { dateFormat, toDateFromString,addMonths, addDays, addSeconds, GetRandomNum,utc2beijing } from '../../js/common.js'
+	import { dateFormat, toDateFromString,addMonths, addDays, addSeconds, GetRandomNum,utc2beijing } from '../../../js/common.js'
 	export default {
 		data() {
 			return {
@@ -297,7 +297,7 @@
 			},
 			handleScoreRecordClick(){
 				uni.navigateTo({
-					url:'./scorerecord'
+					url:'../scorerecord/scorerecord'
 				})
 			}
 		}

@@ -3,14 +3,14 @@
 		<view class="testView" v-if="!coupons||coupons.length==0">
 			<view style="text-align: center;padding-top: 200rpx;">
 				<view style="text-align: center;height: 228rpx;">
-					<image mode="aspectFit" src="../../static/bg_null.png" style="width: 228rpx;height: 228rpx;"></image>
+					<image mode="aspectFit" src="../../../static/bg_null.png" style="width: 228rpx;height: 228rpx;"></image>
 				</view>
 				<view style="height: 50rpx;font-family: PingFangSC-Medium;font-size: 38rpx;color: rgba(53, 32, 38, 0.4);margin-top: 30rpx;margin-bottom: 28rpx;">暂无可使用的优惠券</view>
 			</view>
 		</view>
 		<view :class="'couponItem '+((coupon.tipName&&coupon.productType&&coupon.productType!='all')?'large':'')" v-for="coupon in coupons">
 			<view class="bg">
-				<image src="../../static/couponbg.png"></image>
+				<image src="../../../static/couponbg.png"></image>
 			</view>
 			<view :class="'content '+  (coupon.state!=0?'enable':'')">
 				<view style="display: flex;width: 100%;">
@@ -33,7 +33,7 @@
 			</view>
 			<view class="couponDetail">
 				<view class="bg1">
-					<image src="../../static/couponbg1.png"></image>
+					<image src="../../../static/couponbg1.png"></image>
 				</view>
 				<view class="content1" v-if="coupon.tipName&&coupon.productType&&coupon.productType!='all'">
 					<view class="price">
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-	import {dateFormat} from '../../js/common.js'
+	import {dateFormat} from '../../../js/common.js'
 	export default {
 		data() {
 			return {
@@ -179,7 +179,7 @@
 				var _item = e.currentTarget.dataset.item
 				if(_item) {
 					uni.redirectTo({
-						url:'./order?ptype='+_item.productType+'&cid='+_item.id+'&amount='+_item.amount+'&'
+						url:'/pages/mine/order?ptype='+_item.productType+'&cid='+_item.id+'&amount='+_item.amount+'&'
 					})
 				}
 			}

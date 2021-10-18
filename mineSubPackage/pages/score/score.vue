@@ -12,9 +12,9 @@
 			<view v-if="index>2" class="index">{{index + 1}}</view>
 			<view class="cont">
 				<view class="headIcon">
-					<image class="bg" v-if="index==0" src="../../static/icon/icon_head_bg_first.png"></image>
-					<image class="bg" v-if="index==1" src="../../static/icon/icon_head_bg_second.png"></image>
-					<image class="bg" v-if="index==2" src="../../static/icon/icon_head_bg_third.png"></image>
+					<image class="bg" v-if="index==0" src="../../../static/icon/icon_head_bg_first.png"></image>
+					<image class="bg" v-if="index==1" src="../../../static/icon/icon_head_bg_second.png"></image>
+					<image class="bg" v-if="index==2" src="../../../static/icon/icon_head_bg_third.png"></image>
 					<image :src="user.avatarUrl"></image>
 				</view>
 				<view class="nickName">{{user.nickName}}</view>
@@ -39,9 +39,9 @@
 				<view v-if="myscore.index>2" class="index">{{myscore.index + 1}}</view>
 				<view class="cont">
 					<view class="headIcon" @click="handleScoreRecord">
-						<image class="bg" v-if="myscore.index==0" src="../../static/icon/icon_head_bg_first.png"></image>
-						<image class="bg" v-if="myscore.index==1" src="../../static/icon/icon_head_bg_second.png"></image>
-						<image class="bg" v-if="myscore.index==2" src="../../static/icon/icon_head_bg_third.png"></image>
+						<image class="bg" v-if="myscore.index==0" src="../../../static/icon/icon_head_bg_first.png"></image>
+						<image class="bg" v-if="myscore.index==1" src="../../../static/icon/icon_head_bg_second.png"></image>
+						<image class="bg" v-if="myscore.index==2" src="../../../static/icon/icon_head_bg_third.png"></image>
 						<image :src="myscore.avatarUrl"></image>
 					</view>
 					<view class="nickName">{{myscore.nickName}}</view>
@@ -128,7 +128,7 @@
 			/* 点击头像显示积分记录 */
 			handleScoreRecord(){
 				uni.navigateTo({
-					url:'./scorerecord'
+					url:'../scorerecord/scorerecord'
 				})
 			}
 		}

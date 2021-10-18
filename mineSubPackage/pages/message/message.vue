@@ -13,7 +13,7 @@
 				<view class="content">{{msg.content}}</view>
 			</view>
 			<view class="icon">
-				<image  v-if="msg.isRead==0" src="../../static/icon/icon_dot.png"></image>
+				<image  v-if="msg.isRead==0" src="../../../static/icon/icon_dot.png"></image>
 			</view>
 		</view>
 		<view class="loadmore" v-if="msgList.length >= pageSize">
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-	import {dateFormat} from '../../js/common.js'
+	import {dateFormat} from '../../../js/common.js'
 	export default {
 		data() {
 			return {

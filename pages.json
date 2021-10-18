@@ -146,58 +146,6 @@
             }
         }
         ,{
-            "path" : "pages/mine/signin",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "签到",
-                "enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/mine/score",
-            "style" :                                                                                    
-            {
-				"navigationBarBackgroundColor":"#fbfbfa",
-                "navigationBarTitleText": "积分排行榜",
-                "enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/mine/message",
-            "style" :                                                                                    
-            {
-				"navigationBarBackgroundColor":"#fbfbfb",
-                "navigationBarTitleText": "消息",
-                "enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/mine/msgdetail",
-            "style" :                                                                                    
-            {
-				"navigationBarBackgroundColor":"#fbfbfb",
-                "navigationBarTitleText": "消息详情",
-                "enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/mine/info",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "个人信息",
-                "enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/mine/feedback",
-            "style" :                                                                                    
-            {
-				"navigationBarBackgroundColor": "#fbfbfb",
-                "navigationBarTitleText": "意见反馈",
-                "enablePullDownRefresh": false
-            }
-        }
-        ,{
             "path" : "pages/exam/share",
             "style" :                                                                                    
             {
@@ -210,14 +158,6 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/mine/testhistory",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "考试记录",
                 "enablePullDownRefresh": false
             }
         }
@@ -244,15 +184,6 @@
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-        }
-        ,{
-            "path" : "pages/mine/scorerecord",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "积分记录",
-                "enablePullDownRefresh": false
-            }
-            
         }
         ,{
             "path" : "pages/subject/result",
@@ -288,16 +219,6 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "选择优惠券",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/mine/mycoupon",
-            "style" :                                                                                    
-            {
-				"navigationBarBackgroundColor":"#fbfbfa",
-                "navigationBarTitleText": "我的优惠券",
                 "enablePullDownRefresh": false
             }
             
@@ -350,16 +271,6 @@
             
         }
         ,{
-            "path" : "pages/mine/invitation",
-            "style" :                                                                                    
-            {
-				"navigationBarBackgroundColor":"#fbfbfa",
-                "navigationBarTitleText": "分享给好友",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
             "path" : "pages/subject/share",
             "style" :                                                                                    
             {
@@ -390,13 +301,93 @@
 	"subPackages":[
 		{
 			"root": "mineSubPackage",
-			"pages": [{
-				"path":"pages/test11/test11",
-				"style":{
-				    "navigationBarTitleText": "test111",
-				    "enablePullDownRefresh": false
-				}
-			}]
+			"pages": [
+                {
+                    "path" : "pages/info/info",
+                    "style" :{
+                        "navigationBarTitleText": "个人信息",
+                        "enablePullDownRefresh": false
+                    }
+                }
+                ,{
+                    "path" : "pages/signin/signin",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarTitleText": "签到",
+                        "enablePullDownRefresh": false
+                    }
+                },
+                {
+                    "path" : "pages/score/score",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarBackgroundColor":"#fbfbfa",
+                        "navigationBarTitleText": "积分排行榜",
+                        "enablePullDownRefresh": false
+                    }
+                },
+                {
+                    "path" : "pages/scorerecord/scorerecord",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarTitleText": "积分记录",
+                        "enablePullDownRefresh": false
+                    }
+                    
+                },
+                {
+                    "path" : "pages/mycoupon/mycoupon",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarBackgroundColor":"#fbfbfa",
+                        "navigationBarTitleText": "我的优惠券",
+                        "enablePullDownRefresh": false
+                    }
+                    
+                },
+                {
+                    "path" : "pages/testhistory/testhistory",
+                    "style" : {
+                        "navigationBarTitleText": "考试记录",
+                        "enablePullDownRefresh": false
+                    }
+                },
+                {
+                    "path" : "pages/invitation/invitation",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarBackgroundColor":"#fbfbfa",
+                        "navigationBarTitleText": "分享给好友",
+                        "enablePullDownRefresh": false
+                    }
+                    
+                },
+                {
+                    "path" : "pages/message/message",
+                    "style" :{
+                        "navigationBarBackgroundColor":"#fbfbfb",
+                        "navigationBarTitleText": "消息",
+                        "enablePullDownRefresh": false
+                    }
+                }
+                ,{
+                    "path" : "pages/message/msgdetail",
+                    "style" :{
+                        "navigationBarBackgroundColor":"#fbfbfb",
+                        "navigationBarTitleText": "消息详情",
+                        "enablePullDownRefresh": false
+                    }
+                },
+                {
+                    "path" : "pages/feedback/feedback",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarBackgroundColor": "#fbfbfb",
+                        "navigationBarTitleText": "意见反馈",
+                        "enablePullDownRefresh": false
+                    }
+                }
+            ]
 		}
 	],
 	"globalStyle": {
