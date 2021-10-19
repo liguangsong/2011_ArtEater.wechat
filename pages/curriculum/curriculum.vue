@@ -1,67 +1,8 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
-		<view class="">课程</view>
+		<view class="" @click="gotoDetail">
+			课程
+		</view>
 		<view-tabbar :current="1" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
@@ -79,11 +20,6 @@
 			'view-tabbar': Tabbar
 		},
 		onLoad() {
-			// uni.getSystemInfo({
-			// 			   success: res => {
-			// 				this.windowHeight = res.windowHeight;
-			// 			   }
-			// 			})
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
 			this.pdbtm=125+app.globalData.paddingBottomHeight;
@@ -94,6 +30,11 @@
 			});	
 		},
 		methods: {
+			gotoDetail() {
+				uni.navigateTo({
+					url:'/curriculumSubPackage/pages/curriculumDetail/curriculumDetail'
+				})
+			},
 			tabbarChange(item) {
 				uni.switchTab({
 					url:item.path

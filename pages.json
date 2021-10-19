@@ -300,6 +300,30 @@
     ],
 	"subPackages":[
 		{
+			"root": "curriculumSubPackage",
+			"pages": [
+				{
+				    "path" : "pages/curriculumDetail/curriculumDetail",
+				    "style" :{
+				        "navigationBarTitleText": "课程详情",
+				        "enablePullDownRefresh": false
+				    }
+				}
+			]
+		},
+		{
+			"root": "qbankSubPackage",
+			"pages": [
+				{
+				    "path" : "pages/qBankDetail/qBankDetail",
+				    "style" :{
+				        "navigationBarTitleText": "题库详情",
+				        "enablePullDownRefresh": false
+				    }
+				}
+			]
+		},
+		{
 			"root": "mineSubPackage",
 			"pages": [
                 {

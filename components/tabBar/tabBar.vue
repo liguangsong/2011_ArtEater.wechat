@@ -15,7 +15,7 @@
 				<cover-image class="item-img" :src="item.icon" v-else></cover-image>
 				<cover-view class="item-name" :class="{'tabbarActive': current == index}" v-if="item.text">{{item.text}}</cover-view>
 			</cover-view>
-			<cover-view class="item-badge">{{73}}</cover-view>
+			<!-- <cover-view class="item-badge">{{73}}</cover-view> -->
         </cover-view>
     </cover-view>
 </template>
