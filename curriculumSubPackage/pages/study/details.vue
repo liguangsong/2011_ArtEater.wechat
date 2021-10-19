@@ -1,22 +1,14 @@
 <template>
-	<view>
-		课程详情
+	<view class="">
+		Details
 	</view>
 </template>
 
 <script>
 	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
-			
-		}
+		
 	}
 </script>
 
 <style>
-
 </style>
