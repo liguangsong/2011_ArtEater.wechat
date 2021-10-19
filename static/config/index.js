@@ -15,4 +15,5 @@ export default{
 	Master_Key: 'LoOjxcEQS35Sr9QnAV3bOUaassBzScwM',
 	
 	AppId: 'wx8bef88e5b3f056be', // 食艺兽:wx8bef88e5b3f056be
+	// AppId: 'wx910194e48a5f2013', // 食艺兽:wx8bef88e5b3f056be
 }
