@@ -49,7 +49,8 @@
 					</view>
 					<view class="title">模拟试卷</view>
 				</view>
-				<view class="navItem" @click="handleMyClick">
+				
+				<!-- <view class="navItem" @click="handleMyClick">
 					<view class="img" style="position: relative;">
 						<image src="../../static/icon/icon_mine.png"></image>
 						<view style="position: absolute;top: 30rpx;left: 22rpx;width: 100rpx;height: 100rpx;">
@@ -57,19 +58,32 @@
 						</view>
 					</view>
 					<view class="title">个人中心</view>
+				</view> -->
+				
+				<view class="navItem" @click="handleAuditionClick">
+					<view class="img">
+						<image src="../../static/icon/icon_test.png"></image>
+					</view>
+					<view class="title">课程试听</view>
+				</view>
+				<view class="navItem" @click="handleSubjectClick" :data-item="item" v-for="(item,index) in subjects" :key='item.id'>
+					<view class="img">
+						<image :src="item.backgroundImg"></image>
+					</view>
+					<view class="title">{{item.subject_name}}</view>
 				</view>
 			</view>
 		</view>
 		<!--导航 end-->
+		
 		<!--热门专题 start-->
-		<view class="groupView">
+		<!-- <view class="groupView">
 			<view class="subjectView">
 				<view class="subjectItem" @click="handleSubjectClick" :data-item="item" v-for="(item,index) in subjects" :key='item.id'>
 					<image :src="item.backgroundImg"></image>
-					<!-- <view class="txt">{{item.subject_name}}</view> -->
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<!--热门专题 end-->
 		<!--精品推荐 start-->
 		<view class="groupView" style="margin-top: 24rpx;">
@@ -387,7 +401,7 @@
 					key:'userInfo',
 					success: res => {
 						self.userInfo = res.data
-						debugger
+						// debugger
 						if(self.toAction=='exam'){ // 模拟考试
 							self.handleExamClick()
 						}
@@ -489,7 +503,11 @@
 					this.toAction = 'exam'
 				}
 			},
-			/*课程*/
+			// 点击课程试听
+			handleAuditionClick() {
+				
+			},
+			/*课程Tab*/
 			handleCurriculumClick(){
 				if(this.userInfo&&this.userInfo.openid){
 					if(this.userInfo.phone){
@@ -664,12 +682,17 @@
 	}
 	.navView .navSection{
 		display: flex;
+		flex-flow:row wrap;
+		justify-content: space-between;
 	}
 	.navView .navSection .navItem{
-		flex: 1;
-		width: 100%;
+		width:25%;
 		text-align: center;
 	}
+	.navView .navSection:after {
+			content: "";
+			flex-grow: 4;
+		}
 	.navView .navSection .navItem .img{
 		width: 150rpx;
 		height: 150rpx;
