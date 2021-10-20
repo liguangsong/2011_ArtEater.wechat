@@ -28,10 +28,10 @@
 	export default {
 		name: 'audition',
 		props: {
-			// list: {
-			// 	type: Array,
-			// 	default: () => []
-			// }
+			list: {
+				type: Array,
+				default: () => []
+			}
 		},
 		data() {
 			return {

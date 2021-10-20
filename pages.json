@@ -275,6 +275,12 @@
 						"navigationBarTitleText": "签到",
 						"enablePullDownRefresh": false
 					}
+				}, {
+					"path": "pages/vip/vip",
+					"style": {
+						"navigationBarTitleText": "开通会员",
+						"enablePullDownRefresh": false
+					}
 				},
 				{
 					"path": "pages/score/score",
