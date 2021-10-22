@@ -273,7 +273,7 @@
 			bottom: 0;
 			height: 100vh;
 			width: 100%;
-			background: rgba(0,0,0,0.4);
+			background: rgba(0,0,0,0.6);
 			z-index: 90;
 			overflow: hidden;
 			display: none;

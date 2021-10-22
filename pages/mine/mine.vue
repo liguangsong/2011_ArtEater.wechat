@@ -28,6 +28,10 @@
 				</view>
 			</view>
 		</view>
+		<view class="actionView vip">
+			<text>课程大会员</text>
+			<view @click='jumpvip'>立即开通</view>
+		</view>
 		<view class="actionView">
 			<view class="actionItem" @click="handleSignInClick">
 				<view class="licon">
@@ -217,6 +221,11 @@
 			})
 		},
 		methods: {
+			jumpvip() {
+				uni.navigateTo({
+					url: '/mineSubPackage/pages/vip/vip'
+				})
+			},
 			tabbarChange(item) {
 				uni.switchTab({
 					url:item.path
@@ -304,6 +313,26 @@
 <style>
 	page{
 		background-color: #fbfbfb;
+	}
+	.vip {
+		display: flex;
+		justify-content: space-between;
+		/* align-content: center; */
+		align-items: center;
+		height: 100rpx;
+		font-size: 28rpx;
+		font-weight: 900;
+	}
+	.vip view {
+		font-size: 20rpx;
+		font-weight: 700;
+		background: #ff4a4a;
+		color: #fff;
+		border-radius: 25rpx;
+		height: 50rpx;
+		width: 150rpx;
+		text-align: center;
+		line-height: 50rpx;
 	}
 	.myView{
 		/* width: calc(100% - 40rpx); */

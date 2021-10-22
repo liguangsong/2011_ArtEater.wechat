@@ -2,17 +2,18 @@
 	<view  class="myPage" :style="{'height':windowHeight + 'px','overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<!-- <view class="" @click="gotoQbankdetail">题库详情</view> -->
 		<Item v-for='(item, i) in list' :item='item' :key='i'/>
-		<!-- <Vip/> -->
 		<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
 
 <script>
 	import Tabbar from '@/components/tabBar/tabBar.vue';
+	import Navbar from '@/components/navBar/navbar.vue';
 	import Item from './item.vue'
 	export default {
 		data() {
 			return {
+				img: '../../static/bg_null.png',
 				pdbtm:0,//兼容iphonexr+
 				windowHeight:0,
 				list: [
@@ -43,7 +44,8 @@
 		},
 		components:{
 			'view-tabbar': Tabbar,
-			Item
+			Item,
+			Navbar
 		},
 		onLoad() {
 		},
