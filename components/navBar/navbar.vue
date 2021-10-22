@@ -8,7 +8,7 @@
 			<view class="icon" v-if='icon'>
 				<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
 			</view>
-			<view class="title" :style="titleStyle">
+			<view class="title" :style="{color:titleStyle.color,padding:titleStyle.padding}">
 				<text>{{title}}</text>
 			</view>
 		</view>
@@ -51,7 +51,8 @@
 				default: 28
 			},
 			titleStyle: {
-				type: Object
+				type: Object,
+				default:{color:'#fff',padding:'0 0 0 62rpx'}
 			},
 			navbarColor: {
 				type: String,
