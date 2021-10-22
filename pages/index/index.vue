@@ -3,7 +3,7 @@
 		<!--轮播 start-->
 		<view class="page-section">
 			<view class="page-section-spacing">
-				<swiper class="swiper" :autoplay="true">
+				<swiper class="swiper" :autoplay="true" indicator-dots indicator-color="#ffffff" indicator-active-color="#ED3535">
 					<swiper-item v-for="item in banners" @click="handleBannerClick" :data-item="item">
 						<view class="swiperItem">
 							<image :src="item.img"></image>
@@ -29,13 +29,13 @@
 		</view>
 		<!--轮播 end-->
 		<!--导航 start-->
-		<view class="navView">
 			<view class="navSection">
-				<view class="navItem" @click="handleNoteClick">
+				
+				<view class="navItem" @click="handleAuditionClick">
 					<view class="img">
-						<image src="../../static/icon/icon_errorques.png"></image>
+						<image src="../../static/icon/icon_test.png"></image>
 					</view>
-					<view class="title">错题集</view>
+					<view class="title">课程试听</view>
 				</view>
 				<view class="navItem" @click="handleImportantClick">
 					<view class="img">
@@ -49,6 +49,12 @@
 					</view>
 					<view class="title">模拟试卷</view>
 				</view>
+				<view class="navItem" @click="handleNoteClick">
+					<view class="img">
+						<image src="../../static/icon/icon_errorques.png"></image>
+					</view>
+					<view class="title">错题集</view>
+				</view>
 				
 				<!-- <view class="navItem" @click="handleMyClick">
 					<view class="img" style="position: relative;">
@@ -60,12 +66,7 @@
 					<view class="title">个人中心</view>
 				</view> -->
 				
-				<view class="navItem" @click="handleAuditionClick">
-					<view class="img">
-						<image src="../../static/icon/icon_test.png"></image>
-					</view>
-					<view class="title">课程试听</view>
-				</view>
+				
 				<view class="navItem" @click="handleSubjectClick" :data-item="item" v-for="(item,index) in subjects" :key='item.id'>
 					<view class="img">
 						<image :src="item.backgroundImg"></image>
@@ -73,7 +74,6 @@
 					<view class="title">{{item.subject_name}}</view>
 				</view>
 			</view>
-		</view>
 		<!--导航 end-->
 		
 		<!--热门专题 start-->
@@ -85,6 +85,9 @@
 			</view>
 		</view> -->
 		<!--热门专题 end-->
+		
+		<audition title="正在学习" :showMore="studyList.length>2" :list="studyList.slice(0,2)"></audition>
+		<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)" :showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index"></audition>
 		<!--精品推荐 start-->
 		<view class="groupView" style="margin-top: 24rpx;">
 			<view class="headView">
@@ -274,10 +277,13 @@
 	import Utils from '@/js/utils/index.js'
 	import Tabbar from '@/components/tabBar/tabBar.vue'
 	import login from '../../components/login/login.vue'
+	import audition from '@/components/audition/audition.vue'
+	import Curriculum from '@/js/utils/curriculum.js'
 	export default {
 		components:{
 			login,
-			'view-tabbar': Tabbar
+			'view-tabbar': Tabbar,
+			audition
 		},
 		data() {
 			return {
@@ -302,7 +308,34 @@
 				hasBuyedMNKS:false, // 是否购买了模拟考试
 				windowHeight: 0,
 				msgCount: 0,
-				couponCount: 0
+				couponCount: 0,
+				studyList:[
+					{
+						type: 'mp4',
+						time: '6:31',
+						play_num: '12.1w',
+						tag_title: '这是副标题，一般是标签',
+						title: '先秦美术发展历程视频术发展历程视频',
+						img: '../../static/icon/icon_question.png',
+						src: '3',
+					},{
+						type: 'mp4',
+						time: '6:31',
+						play_num: '12.1w',
+						tag_title: '这是副标题，一般是标签',
+						title: '先秦美术发展历程视频术发展历程视频',
+						img: '../../static/icon/icon_question.png',
+						src: '2',
+					},{
+						type: 'mp4',
+						time: '6:31',
+						play_num: '12.1w',
+						tag_title: '这是副标题，一般是标签',
+						title: '先秦美术发展历程视频术发展历程视频',
+						img: '../../static/icon/icon_question.png',
+						src: '1',
+					}],
+				moduleList: []//动态模块
 			}
 		},
 		async onShow() {
@@ -313,7 +346,11 @@
 			    this.userInfo=res.userInfo;
 			    this.msgCount=res.msgCount;
 			    this.couponCount=res.couponCount;
-			    this.bindConfig()
+			    this.bindConfig();
+				// //获取本地正在学习的课程
+				// this.getLearning();
+				//获取所有的模块
+				this.getModules();
 		},
 		onLoad() {
 			var self = this
@@ -392,6 +429,78 @@
 					self.mnksConfig = app.globalData.mnksConfig
 					self.bindOrder()
 				})
+			},
+			//正在学习
+			async getLearning() {
+				// let learning=uni.getStorageSync('userInfo').learning;
+			},
+			//获取模块
+			async getModules() {
+				let res = await Curriculum.getHomeSetting();
+				console.log(res,345);
+				// let List=[{
+				// 	module:'课程',
+				// 	showSize:2,
+				// 	order:2,
+				// 	list:[
+				// 	{
+				// 		type: '1',
+				// 		time: '6:31',
+				// 		play_num: '12.1w',
+				// 		tag_title: '这是副标题，一般是标签',
+				// 		title: '先秦美术发展历程视频术发展历程视频',
+				// 		img: '../../static/icon/icon_question.png',
+				// 		src: '3',
+				// 	},{
+				// 		type: '2',
+				// 		time: '6:31',
+				// 		play_num: '12.1w',
+				// 		tag_title: '这是副标题，一般是标签',
+				// 		title: '先秦美术发展历程视频术发展历程视频',
+				// 		img: '../../static/icon/icon_question.png',
+				// 		src: '2',
+				// 	},{
+				// 		type: '3',
+				// 		time: '6:31',
+				// 		play_num: '12.1w',
+				// 		tag_title: '这是副标题，一般是标签',
+				// 		title: '先秦美术发展历程视频术发展历程视频',
+				// 		img: '../../static/icon/icon_question.png',
+				// 		src: '1',
+				// 	}
+				// ]},{
+				// 	title:'精品推荐',
+				// 	showSize:2,
+				// 	order:1,
+				// 	list:[
+				// 	{
+				// 		type: '1',
+				// 		time: '6:31',
+				// 		play_num: '12.1w',
+				// 		tag_title: '这是副标题，一般是标签',
+				// 		subjectName: '先秦美术发展历程视频术发展历程视频',
+				// 		img: '../../static/icon/icon_question.png',
+				// 		src: '3',
+				// 	},{
+				// 		type: '2',
+				// 		time: '6:31',
+				// 		play_num: '12.1w',
+				// 		tag_title: '这是副标题，一般是标签',
+				// 		title: '先秦美术发展历程视频术发展历程视频',
+				// 		img: '../../static/icon/icon_question.png',
+				// 		src: '2',
+				// 	},{
+				// 		type: '3',
+				// 		time: '6:31',
+				// 		play_num: '12.1w',
+				// 		tag_title: '这是副标题，一般是标签',
+				// 		title: '先秦美术发展历程视频术发展历程视频',
+				// 		img: '../../static/icon/icon_question.png',
+				// 		src: '1',
+				// 	}
+				// ]}];
+				console.log(res,8998)
+				this.moduleList=res;
 			},
 			/* 登录完成 */
 			handleLoginComplate(){
@@ -662,6 +771,11 @@
 		/* padding: 0 30rpx; */
 		text-align: center;
 	}
+	.uni-swiper-wrapper {
+	    /deep/ .uni-swiper-dots {
+			
+		}
+	}
 	.swiperItem{
 		height: 320rpx;
 		border-radius: 30rpx;
@@ -676,35 +790,40 @@
 		box-shadow: 0rpx 8rpx 22rpx 0rpx 
 			rgba(180, 102, 102, 0.24);
 	}
-	.navView{
-		/* width: calc(100% - 40rpx); */
-		/* margin-top:20rpx; */
-	}
-	.navView .navSection{
+	
+	.navSection{
+		background: #fff;
 		display: flex;
 		flex-flow:row wrap;
 		justify-content: space-between;
+		width:690rpx;
+		margin: 0 30rpx;
+		height: 340rpx;
+		border-radius: 15rpx;
+		box-shadow: 0px 4px 12px 0px rgba(0,0,0,0.08);
+		position: relative;
+		top: -20rpx;
 	}
-	.navView .navSection .navItem{
+	.navSection .navItem{
 		width:25%;
 		text-align: center;
 	}
-	.navView .navSection:after {
+	.navSection:after {
 			content: "";
 			flex-grow: 4;
 		}
-	.navView .navSection .navItem .img{
+	.navSection .navItem .img{
 		width: 150rpx;
 		height: 150rpx;
 		display: block;
 		text-align: center;
 		margin: auto;
 	}
-	.navView .navSection .navItem .img image{
+	.navSection .navItem .img image{
 		width: 150rpx;
 		height: 150rpx;
 	}
-	.navView .navSection .navItem .title{
+	.navSection .navItem .title{
 		width: 130rpx;
 		height: 10rpx;
 		line-height: 30rpx;
