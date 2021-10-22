@@ -1,14 +1,14 @@
 <template>
-	<view class="tabbar" :style='{height: img ? height: tabbarheight+"rpx"}'>
+	<view class="tabbar" :style='{height: height ? height: tabbarheight+"rpx"}'>
 		<slot></slot>
-		<image v-if='img' :src="img" mode='scaleToFill'></image>
+<!-- 		<image v-if='img' :src="img" mode='scaleToFill'></image> -->
 		<view class="navbar" 
 			:style='{background: navbarBg, height: navbarheight + "rpx", top: tabbarheight - navbarheight + "rpx", color: navbarColor, fontSize: fontSize + "rpx" }'
 		>
 			<view class="icon" v-if='icon'>
 				<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
 			</view>
-			<view class="title" :style='{textAlign: align}'>
+			<view class="title" :style="titleStyle">
 				<text>{{title}}</text>
 			</view>
 		</view>
@@ -18,9 +18,6 @@
 <script>
 	export default {
 		props: {
-			img: {
-				type: String
-			},
 			navbarBg: {
 				type: String,
 				default: 'rgba(255,255,255,0)'
@@ -53,9 +50,9 @@
 				type: Number,
 				default: 28
 			},
-			align: {
-				type: String,
-				default: 'left'
+			titleStyle: {
+				type: Object,
+				default: {'color':'red'}
 			},
 			navbarColor: {
 				type: String,

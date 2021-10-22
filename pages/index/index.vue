@@ -1,7 +1,8 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<!--轮播 start-->
-		<view class="page-section">
+		<Navbar :icon="false" title="食艺兽" height="514rpx">
+			<view class="page-section">
 			<view class="page-section-spacing">
 				<swiper class="swiper" :autoplay="true" indicator-dots indicator-color="#ffffff" indicator-active-color="#ED3535">
 					<swiper-item v-for="item in banners" @click="handleBannerClick" :data-item="item">
@@ -27,6 +28,8 @@
 				</swiper>
 			</view>
 		</view>
+		</Navbar>
+		
 		<!--轮播 end-->
 		<!--导航 start-->
 			<view class="navSection">
@@ -275,6 +278,7 @@
 
 <script>
 	import Utils from '@/js/utils/index.js'
+	import Navbar from '@/components/navBar/navbar.vue'
 	import Tabbar from '@/components/tabBar/tabBar.vue'
 	import login from '../../components/login/login.vue'
 	import audition from '@/components/audition/audition.vue'
@@ -283,7 +287,8 @@
 		components:{
 			login,
 			'view-tabbar': Tabbar,
-			audition
+			audition,
+			Navbar
 		},
 		data() {
 			return {
@@ -753,7 +758,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	page{
 		background-color: #fbfbfa;
 		overflow: hidden;
@@ -763,29 +768,27 @@
 	}
 	.swiper{
 		/* margin-top: 20rpx; */
-		border-radius: 20rpx;
+		// border-radius: 20rpx;
 		/* width: 690rpx; */
 		/* width: calc(100% - 60rpx); */
-		height: 368rpx;
+		height: 514rpx;
 		line-height: 360rpx;
 		/* padding: 0 30rpx; */
 		text-align: center;
 	}
 	.uni-swiper-wrapper {
 	    /deep/ .uni-swiper-dots {
-			
+		   bottom: 20px!important;
 		}
 	}
 	.swiperItem{
-		height: 320rpx;
-		border-radius: 30rpx;
-		display: inline-block;
+		// height: 320rpx;
+		// display: inline-block;
 		vertical-align: middle;
 	}
 	.swiperItem image{
-		width: 690rpx;
-		height: 320rpx;
-		border-radius: 40rpx;
+		width: 750rpx;
+		height: 514rpx;
 		background-color: #ffcec9;
 		box-shadow: 0rpx 8rpx 22rpx 0rpx 
 			rgba(180, 102, 102, 0.24);
@@ -802,7 +805,7 @@
 		border-radius: 15rpx;
 		box-shadow: 0px 4px 12px 0px rgba(0,0,0,0.08);
 		position: relative;
-		top: -20rpx;
+		top: -18rpx;
 	}
 	.navSection .navItem{
 		width:25%;
