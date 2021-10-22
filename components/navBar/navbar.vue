@@ -51,8 +51,7 @@
 				default: 28
 			},
 			titleStyle: {
-				type: Object,
-				default: {'color':'red'}
+				type: Object
 			},
 			navbarColor: {
 				type: String,
