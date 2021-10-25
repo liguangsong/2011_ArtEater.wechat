@@ -1,62 +1,72 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<!--轮播 start-->
-		<Navbar :icon="false" title="食艺兽" height="514rpx">
-			<view class="page-section">
-			<view class="page-section-spacing">
-				<swiper class="swiper" :autoplay="true" indicator-dots indicator-color="#ffffff" indicator-active-color="#ED3535">
-					<swiper-item v-for="item in banners" @click="handleBannerClick" :data-item="item">
-						<view class="swiperItem">
-							<image :src="item.img"></image>
-						</view>
-					</swiper-item>
-					<!-- <swiper-item>
-						<view class="swiperItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210122%209.9%E5%85%83%E7%A7%92%E6%9D%80%E5%9B%BE-02.jpg"></image>
-						</view>
-					</swiper-item>
-					<swiper-item>
-						<view class="swiperItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210106%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A6%96%E9%A1%B5%E5%9B%BE_%E7%94%BB%E6%9D%BF%201%20%E5%89%AF%E6%9C%AC%204.jpg"></image>
-						</view>
-					</swiper-item>
-					<swiper-item>
-						<view class="swiperItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210106%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A6%96%E9%A1%B5%E5%9B%BE_%E7%94%BB%E6%9D%BF%201%20%E5%89%AF%E6%9C%AC%205.jpg"></image>
-						</view>
-					</swiper-item> -->
-				</swiper>
-			</view>
-		</view>
-		</Navbar>
-		
-		<!--轮播 end-->
-		<!--导航 start-->
+		<Navbar :icon="false" title="食艺兽" height="514rpx" navbarBg="#fff" fontColor="#000">
+			<template v-slot:img>
+				<view class="page-section">
+					<view class="page-section-spacing">
+						<swiper class="swiper" :autoplay="true" indicator-dots indicator-color="#ffffff" indicator-active-color="#ED3535" circular>
+							<swiper-item v-for="item in banners" @click="handleBannerClick" :data-item="item">
+								<view class="swiperItem">
+									<image :src="item.img"></image>
+								</view>
+							</swiper-item>
+							<!-- <swiper-item>
+								<view class="swiperItem">
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210122%209.9%E5%85%83%E7%A7%92%E6%9D%80%E5%9B%BE-02.jpg"></image>
+								</view>
+							</swiper-item>
+							<swiper-item>
+								<view class="swiperItem">
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210106%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A6%96%E9%A1%B5%E5%9B%BE_%E7%94%BB%E6%9D%BF%201%20%E5%89%AF%E6%9C%AC%204.jpg"></image>
+								</view>
+							</swiper-item>
+							<swiper-item>
+								<view class="swiperItem">
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210106%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A6%96%E9%A1%B5%E5%9B%BE_%E7%94%BB%E6%9D%BF%201%20%E5%89%AF%E6%9C%AC%205.jpg"></image>
+								</view>
+							</swiper-item> -->
+						</swiper>
+					</view>
+				</view>
+			</template>
+			<template v-slot:other>
+				<!--导航 start-->
 			<view class="navSection">
-				
-				<view class="navItem" @click="handleAuditionClick">
+				<view class="nav-box">
+					<view class="navItem" @click="handleAuditionClick">
 					<view class="img">
 						<image src="../../static/icon/icon_test.png"></image>
 					</view>
-					<view class="title">课程试听</view>
-				</view>
-				<view class="navItem" @click="handleImportantClick">
-					<view class="img">
-						<image src="../../static/icon/icon_question.png"></image>
+						<view class="title">课程试听</view>
 					</view>
-					<view class="title">必考题库</view>
-				</view>
-				<view class="navItem" @click="handleExamClick">
-					<view class="img">
-						<image src="../../static/icon/icon_test.png"></image>
+					<view class="navItem" @click="handleImportantClick">
+						<view class="img">
+							<image src="../../static/icon/icon_question.png"></image>
+						</view>
+						<view class="title">必考题库</view>
 					</view>
-					<view class="title">模拟试卷</view>
-				</view>
-				<view class="navItem" @click="handleNoteClick">
-					<view class="img">
-						<image src="../../static/icon/icon_errorques.png"></image>
+					<view class="navItem" @click="handleExamClick">
+						<view class="img">
+							<image src="../../static/icon/icon_test.png"></image>
+						</view>
+						<view class="title">模拟试卷</view>
 					</view>
-					<view class="title">错题集</view>
+					<view class="navItem" @click="handleNoteClick">
+						<view class="img">
+							<image src="../../static/icon/icon_errorques.png"></image>
+						</view>
+						<view class="title">错题集</view>
+					</view>
+				</view>
+				<view class="line"></view>
+				<view class="nav-box">
+					<view class="navItem" @click="handleSubjectClick" :data-item="item" v-for="(item,index) in subjects" :key='item.id'>
+						<view class="img">
+							<image :src="item.backgroundImg"></image>
+						</view>
+						<view class="title">{{item.subject_name}}</view>
+					</view>
 				</view>
 				
 				<!-- <view class="navItem" @click="handleMyClick">
@@ -70,12 +80,7 @@
 				</view> -->
 				
 				
-				<view class="navItem" @click="handleSubjectClick" :data-item="item" v-for="(item,index) in subjects" :key='item.id'>
-					<view class="img">
-						<image :src="item.backgroundImg"></image>
-					</view>
-					<view class="title">{{item.subject_name}}</view>
-				</view>
+				
 			</view>
 		<!--导航 end-->
 		
@@ -272,6 +277,12 @@
 				</view>
 			</view>
 		</u-mask>
+			</template>
+			
+		</Navbar>
+		
+		<!--轮播 end-->
+		
 		<view-tabbar :current="0" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
@@ -760,10 +771,10 @@
 
 <style lang="scss" scoped>
 	page{
-		background-color: #fbfbfa;
 		overflow: hidden;
 	}
 	.myPage{
+		background-color: #F7F7F7;
 		/* padding-bottom: 125rpx; */
 	}
 	.swiper{
@@ -772,15 +783,11 @@
 		/* width: 690rpx; */
 		/* width: calc(100% - 60rpx); */
 		height: 514rpx;
-		line-height: 360rpx;
+		line-height: 18rpx;
 		/* padding: 0 30rpx; */
 		text-align: center;
 	}
-	.uni-swiper-wrapper {
-	    /deep/ .uni-swiper-dots {
-		   bottom: 20px!important;
-		}
-	}
+	
 	.swiperItem{
 		// height: 320rpx;
 		// display: inline-block;
@@ -795,51 +802,98 @@
 	}
 	
 	.navSection{
-		background: #fff;
 		display: flex;
-		flex-flow:row wrap;
-		justify-content: space-between;
 		width:690rpx;
-		margin: 0 30rpx;
+		margin: 0 auto;
 		height: 340rpx;
 		border-radius: 15rpx;
-		box-shadow: 0px 4px 12px 0px rgba(0,0,0,0.08);
+		filter:drop-shadow( 0rpx 4rpx 12rpx rgba(0,0,0,0.08));
+		// -webkit-filter: drop-shadow(8px 8px 6px #333);
+		// 	        filter: drop-shadow(8px 8px 6px #333);
 		position: relative;
 		top: -18rpx;
-	}
-	.navSection .navItem{
-		width:25%;
-		text-align: center;
-	}
-	.navSection:after {
-			content: "";
-			flex-grow: 4;
+		.nav-box{
+			width:50%;
+			height: 340rpx;
+			display: flex;
+			background: #fff;
+			// box-shadow: -5px -5px 10px -4px red, -5px 5px 10px -4px red;
+			flex-flow:row wrap;
+			justify-content: space-around;
+			.navItem{
+				// flex: 1;
+				width: 50%;
+				height: 170rpx;
+				text-align: center;
+			}
 		}
+		.nav-box:nth-of-type(1){
+			border-top-left-radius: 15rpx;
+			border-bottom-left-radius: 15rpx;
+			background:linear-gradient(0deg, transparent 0rpx, #fff 0)
+			      top left,
+			      linear-gradient(-135deg, transparent 6rpx, #fff 0)
+			      top right,
+			      linear-gradient(-45deg, transparent 6rpx, #fff 0)
+			      bottom right,
+			      linear-gradient(0deg, transparent 0rpx, #fff 0)
+			      bottom left;
+			      background-size: 50.01% 50.01%;
+			      background-repeat: no-repeat;
+		}
+		.nav-box:nth-last-of-type(1){
+			border-top-right-radius: 15rpx;
+			border-bottom-right-radius: 15rpx;
+			background:linear-gradient(135deg, transparent 6rpx, #fff 0)
+			      top left,
+			      linear-gradient(0deg, transparent 0rpx, #fff 0)
+			      top right,
+			      linear-gradient(0deg, transparent 0rpx, #fff 0)
+			      bottom right,
+			      linear-gradient(45deg, transparent 6rpx, #fff 0)
+			      bottom left;
+			      background-size: 50.01% 50.01%;
+			      background-repeat: no-repeat;
+				  
+		}
+		.line{
+			width: 1rpx;
+			height: 260rpx;
+			background: #000000;
+			opacity: 0.1;
+			margin-top: 40rpx;
+			left: 344rpx;
+			position: absolute;
+		}
+		.nav-box::after {
+					content: "";
+					flex-grow: 4;
+				}
+	}
 	.navSection .navItem .img{
-		width: 150rpx;
-		height: 150rpx;
+		width: 92rpx;
+		height: 92rpx;
 		display: block;
 		text-align: center;
-		margin: auto;
+		margin: 30rpx auto 6rpx auto;
 	}
 	.navSection .navItem .img image{
-		width: 150rpx;
-		height: 150rpx;
+		width: 92rpx;
+		height: 92rpx;
 	}
 	.navSection .navItem .title{
-		width: 130rpx;
-		height: 10rpx;
-		line-height: 30rpx;
+		width: 172rpx;
+		height: 32rpx;
+		line-height: 32rpx;
 		display: inline-block;
 		text-align: center;
 		font-family: PingFangSC-Medium;
 		font-weight: bold;
 		font-size: 22rpx;
+		font-weight: 500;
 		color: #352026;
 		display: block;
 		margin: auto;
-		position: relative;
-		top: -20rpx;
 	}
 	.groupView{
 		/* width: calc(100% - 40rpx); */

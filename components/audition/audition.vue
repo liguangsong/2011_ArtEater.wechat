@@ -1,6 +1,7 @@
 <template>
 	<view class="list">
 			<view class="title" v-if="title">
+				<text class="title-before"></text>
 			   {{title}}
 			</view>
 			<text class="more" v-if="showMore">查看更多 ></text>
@@ -101,20 +102,31 @@
 	.list{
 		position: relative;
 		margin:20rpx 0;
+		.title-before{
+			display: inline-block;
+			margin-right: 8rpx;
+			width: 10rpx;
+			height: 24rpx;
+			background: #D81E1F;
+			border-radius: 2rpx;
+		}
 		.title{
+			height: 40rpx;
+			font-size: 28rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 600;
+			color: #000000;
+			line-height: 40rpx;
 			padding-left: 30rpx;
-			font-size: 38rpx;
-			font-family: PingFangSC-Medium;
-			color: #352026;
-			font-weight: bold;
-			height: 60rpx;
-			line-height: 60rpx;
 		}
 		.more{
-			color: #666;
+			width: 80rpx;
+			font-size: 16rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #000000;
 			position: absolute;
-			top:20rpx;
-			font-size: 20rpx;
+			top:10rpx;
 			right: 50rpx;
 			z-index: 1;
 		}
