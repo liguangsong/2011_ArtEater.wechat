@@ -1,22 +1,20 @@
 <template>
 	<view class="timetable">
-		<view :class="{content: unlock}">
-			<text class='title'>课表</text>
+		<!-- <view :class="{content: unlock}"> -->
+		<view>
+			<view class="catalogue">
+				<text>课程目录</text>
+			</view>
 			<Tree 
 				:list='list'
 				@onClickItem='onClickItem'
 				:showAllbtn='true'
 			/>
 		</view>
-		<view class="unlock" v-if='unlock' @click='unlock = false'>
+		<!-- <view class="unlock" v-if='unlock' @click='unlock = false'>
 			立即解锁
-		</view>
-		<view class="introduce" v-if='!unlock'>
-			<text class='title'>课程介绍</text>
-			<view class="">
-				<image src="../../../static/icon/icon_action_daka.png"></image>
-			</view>
-		</view>
+		</view> -->
+		
 	</view>
 </template>
 
@@ -34,22 +32,41 @@
 				list: [
 					{
 						label: '课程一级标题',
+						leave: 0,
 						children: [
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'mp4'
 							},
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'img'
 							},
 							{
 								label: '课程二级标题名字名称',
 								type: 'mp3',
+								leave: 1,
 								children: [
 									{
 										label: '课程二级标题名字名称',
-										type: 'mp3'
+										leave: 2,
+										type: 'mp3',
+										children: [
+											{
+												label: '课程二级标题名字名称',
+												leave: 3,
+												type: 'mp3',
+												children: [
+													{
+														label: '课程二级标题名字名称',
+														leave: 4,
+														type: 'mp3'
+													}
+												]
+											}
+										]
 									}
 								]
 							},
@@ -57,67 +74,82 @@
 					},
 					{
 						label: '课程一级标题',
+						leave: 0,
 						children: [
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'mp3'
 							},
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'mp3'
 							},
 						]
 					},
 					{
 						label: '课程一级标题',
+						leave: 0,
 						children: [
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'mp3'
 							},
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'mp3'
 							},
 						]
 					},
 					{
 						label: '课程一级标题',
+						leave: 0,
 						children: [
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'mp3'
 							},
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'mp3'
 							},
 						]
 					},
 					{
 						label: '课程一级标题',
+						leave: 0,
 						children: [
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'txt',
 								upstudy: true
 							},
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'mp3'
 							},
 						]
 					},
 					{
 						label: '课程一级标题',
+						leave: 0,
 						children: [
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'txt',
 								upstudy: true
 							},
 							{
 								label: '课程二级标题名字名称',
+								leave: 1,
 								type: 'mp3'
 							}
 						]
@@ -140,10 +172,20 @@
 </script>
 
 <style scoped>
-	.title {
-		font-size: 36rpx;
+	.catalogue {
+		font-size: 30rpx;
 		margin-bottom: 20rpx;
 		font-weight: 900;
+		padding-left: 48rpx;
+		color: #D81E1F;
+	}
+	.catalogue text:before {
+		display: inline-block;
+		content: "";
+		width: 10rpx;
+		height: 24rpx;
+		background: #D81E1F;
+		margin-right: 10rpx;
 	}
 	.content {
 		height: 600rpx;
@@ -161,8 +203,6 @@
 		text-align: center;
 		line-height: 80rpx;
 		font-size: 30rpx;
-	},
-	.introduce {
-		margin-top: 20rpx;
 	}
+
 </style>

@@ -1,7 +1,15 @@
 <template>
-	<view  class="myPage" :style="{'height':windowHeight + 'px','overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<!-- <view class="" @click="gotoQbankdetail">题库详情</view> -->
-		<Item v-for='(item, i) in list' :item='item' :key='i'/>
+	<view class="myPage" :style="{'height':windowHeight + 'px','overflow': 'scroll','padding-bottom':pdbtm+'rpx'}">
+		<Navbar height='300rpx'>
+			<template v-slot:img>
+				<u-swiper :list="arr"></u-swiper>
+			</template>
+			<template v-slot:other>
+				<Item v-for='(item, i) in list' :item='item' :key='i'/>
+				<Item v-for='(item, i) in list' :item='item' :key='i'/>
+				<Item v-for='(item, i) in list' :item='item' :key='i'/>
+			</template>
+		</Navbar>
 		<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
@@ -13,7 +21,13 @@
 	export default {
 		data() {
 			return {
-				img: '../../static/bg_null.png',
+				scrollTop: 0,
+				arr: [
+					'https://img2.baidu.com/it/u=2151359767,1164216166&fm=26&fmt=auto',
+					'https://img1.baidu.com/it/u=2548045501,3373948589&fm=26&fmt=auto',
+					'https://img1.baidu.com/it/u=82323508,2412665068&fm=26&fmt=auto'
+				],
+				img: '../../static/1.png',
 				pdbtm:0,//兼容iphonexr+
 				windowHeight:0,
 				list: [
@@ -57,6 +71,11 @@
 				animation: false
 			});
 		},
+		// onPageScroll(e) {
+		// 	if (e.scrollTop < 400) {
+		// 		this.scrollTop = Math.ceil(e.scrollTop / 400 * 10)/10;
+		// 	}
+		// },
 		methods: {
 			// 切换tab
 			tabbarChange(item) {
@@ -75,6 +94,7 @@
 
 <style lang="scss" scoped>
 .myPage{
-	// padding-bottom: 125rpx;
+	// min-height: 100vh;
+	// overflow: scroll;
 }
 </style>

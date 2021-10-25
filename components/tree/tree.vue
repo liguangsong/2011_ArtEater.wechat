@@ -1,15 +1,16 @@
 <template>
-	<view class="">
-		<view id='tree' :class="{rowheight: show}">
+	<view class='bg'>
+		<!-- <view id='tree' :class="{rowheight: show}"> -->
+		<view id='tree'>
 			<tree-node 
 				v-for='(item,i) in list'
 				:key='i'
 				:item='item'
 			/>
 		</view>
-		<view @click='show=false' class="show-all" v-if='show'>
+		<!-- <view @click='show=false' class="show-all" v-if='show'>
 			<text>查看全部</text>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -61,6 +62,9 @@
 </script>
 
 <style>
+	.bg {
+		background: #f7f7f7;
+	}
 	.rowheight {
 		height: 600rpx;
 		overflow: hidden;

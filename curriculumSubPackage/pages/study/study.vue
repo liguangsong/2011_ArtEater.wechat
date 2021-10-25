@@ -1,24 +1,23 @@
 <template>
 	<view class='study'>
 		<view class="head">
-			<view class="content">
+			<view class="title">中国美术史重点精讲</view>
+			<view class="info">
 				<view>
-					<view class="title">中国美术史重点精讲</view>
-					<view class="info">
-						<text>共16次课 央美实验艺术考验</text>
-					</view>
+					<text class='studynum'>共16次课</text>
+					<text>央美实验艺术考验</text>
 				</view>
 				<view class="teacher">
 					<image src="../../../static/bg_null.png"></image>
 					<text>王一山</text>
 				</view>
 			</view>
+			<view class="tabber">
+				<text :class='{text: !tabbar}' @click='tabbar = false'>详情</text>
+				<text :class='{text: tabbar}' @click='tabbar = true'>目录</text>
+			</view>
 		</view>
 		<view class="tab">
-			<view class="tabber">
-				<text :class='{text: tabbar}' @click='tabbar = true'>课表</text>
-				<text :class='{text: !tabbar}' @click='tabbar = false'>详情</text>
-			</view>
 			<view>
 				<Timetable v-if='tabbar' :isVip='isVip'/>
 				<Details v-else/>
@@ -52,49 +51,47 @@
 </script>
 
 <style scoped>
+	.study {
+		background: #f7f7f7;
+	}
 	.head {
-		border-bottom: 10rpx solid #eee;
-		height: 200rpx;
+		height: 256rpx;
+		background: #fff;
+		padding: 0 48rpx;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.1);
 	}
- .content {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		padding: 0 30rpx;
-		justify-content: space-around;
-	}
-	.title {
-		font-size: 36rpx;
+  .title {
+		padding: 28rpx 0;
+		font-size: 44rpx;
 		font-weight: 900;
 	}
 	.info {
-		font-size: 20rpx;
+		font-size: 24rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 48rpx;
+	}
+	.info .studynum {
+		margin-right: 30rpx;
+	}
+	.info image {
+		width: 48rpx;
+		height: 48rpx;
 	}
 	.teacher {
 		display: flex;
 		align-items: center;
 	}
 	.teacher image {
-		width: 50rpx;
-		height: 50rpx;
-		margin-right: 12rpx;
-		border-radius: 50%;
+		margin-right: 16rpx;
 	}
-	.teacher text {
-		font-size: 18rpx;
-	}
-	
-	.tab {
-		padding: 0 30rpx;
-	}
-	.tab .tabber {
+	.tabber {
 		display: flex;
 		justify-content: space-around;
-		padding: 12rpx 0 20rpx;
+		margin-top: 30rpx;
 	}
-	.tab .tabber .text {
-		border-bottom: 2px solid #aaa;
+	.tab {
+		margin-top: 30rpx;
 	}
-	
-	
 </style>

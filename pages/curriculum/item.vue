@@ -1,20 +1,26 @@
 <template>
 	<view class='curriculum-item'>
 		<view class="content">
-			<view>
-				<view class="title" @click='jumpItem'>{{item.title}}</view>
+			<view class='font'>
+				<view class="title" @click='jumpDefault'>{{item.subjectName}}</view>
 				<view class="info">
-					<text>{{item.info}}</text>
+					<text>{{item.subheadingOne}}</text>
+					<text>{{item.subheadingTwo}}</text>
 				</view>
 			</view>
 			<view class="teacher">
-				<image :src="item.img"></image>
-				<text>{{item.teacher_name}}</text>
+				<view class='img'>
+					<image :src="item.portrait[0]"></image>
+					<text>{{item.lecturerName}}</text>
+				</view>
+				<view class="btn" :class='{study: !item.isVipCourse}'>
+					<text v-if='!item.isVipCourse' @click='jumpDefault'>学习</text>
+					<text v-else @click='unlockFn'>解锁</text>
+				</view>
 			</view>
 		</view>
-		<view class="btn">
-			<text v-if='isVip' class='study' @click='jumpStudy'>学习</text>
-			<text v-else class='locking' @click='unlock'>解锁</text>
+		<view class="vip" v-if='item.isVipCourse'>
+			<image :src="lock" mode='aspectFill'></image>
 		</view>
 	</view>
 </template>
@@ -29,21 +35,20 @@
 		},
 		data() {
 			return {
-				isVip: this.item.isVip
+				isVip: this.item.isVip,
+				lock: '../../static/vip-lock.png',
+				// unlock: '../../static/vip-unlock.png'
 			}
 		},
 		methods: {
-			jumpItem() {
+			jumpDefault() {
 				uni.navigateTo({
-					url: '/curriculumSubPackage/pages/study/study?isVip=' + this.isVip
+					url: '/curriculumSubPackage/pages/study/study'
 				})
 			},
-			unlock() {
-				this.isVip = true;
-			},
-			jumpStudy() {
+			unlockFn() {
 				uni.navigateTo({
-					url: '/curriculumSubPackage/pages/study/study?isVip=' + this.isVip
+					url: '/mineSubPackage/pages/vip/vip'
 				})
 			}
 		}
@@ -52,60 +57,67 @@
 
 <style scoped>
 	.curriculum-item {
-		width: 680rpx;
-		height: 200rpx;
-		margin: 0 auto 22rpx;
+		width: 690rpx;
+		height: 220rpx;
+		margin: 0 auto 24rpx;
 		background: #fff;
-		border-radius: 10rpx;
-		box-shadow: #c9c9c9 0 4rpx 10rpx 0;
-		display: flex;
+		border-radius: 12rpx;
+		box-shadow: rgba(0,0,0,.1) 0 4rpx 10rpx 0;
+		position: relative;
 	}
 	.content {
-		flex: 1 0 70%;
+		width: 100%;
+		height: 100%;
 		display: flex;
 		flex-direction: column;
-		padding-left: 20rpx;
-		justify-content: space-around;
+		padding: 32rpx 48rpx 20rpx;
+		justify-content: space-between;
 	}
 	.title {
-		font-size: 30rpx;
+		font-size: 32rpx;
 		font-weight: 900;
+		line-height: 44rpx;
 	}
 	.info {
-		font-size: 18rpx;
+		font-size: 20rpx;
+		line-height: 28rpx;
 	}
 	.teacher {
+		display: flex;
+		justify-content: space-between;
+		font-size: 20rpx;
+	}
+	.teacher .img {
 		display: flex;
 		align-items: center;
 	}
 	.teacher image {
-		width: 50rpx;
-		height: 50rpx;
+		width: 48rpx;
+		height: 48rpx;
 		margin-right: 12rpx;
 		border-radius: 50%;
 	}
-	.teacher text {
-		font-size: 18rpx;
-	}
 	.btn {
-		flex: 1 0 30%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.btn text {
+		width: 100rpx;
 		height: 40rpx;
-		width: 80rpx;
-		border-radius: 20rpx;
-		font-size: 20rpx;
 		line-height: 40rpx;
 		text-align: center;
+		border-radius: 20rpx;
+		overflow: hidden;
+		background: rgba(0,0,0,.1);
 	}
-	.btn .study {
-		background: #eee;
+	.vip {
+		position: absolute;
+		top: -6rpx;
+		right: -6rpx;
 	}
-	.btn .locking {
-		background: #bbb;
-		color: #fff;
+	.vip image {
+		width: 116rpx;
+		height: 116rpx;
+	}
+	.study {
+		border: 2rpx solid #FF6867;
+		background: #fff;
+		color: #FF6867;
 	}
 </style>

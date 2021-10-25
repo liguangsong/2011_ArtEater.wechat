@@ -1,8 +1,7 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<view class="" @click="gotoDetail">
-			<Item v-for='(item,i) in arr' :key='i' :item='item'/>
-			<!-- <Audition /> -->
+			<Item v-for='(item,i) in list' v-if='!item.isHideCourse' :key='i' :item='item'/>
 		</view>
 		<view-tabbar :current="1" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
@@ -17,39 +16,18 @@
 			return {
 				windowHeight:0,
 				pdbtm:0,//兼容iphonexr+
-				arr: [
-					{
-						title: '中国美术史重点精讲1',
-						info: '共16次课 央美实验艺术考验',
-						img: '../../static/bg_null.png',
-						teacher_name: '王一山1',
-						isVip: false
-					},{
-						title: '中国美术史重点精讲2',
-						info: '共32次课 央美实验艺术考验',
-						img: '../../static/bg_null.png',
-						teacher_name: '王一山2',
-						isVip: true
-					},{
-						title: '中国美术史重点精讲3',
-						info: '共36次课 央美实验艺术考验',
-						img: '../../static/bg_null.png',
-						teacher_name: '王一山3',
-						isVip: false
-					},{
-						title: '中国美术史重点精讲4',
-						info: '共3次课 央美实验艺术考验',
-						img: '../../static/bg_null.png',
-						teacher_name: '王一山4',
-						isVip: true
-					},
-				]
+				list: []
 			}
 		},
 		components:{
 			'view-tabbar': Tabbar,
 			Item,
 			Audition
+		},
+		async created() {
+			var query = new this.Parse.Query('coursesModule')
+			this.list = await query.find();
+			console.log(this.list);
 		},
 		onLoad() {
 			let app = getApp();

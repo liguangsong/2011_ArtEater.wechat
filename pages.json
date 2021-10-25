@@ -224,7 +224,8 @@
 			"path": "pages/questionBank/questionBank",
 			"style": {
 				"navigationBarTitleText": "题库",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
 			}
 
 		}, {
