@@ -55,16 +55,25 @@ export default {
 		    curriculum.equalTo('categoryId',category);
 		    curriculum.ascending('order');
 		let res = await curriculum.find();
+		let ne=[]
 		if(res){
-			res = res.map(
-			 v=>{
+			for(let i=0; i<res.length;i++) {
+				let v= res[i];
 				v=v.toJSON();
 				if(v.flag==2 && !!v.link &&(v.kind==1 || v.kind==2)){
 					this.getVideoOrAudioDuration(v);
+					ne.push(v)
+				}else{
+					ne.push(v)
 				}
-				return v;
+				
 			}
-			);
+			return ne;
+			// res = res.map(
+			//  v=>{
+				
+			// }
+			// );
 		}
 		    
 		return res;

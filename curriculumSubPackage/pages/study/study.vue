@@ -32,7 +32,7 @@
 <script>
 	import Timetable from './timetable.vue';
 	import Details from './details.vue';
-	import Navbar from '@/components/navBar/tree-navbar.vue';
+	import Navbar from '@/components/navBar/navbar.vue';
 	export default {
 		data() {
 			return {

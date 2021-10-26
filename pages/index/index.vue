@@ -1,7 +1,7 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<!--轮播 start-->
-		<Navbar :icon="false" title="食艺兽" height="514rpx" navbarBg="#fff" fontColor="#000">
+		<Navbar :icon="false" title="食艺兽" height="514rpx" navbarBg="#fff" :fontColor="fontColor" :fontSize="34" titleLeft="62rpx">
 			<template v-slot:img>
 				<view class="page-section">
 					<view class="page-section-spacing">
@@ -36,7 +36,7 @@
 				<view class="nav-box">
 					<view class="navItem" @click="handleAuditionClick">
 					<view class="img">
-						<image src="../../static/icon/icon_test.png"></image>
+						<image src="../../static/icon/icon_kcst.png"></image>
 					</view>
 						<view class="title">课程试听</view>
 					</view>
@@ -49,6 +49,7 @@
 					<view class="navItem" @click="handleExamClick">
 						<view class="img">
 							<image src="../../static/icon/icon_test.png"></image>
+							<text class="badge">12</text>
 						</view>
 						<view class="title">模拟试卷</view>
 					</view>
@@ -289,7 +290,7 @@
 
 <script>
 	import Utils from '@/js/utils/index.js'
-	import Navbar from '@/components/navBar/navbar.vue'
+	import Navbar from '@/components/navBar/navBarIndex.vue'
 	import Tabbar from '@/components/tabBar/tabBar.vue'
 	import login from '../../components/login/login.vue'
 	import audition from '@/components/audition/audition.vue'
@@ -303,6 +304,7 @@
 		},
 		data() {
 			return {
+				fontColor:'rgb(255,255,255)',
 				pdbtm:0,//兼容iphonexr+
 				openid: '',
 				userInfo: {},
@@ -332,7 +334,7 @@
 						play_num: '12.1w',
 						tag_title: '这是副标题，一般是标签',
 						title: '先秦美术发展历程视频术发展历程视频',
-						img: '../../static/icon/icon_question.png',
+						img: '',
 						src: '3',
 					},{
 						type: 'mp4',
@@ -340,7 +342,7 @@
 						play_num: '12.1w',
 						tag_title: '这是副标题，一般是标签',
 						title: '先秦美术发展历程视频术发展历程视频',
-						img: '../../static/icon/icon_question.png',
+						img: '',
 						src: '2',
 					},{
 						type: 'mp4',
@@ -348,7 +350,7 @@
 						play_num: '12.1w',
 						tag_title: '这是副标题，一般是标签',
 						title: '先秦美术发展历程视频术发展历程视频',
-						img: '../../static/icon/icon_question.png',
+						img: '',
 						src: '1',
 					}],
 				moduleList: []//动态模块
@@ -372,7 +374,7 @@
 			var self = this
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
-			this.pdbtm=125+app.globalData.paddingBottomHeight;
+			this.pdbtm=116+app.globalData.paddingBottomHeight;
 			uni.getStorage({
 				key:'hasHomeTiped',
 				success:(res)=>{
@@ -515,7 +517,7 @@
 				// 		src: '1',
 				// 	}
 				// ]}];
-				console.log(res,8998)
+				console.log(JSON.parse(JSON.stringify(res)),89989999)
 				this.moduleList=res;
 			},
 			/* 登录完成 */
@@ -826,6 +828,12 @@
 				height: 170rpx;
 				text-align: center;
 			}
+			.navItem:nth-of-type(1),.navItem:nth-of-type(2){
+				padding-top: 30rpx;
+			}
+			.navItem:nth-of-type(3),.navItem:nth-of-type(4){
+				padding-top: 12rpx;
+			}
 		}
 		.nav-box:nth-of-type(1){
 			border-top-left-radius: 15rpx;
@@ -875,7 +883,23 @@
 		height: 92rpx;
 		display: block;
 		text-align: center;
-		margin: 30rpx auto 6rpx auto;
+		margin: 0rpx auto 6rpx auto;
+		position: relative;
+	}
+	.navSection .navItem .badge{
+		min-width: 20rpx;
+		background: linear-gradient(180deg, #D81E1F 0%, rgba(238, 64, 66, 0.31) 100%);
+		border-radius: 100rpx;
+		min-height: 20rpx;
+		font-size: 16rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #FFFFFF;
+		line-height: 22rpx;
+		position: absolute;
+		padding: 2rpx 8rpx;
+		left: 70rpx;
+		top: 2rpx;
 	}
 	.navSection .navItem .img image{
 		width: 92rpx;
