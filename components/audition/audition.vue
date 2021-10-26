@@ -1,5 +1,5 @@
 <template>
-	<view class="list">
+	<view class="list" v-if="reload &&list.length">
 			<view class="title" v-if="title">
 				<text class="title-before"></text>
 			   {{title}}
@@ -11,11 +11,11 @@
 				<view class="image-info">
 					<image :src="item.img" mode="widthFix" @click='jump(item)'></image>
 					<view class="image-bottom-info">
-						<view>
-							<u-icon name="play-circle-fill" />{{item.play_num}}
+						<view class="view">
+							<u-icon name="play-circle" />{{item.play_num}}
 						</view>
 						<text class='time'>
-							{{item.duration}}
+							{{item.duration || ''}}
 						</text>
 					</view>
 				</view>
@@ -23,8 +23,8 @@
 					<view class="txt-title">
 						{{item.subjectName}}
 					</view>
-					<text class='tag'>
-						{{item.subheadingOne+'-'+item.subheadingTwo}}
+					<text class='tag' v-if="item.subheadingOne||item.subheadingTwo">
+						{{item.subheadingOne || item.subheadingTwo||''}}
 					</text>
 				</view>
 			</view>
@@ -51,7 +51,7 @@
 		},
 		data() {
 			return {
-				
+				reload:false,
 				// list: [
 				// 	{
 				// 		type: 'mp4',
@@ -89,6 +89,19 @@
 							  console.log('load font success')
 						  }
 						})
+		},
+		watch:{
+			list:{
+				handler() {
+					this.reload=false
+					this.$nextTick(()=>{
+						console.log(this.list,444)
+						this.reload=true;
+					})
+				},
+				deep:true,
+				immediate:true
+			}
 		},
 		methods: {
 			jump(item) {
@@ -135,32 +148,32 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
+		padding: 20rpx 30rpx 12rpx 30rpx;
 		justify-content: space-between;
 	}
-	.auditon::after{
-		content: '';
-		flex-grow: 4;
-	}
+	// .auditon::after{
+	// 	content: '';
+	// 	flex-grow: 4;
+	// }
 	.item {
-		width: 50%;
+		width: 336rpx;
 		overflow: hidden;
-		padding: 10rpx 30rpx;
+		// padding: 10rpx 30rpx;
 	}
 	.image-info {
-		width: 100%;
-		height: 200rpx;
+		width: 336rpx;
+		height: 176rpx;
 		overflow: hidden;
 		position: relative;
-		border: 1px solid #ccc;
+		background: #666;
 		border-radius: 20rpx;
-		margin-bottom: 10rpx;
+		margin-bottom: 8rpx;
 	}
 	.image-bottom-info {
 		width: 100%;
-		padding: 10rpx;
 		box-sizing: border-box;
 		position: absolute;
-		bottom: 0;
+		bottom: 8rpx;
 		display: flex;
 		justify-content: space-between;
 		font-size: 22rpx;
@@ -169,19 +182,44 @@
 		width: 100%;
 	}
 	.txt-info {
-		height: 80rpx;
+		padding-left: 18rpx;
 	}
 	.txt-info .txt-title {
-		font-weight: 800;
-		font-size: 28rpx;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
+		height: 34rpx;
+		font-size: 24rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 600;
+		color: #171717;
+		line-height: 34rpx;
 	}
 	.txt-info .tag {
-		font-size: 22rpx;
-		color: #aaa;
-		position: relative;
-		top: -6rpx;
+		height: 22rpx;
+		font-size: 16rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #989898;
+		display: inherit;
+		line-height: 22rpx;
+	}
+	.view{
+		height: 22rpx;
+		font-size: 16rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+		margin-left: 12rpx;
+		line-height: 22rpx;
+	}
+	.time{
+		height: 22rpx;
+		font-size: 16rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+		line-height: 22rpx;
+		margin-right: 12rpx;
 	}
 </style>

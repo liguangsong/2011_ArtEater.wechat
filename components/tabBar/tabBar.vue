@@ -3,19 +3,19 @@
         <cover-view class="tabbar-item"
             v-for="(item, index) in list" 
             :key="index" 
-			style="position: relative;"
+			@click="tabbarChange(item)"
         >  
 			<!-- <cover-view v-if="item.midButton" class="midButton">
 				<cover-image class="item-img" :src="item.icon_a" v-if="current == index"></cover-image>
 				<cover-image class="item-img" :src="item.icon" v-else></cover-image>
 				<cover-view class="item-name" :class="{'tabbarActive': current == index}" v-if="item.text">{{item.text}}</cover-view>
 			</cover-view> -->
-			<cover-view @click="tabbarChange(item)" >
+			<cover-view style="position:relative">
 				<cover-image class="item-img" :src="item.icon_a" v-if="current == index"></cover-image>
 				<cover-image class="item-img" :src="item.icon" v-else></cover-image>
 				<cover-view class="item-name" :class="{'tabbarActive': current == index}" v-if="item.text">{{item.text}}</cover-view>
+				<cover-view class="item-badge"></cover-view>
 			</cover-view>
-			<!-- <cover-view class="item-badge">{{73}}</cover-view> -->
         </cover-view>
     </cover-view>
 </template>
@@ -30,13 +30,13 @@ export default {
             paddingBottomHeight: 0,  //苹果X以上手机底部适配高度
             list: [{
                     text: '首页',  
-                    icon: '/static/bg_null.png',  //未选中图标
-                    icon_a: '/static/bg_null.png',  //选中图片
+                    icon: '/static/icon/icon_home.png',  //未选中图标
+                    icon_a: '/static/icon/icon_home_active.png',  //选中图片
                     path: "/pages/index/index"  //页面路径
                 },{
                     text: '课程',
-                    icon: '/static/bg_null.png',  //未选中图标
-                    icon_a: '/static/bg_null.png',  //选中图片
+                    icon: '/static/icon/icon_curriculum.png',  //未选中图标
+                    icon_a: '/static/icon/icon_curriculum_active.png',  //选中图片
                     path: "/pages/curriculum/curriculum"
                 },
      //            {
@@ -48,13 +48,13 @@ export default {
      //            },
 				{
                     text: '题库',
-                    icon: '/static/bg_null.png',  //未选中图标
-                    icon_a: '/static/bg_null.png',  //选中图片
+                    icon: '/static/icon/icon_questionBank.png',  //未选中图标
+                    icon_a: '/static/icon/icon_questionBank_active.png',  //选中图片
                     path: "/pages/questionBank/questionBank"
                 },{
                     text: '我的',
-                    icon: '/static/bg_null.png',  //未选中图标
-                    icon_a: '/static/bg_null.png',  //选中图片
+                    icon: '/static/icon/icon_mine.png',  //未选中图标
+                    icon_a: '/static/icon/icon_mine_active.png',  //选中图片
                     path: "/pages/mine/mine"
                 }
             ]
@@ -81,7 +81,7 @@ export default {
 
 <style lang="scss" scoped>
     .tabbarActive{
-        color: #79D5AD !important;
+        color: #352026 !important;
     }
 	.midButton{
 		width:80rpx;
@@ -99,42 +99,54 @@ export default {
         justify-content: space-around;
         align-items: center;
         width: 100%;
-        height: 100rpx;
-                background-color: #ffffff;
+        height: 116rpx;
+        background-color: #ffffff;
+		border-top: 2rpx solid #EFEFEF;
         .tabbar-item{
             display: flex;
 			width: 100%;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100rpx;
+            height: 116rpx;
+			position: relative;
             .item-img{
-                margin-bottom: 4rpx;
-                width: 60rpx;
-                height: 60rpx;
+                width: 76rpx;
+                height: 76rpx;
             }
             .item-name{
-                font-size: 25rpx;
-                color: #A3A3A3;
+                font-size: 20rpx;
+                color: #352026;
+				text-align: center;
+				line-height: 28rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
             }
 			.item-badge{
-				    top: 5rpx;
-				    right: 50rpx;
-				    font-size: 20rpx;
+				    top: 15rpx;
 				    position: absolute;
-				    color: #ffffff;
-				    background:#ff7c7c;
 					box-sizing: border-box;
 					display: inline-flex;
 				    justify-content: center;
 				    align-items: center;
-				    line-height: 24rpx;
-				    padding: 4rpx 8rpx;
-				    border-radius: 32rpx;
+				    border-radius: 12rpx;
 				    z-index: 9;
-					min-width: 32rpx;
-					min-height: 32rpx;
+					width: 12rpx;
+					height: 12rpx;
+					background: linear-gradient(180deg, #D81E1F 0%, rgba(238, 64, 66, 0.31) 100%);
 			}
         }
+		.tabbar-item:nth-of-type(1) .item-badge{
+			right:4rpx
+		}
+		.tabbar-item:nth-of-type(2) .item-badge{
+			right:0rpx
+		}
+		.tabbar-item:nth-of-type(3) .item-badge{
+			right:0rpx
+		}
+		.tabbar-item:nth-of-type(4) .item-badge{
+			right:10rpx
+		}
+		
     }
 </style>
