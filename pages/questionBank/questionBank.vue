@@ -1,15 +1,8 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<Navbar height='300rpx'>
-			<template v-slot:img>
-				<u-swiper :list="arr"></u-swiper>
-			</template>
-			<template v-slot:other>
-				<Item v-for='(item, i) in list' :item='item' :key='i'/>
-				<Item v-for='(item, i) in list' :item='item' :key='i'/>
-				<Item v-for='(item, i) in list' :item='item' :key='i'/>
-			</template>
-		</Navbar>
+		<Item v-for='(item, i) in list' :item='item' :key='i'/>
+		<Item v-for='(item, i) in list' :item='item' :key='i'/>
+		<Item v-for='(item, i) in list' :item='item' :key='i'/>
 		<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
