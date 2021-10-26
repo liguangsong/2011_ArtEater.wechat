@@ -9,16 +9,17 @@
 		<view class="auditon">
 			<view class="item" v-for='(item,i) in list' :key='i'>
 				<view class="image-info">
-					<image :src="item.img" mode="widthFix" @click='jump(item)'></image>
+					<image src="../../static/fengmian1.jpg" mode="widthFix" @click='jump(item)' class="main-image"></image>
 					<view class="image-bottom-info">
 						<view class="view">
-							<u-icon name="play-circle" />{{item.play_num}}
+							<image src="../../static/icon/play.png" class="play-image"></image>{{item.play_num}}
 						</view>
 						<text class='time'>
 							{{item.duration || ''}}
 						</text>
 					</view>
 				</view>
+				<image src="../../static/icon/icon_vip.png" class="icon-vip" v-if="item.isVipCourse"></image>
 				<view class="txt-info" @click='jump(item)'>
 					<view class="txt-title">
 						{{item.subjectName}}
@@ -157,8 +158,14 @@
 	// }
 	.item {
 		width: 336rpx;
-		overflow: hidden;
-		// padding: 10rpx 30rpx;
+		position: relative;
+		.icon-vip{
+			position: absolute;
+			right: 0;
+			top: -6rpx;
+			width: 98rpx;
+			height: 28rpx;
+		}
 	}
 	.image-info {
 		width: 336rpx;
@@ -178,8 +185,9 @@
 		justify-content: space-between;
 		font-size: 22rpx;
 	}
-	.image-info image {
+	.image-info .main-image {
 		width: 100%;
+		height: 176rpx;
 	}
 	.txt-info {
 		padding-left: 18rpx;
@@ -212,6 +220,12 @@
 		color: #FFFFFF;
 		margin-left: 12rpx;
 		line-height: 22rpx;
+		.play-image{
+			width: 24rpx;
+			height: 24rpx;
+			vertical-align: middle;
+		}
+		
 	}
 	.time{
 		height: 22rpx;
