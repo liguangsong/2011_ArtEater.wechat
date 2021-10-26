@@ -38,7 +38,7 @@
 					<view class="img">
 						<image src="../../static/icon/icon_kcst.png"></image>
 					</view>
-						<view class="title">课程试听</view>
+						<view class="title">免费试听</view>
 					</view>
 					<view class="navItem" @click="handleImportantClick">
 						<view class="img">
@@ -96,7 +96,7 @@
 		<!--热门专题 end-->
 		
 		<audition title="正在学习" :showMore="studyList.length>2" :list="studyList.slice(0,2)"></audition>
-		<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)" :showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index"></audition>
+		<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)" :showMore="1" v-for="(item,index) in moduleList" :key="index"></audition>
 		<!--精品推荐 start-->
 		<view class="groupView" style="margin-top: 24rpx;">
 			<view class="headView">
@@ -367,10 +367,11 @@
 			    this.bindConfig();
 				// //获取本地正在学习的课程
 				// this.getLearning();
-				//获取所有的模块
-				this.getModules();
+				
 		},
 		onLoad() {
+			//获取所有的模块
+			this.getModules();
 			var self = this
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;

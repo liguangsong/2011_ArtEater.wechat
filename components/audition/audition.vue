@@ -1,31 +1,32 @@
 <template>
-	<view class="list" v-if="reload &&list.length">
+	<view class="list" v-if="list.length">
 			<view class="title" v-if="title">
 				<text class="title-before"></text>
 			   {{title}}
 			</view>
-			<text class="more" v-if="showMore">查看更多 ></text>
+			<text class="more" v-if="showMore" @click="gotolist">查看更多 ></text>
 			
 		<view class="auditon">
-			<view class="item" v-for='(item,i) in list' :key='i'>
+			<view class="item" v-for='(item,i) in list' :key='i' @click='jump(item)'>
 				<view class="image-info">
-					<image src="../../static/fengmian1.jpg" mode="widthFix" @click='jump(item)' class="main-image"></image>
+					<image :src="item.surface[0]" mode="widthFix" class="main-image"></image>
 					<view class="image-bottom-info">
 						<view class="view">
-							<image src="../../static/icon/play.png" class="play-image"></image>{{item.play_num}}
+							<image src="../../static/icon/play.png" class="play-image"></image>
+							{{(item.cardinalNum+item.N*(item.realNum||0))<10000?item.cardinalNum+item.N*(item.realNum||0):((item.cardinalNum+item.N*(item.realNum||0))/10000).toFixed(1)+'w'}}
 						</view>
 						<text class='time'>
-							{{item.duration || ''}}
+							{{item.course.duration || ''}}
 						</text>
 					</view>
 				</view>
-				<image src="../../static/icon/icon_vip.png" class="icon-vip" v-if="item.isVipCourse"></image>
-				<view class="txt-info" @click='jump(item)'>
+				<image src="../../static/icon/icon_vip.png" class="icon-vip" v-if="item.course.isVipCourse"></image>
+				<view class="txt-info">
 					<view class="txt-title">
-						{{item.subjectName}}
+						{{item.title}}
 					</view>
-					<text class='tag' v-if="item.subheadingOne||item.subheadingTwo">
-						{{item.subheadingOne || item.subheadingTwo||''}}
+					<text class='tag' v-if="item.subheading">
+						{{item.subheading||''}}
 					</text>
 				</view>
 			</view>
@@ -52,7 +53,6 @@
 		},
 		data() {
 			return {
-				reload:false,
 				// list: [
 				// 	{
 				// 		type: 'mp4',
@@ -91,22 +91,44 @@
 						  }
 						})
 		},
-		watch:{
-			list:{
-				handler() {
-					this.reload=false
-					this.$nextTick(()=>{
-						console.log(this.list,444)
-						this.reload=true;
-					})
-				},
-				deep:true,
-				immediate:true
-			}
-		},
+		// watch:{
+		// 	list:{
+		// 		handler() {
+		// 			this.reload=false
+		// 			this.$nextTick(()=>{
+		// 				console.log(this.list,444)
+		// 				this.reload=true;
+		// 			})
+		// 		},
+		// 		deep:true,
+		// 		immediate:true
+		// 	}
+		// },
 		methods: {
+			gotolist() {
+				uni.navigateTo({
+					url:'/homeSubPackage/pages/curriculumList/curriculumList?objId='+this.list[0].module.objectId+'&moduleName='+this.title
+				})
+			},
 			jump(item) {
-				this.$emit('changUrl', item)
+				console.log(item,789987)
+				if(item.course.flag==1){
+					// 系列课程点击时到详情页有介绍有详情
+					uni.navigateTo({
+						url:'/curriculumSubPackage/pages/study/study'
+					})
+				}else if(!item.course.isVipCourse&&item.course.flag==2){
+					//非vip单课程点击时直接播放页
+					uni.navigateTo({
+						url:'/curriculumSubPackage/pages/details/details'
+					})
+				}else if(item.course.isVipCourse&&item.course.flag==2){
+					//vip单课程点击时跳转到开通会员
+					uni.navigateTo({
+						url:'/mineSubPackage/pages/vip/vip'
+					})
+				}
+				// this.$emit('changUrl', item)
 			}
 		}
 	}
@@ -172,7 +194,7 @@
 		height: 176rpx;
 		overflow: hidden;
 		position: relative;
-		background: #666;
+		background: #fff;
 		border-radius: 20rpx;
 		margin-bottom: 8rpx;
 	}

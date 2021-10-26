@@ -236,7 +236,17 @@
 			}
 		}
 	],
-	"subPackages": [{
+	"subPackages": [
+		   {
+			"root": "homeSubPackage",
+			"pages": [{
+				"path": "pages/curriculumList/curriculumList",
+				"style": {
+					"navigationBarTitleText": "课程动态",
+					"enablePullDownRefresh": false
+				}
+			}]},
+			{
 			"root": "curriculumSubPackage",
 			"pages": [{
 				"path": "pages/study/study",
