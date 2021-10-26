@@ -561,7 +561,7 @@
 				if(this.userInfo&&this.userInfo.openid){
 					if(this.userInfo.phone){
 						uni.navigateTo({
-							url:'../error/index'
+							url:'/homeSubPackage/pages/error/index'
 						})
 					} else {
 						uni.reLaunch({
@@ -570,7 +570,7 @@
 					}
 				} else {
 					this.isShowLogin = true
-					this.toUrl = '/pages/error/index'
+					this.toUrl = '/homeSubPackage/pages/error/index'
 				}
 			},
 			/*重点题库*/

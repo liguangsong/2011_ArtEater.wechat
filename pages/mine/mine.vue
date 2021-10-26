@@ -286,10 +286,10 @@
 			},
 			/*错题集*/
 			handleNoteClick(){
-				if(this.userInfo&&this.userInfo.openid){
-					if(this.userInfo.phone){
+				if(this.userInfo&&this.userInfo.get('openid')){
+					if(this.userInfo.get('phone')){
 						uni.navigateTo({
-							url:'../error/index'
+							url:'/homeSubPackage/pages/error/index'
 						})
 					} else {
 						uni.reLaunch({
@@ -298,7 +298,7 @@
 					}
 				} else {
 					this.isShowLogin = true
-					this.toUrl = '/pages/error/index'
+					this.toUrl = '/homeSubPackage/pages/error/index'
 				}
 			},
 			handleScoreRecord(){

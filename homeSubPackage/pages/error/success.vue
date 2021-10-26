@@ -1,7 +1,7 @@
 <template>
 	<view class="success">
 		<view class="img">
-			<image src="../../static/icon/icon_success.png"></image>
+			<image src="../../../static/icon/icon_success.png"></image>
 		</view>
 		<view class="title">错题已灭杀</view>
 		<view class="content">
