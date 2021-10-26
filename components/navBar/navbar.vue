@@ -1,9 +1,9 @@
 <template>
-	<scroll-view style='height:100%;' :scroll-y='true' @scroll='scroll'>
-		<view class="tabbar" :style='{height: height ? height: tabbarheight+"rpx"}'>
+	<scroll-view class='scroll' style='height:100%;' :scroll-y='true' @scroll='scroll'>
+		<view class="tabbar" :style='{height: height != 0 ? height: tabbarheight+"rpx"}'>	
 			<slot name='img'></slot>
-			<view class="navbar" 
-				:style='{fontSize: fontSize + "rpx", height:tabbarheight + "rpx" }'
+			<view class="navbar"
+				:style='{background: height ? "" : navbarBg, fontSize: fontSize + "rpx", height:tabbarheight + "rpx" }'
 			>
 				<view class='bg' :style='{background: navbarBg, opacity: opacity}'></view>
 				<view class="nav" :style='{height:navbarheight + "rpx", top:tabbarheight - navbarheight + "rpx"}'>
@@ -16,7 +16,7 @@
 				</view>
 			</view>
 		</view>
-		<slot name='other'></slot>
+		<slot></slot>
 	</scroll-view>
 </template>
 
@@ -26,7 +26,7 @@
 			// 导航栏的北京颜色
 			navbarBg: {
 				type: String,
-				default: '#ccc'
+				default: '#fff'
 			},
 			// 字体的边距
 			titleLeft: {
@@ -81,12 +81,14 @@
 			return {
 				tabbarheight: 0,
 				navbarheight: 0,
-				opacity: 0
+				opacity: 0,
+				screenHeight: 0
 			}
 		},
 		created() {
 			uni.getSystemInfo({
 				success: (e) => {
+					this.screenHeight = e.screenHeight;
 					let statusBar = 0
 					let customBar = 0
 					statusBar = e.statusBarHeight
@@ -99,19 +101,20 @@
 		},
 		methods: {
 			scroll(e) {
-				var {scrollTop, deltaY} = e.detail;
-				if (scrollTop > 350) {
+				var {scrollTop, deltaY, scrollHeight} = e.detail;
+				var n = scrollHeight - this.screenHeight > 300 ? 300 : scrollHeight - this.screenHeight;
+				if (scrollTop > n - 20 || scrollTop <= n && -deltaY > 40) {
 					this.opacity = 1
 					return ;
 				}
-				if (scrollTop <= 10 || scrollTop <= 100 && deltaY > 100) {
+				if (scrollTop <= 10 || scrollTop <= n && deltaY > 40) {
 					this.opacity = 0;
 					return ;
 				}
 				if (deltaY <= 0) {
-						this.opacity = Math.ceil(scrollTop / 300 * 100)/100;
+						this.opacity = Math.ceil(scrollTop / n * 100)/100;
 				} else {
-						this.opacity = Math.floor(scrollTop / 300 * 100)/100;
+						this.opacity = Math.floor(scrollTop / n * 100)/100;
 				}
 			}
 		}
@@ -119,6 +122,9 @@
 </script>
 
 <style>
+	.bg {
+		background: #fff;
+	}
 	.tabbar {
 		width: 100%;
 		overflow: hidden;
@@ -155,4 +161,5 @@
 		width: 100%;
 		height: 100%;
 	}
+	
 </style>

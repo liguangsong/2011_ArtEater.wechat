@@ -6,9 +6,8 @@
 				:src='url'
 				controls>
 			</video>
-			<!-- <a :href='url'>地方</a> -->
 			<view class="content">
-				<text class='title'>课题二级标题名字名称</text>
+				<text class='title'>课题二级标题名字名称1</text>
 				<view class="teacher">					
 					<image src="../../static/bg_null.png"></image>
 					<text>王一山</text>

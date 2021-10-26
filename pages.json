@@ -225,8 +225,7 @@
 			"path": "pages/questionBank/questionBank",
 			"style": {
 				"navigationBarTitleText": "题库",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"enablePullDownRefresh": false
 			}
 
 		}, {
@@ -243,7 +242,8 @@
 				"path": "pages/study/study",
 				"style": {
 					"navigationBarTitleText": "课程",
-					"enablePullDownRefresh": false
+					"enablePullDownRefresh": false,
+					"navigationStyle": "custom"
 				}
 			},{
 				"path": "pages/details/details",

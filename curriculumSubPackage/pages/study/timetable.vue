@@ -137,23 +137,7 @@
 							},
 						]
 					},
-					{
-						label: '课程一级标题',
-						leave: 0,
-						children: [
-							{
-								label: '课程二级标题名字名称',
-								leave: 1,
-								type: 'txt',
-								upstudy: true
-							},
-							{
-								label: '课程二级标题名字名称',
-								leave: 1,
-								type: 'mp3'
-							}
-						]
-					}
+			
 				]
 			}
 		},
