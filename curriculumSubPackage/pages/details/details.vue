@@ -1,8 +1,11 @@
 <template>
 	<view class="details">
 		<view class="header">
-			<view class="title">
-				<text>魏晋南北朝美术</text>
+			<view class='mp4'>
+				<k-video :src='url'></k-video>
+			</view>
+			<view class="info">
+				<view class="info-title">魏晋南北朝美术</view>
 				<view class="bottom">
 					<view class="teacher">
 						<image src="../../static/audio.png" mode=""></image>
@@ -10,25 +13,32 @@
 					</view>
 					<view class="btn">
 						<view>
-							<image src="../../static/video.png" mode=""></image>
+							<view class="img">
+								<image src="../../static/video.png" mode=""></image>
+							</view>
 							<text>课表</text>
 						</view>
 						<view>
-							<image src="../../static/video.png" mode=""></image>
-							<text>课表</text>
+							<view class="img">
+								<image src="../../static/video.png" mode=""></image>
+							</view>
+							<text>分享</text>
 						</view>
 						<view>
-							<image src="../../static/video.png" mode=""></image>
-							<text>课表</text>
+							<view class="img">
+								<image src="../../static/video.png" mode=""></image>
+							</view>
+							<text>收藏</text>
 						</view>
 					</view>
 				</view>
 			</view>
+			
+			<view class="type">
+				<k-audio v-if='item.type == "mp3"' :src='url'></k-audio>
+			</view>
 		</view>
-		<view class="type">
-			<k-audio v-if='item.type == "mp3"' :src='url'></k-audio>
-			<k-video v-else :src='url'></k-video>
-		</view>
+		
 		<view class="html">
 			<view v-html='html'></view>
 		</view>
@@ -98,7 +108,6 @@
 			}
 		},
 		onLoad(option) {
-			// console.log(JSON.parse(decodeURIComponent(option.item)))
 			this.item = {
 				label: '课程二级标题名字名称',
 				// type: Math.random() > 0.5 ? 'mp3' : 'mp4',
@@ -109,34 +118,133 @@
 </script>
 
 <style>
-	.video-info {
-		border-bottom: 10rpx solid #ccc;
+	.details {
+		position: relative;
+		background: #fff;
 	}
-	.video-info video {
+	.header {
+		position: fixed;
 		width: 100%;
+		top: 0;
 	}
-	.video-info .content {
-		width: 100;
-		padding: 20rpx;
+	.header .info {
+		padding: 48rpx 24rpx 0 48rpx;
 	}
-	.content .title {
-		font-size: 28rpx;
-		font-weight: 900;
+	
+	
+	/* .header .header-title {
+		font-size: 36rpx;
+		line-height: 50rpx;
+		margin: 14rpx 0;
+		color: #D81E1F;
+		font-weight: 600;
 	}
-	.content .teacher {
-		height: 80rpx;
+	.header .bottom {
 		display: flex;
-		align-items: center;
+		justify-content: space-between;
+		align-content: center;
+		font-size: 20rpx;
+		height: 64rpx;
+		line-height: 64rpx;
 	}
-	.content .teacher image {
-		width: 60rpx;
-		height: 60rpx;
-		margin-right: 20rpx;
+	.header .bottom .teacher {
+		flex: 0 1 278rpx;
+		display: flex;
+		align-content: center;
 	}
-	.explain {
-		width: 100%;
-		padding: 20rpx;
-		box-sizing: border-box;
-		text-align: center;
+	.header .bottom .teacher image {
+		width: 48rpx;
+		height: 48rpx;
+		border-radius: 50%;
+		margin-right: 10rpx;
+	}
+	.header .bottom .btn {
+		flex: 1 0 auto;
+		display: flex;
+		justify-content: space-between;
+	}
+	.header .bottom .btn > view {
+		display: flex;
+		align-content: center;
+	}
+	.header .bottom .btn .img {
+		width: 64rpx;
+		height: 64rpx;
+		border: 1px dashed #ccc;
+		padding: 7rpx;
+	}
+	.header .bottom .btn image {
+		width: 50rpx;
+		height: 50rpx;
+	}
+	.header .bottom text {
+		
+	} */
+	
+	.type {
+		
+	}
+	
+	.html {
+		
+	}
+	
+	.recommend {
+		
+	}
+	.recommend .recommend-title {
+		
+	}
+	.recommend .recommend-item {
+		
+	}
+	.recommend .recommend-item .font {
+		
+	}
+	.recommend .recommend-item .font .title {
+		
+	}
+	.recommend .recommend-item .font .info {
+		
+	}
+	.recommend .recommend-item .teacher {
+		
+	}
+	.recommend .recommend-item .teacher .img {
+		
+	}
+	.recommend .recommend-item .teacher .btn {
+		
+	}
+	
+	.timetable {
+		
+	}
+	.timetable .bg {
+		
+	}
+	.timetable .icon {
+		
+	}
+	.timetable .timetable-title {
+		
+	}
+	.timetable-title .list {
+		
+	}
+	.timetable-title .list .item {
+		
+	}
+	.timetable-title .list .item .item-title {
+		
+	}
+	.timetable-title .list .item .item-icon {
+		
+	}
+	.timetable-title .close{
+		
+	}
+	.timetable-title .close view{
+		
 	}
 </style>

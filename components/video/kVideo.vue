@@ -83,7 +83,7 @@
 			// 获取视频总时长
 			getVideoTime(e) {
 				this.videoTimeTotal = this.sToHs(e.detail.duration * 1000);
-				this.videoTime = 50;
+				this.videoTime = Math.floor(e.detail.duration);
 			},
 			sToHs(s) {
 				let h;
