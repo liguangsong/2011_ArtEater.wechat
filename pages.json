@@ -249,7 +249,8 @@
 				"path": "pages/details/details",
 				"style": {
 					"navigationBarTitleText": "课程1",
-					"enablePullDownRefresh": false
+					"enablePullDownRefresh": false,
+					"navigationStyle": "custom"
 				}
 			}]
 		},
