@@ -48,7 +48,7 @@
 			</view>
 			<view :class="'commentView ' + ((!isShowComments&&!hasBuyedComments)?'needbuy':'')" v-if="hasSubmit">
 				<view class="bg" v-if="!isShowComments&&!hasBuyedComments">
-					<image src="../../static/dajxbg.png"></image>
+					<image src="../../../static/dajxbg.png"></image>
 				</view>
 				<view style="position: relative;padding: 60rpx 70rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
 					<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
@@ -60,9 +60,9 @@
 							<view class="accuracy">
 								<view :class="'apercent ' + (questionDetail.aPercent>=percentH?'h':(questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH?'m':'l'))">
 									<view class="icon">
-										<image v-if="questionDetail.aPercent>=percentH" src="../../static/icon/icon_percent_h.png"></image>
-										<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../static/icon/icon_percent_m.png"></image>
-										<image v-if="questionDetail.aPercent<percentM" src="../../static/icon/icon_percent_l.png"></image>
+										<image v-if="questionDetail.aPercent>=percentH" src="../../../static/icon/icon_percent_h.png"></image>
+										<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../../static/icon/icon_percent_m.png"></image>
+										<image v-if="questionDetail.aPercent<percentM" src="../../../static/icon/icon_percent_l.png"></image>
 									</view>
 									<view style="flex: 1;">全民正确率：{{questionDetail.aPercent}}%</view>
 								</view>
@@ -77,7 +77,7 @@
 								<view class="accuracy" style="margin: 0;">全民正确率：解锁试题解析可见</view>
 								<view  style="text-align: center;margin-top: 120rpx;">
 									<button class="btnComments" type="default" @click="handleBuyComments">
-										<image src="../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
+										<image src="../../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
 										<view style="text-indent: 20rpx;display: inline-block;">解锁试题解析</view>
 									</button>
 								</view>
@@ -86,9 +86,9 @@
 								<view class="accuracy">
 									<view :class="'apercent ' + (questionDetail.aPercent>=percentH?'h':(questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH?'m':'l'))">
 										<view class="icon">
-											<image v-if="questionDetail.aPercent>=percentH" src="../../static/icon/icon_percent_h.png"></image>
-											<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../static/icon/icon_percent_m.png"></image>
-											<image v-if="questionDetail.aPercent<percentM" src="../../static/icon/icon_percent_l.png"></image>
+											<image v-if="questionDetail.aPercent>=percentH" src="../../../static/icon/icon_percent_h.png"></image>
+											<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../../static/icon/icon_percent_m.png"></image>
+											<image v-if="questionDetail.aPercent<percentM" src="../../../static/icon/icon_percent_l.png"></image>
 										</view>
 										<view style="flex: 1;">全民正确率：{{questionDetail.aPercent}}%</view>
 									</view>
@@ -127,7 +127,7 @@
 </template>
 
 <script>
-	import myRadioGroup from '../../components/myRadio/myRadioGroup.vue'
+	import myRadioGroup from '@/components/myRadio/myRadioGroup.vue'
 	export default {
 		components:{
 			myRadioGroup

@@ -5,7 +5,7 @@
 		<view class="actionView">
 			<view class="actionItem" @click="handleMyNoteClick">
 				<view class="licon">
-					<image src="../../static/icon/icon_note.png"></image>
+					<image src="../../../static/icon/icon_note.png"></image>
 				</view>
 				<view class="cont">
 					<view class="title">{{userInfo.realname?userInfo.realname:''}} 错题集</view>
@@ -20,7 +20,7 @@
 		<view class="actionView"  @click="handlePubNoteClick" :data-item="date" v-for="date in dates" :key="date">
 			<view class="actionItem">
 				<view class="licon">
-					<image src="../../static/icon/icon_note.png"></image>
+					<image src="../../../static/icon/icon_note.png"></image>
 				</view>
 				<view class="cont">
 					<view class="title">{{date.y}}-{{date.m}}-{{date.d}} TOP10</view>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-	import { addDays } from '../../js/common.js'
+	import { addDays } from '@/js/common.js'
 	export default {
 		data() {
 			return {

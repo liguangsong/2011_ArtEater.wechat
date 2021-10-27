@@ -25,10 +25,11 @@ export default {
 			  return res;
 	},
 	//获取音视频时长
-	getVideoOrAudioDuration(v) {
+	async getVideoOrAudioDuration(v) {
+		v.duration='';
 		let innerAudioContext =uni.createInnerAudioContext();
 		innerAudioContext.src=v.link;
-		innerAudioContext.onCanplay( ()=>  {
+		await innerAudioContext.onCanplay( async()=>  {
 			setTimeout(()=>{
 			v.duration =  this.sToHs(Math.floor(innerAudioContext.duration * 1000));
 			},10);
@@ -48,35 +49,36 @@ export default {
 	},
 	//根据分类获取课程
 	async getCategoryCurriculum(objectId) {
-		let curriculum= new Parse.Query('coursesModule');
+		let ModuleAssociatedCourses= new Parse.Query('ModuleAssociatedCourses');
 		var homeSetting = Parse.Object.extend("homeSetting")
 		let category= homeSetting.createWithoutData(objectId);
-		console.log(category,898)
-		    curriculum.equalTo('categoryId',category);
-		    curriculum.ascending('order');
-		let res = await curriculum.find();
+		    ModuleAssociatedCourses.equalTo('module',category);
+			ModuleAssociatedCourses.include('module');
+			ModuleAssociatedCourses.include('course');
+		    ModuleAssociatedCourses.ascending('displayOrder');
+		let count=await ModuleAssociatedCourses.count();
+			ModuleAssociatedCourses.limit(count)
+		let res = await ModuleAssociatedCourses.find();
 		let ne=[]
 		if(res){
 			for(let i=0; i<res.length;i++) {
 				let v= res[i];
 				v=v.toJSON();
-				if(v.flag==2 && !!v.link &&(v.kind==1 || v.kind==2)){
-					this.getVideoOrAudioDuration(v);
-					ne.push(v)
+				if(v.course.flag==2 && !!v.course.link &&(v.course.kind==1 || v.course.kind==2)){
+					this.getVideoOrAudioDuration(v.course).then(()=>{
+						ne.push(v)
+					});
+					
 				}else{
 					ne.push(v)
 				}
-				
 			}
 			return ne;
-			// res = res.map(
-			//  v=>{
-				
-			// }
-			// );
+		}else{
+			return ne;
 		}
 		    
-		return res;
+		
 	},
 	//获取所有课程
 	async getCurriculum(id) {
