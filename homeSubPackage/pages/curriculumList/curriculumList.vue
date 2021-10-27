@@ -17,14 +17,21 @@
 		},
 		comments:{audition},
 		onLoad(options) {
-		this.objId=options.objId;
-		this.moduleName=options.moduleName;
-		uni.setNavigationBarTitle({
-			title:this.moduleName
-		});
+			this.moduleName=options.moduleName;
+			uni.setNavigationBarTitle({
+				title:this.moduleName
+			});
+		if(options.objId){
+			this.objId=options.objId;
+		}
 		},
 		async onShow() {
-			await this.getModuleCurrList();
+			if(this.moduleName!='免费试听'){
+				await this.getModuleCurrList();
+			}else{
+				await this.getFreeCurrList();
+			}
+			
 		},
 		methods: {
 			//获取模块内的所有课程
@@ -33,6 +40,12 @@
 				let res=await Curriculum.getCategoryCurriculum(this.objId);
 				this.curriculumList=res;
 				console.log(res,'qqqqqq')
+			},
+			//获取免费试听
+			async getFreeCurrList() {
+				this.curriculumList=[];
+				let res=await Curriculum.getFreeCurrList(1);
+				this.curriculumList=res;
 			}
 		}
 	}

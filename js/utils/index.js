@@ -1,8 +1,10 @@
 import Parse from '@/parse/index.js'
+import store from '@/store'
 export default {
 	async getcount() {
 		let userInfo={},msgCount= 0,couponCount= 0;
 		let res=await uni.getStorageSync('userInfo');
+		    if(!res)return undefined;
 			userInfo = res;
 			var query =  new Parse.Query('MessageReadHistory')
 			query.equalTo('openid', userInfo.openid)
@@ -21,10 +23,7 @@ export default {
 			cquery.descending('useEndTime', 'state')
 			let wres = await cquery.count();
 			couponCount = wres;
-			console.log({
-				msgCount,
-				couponCount
-			})
+			store.commit('setMineDot',(msgCount+couponCount)>0);
 			return {
 				userInfo,
 				msgCount,
