@@ -70,7 +70,7 @@
 					</view>
 				</view>
 				
-				<view class="navItem" @click="handleMyClick">
+				<!-- <view class="navItem" @click="handleMyClick">
 					<view class="img" style="position: relative;">
 						<image src="../../static/icon/icon_mine.png"></image>
 						<view style="position: absolute;top: 30rpx;left: 22rpx;width: 100rpx;height: 100rpx;">
@@ -78,7 +78,7 @@
 						</view>
 					</view>
 					<view class="title">个人中心</view>
-				</view>
+				</view> -->
 				
 				
 				
