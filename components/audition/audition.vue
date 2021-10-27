@@ -15,7 +15,7 @@
 							<image src="../../static/icon/play.png" class="play-image"></image>
 							{{(item.cardinalNum+item.N*(item.realNum||0))<10000?item.cardinalNum+item.N*(item.realNum||0):((item.cardinalNum+item.N*(item.realNum||0))/10000).toFixed(1)+'w'}}
 						</view>
-						<text class='time'>
+						<text class='time' v-if="item.course.duration&&item.course.duration!='00:00'">
 							{{item.course.duration || ''}}
 						</text>
 					</view>
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+	import Parse from '@/parse/index.js'
 	export default {
 		name: 'audition',
 		props: {
@@ -53,33 +54,6 @@
 		},
 		data() {
 			return {
-				// list: [
-				// 	{
-				// 		type: 'mp4',
-				// 		time: '6:31',
-				// 		play_num: '12.1w',
-				// 		tag_title: '这是副标题，一般是标签',
-				// 		title: '先秦美术发展历程视频术发展历程视频',
-				// 		img: '../../static/icon/icon_question.png',
-				// 		src: '3',
-				// 	},{
-				// 		type: 'mp4',
-				// 		time: '6:31',
-				// 		play_num: '12.1w',
-				// 		tag_title: '这是副标题，一般是标签',
-				// 		title: '先秦美术发展历程视频术发展历程视频',
-				// 		img: '../../static/icon/icon_question.png',
-				// 		src: '2',
-				// 	},{
-				// 		type: 'mp4',
-				// 		time: '6:31',
-				// 		play_num: '12.1w',
-				// 		tag_title: '这是副标题，一般是标签',
-				// 		title: '先秦美术发展历程视频术发展历程视频',
-				// 		img: '../../static/icon/icon_question.png',
-				// 		src: '1',
-				// 	},
-				// ]
 			}
 		},
 		created() {
@@ -110,8 +84,17 @@
 					url:'/homeSubPackage/pages/curriculumList/curriculumList?objId='+this.list[0].module.objectId+'&moduleName='+this.title
 				})
 			},
-			jump(item) {
-				console.log(item,789987)
+			async jump(item) {
+				let ModuleAssociatedCourses= new Parse.Query('ModuleAssociatedCourses');
+				    ModuleAssociatedCourses.equalTo('objectId',item.objectId);
+				let res= await ModuleAssociatedCourses.first();
+					if(res){
+				   let realNum=res.get('realNum');
+					   realNum=realNum||0;
+					   realNum+=1;
+					   res.set('realNum',realNum);
+					   await res.save();
+					}
 				if(item.course.flag==1){
 					// 系列课程点击时到详情页有介绍有详情
 					uni.navigateTo({

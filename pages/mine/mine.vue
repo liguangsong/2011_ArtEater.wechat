@@ -286,8 +286,8 @@
 			},
 			/*错题集*/
 			handleNoteClick(){
-				if(this.userInfo&&this.userInfo.get('openid')){
-					if(this.userInfo.get('phone')){
+				if(this.userInfo&&this.userInfo.openid){
+					if(this.userInfo.phone){
 						uni.navigateTo({
 							url:'/homeSubPackage/pages/error/index'
 						})
