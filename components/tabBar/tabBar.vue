@@ -14,7 +14,9 @@
 				<cover-image class="item-img" :src="item.icon_a" v-if="current == index"></cover-image>
 				<cover-image class="item-img" :src="item.icon" v-else></cover-image>
 				<cover-view class="item-name" :class="{'tabbarActive': current == index}" v-if="item.text">{{item.text}}</cover-view>
-				<cover-view class="item-badge"></cover-view>
+				<cover-view class="item-badge">
+					<cover-image src="../../static/icon/icon_badge.png"></cover-image>
+				</cover-view>
 			</cover-view>
         </cover-view>
     </cover-view>
@@ -118,25 +120,24 @@ export default {
                 font-size: 20rpx;
                 color: #352026;
 				text-align: center;
-				line-height: 28rpx;
+				line-height: 20rpx;
 				font-family: PingFangSC-Medium, PingFang SC;
             }
 			.item-badge{
-				    top: 15rpx;
+				    top: 12rpx;
 				    position: absolute;
 					box-sizing: border-box;
 					display: inline-flex;
 				    justify-content: center;
 				    align-items: center;
-				    border-radius: 12rpx;
 				    z-index: 9;
-					width: 12rpx;
-					height: 12rpx;
-					background: linear-gradient(180deg, #D81E1F 0%, rgba(238, 64, 66, 0.31) 100%);
+					width: 16rpx;
+					height: 16rpx;
+					// background: linear-gradient(180deg, #D81E1F 0%, rgba(238, 64, 66, 0.31) 100%);
 			}
         }
 		.tabbar-item:nth-of-type(1) .item-badge{
-			right:4rpx
+			right:3rpx
 		}
 		.tabbar-item:nth-of-type(2) .item-badge{
 			right:0rpx
@@ -145,7 +146,7 @@ export default {
 			right:0rpx
 		}
 		.tabbar-item:nth-of-type(4) .item-badge{
-			right:10rpx
+			right:11rpx
 		}
 		
     }
