@@ -365,13 +365,14 @@
 			    this.msgCount=res.msgCount;
 			    this.couponCount=res.couponCount;
 			    this.bindConfig();
+				//获取所有的模块
+				this.getModules();
 				// //获取本地正在学习的课程
 				// this.getLearning();
 				
 		},
 		onLoad() {
-			//获取所有的模块
-			this.getModules();
+			
 			var self = this
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
