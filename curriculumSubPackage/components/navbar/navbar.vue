@@ -1,6 +1,6 @@
 <template>
 	<scroll-view class='scroll' style='height:100%;' :scroll-y='true' @scroll='scroll'>
-		<view class="tabbar" :style='{height: height != 0 ? height: tabbarheight+"rpx"}'>	
+		<view class="tabbar" :style='{background: height != 0 ? "" : "#fff", height: height != 0 ? height: tabbarheight+"rpx"}'>	
 			<slot name='img'></slot>
 			<view class="navbar"
 				:style='{background: height ? "" : navbarBg, fontSize: fontSize + "rpx", height:tabbarheight + "rpx" }'
@@ -8,7 +8,7 @@
 				<view class='bg' :style='{background: navbarBg, opacity: opacity}'></view>
 				<view class="nav" :style='{height:navbarheight + "rpx", top:tabbarheight - navbarheight + "rpx"}'>
 					<view class="icon" v-if='icon'>
-						<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
+						<u-icon @click='back' :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
 					</view>
 					<view class="title" :style='{color: fontColor, textAlign: align, paddingLeft: icon ? 0 : titleLeft}'>
 						<text>{{title}}</text>
@@ -100,7 +100,16 @@
 			})
 		},
 		methods: {
+			back() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
 			scroll(e) {
+				if (this.height == 0) {
+					this.opacity = 1;
+					return
+				}
 				var {scrollTop, deltaY, scrollHeight} = e.detail;
 				var n = scrollHeight - this.screenHeight > 300 ? 300 : scrollHeight - this.screenHeight;
 				if (scrollTop > n - 20 || scrollTop <= n && -deltaY > 40) {
@@ -121,7 +130,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.bg {
 		background: #fff;
 	}
@@ -152,14 +161,13 @@
 		flex: 1 1 auto;
 		padding-right: 50rpx;
 	}
-	image {
-		width: 100%;
-	}
 	.bg {
 		position: absolute;
 		top: 0;
 		width: 100%;
 		height: 100%;
 	}
-	
+	.img {
+		width: 100%;
+	}
 </style>
