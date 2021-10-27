@@ -4,7 +4,7 @@
 			<view class="tabbar" :style='{height: tabbarheight+"rpx"}'>
 				<view class="navbar" :style='{height: navbarheight + "rpx", top: tabbarheight - navbarheight + "rpx"}'>
 					<view class="icon">
-						<u-icon name="arrow-left" color="#000" size="34rpx"></u-icon>
+						<u-icon @click='back' name="arrow-left" color="#000" size="34rpx"></u-icon>
 					</view>
 				</view>
 			</view>
@@ -143,6 +143,11 @@
 			}).exec();
 		},
 		methods: {
+			back() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
 			timetablefn() {
 				console.log(12);
 				this.timetable = true

@@ -9,7 +9,6 @@
 
 <script>
 	import Tabbar from '@/components/tabBar/tabBar.vue';
-	import Navbar from '@/components/navBar/navbar.vue';
 	import Item from './item.vue'
 	export default {
 		data() {
@@ -51,8 +50,7 @@
 		},
 		components:{
 			'view-tabbar': Tabbar,
-			Item,
-			Navbar
+			Item
 		},
 		onLoad() {
 		},
