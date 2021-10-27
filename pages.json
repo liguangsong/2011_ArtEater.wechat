@@ -203,7 +203,8 @@
 			"path": "pages/questionBank/questionBank",
 			"style": {
 				"navigationBarTitleText": "题库",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#F7F7F7"
 			}
 
 		}, {

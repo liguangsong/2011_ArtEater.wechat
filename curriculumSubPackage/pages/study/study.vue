@@ -1,10 +1,10 @@
 <template>
 	<view class='study'>
-		<Navbar navbarBg='#fff' height='400rpx' title='课程' fontColor="#000" iconColor='#000'>
+		<Navbar navbarBg='#fff' :height='height' title='课程' fontColor="#000" iconColor='#000'>
 			<template v-slot:img>
-				<image src="../../../static/1.png" mode='aspectFill'></image>
+				<image style='width: 100%;' src="../../../static/1.png" mode='aspectFill'></image>
 			</template>
-			<view class="head radius">
+			<view class="head radius" :style='{top: height ? "-20rpx": 0}'>
 				<view class="title">中国美术史重点精讲2</view>
 				<view class="info">
 					<view>
@@ -36,6 +36,7 @@
 	export default {
 		data() {
 			return {
+				height: '400rpx',
 				tabbar: false,
 				isVip: null
 			}
@@ -69,7 +70,6 @@
 		border-top-left-radius: 20rpx;
 		border-top-right-radius: 20rpx;
 		position: relative;
-		top: -20rpx;
 	}
   .title {
 		padding: 28rpx 0;

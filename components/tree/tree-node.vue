@@ -3,7 +3,7 @@
 		<view class="leave0" v-if='item.leave == 0'>
 			{{item.label}}
 		</view>
-		<view v-else class="item">
+		<view v-else class="item" @click='changeItem'>
 			<view class="leave" :style='{paddingLeft: item.leave*52 + "rpx"}'>
 				<view class="title">
 					<image :src="item.type == 'mp4' ? video : audio"></image>

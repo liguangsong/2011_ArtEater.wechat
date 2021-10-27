@@ -25,21 +25,21 @@
 				windowHeight:0,
 				list: [
 					{
-						img: '../../static/bg_null.png',
+						img: 'https://img1.baidu.com/it/u=82323508,2412665068&fm=26&fmt=auto',
 						title: '中国美术史题库',
 						total: '2000',
 						complete: '189',
 						successRate: '37%',
 						src: ''
 					},	{
-						img: '../../static/bg_null.png',
+						img: 'https://img1.baidu.com/it/u=2548045501,3373948589&fm=26&fmt=auto',
 						title: '中国美术史题库',
 						total: '2000',
 						complete: '189',
 						successRate: '37%',
 						src: ''
 					},	{
-						img: '../../static/bg_null.png',
+						img: 'https://img2.baidu.com/it/u=2151359767,1164216166&fm=26&fmt=auto',
 						title: '中国美术史题库',
 						total: '2000',
 						complete: '189',
@@ -87,7 +87,6 @@
 
 <style lang="scss" scoped>
 .myPage{
-	// min-height: 100vh;
-	// overflow: scroll;
+	background: #F7F7F7;
 }
 </style>
