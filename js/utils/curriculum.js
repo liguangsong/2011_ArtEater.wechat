@@ -24,29 +24,6 @@ export default {
 			  }
 			  return res;
 	},
-	//获取音视频时长
-	async getVideoOrAudioDuration(v) {
-		v.duration='';
-		let innerAudioContext =uni.createInnerAudioContext();
-		innerAudioContext.src=v.link;
-		await innerAudioContext.onCanplay( async()=>  {
-			setTimeout(()=>{
-			v.duration =  this.sToHs(Math.floor(innerAudioContext.duration * 1000));
-			},10);
-			v.duration=this.sToHs(Math.floor(innerAudioContext.duration * 1000));
-		});
-	},
-	sToHs(s) {
-		let h;
-		s = s / 1000;
-		h = Math.floor(s / 60);
-		s = Math.floor(s % 60);
-		h += '';
-		s += '';
-		h = h.length === 1 ? '0' + h : h;
-		s = s.length === 1 ? '0' + s : s;
-		return h + ':' + s;
-	},
 	//根据分类获取课程
 	async getCategoryCurriculum(objectId) {
 		let ModuleAssociatedCourses= new Parse.Query('ModuleAssociatedCourses');
@@ -59,26 +36,11 @@ export default {
 		let count=await ModuleAssociatedCourses.count();
 			ModuleAssociatedCourses.limit(count)
 		let res = await ModuleAssociatedCourses.find();
-		let ne=[]
 		if(res){
-			for(let i=0; i<res.length;i++) {
-				let v= res[i];
-				v=v.toJSON();
-				if(v.course.flag==2 && !!v.course.link &&(v.course.kind==1 || v.course.kind==2)){
-					this.getVideoOrAudioDuration(v.course).then(()=>{
-						ne.push(v)
-					});
-					
-				}else{
-					ne.push(v)
-				}
-			}
-			return ne;
+			return res;
 		}else{
-			return ne;
+			return [];
 		}
-		    
-		
 	},
 	// 免费试听
 	async getFreeCurrList(index) {
@@ -89,24 +51,39 @@ export default {
 			ModuleAssociatedCourses.limit(count)
 			ModuleAssociatedCourses.ascending('displayOrder');
 		let res = await ModuleAssociatedCourses.find();
-		    let ne=[]
 		    if(res){
-		    	for(let i=0; i<res.length;i++) {
-		    		let v= res[i];
-		    		v=v.toJSON();
-		    		if(v.course.flag==2 && !!v.course.link &&(v.course.kind==1 || v.course.kind==2)){
-		    			this.getVideoOrAudioDuration(v.course).then(()=>{
-		    				ne.push(v)
-		    			});
-		    			
-		    		}else{
-		    			ne.push(v)
-		    		}
-		    	}
-		    	return ne;
+		    	return res;
 		    }else{
-		    	return ne;
+		    	return [];
 		    }
+	},
+	// 配置模块的课程被点击时的跳转url
+	async configUrl(item) {
+		let toUrl=''
+		if(item.course.flag==1){
+			// 系列课程点击时到详情页有介绍有详情
+			toUrl = '/curriculumSubPackage/pages/study/study';
+		}else if(!item.course.isVipCourse&&item.course.flag==2){
+			//非vip单课程点击时直接播放页
+			toUrl = '/curriculumSubPackage/pages/details/details';
+		}else if(item.course.isVipCourse&&item.course.flag==2){
+			//vip单课程点击时跳转到开通会员
+			toUrl = '/mineSubPackage/pages/vip/vip';
+		}
+		return toUrl;
+	},
+	// 记录课程点击量
+	async recordClickNum(objectId) {
+		let ModuleAssociatedCourses= new Parse.Query('ModuleAssociatedCourses');
+		    ModuleAssociatedCourses.equalTo('objectId',objectId);
+		let res= await ModuleAssociatedCourses.first();
+			if(res){
+			   let realNum=res.get('realNum');
+				   realNum=realNum||0;
+				   realNum+=1;
+				   res.set('realNum',realNum);
+				   await res.save();
+			}
 	},
 	//获取所有课程
 	async getCurriculum(id) {

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<audition :list="curriculumList" v-if="curriculumList.length"></audition>
+		<audition :list="curriculumList" v-if="curriculumList.length" @changeUrl="changeUrl"></audition>
 	</view>
 </template>
 
@@ -34,6 +34,15 @@
 			
 		},
 		methods: {
+			async changeUrl(item) {
+				//配置url
+				let toUrl=await Curriculum.configUrl(item);
+				// 记录点击量
+				await Curriculum.recordClickNum(item.objectId);
+				uni.navigateTo({
+					url:toUrl
+				})
+			},
 			//获取模块内的所有课程
 			async getModuleCurrList() {
 				this.curriculumList=[];

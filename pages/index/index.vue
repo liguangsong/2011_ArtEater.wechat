@@ -96,7 +96,7 @@
 		<!--热门专题 end-->
 		
 		<audition title="正在学习" :showMore="studyList.length>2" :list="studyList.slice(0,2)"></audition>
-		<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)" :showMore="1" v-for="(item,index) in moduleList" :key="index"></audition>
+		<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)" :showMore="1" v-for="(item,index) in moduleList" :key="index" @changeUrl="changeUrl" @checkMore="checkMore"></audition>
 		<!--精品推荐 start-->
 		<view class="groupView" style="margin-top: 24rpx;">
 			<view class="headView">
@@ -304,6 +304,7 @@
 		},
 		data() {
 			return {
+				relationId:'',
 				fontColor:'rgb(255,255,255)',
 				pdbtm:0,//兼容iphonexr+
 				openid: '',
@@ -363,10 +364,9 @@
 			let res=await Utils.getcount(); 
 			    if(res){
 					this.userInfo=res.userInfo;
-			    this.msgCount=res.msgCount;
-			    this.couponCount=res.couponCount;
+					this.msgCount=res.msgCount;
+					this.couponCount=res.couponCount;
 				}
-			    
 			    this.bindConfig();
 				//获取所有的模块
 				this.getModules();
@@ -422,6 +422,44 @@
 			})
 		},
 		methods: {
+			async changeUrl(item) {
+				//配置url
+				let toUrl=await Curriculum.configUrl(item);
+				if(this.userInfo&&this.userInfo.openid){
+					if(this.userInfo.phone){
+						// 记录点击量
+						await Curriculum.recordClickNum(item.objectId);
+						uni.navigateTo({
+							url:toUrl
+						})
+					} else {
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
+				} else {
+					this.isShowLogin = true
+					this.toAction="clickNum";
+					this.relationId=item.objectId;
+					this.toUrl = toUrl;
+				}
+			},
+			async checkMore(params) {
+				if(this.userInfo&&this.userInfo.openid){
+					if(this.userInfo.phone){
+						uni.navigateTo({
+							url:'/homeSubPackage/pages/curriculumList/curriculumList?objId='+params.objectId+'&moduleName='+params.moduleName
+						})
+					} else {
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
+				} else {
+					this.isShowLogin = true
+					this.toUrl = '/homeSubPackage/pages/curriculumList/curriculumList?objId='+params.objectId+'&moduleName='+params.moduleName;
+				}
+			},
 			// Tab	
 			tabbarChange(item) {
 				if(item.text=='我的'){
@@ -477,6 +515,9 @@
 						}
 						if(self.toAction=='important'){ // 重点题库
 							self.handleImportantClick()
+						}
+						if(self.toAction=='clickNum'){
+							Curriculum.recordClickNum(this.relationId);
 						}
 					},
 				})

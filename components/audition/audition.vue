@@ -15,10 +15,11 @@
 							<image src="../../static/icon/play.png" class="play-image"></image>
 							{{(item.cardinalNum+item.N*(item.realNum||0))<10000?item.cardinalNum+item.N*(item.realNum||0):((item.cardinalNum+item.N*(item.realNum||0))/10000).toFixed(1)+'w'}}
 						</view>
-						<text class='time' v-if="item.course.duration&&item.course.duration!='00:00'">
-							{{item.course.duration || ''}}
+						<text class='time' v-if="item.course.getDurations&&item.course.getDurations!='00:00'">
+							{{item.course.getDurations || ''}}
 						</text>
 					</view>
+					<view class="opcity"></view>
 				</view>
 				<image src="../../static/icon/icon_vip.png" class="icon-vip" v-if="item.course.isVipCourse"></image>
 				<view class="txt-info">
@@ -65,53 +66,15 @@
 						  }
 						})
 		},
-		// watch:{
-		// 	list:{
-		// 		handler() {
-		// 			this.reload=false
-		// 			this.$nextTick(()=>{
-		// 				console.log(this.list,444)
-		// 				this.reload=true;
-		// 			})
-		// 		},
-		// 		deep:true,
-		// 		immediate:true
-		// 	}
-		// },
 		methods: {
 			gotolist() {
-				uni.navigateTo({
-					url:'/homeSubPackage/pages/curriculumList/curriculumList?objId='+this.list[0].module.objectId+'&moduleName='+this.title
-				})
+				// uni.navigateTo({
+				// 	url:'/homeSubPackage/pages/curriculumList/curriculumList?objId='+this.list[0].module.objectId+'&moduleName='+this.title
+				// })
+				this.$emit('checkMore', {objectId:this.list[0].module.objectId,moduleName:this.title});
 			},
 			async jump(item) {
-				let ModuleAssociatedCourses= new Parse.Query('ModuleAssociatedCourses');
-				    ModuleAssociatedCourses.equalTo('objectId',item.objectId);
-				let res= await ModuleAssociatedCourses.first();
-					if(res){
-				   let realNum=res.get('realNum');
-					   realNum=realNum||0;
-					   realNum+=1;
-					   res.set('realNum',realNum);
-					   await res.save();
-					}
-				if(item.course.flag==1){
-					// 系列课程点击时到详情页有介绍有详情
-					uni.navigateTo({
-						url:'/curriculumSubPackage/pages/study/study'
-					})
-				}else if(!item.course.isVipCourse&&item.course.flag==2){
-					//非vip单课程点击时直接播放页
-					uni.navigateTo({
-						url:'/curriculumSubPackage/pages/details/details'
-					})
-				}else if(item.course.isVipCourse&&item.course.flag==2){
-					//vip单课程点击时跳转到开通会员
-					uni.navigateTo({
-						url:'/mineSubPackage/pages/vip/vip'
-					})
-				}
-				// this.$emit('changUrl', item)
+				this.$emit('changeUrl', item)
 			}
 		}
 	}
@@ -146,6 +109,7 @@
 			color: #000000;
 			position: absolute;
 			top:10rpx;
+			opacity: 0.4;
 			right: 50rpx;
 			z-index: 1;
 		}
@@ -189,6 +153,14 @@
 		display: flex;
 		justify-content: space-between;
 		font-size: 22rpx;
+		z-index: 1;
+	}
+	.opcity{
+		position: absolute;
+		bottom: 0;
+		width: 336rpx;
+		height: 32rpx;
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.6) 100%);
 	}
 	.image-info .main-image {
 		width: 100%;
