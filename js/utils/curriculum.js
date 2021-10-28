@@ -80,6 +80,34 @@ export default {
 		    
 		
 	},
+	// 免费试听
+	async getFreeCurrList(index) {
+		let ModuleAssociatedCourses= new Parse.Query('ModuleAssociatedCourses');
+		    ModuleAssociatedCourses.equalTo('courseListening',index);
+			ModuleAssociatedCourses.include('course');
+		let count=await ModuleAssociatedCourses.count();
+			ModuleAssociatedCourses.limit(count)
+			ModuleAssociatedCourses.ascending('displayOrder');
+		let res = await ModuleAssociatedCourses.find();
+		    let ne=[]
+		    if(res){
+		    	for(let i=0; i<res.length;i++) {
+		    		let v= res[i];
+		    		v=v.toJSON();
+		    		if(v.course.flag==2 && !!v.course.link &&(v.course.kind==1 || v.course.kind==2)){
+		    			this.getVideoOrAudioDuration(v.course).then(()=>{
+		    				ne.push(v)
+		    			});
+		    			
+		    		}else{
+		    			ne.push(v)
+		    		}
+		    	}
+		    	return ne;
+		    }else{
+		    	return ne;
+		    }
+	},
 	//获取所有课程
 	async getCurriculum(id) {
 		  let curriculum= new Parse.Query('coursesModule');

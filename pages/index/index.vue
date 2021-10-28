@@ -49,7 +49,7 @@
 					<view class="navItem" @click="handleExamClick">
 						<view class="img">
 							<image src="../../static/icon/icon_test.png"></image>
-							<text class="badge">12</text>
+							<!-- <text class="badge">12待添加数字</text> -->
 						</view>
 						<view class="title">模拟试卷</view>
 					</view>
@@ -361,9 +361,12 @@
 				animation: false
 			});	
 			let res=await Utils.getcount(); 
-			    this.userInfo=res.userInfo;
+			    if(res){
+					this.userInfo=res.userInfo;
 			    this.msgCount=res.msgCount;
 			    this.couponCount=res.couponCount;
+				}
+			    
 			    this.bindConfig();
 				//获取所有的模块
 				this.getModules();
@@ -457,68 +460,6 @@
 			//获取模块
 			async getModules() {
 				let res = await Curriculum.getHomeSetting();
-				console.log(res,345);
-				// let List=[{
-				// 	module:'课程',
-				// 	showSize:2,
-				// 	order:2,
-				// 	list:[
-				// 	{
-				// 		type: '1',
-				// 		time: '6:31',
-				// 		play_num: '12.1w',
-				// 		tag_title: '这是副标题，一般是标签',
-				// 		title: '先秦美术发展历程视频术发展历程视频',
-				// 		img: '../../static/icon/icon_question.png',
-				// 		src: '3',
-				// 	},{
-				// 		type: '2',
-				// 		time: '6:31',
-				// 		play_num: '12.1w',
-				// 		tag_title: '这是副标题，一般是标签',
-				// 		title: '先秦美术发展历程视频术发展历程视频',
-				// 		img: '../../static/icon/icon_question.png',
-				// 		src: '2',
-				// 	},{
-				// 		type: '3',
-				// 		time: '6:31',
-				// 		play_num: '12.1w',
-				// 		tag_title: '这是副标题，一般是标签',
-				// 		title: '先秦美术发展历程视频术发展历程视频',
-				// 		img: '../../static/icon/icon_question.png',
-				// 		src: '1',
-				// 	}
-				// ]},{
-				// 	title:'精品推荐',
-				// 	showSize:2,
-				// 	order:1,
-				// 	list:[
-				// 	{
-				// 		type: '1',
-				// 		time: '6:31',
-				// 		play_num: '12.1w',
-				// 		tag_title: '这是副标题，一般是标签',
-				// 		subjectName: '先秦美术发展历程视频术发展历程视频',
-				// 		img: '../../static/icon/icon_question.png',
-				// 		src: '3',
-				// 	},{
-				// 		type: '2',
-				// 		time: '6:31',
-				// 		play_num: '12.1w',
-				// 		tag_title: '这是副标题，一般是标签',
-				// 		title: '先秦美术发展历程视频术发展历程视频',
-				// 		img: '../../static/icon/icon_question.png',
-				// 		src: '2',
-				// 	},{
-				// 		type: '3',
-				// 		time: '6:31',
-				// 		play_num: '12.1w',
-				// 		tag_title: '这是副标题，一般是标签',
-				// 		title: '先秦美术发展历程视频术发展历程视频',
-				// 		img: '../../static/icon/icon_question.png',
-				// 		src: '1',
-				// 	}
-				// ]}];
 				console.log(JSON.parse(JSON.stringify(res)),89989999)
 				this.moduleList=res;
 			},
@@ -632,9 +573,22 @@
 					this.toAction = 'exam'
 				}
 			},
-			// 点击课程试听
+			// 点击免费试听
 			handleAuditionClick() {
-				
+				if(this.userInfo&&this.userInfo.openid){
+					if(this.userInfo.phone){
+						uni.navigateTo({
+							url:'/homeSubPackage/pages/curriculumList/curriculumList?moduleName=免费试听'
+						})
+					} else {
+						uni.reLaunch({
+							url:'/pages/login/login'
+						})
+					}
+				} else {
+					this.isShowLogin = true
+					this.toUrl = '/homeSubPackage/pages/curriculumList/curriculumList?moduleName=免费试听'
+				}
 			},
 			/*课程Tab*/
 			handleCurriculumClick(){

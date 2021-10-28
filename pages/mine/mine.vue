@@ -135,6 +135,7 @@
 	</view>
 </template>
 <script>
+	import Utils from '@/js/utils/index.js'
 	import Tabbar from '@/components/tabBar/tabBar.vue'
 	export default {
 		data() {
@@ -151,7 +152,7 @@
 		components: {
 			'view-tabbar': Tabbar
 		},
-		onShow() {
+		async onShow() {
 			uni.hideTabBar({
 				animation: false
 			});	
@@ -177,31 +178,36 @@
 					}
 				})
 			})
-			uni.getStorage({
-				key:'openid',
-				success(ores) {
-					var query =  new self.Parse.Query('MessageReadHistory')
-					query.equalTo('openid', ores.data)
-					query.first().then(res=>{
-						var msgQuery = new self.Parse.Query("Message")
-						if(res){
-							self.readHistory = res
-							msgQuery.notContainedIn('objectId',res.get('MessageIds'))
-						}
-						msgQuery.count().then(count=>{
-							self.msgCount = count
-						})
-					})
-					let cquery = new self.Parse.Query('CouponRecord')
-					cquery.equalTo('openid', ores.data)
-					cquery.equalTo('state', 0)
-					cquery.greaterThan('useEndTime', new Date())
-					cquery.descending('useEndTime', 'state')
-					cquery.count().then(count=>{
-						self.couponCount = count
-					})
+			let res=await Utils.getcount();
+			    if(res){
+			    this.msgCount=res.msgCount;
+			    this.couponCount=res.couponCount;
 				}
-			})
+			// uni.getStorage({
+			// 	key:'openid',
+			// 	success(ores) {
+			// 		var query =  new self.Parse.Query('MessageReadHistory')
+			// 		query.equalTo('openid', ores.data)
+			// 		query.first().then(res=>{
+			// 			var msgQuery = new self.Parse.Query("Message")
+			// 			if(res){
+			// 				self.readHistory = res
+			// 				msgQuery.notContainedIn('objectId',res.get('MessageIds'))
+			// 			}
+			// 			msgQuery.count().then(count=>{
+			// 				self.msgCount = count
+			// 			})
+			// 		})
+			// 		let cquery = new self.Parse.Query('CouponRecord')
+			// 		cquery.equalTo('openid', ores.data)
+			// 		cquery.equalTo('state', 0)
+			// 		cquery.greaterThan('useEndTime', new Date())
+			// 		cquery.descending('useEndTime', 'state')
+			// 		cquery.count().then(count=>{
+			// 			self.couponCount = count
+			// 		})
+			// 	}
+			// })
 		},
 		onLoad() {
 			let app = getApp();

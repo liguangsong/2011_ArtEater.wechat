@@ -14,7 +14,7 @@
 				<cover-image class="item-img" :src="item.icon_a" v-if="current == index"></cover-image>
 				<cover-image class="item-img" :src="item.icon" v-else></cover-image>
 				<cover-view class="item-name" :class="{'tabbarActive': current == index}" v-if="item.text">{{item.text}}</cover-view>
-				<cover-view class="item-badge">
+				<cover-view class="item-badge" v-if="index==3&&mine">
 					<cover-image src="../../static/icon/icon_badge.png"></cover-image>
 				</cover-view>
 			</cover-view>
@@ -29,6 +29,7 @@ export default {
     },
     data() {
         return {
+			mine:false,
             paddingBottomHeight: 0,  //苹果X以上手机底部适配高度
             list: [{
                     text: '首页',  
@@ -62,6 +63,14 @@ export default {
             ]
         };
     },
+	watch:{
+		'$store.state.mine':{
+			handler(val) {
+				this.mine=val;
+			},
+			immediate:true
+		}
+	},
     created() {
         let that = this;
 		let app = getApp();
@@ -70,9 +79,6 @@ export default {
 	mounted() {
 		console.log(1234);
 	},
-    watch: {
-        
-    },
     methods: {
         tabbarChange(path) {
 			this.$emit('tabbarChange',path);
@@ -109,7 +115,7 @@ export default {
 			width: 100%;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            // justify-content: center;
             height: 116rpx;
 			position: relative;
             .item-img{
@@ -120,7 +126,9 @@ export default {
                 font-size: 20rpx;
                 color: #352026;
 				text-align: center;
-				line-height: 20rpx;
+				height: 28rpx;
+				// line-height: 28rpx;
+				margin-top: -4rpx;
 				font-family: PingFangSC-Medium, PingFang SC;
             }
 			.item-badge{
