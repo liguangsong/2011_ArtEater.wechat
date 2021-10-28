@@ -1,26 +1,30 @@
 <template>
-	<view class='curriculum-item'>
+	<view class='curriculum-item' v-if='!item.level'>
 		<view class="content">
 			<view class='font'>
-				<view class="title" @click='jumpDefault'>{{item.subjectName}}</view>
+				<view class="title" @click='jumpDefault(item)'>{{item.subjectName}}</view>
 				<view class="info">
-					<text>{{item.subheadingOne}}</text>
+					<text v-if='item.subheadingOne'>{{item.subheadingOne}}</text>
 					<text>{{item.subheadingTwo}}</text>
 				</view>
 			</view>
 			<view class="teacher">
 				<view class='img'>
-					<image :src="item.portrait[0]"></image>
+					<image :src="item.portrait[0]" mode='aspectFill'></image>
 					<text>{{item.lecturerName}}</text>
 				</view>
-				<view class="btn" :class='{study: !item.isVipCourse}'>
-					<text v-if='!item.isVipCourse' @click='jumpDefault'>学习</text>
+				<view class="btn" v-if='item.isVipCourse' :class='{study: item.isVipCourse && vip }'>
+					<text v-if='vip' @click='jumpDefault(item)'>学习</text>
 					<text v-else @click='unlockFn'>解锁</text>
+				</view>
+				<view class="btn study" v-else>
+					<text @click='jumpDefault'>学习</text>
 				</view>
 			</view>
 		</view>
 		<view class="vip" v-if='item.isVipCourse'>
-			<image :src="lock" mode='aspectFill'></image>
+			<image v-if='item.isVipCourse && vip' :src="unlock" />
+			<image v-else :src="lock" />
 		</view>
 	</view>
 </template>
@@ -35,15 +39,16 @@
 		},
 		data() {
 			return {
-				isVip: this.item.isVip,
+				// random: Math.random() > 0.5 ? true : false,
+				vip: false,
 				lock: '../../static/vip-lock.png',
-				// unlock: '../../static/vip-unlock.png'
+				unlock: '../../static/vip-unlock.png',
 			}
 		},
 		methods: {
-			jumpDefault() {
+			jumpDefault(item) {
 				uni.navigateTo({
-					url: '/curriculumSubPackage/pages/study/study'
+					url: '/curriculumSubPackage/pages/study/study?item='+JSON.stringify(item)
 				})
 			},
 			unlockFn() {
@@ -74,13 +79,22 @@
 		justify-content: space-between;
 	}
 	.title {
+		width: 100%;
 		font-size: 32rpx;
 		font-weight: 900;
 		line-height: 44rpx;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 	.info {
+		margin-top: 8rpx;
 		font-size: 20rpx;
 		line-height: 28rpx;
+		opacity: .5;
+	}
+	.info text:first-child {
+		margin-right: 24rpx;
 	}
 	.teacher {
 		display: flex;

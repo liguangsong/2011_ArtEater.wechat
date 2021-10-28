@@ -16,7 +16,7 @@
 				<view class="bottom">
 					<view class="teacher">
 						<image src="../../static/audio.png"></image>
-						<text>王一山{{timetable}}</text>
+						<text>王一山</text>
 					</view>
 					<view class="btn">
 						<view>
@@ -71,8 +71,8 @@
 				</view>
 			</view>
 		</view>
+		<view class="bg" v-if='timetable'  @click='timetable = false'></view>
 		<view class="timetable" :class='{"show-timetable": timetable}'>
-			<view class="bg" v-if='timetable' @click='timetable = false'></view>
 			<view class="content">
 				<view class="content-header">
 					<view class="icon">
@@ -334,18 +334,21 @@
 				}
 			}
 		}
+		.bg {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			width: 100%;
+			height: 100vh;
+			background: rgba(0,0,0,.5);
+		}
 		.timetable {
-			.bg {
-				position: absolute;
-				top: 0;
-				left: 0;
-				bottom: 0;
-				right: 0;
-				width: 100%;
-				height: 100%;
-				background: rgba(0,0,0,.5);
-				overflow: hidden;
-			}
+			position: fixed;
+			width: 100%;
+			height: 836rpx;
+			bottom: 0;
 			.content {
 				position: absolute;
 				width: 100%;
