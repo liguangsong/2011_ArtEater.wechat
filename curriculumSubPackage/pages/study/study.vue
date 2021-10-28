@@ -36,9 +36,11 @@
 	export default {
 		data() {
 			return {
+				
 				height: '400rpx',
 				tabbar: false,
-				isVip: null
+				isVip: null,
+				item: null
 			}
 		},
 		components: {
@@ -47,7 +49,8 @@
 			Navbar
 		},
 		onLoad(options) {
-			this.isVip = options.isVip == 'true' ? true : false;
+			this.item = JSON.parse(options.item);
+			
 		},
 		methods: {
 			
