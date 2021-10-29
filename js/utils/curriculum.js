@@ -60,16 +60,45 @@ export default {
 	// 配置模块的课程被点击时的跳转url
 	async configUrl(item) {
 		let toUrl=''
-		if(item.course.flag==1){
-			// 系列课程点击时到详情页有介绍有详情
-			toUrl = '/curriculumSubPackage/pages/study/study';
-		}else if(!item.course.isVipCourse&&item.course.flag==2){
-			//非vip单课程点击时直接播放页
-			toUrl = '/curriculumSubPackage/pages/details/details';
-		}else if(item.course.isVipCourse&&item.course.flag==2){
-			//vip单课程点击时跳转到开通会员
-			toUrl = '/mineSubPackage/pages/vip/vip';
+		// if(item.course.flag==1 && item.course.level==0){
+		// 	// 系列课程点击时到详情页有介绍有详情
+		// 	toUrl = '/curriculumSubPackage/pages/study/study?objectId='+item.course.objectId;
+		// }else if((!item.course.isVipCourse&&item.course.flag==2) || (!item.course.isVipCourse&&item.course.flag==1 && item.course.level!=0)){
+		// 	//非vip单课程点击时直接播放页
+		// 	toUrl = '/curriculumSubPackage/pages/details/details?objectId='+item.course.objectId;
+		// }else if((item.course.isVipCourse&&item.course.flag==2) || (item.course.isVipCourse&&item.course.flag==1&& item.course.level!=0)){
+		// 	//vip单课程点击时跳转到开通会员
+		// 	toUrl = '/mineSubPackage/pages/vip/vip';
+		// }
+		
+		if(!item.course.isVipCourse){
+			if(item.course.flag==1){
+				if(item.course.level==0){
+					// 系列课程点击时到详情页有介绍有详情
+					toUrl = '/curriculumSubPackage/pages/study/study?objectId='+item.course.objectId;
+				}else{
+					//非vip单课程点击时直接播放页
+					toUrl = '/curriculumSubPackage/pages/details/details?objectId='+item.course.objectId;
+				}
+			}else{
+				   //非vip单课程点击时直接播放页
+				   toUrl = '/curriculumSubPackage/pages/details/details?objectId='+item.course.objectId;
+			}
+		}else {
+			if(item.course.flag==1){
+				if(item.course.level==0){
+					// 系列课程点击时到详情页有介绍有详情
+					toUrl = '/curriculumSubPackage/pages/study/study?objectId='+item.course.objectId;
+				}else{
+					//vip单课程点击时跳转到开通会员
+					toUrl = '/mineSubPackage/pages/vip/vip';
+				}
+			}else{
+				   //vip单课程点击时跳转到开通会员
+				   toUrl = '/mineSubPackage/pages/vip/vip';
+			}
 		}
+		
 		return toUrl;
 	},
 	// 记录课程点击量
@@ -84,18 +113,5 @@ export default {
 				   res.set('realNum',realNum);
 				   await res.save();
 			}
-	},
-	//获取所有课程
-	async getCurriculum(id) {
-		  let curriculum= new Parse.Query('coursesModule');
-		  if(id){
-			  curriculum.equalTo('objectId',id);
-		  }
-		  curriculum.ascending('createdAt');
-		  // curriculum.ascending('index');
-		  let res=await curriculum.find();
-		      res = res.map(v=>v.toJSON());
-			  return res;
-	},
-	
+	}
 }

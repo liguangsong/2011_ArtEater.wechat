@@ -8,64 +8,68 @@
 					</view>
 				</view>
 			</view>
-			<!-- <view class='mp4'>
-				<k-video :src='url'></k-video>
-			</view> -->
+			<!-- 视频 -->
+			<view class='mp4' v-if="curriculumInfo.kind&&curriculumInfo.kind==1">
+				<k-video :src='curriculumInfo.link'></k-video>
+			</view>
 			<view class="info">
-				<view class="info-title">魏晋南北朝美术</view>
+				<view class="info-title">{{curriculumInfo.subjectName}}</view>
 				<view class="bottom">
 					<view class="teacher">
-						<image src="../../static/audio.png"></image>
-						<text>王一山</text>
+						<image v-if="curriculumInfo.portrait&&curriculumInfo.portrait.length" :src="curriculumInfo.portrait[0]"></image>
+						<text>{{curriculumInfo.lecturerName}}</text>
 					</view>
 					<view class="btn">
-						<view>
+						<view v-if="curriculumInfo.flag==1">
 							<view class="img" @click='timetablefn'>
-								<image src="../../static/video.png"></image>
+								<image src="../../static/icon_list.png"></image>
 							</view>
 							<text>课表</text>
 						</view>
 						<view>
 							<view class="img">
-								<image src="../../static/video.png"></image>
+								<image src="../../../static/icon/icon_share.png"></image>
 							</view>
 							<text>分享</text>
 						</view>
 						<view>
 							<view class="img">
-								<image src="../../static/video.png"></image>
+								<image src="../../../static/icon/icon_collection.png"></image>
 							</view>
 							<text>收藏</text>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view class="mp3">
-				<k-audio :play.sync='play' :src='src'></k-audio>
+			<!-- 音频 -->
+			<view class="mp3" v-if="curriculumInfo.kind&&curriculumInfo.kind==2">
+				<k-audio :play.sync='play' :src='curriculumInfo.link'></k-audio>
 			</view>
 			<view class="br"></view>
 		</view>
-		<view class="html" :style='{paddingTop: infoTop + 4 + "px"}'>
-			<view v-html='html'></view>
+		<!-- 图文 -->
+		<view class="html" :style='{paddingTop: infoTop + 4 + "px"}' v-if="curriculumInfo.explain">
+			<rich-text :nodes='curriculumInfo.explain|formatRichText'></rich-text>
 		</view>
+		<!-- 推荐学习 -->
 		<view class="recommend">
 			<view class="recommend-title">
 				推荐学习
 			</view>
-			<view class="recommend-item" v-for='(item,i) in [1,2,3]' :key='i'>
+			<view class="recommend-item" v-for='(item,i) in recommendedList' :key='i'>
 				<view class='font'>
-					<view class="title">中国美术史重点精讲</view>
+					<view class="title">{{item.subjectName}}</view>
 					<view class="info">
-						<text>共36次课</text>
-						<text>央美实验艺术考研</text>
+						<text v-if="item.subheadingOne">{{item.subheadingOne}}</text>
+						<text v-if="item.subheadingTwo">{{item.subheadingTwo}}</text>
 					</view>
 				</view>
 				<view class="teacher">
 					<view class='img'>
-						<image src='../../static/audio.png'></image>
-						<text>王一山</text>
+						<image v-if="item.portrait&&item.portrait.length" :src="item.portrait[0]"></image>
+						<text>{{item.lecturerName}}</text>
 					</view>
-					<view class="btn">
+					<view class="btn" @click="goToLearn">
 						<text>学习</text>
 					</view>
 				</view>
@@ -79,17 +83,17 @@
 						<u-icon name="arrow-up"></u-icon>
 					</view>
 					<view class="timetable-title">
-						<text>中国美术史重点精讲系列课程</text>
+						<text>{{timetableRoot.subjectName}}</text>
 					</view>
 				</view>
 				<view class="list">
-					<view class="item" v-for='(item,i) in [1,2,4,5,6,7,8,89,5,3]' :key='i' :class='{active: i==2}'>
+					<view class="item" v-for='(item,i) in timetableList' :key='i' :class='{active: curriculumInfo.objectId==item.objectId}' @click="changeCurriculum(item)">
 						<view class="item-title">
-							<text>课程二级标题名字名称</text>
+							<text>{{item.subjectName}}</text>
 						</view>
 						<view class="item-type">
-							<text v-if='i==2'>当前课程</text>
-							<image src="../../static/audio.png" mode=""></image>
+							<text v-if='curriculumInfo.objectId==item.objectId'>当前课程</text>
+							<image :src="item.kind==1?'../../static/video.png':item.kind==2?'../../static/audio.png':''" mode=""></image>
 						</view>
 					</view>
 				</view>
@@ -104,6 +108,7 @@
 </template>
 
 <script>
+	import Curriculum from '../../js/curriculum.js'
 	import kAudio from '../../../components/audio/audio.vue'
 	import kVideo from '../../../components/video/kVideo.vue'
 	export default {
@@ -116,12 +121,40 @@
 				navbarheight: 0,
 				infoTop: 0,
 				timetable: false,	// 课表是否显示
-				html: '<p>术查市资建务周二非称向给子走选。</p><img style="width:100%;" src="https://img1.baidu.com/it/u=127595235,810379725&fm=26&fmt=auto"></img>',
-				play: false,
-				item: {},
-				src: 'https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-hello-uniapp/2cc220e0-c27a-11ea-9dfb-6da8e309e0d8.mp3',
-				url: 'https://img.cdn.aliyun.dcloud.net.cn/guide/uniapp/%E7%AC%AC1%E8%AE%B2%EF%BC%88uni-app%E4%BA%A7%E5%93%81%E4%BB%8B%E7%BB%8D%EF%BC%89-%20DCloud%E5%AE%98%E6%96%B9%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B@20200317.mp4',
+				curriculumInfo:{},//当前课程详情
+				recommendedList:[],//推荐课程
+				timetableRoot:{}, //
+				timetableList:[],//课表弹框数据
+				play: false
 			}
+		},
+		onLoad(options) {
+			this.objectId=options.objectId;
+			// 获取当前课程详情
+			this.getCurriculum()
+		},
+		filters:{
+		/**
+		 * 处理富文本里的图片宽度自适应
+		 * 1.查找img标签有无style属性，如果没有，加上style
+		 * 2.所有标签style后追加 max-width:100% !important;
+		 * 4.去掉<br/>标签
+		 */
+		formatRichText(html) { //控制小程序中图片大小
+		console.log(html,6678)
+			let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
+				console.log(match.search(/style=/gi));
+				
+				if(match.search(/style=/gi) == -1){
+					match = match.replace(/\<img/gi,'<img style=""');
+				}
+				return match;
+			});
+			
+			newContent = newContent.replace(/style="/gi, '$& max-width:100% !important; ');
+			newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+			return newContent;
+		    }
 		},
 		created() {
 			uni.getSystemInfo({
@@ -143,6 +176,55 @@
 			}).exec();
 		},
 		methods: {
+			// 获取详情
+			async getCurriculum() {
+				let res = await Curriculum.getCurriculum(this.objectId);
+				console.log(res,88899)
+				let info = res[0];
+				this.curriculumInfo=info;
+				if(info.checkData&&info.checkData.length){
+					//获取推荐课程
+					this.getRecommended(info.checkData);
+				}
+				if(info.rootId){
+					// 获取课表
+					this.getAllTimetable(info.rootId);
+				}
+			},
+			//获取推荐课程
+			async getRecommended(ids) {
+				console.log(ids,8888)
+				  let res = await Curriculum.getRecommended(ids);
+				  console.log(res,777)
+				     this.recommendedList = res;
+			},
+			// 获取课表
+			async getAllTimetable(rootId) {
+				let res = await Curriculum.getAllTimetable(rootId);
+				   res = res.filter(v=>{
+				   if(!v.rootId && !v.kind){
+					   this.timetableRoot=v;
+				   }
+				   return (v.rootId && v.kind && v.kind!=4);
+				   });
+				   console.log(res,9999)
+				   this.timetableList=res;
+			},
+			// 切换课程时判断是否是vip课程
+			changeCurriculum(item) {
+				if(item.isVipCourse){
+					// 是vip课程则要跳转到vip中心买会员
+					uni.navigateTo({
+						url:'../../../mineSubPackage/pages/vip/vip'
+					})
+				}else{
+					this.curriculumInfo=item;
+				}
+				
+			},
+			goToLearn() {
+				console.log('wwww')
+			},
 			back() {
 				uni.navigateBack({
 					delta: 1
@@ -211,21 +293,22 @@
 					}
 					.btn > view {
 						display: flex;
+						width:33.33%;
 						align-content: center;
 					}
 					.btn {
 						flex: 1 0 auto;
 						display: flex;
-						justify-content: space-between;
+						justify-content: flex-end;
 						.img {
 							width: 64rpx;
 							height: 64rpx;
-							border: 1px dashed #ccc;
-							padding: 7rpx;
+							/* border: 1px dashed #ccc; */
+							/* padding: 7rpx; */
 						}
 						image {
-							width: 50rpx;
-							height: 50rpx;
+							width: 64rpx;
+							height: 64rpx;
 						}
 					}
 				}
@@ -347,7 +430,7 @@
 		.timetable {
 			position: fixed;
 			width: 100%;
-			height: 836rpx;
+			/* height: 836rpx; */
 			bottom: 0;
 			.content {
 				position: absolute;
