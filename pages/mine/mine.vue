@@ -1,133 +1,160 @@
 <template>
-	<view class="myView" :style="{'height':windowHeight + 'px','overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
+	<view class="myView1" :style="{'height':windowHeight + 'px','overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<view-tabbar :current="3" @tabbarChange="tabbarChange"></view-tabbar>
-		<view class="headView">
-			<view class="headCon" @click="handleInfoClick">
-				<view class="headIconView">
-					<image v-if="userInfo&&userInfo.avatarUrl" :src="userInfo.avatarUrl"></image>
+		<view class='fixed'>
+			<view class="headView1">
+				<view class="title" :style='{height: navbarHeight + "rpx", top: tabbarHeight - navbarHeight+ "rpx"}'>
+					<text>个人中心</text>
 				</view>
-				<view class="nickName">{{userInfo.nickName}}</view>
-				<view class="icon">
-					<u-icon name="arrow-right" color="#f4f4f4" size="32"></u-icon>
+				<view class="headCon" @click="handleInfoClick">
+					<view class="headIconView">
+						<image v-if="userInfo&&userInfo.avatarUrl" :src="userInfo.avatarUrl"></image>
+					</view>
+					<view>
+						<view class="nickName">{{userInfo.nickName}}</view>
+						<view class="icon">
+							铂金VIP<u-icon name="arrow-right" color="#f4f4f4" size="20"></u-icon>
+						</view>
+					</view>
 				</view>
+				<image class='bg' src="../../static/mine-head.png" mode='aspectFill'></image>
 			</view>
-			<view class="scoreView">
+			<view class="box scoreView">
 				<view class="content">
 					<view class="scoreItem">
 						<view class="score">{{rightCount}}</view>
-						<view class="title">答题量</view>
+						<view class="contentTitle">答题量</view>
+						<view class="br"></view>
 					</view>
 					<view class="scoreItem" @click="handleNoteClick">
 						<view class="score">{{errorCount}}</view>
-						<view class="title">错题集</view>
+						<view class="contentTitle">错题集</view>
+						<view class="br"></view>
 					</view>
 					<view class="scoreItem" @click="handleScoreRecord">
 						<view class="score">{{userInfo.score}}</view>
-						<view class="title">总积分</view>
+						<view class="contentTitle">总积分</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="actionView vip">
-			<text>课程大会员</text>
-			<view @click='jumpvip'>立即开通</view>
-		</view>
-		<view class="actionView">
-			<view class="actionItem" @click="handleSignInClick">
-				<view class="licon">
-					<image src="../../static/icon/icon_action_daka.png"></image>
-				</view>
-				<view class="cont">
-					<view class="title">签到</view>
-					<view class="icon">
-						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
+		
+		<view class="scroll">
+			<view class="box vipView">
+				<view class='open' @click='jumpvip'>立即开通</view>
+				<image src="../../static/mine-card.png"></image>
+			</view>		
+			<view class="box actionView">
+				<view class="actionItem" @click="handleSignInClick">
+					<view class="licon">
+						<image src="../../static/icon/icon_action_daka.png"></image>
 					</view>
-				</view>
-			</view>
-			<view class="actionItem" @click="handleScoreListClick">
-				<view class="licon">
-					<image src="../../static/icon/icon_action_paihang.png"></image>
-				</view>
-				<view class="cont">
-					<view class="title">积分排行榜</view>
-					<view class="icon">
-						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
-					</view>
-				</view>
-			</view>
-			<view class="actionItem" @click="handleOrderClick">
-				<view class="licon">
-					<image src="../../static/icon/icon_action_yigou.png"></image>
-				</view>
-				<view class="cont">
-					<view class="title">会员中心</view>
-					<view class="icon">
-						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
-					</view>
-				</view>
-			</view>
-			<view class="actionItem" @click="handleCouponClick">
-				<view class="licon">
-					<image src="../../static/icon/icon_action_mycoupon.png"></image>
-				</view>
-				<view class="cont">
-					<view class="title" style="position: relative;">我的优惠券
-						<u-badge v-if="couponCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="couponCount"></u-badge>
-					</view>
-					<view class="icon">
-						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
-					</view>
-				</view>
-			</view>
-			<view class="actionItem" @click="handleTestHisClick">
-				<view class="licon">
-					<image src="../../static/icon/icon_action_kaoshijilu.png"></image>
-				</view>
-				<view class="cont">
-					<view class="title">考试记录</view>
-					<view class="icon">
-						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
-					</view>
-				</view>
-			</view>
-		</view>
-		<view class="actionView">
-			<view class="actionItem" @click="handleInvitationClick">
-				<view class="licon">
-					<image src="../../static/icon/icon_action_share.png"></image>
-				</view>
-				<view class="cont">
-					<view class="title">
-						<view style="position: relative;width: 140rpx;">分享给好友</view>
-					</view>
-					<view class="icon">
-						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
-					</view>
-				</view>
-			</view>
-			<view class="actionItem" @click="handleMessageClick">
-				<view class="licon">
-					<image src="../../static/icon/icon_action_xiaoxi.png"></image>
-				</view>
-				<view class="cont">
-					<view class="title">
-						<view style="position: relative;">消息中心
-							<u-badge v-if="msgCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="msgCount"></u-badge>
+					<view class="cont">
+						<view class="title">
+							<text>签到</text>
+						</view>
+						<view class="icon">
+							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
 						</view>
 					</view>
-					<view class="icon">
-						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
+				</view>
+				<view class="actionItem" @click="handleScoreListClick">
+					<view class="licon">
+						<image src="../../static/icon/icon_action_paihang.png"></image>
+					</view>
+					<view class="cont">
+						<view class="title">
+							<text>积分排行榜</text>
+						</view>
+						<view class="icon">
+							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+						</view>
+					</view>
+				</view>
+				<view class="actionItem" @click="handleOrderClick">
+					<view class="licon">
+						<image src="../../static/icon/icon_action_yigou.png"></image>
+					</view>
+					<view class="cont">
+						<view class="title">
+							<text>会员中心</text>
+						</view>
+						<view class="icon">
+							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+						</view>
+					</view>
+				</view>
+				<view class="actionItem" @click="handleCouponClick">
+					<view class="licon">
+						<image src="../../static/icon/icon_action_mycoupon.png"></image>
+					</view>
+					<view class="cont">
+						<view class="title">
+							<text>我的优惠券</text>
+							<u-badge v-if="couponCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="couponCount"></u-badge>
+						</view>
+						<view class="icon">
+							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+						</view>
+					</view>
+				</view>
+				<view class="actionItem" @click="handleTestHisClick">
+					<view class="licon">
+						<image src="../../static/icon/icon_action_kaoshijilu.png"></image>
+					</view>
+					<view class="cont">
+						<view class="title">
+							<text>考试记录</text>
+						</view>
+						<view class="icon">
+							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+						</view>
 					</view>
 				</view>
 			</view>
-			<view class="actionItem" @click="handleFeedBackClick">
-				<view class="licon">
-					<image src="../../static/icon/icon_action_fankui.png"></image>
+			<view class="box actionView">
+				<view class="actionItem" @click="handleInvitationClick">
+					<view class="licon">
+						<image src="../../static/icon/icon_action_share.png"></image>
+					</view>
+					<view class="cont">
+						<view class="title">
+							<text>分享给好友</text>
+						</view>
+						<view class="icon">
+							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+						</view>
+					</view>
 				</view>
-				<view class="cont">
-					<view class="title">意见反馈</view>
-					<view class="icon">
-						<u-icon name="arrow-right" color="#f4f4f4" size="30"></u-icon>
+				<view class="actionItem" @click="handleMessageClick">
+					<view class="licon">
+						<image src="../../static/icon/icon_action_xiaoxi.png"></image>
+					</view>
+					<view class="cont">
+						<view class="title">
+							<text>意见反馈</text>
+							<view>0</view>
+							<!-- <view style="position: relative;">消息中心
+								<u-badge v-if="msgCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="msgCount"></u-badge>
+							</view> -->
+						</view>
+						<view class="icon">
+							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+						</view>
+					</view>
+				</view>
+				<view class="actionItem" @click="handleFeedBackClick">
+					<view class="licon">
+						<image src="../../static/icon/icon_action_fankui.png"></image>
+					</view>
+					<view class="cont">
+						<view class="title">
+							<text>意见反馈</text>
+							<view>0</view>
+						</view>
+						<view class="icon">
+							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -136,21 +163,40 @@
 </template>
 <script>
 	import Utils from '@/js/utils/index.js'
-	import Tabbar from '@/components/tabBar/tabBar.vue'
+	import Tabbar from '@/components/tabBar/tabBar.vue';
+	import Navbar from '@/curriculumSubPackage/components/navbar/navbar.vue';
 	export default {
 		data() {
 			return {
-                pdbtm:0,//兼容iphonexr+
+        pdbtm:0,//兼容iphonexr+
 				windowHeight:0,
 				userInfo: {},
 				rightCount: 0,
 				errorCount: 0,
 				msgCount: 0,
 				couponCount: 0,
+				screenHeight: 0,
+				tabbarHeight: 0,
+				navbarHeight: 0,
+				opacity: 0,
 			}
 		},
 		components: {
 			'view-tabbar': Tabbar
+		},
+		created() {
+			uni.getSystemInfo({
+				success: (e) => {
+					this.screenHeight = e.screenHeight;
+					let statusBar = 0
+					let customBar = 0
+					statusBar = e.statusBarHeight
+					let custom = wx.getMenuButtonBoundingClientRect()
+					customBar = custom.bottom + custom.top - e.statusBarHeight
+					this.tabbarHeight = customBar * 2;
+					this.navbarHeight = customBar * 2 - e.statusBarHeight * 2;
+				}
+			})
 		},
 		async onShow() {
 			uni.hideTabBar({
@@ -316,150 +362,199 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	.myView1 {
+		padding-top: 560rpx;
+		background: #F7F7F7;
+	}
+	.fixed {
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 90;
+		.title {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			color: #fff;
+			font-size: 34rpx;
+			z-index: 1000;
+			display: flex;
+			padding-left: 62rpx;
+			align-items: center;
+		}
+		.headView1 {
+			width: 100%;
+			height: 450rpx;
+			position: relative;
+			.headCon {
+				position: relative;
+				display: flex;
+				width: 100%;
+				height: 100%;
+				z-index: 199;
+				padding: 204rpx 0 0 72rpx;
+				color: #FFFFFF;
+				.headIconView {
+					width: 128rpx;
+					height: 128rpx;
+					border-radius: 50%;
+					overflow: hidden;
+					margin-right: 28rpx;
+					image {
+						width: 100%;
+						height: 100%;
+					}
+				}
+				.nickName {
+					font-size: 36rpx;
+					font-weight: 600;
+					line-height: 50rpx;
+					margin: 26rpx 0 16rpx;
+				}
+				.icon {
+					font-size: 20rpx;
+					font-weight: 400;
+					line-height: 28rpx;
+				}
+			}
+			.bg {
+				position: absolute;
+				top: 0;
+				height: 100%;
+				width: 100%;
+				z-index: 100;
+			}
+		}
+	}
+	.box {
+		width: 690rpx;
+		margin: 0 auto 24rpx;
+		background: #fff;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.06);
+		border-radius: 24rpx;
+	}
+	.scoreView {
+		position: absolute;
+		height: 132rpx;
+		top: 400rpx;
+		left: 30rpx;
+		z-index: 210;
+		.content {
+			height: 100%;;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			.scoreItem {
+				height: 100%;
+				padding-top: 20rpx;
+				flex: 1 1 auto;
+				position: relative;
+				text-align: center;
+				.score {
+					font-size: 46rpx;
+					font-weight: 500;
+					color: #000;
+					line-height: 64rpx;
+				}
+				.contentTitle {
+					font-size: 22rpx;
+					font-weight: 400;
+					color: rgba(0,0,0,.6);
+					line-height: 32rpx;
+				}
+			}
+			.br {
+				position: absolute;
+				right: 0;
+				top: 36rpx;
+				width: 0;
+				height: 62rpx;
+				border-right: 1px solid rgba(0,0,0,.1);
+			}
+		}
+	}
+	.scroll {
+		position: relative;
+		z-index: 0;
+	}
+	.vipView {
+		height: 120rpx;
+		position: relative;
+		image {
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			height: 100%;
+		}
+		.open {
+			position: relative;
+			z-index: 200;
+			width: 144rpx;
+			font-size: 20rpx;
+			height: 48rpx;
+			margin: 38rpx 28rpx;
+			float: right;
+			line-height: 48rpx;
+			border: 1px solid rgba(153, 93, 5, 1);
+			color: rgba(153, 93, 5, 1);
+			text-align: center;
+			border-radius: 24rpx;
+		}
+	}
+	
+	.actionView {
+		.actionItem {
+			height: 84rpx;
+			display: flex;
+			.licon {
+				flex: 0 1 116rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				image {
+					width: 64rpx;
+					height: 64rpx;
+				}
+			}
+			.cont {
+				flex: 1 0 auto;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				border-bottom: 1px solid rgba(0,0,0,.1);
+				.title {
+					flex: 1 0 auto;
+					display: flex;
+					justify-content: space-between;
+					font-size: 24rpx;
+					font-weight: 400;
+					color: #352026;
+					margin-right: 50rpx;
+					view {
+						height: 30rpx;
+						border-radius: 15rpx;
+						line-height: 30rpx;
+						color: #fff;
+						min-width: 30rpx;
+						text-align: center;
+						background: linear-gradient(rgba(218,39,39,1),rgba(218,39,39,.3));
+					}
+				}
+				.icon {
+					margin-right: 40rpx;
+				}
+			}
+			&:last-child {
+				.cont {
+					border-bottom: none;
+				}
+			}
+		}
+	}
 	page{
 		background-color: #fbfbfb;
-	}
-	.vip {
-		display: flex;
-		justify-content: space-between;
-		/* align-content: center; */
-		align-items: center;
-		height: 100rpx;
-		font-size: 28rpx;
-		font-weight: 900;
-	}
-	.vip view {
-		font-size: 20rpx;
-		font-weight: 700;
-		background: #ff4a4a;
-		color: #fff;
-		border-radius: 25rpx;
-		height: 50rpx;
-		width: 150rpx;
-		text-align: center;
-		line-height: 50rpx;
-	}
-	.myView{
-		/* width: calc(100% - 40rpx); */
-		padding: 10rpx 30rpx;
-	}
-	.myView .headView{
-		height: 320rpx;
-		border-radius: 40rpx;
-		background-color: #ffffff;
-		padding: 40rpx 40rpx 22rpx 40rpx;
-		box-shadow: 0rpx 8rpx 16rpx 0rpx 
-			rgba(238, 160, 160, 0.05);
-		border-radius: 40rpx;
-	}
-	.myView .headView .headCon{
-		display: flex;
-	}
-	.myView .headView .headCon .headIconView{
-		width: 128rpx;
-		height: 128rpx;
-	}
-	.myView .headView .headCon .headIconView image{
-		width: 128rpx;
-		height: 128rpx;
-		border-radius: 50%;
-		line-height: 128rpx;
-	}
-	.myView .headView .headCon .nickName{
-		flex: 1;
-		padding-left: 30rpx;
-		height: 128rpx;
-		line-height: 128rpx;
-		font-size: 38rpx;
-		color: #352026;
-		font-family: PingFangSC-Medium;
-	}
-	.myView .headView .headCon .icon{
-		width: 50rpx;
-		height: 128rpx;
-		line-height: 128rpx;
-		text-align: center;
-	}
-	.myView .headView .scoreView{
-		/* width: calc(100% - 40rpx); */
-		padding-top: 40rpx;
-	}
-	.myView .headView .scoreView .content{
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-	}
-	.myView .headView .scoreView .content .scoreItem{
-		width: 142rpx;
-		text-align: center;
-		height: 100rpx;
-	}
-	.myView .headView .scoreView .content .scoreItem .title{
-		font-size: 22rpx;
-		height: 32rpx;
-		line-height: 32rpx;
-		color: rgba(53,32,38, 0.6);
-		font-family: PingFangSC-Medium;
-	}
-	.myView .headView .scoreView .content .scoreItem .score{
-		font-size: 46rpx;
-		font-weight: bold;
-		color: #ff6867;
-		height: 64rpx;
-		line-height: 64rpx;
-		font-family: PingFangSC-Medium;
-	}
-	.myView .actionView{
-		margin-top: 24rpx;
-		padding: 8rpx 40rpx;
-		border-radius: 40rpx;
-		background-color: #ffffff;
-		box-shadow: 0rpx 8rpx 16rpx 0rpx 
-			rgba(238, 160, 160, 0.05);
-		border-radius: 40rpx;
-	}
-	.myView .actionView .actionItem{
-		display: flex;
-		height: 108rpx;
-		line-height: 108rpx;
-	}
-	.myView .actionView .actionItem:last-child .cont{
-		border: 0;
-	}
-	.myView .actionView .actionItem .licon{
-		width: 64rpx;
-		height: 64rpx;
-		line-height: 108rpx;
-	}
-	.myView .actionView .actionItem .licon image{
-		width: 64rpx;
-		height: 64rpx;
-		display: inline-block;
-		vertical-align: middle;
-	}
-	.myView .actionView .actionItem .cont{
-		flex: 1;
-		padding-left: 28rpx;
-		display: flex;
-		border-bottom: 1rpx solid #f4f4f4;
-	}
-	.myView .actionView .actionItem .cont .title{
-		flex: 1;
-		font-size: 28rpx;
-		color: #352026;
-		font-family: PingFangSC-Medium;
-	}
-	.myView .actionView .actionItem .cont .icon{
-		width: 50rpx;
-		height: 108rpx;
-		line-height: 108rpx;
-		text-align: right;
-	}
-	.u-badge-dot{
-		border-radius: 50%!important;
-	}
-	.u-badge{
-		min-width: 32rpx;
 	}
 </style>

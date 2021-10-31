@@ -22,8 +22,7 @@
 			"path": "pages/mine/mine",
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfb",
-				"navigationBarTitleText": "食艺兽",
-				"enablePullDownRefresh": false
+				"navigationStyle": "custom"
 			}
 
 		}, {
