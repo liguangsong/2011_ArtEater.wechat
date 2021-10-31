@@ -153,7 +153,7 @@
 				console.log(item)
 				if(item.kind!=4){
 					uni.navigateTo({
-					  url: '/curriculumSubPackage/pages/details/details?objectId=' +item.objectId
+					  url: '/curriculumSubPackage/pages/details/details?objectId='+item.objectId
 					});
 				}else{
 					
