@@ -1,6 +1,8 @@
 <template>
-	<Navbar>
-		123
+	<Navbar navbarBg='#000' :height='height' title='课程' fontColor="#000" iconColor='#000'>
+		<template v-slot:img>
+			<image style='width: 100%;' src="../../static/bg.png" mode='aspectFill'></image>
+		</template>
 	</Navbar>
 </template>
 

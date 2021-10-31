@@ -293,7 +293,9 @@
 					"path": "pages/vip/vip",
 					"style": {
 						"navigationBarTitleText": "开通会员",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+						
 					}
 				},
 				{
