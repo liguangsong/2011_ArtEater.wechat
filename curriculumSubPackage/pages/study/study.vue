@@ -2,18 +2,18 @@
 	<view class='study'>
 		<Navbar navbarBg='#fff' :height='height' title='课程' fontColor="#000" iconColor='#000'>
 			<template v-slot:img>
-				<image style='width: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
+				<image style='width: 100%;' src="../../../static/1.png" mode='aspectFill'></image>
 			</template>
 			<view class="head radius" :style='{top: height ? "-20rpx": 0}'>
-				<view class="title">{{curriculumInfo.subjectName}}</view>
+				<view class="title">中国美术史重点精讲2</view>
 				<view class="info">
 					<view>
-						<text v-if="curriculumInfo.subheadingOne" class='studynum'>{{curriculumInfo.subheadingOne}}</text>
-						<text v-if="curriculumInfo.subheadingTwo">{{curriculumInfo.subheadingTwo}}</text>
+						<text class='studynum'>共16次课</text>
+						<text>央美实验艺术考验</text>
 					</view>
 					<view class="teacher">
-						<image v-if="curriculumInfo.portrait&&curriculumInfo.portrait.length" :src="curriculumInfo.portrait[0]"></image>
-						<text>{{curriculumInfo.lecturerName}}</text>
+						<image src="../../../static/bg_null.png"></image>
+						<text>王一山</text>
 					</view>
 				</view>
 				<view class="tabber">
@@ -22,26 +22,24 @@
 				</view>
 			</view>
 			<view class="tab">
-				<Timetable v-if='tabbar' :list="timetableList"/>
-				<Details v-else :detail="curriculumInfo.introduce" :isVip="isVip"/>
+				<Timetable v-if='tabbar' />
+				<Details v-else />
 			</view>
 		</Navbar>
 	</view>
 </template>
 
 <script>
-	import Curriculum from '../../js/curriculum.js'
 	import Timetable from './timetable.vue';
 	import Details from './details.vue';
 	import Navbar from '../../components/navbar/navbar.vue';
 	export default {
 		data() {
 			return {
-				curriculumInfo:{},//详情root节点的
-				timetableList:[],//课表页面
-				height: '0',
-				tabbar: true,
-				isVip: false,
+				
+				height: '400rpx',
+				tabbar: false,
+				isVip: null,
 				item: null
 			}
 		},
@@ -51,42 +49,11 @@
 			Navbar
 		},
 		onLoad(options) {
-			this.item = options;
-			this.getCurriculum();
+			this.item = JSON.parse(options.item);
+			
 		},
 		methods: {
-			// 获取详情
-			async getCurriculum() {
-				let res = await Curriculum.getCurriculum(this.item.objectId);
-				console.log(res,88899)
-				let info = res[0];
-				this.curriculumInfo=info;
-				if(info.headImg&&info.headImg.length){
-					this.height='478rpx';
-				}
-				// 判断是否为vip课程
-				if(info.isVipCourse){
-					this.isVip=true
-				}else{
-					this.isVip=false;
-				}
-				//获取课表
-				if(info.objectId){
-					this.getAllTimetable(info.objectId);
-				}
-			},
-			async getAllTimetable(objectId) {
-				this.timetableList=[]
-				let res = await Curriculum.getAllTimetable(objectId,true);
-				console.log(res,343234)
-				if(res[0].children&&res[0].children.length){
-					console.log(res,343234)
-					this.timetableList=res[0].children;
-				}else{
-					this.timetableList = [];
-				}
-				
-			}
+			
 		}
 	}
 </script>
@@ -131,8 +98,7 @@
 		align-items: center;
 	}
 	.teacher image {
-		border-radius: 50%;
-		margin-right: 10rpx;
+		margin-right: 16rpx;
 	}
 	.tabber {
 		display: flex;
@@ -143,7 +109,7 @@
 		height: 48rpx;
 	}
 	.tab {
-		/* margin-top: 30rpx; */
+		margin-top: 30rpx;
 	}
 	.text {
 		color: #D81E1F;
