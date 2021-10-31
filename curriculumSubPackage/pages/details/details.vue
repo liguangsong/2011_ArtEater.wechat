@@ -132,6 +132,7 @@
 			}
 		},
 		onLoad(options) {
+			this.curriculumInfo={};
 			this.objectId=options.objectId;
 			// 获取当前课程详情
 			this.getCurriculum();
@@ -161,10 +162,7 @@
 			})
 		},
 		mounted() {
-			const query = uni.createSelectorQuery().in(this);
-			query.select('.header').boundingClientRect(data => {
-				this.infoTop = data.height;
-			}).exec();
+			
 		},
 		methods: {
 			// 获取详情
@@ -177,12 +175,16 @@
 				await this.operateCollection(true);
 				if(info.checkData&&info.checkData.length){
 					//获取推荐课程
-					this.getRecommended(info.checkData);
+					await this.getRecommended(info.checkData);
 				}
 				if(info.rootId){
 					// 获取课表
-					this.getAllTimetable(info.rootId);
+					await this.getAllTimetable(info.rootId);
 				}
+				const query = uni.createSelectorQuery().in(this);
+				query.select('.header').boundingClientRect(data => {
+					this.infoTop = data.height;
+				}).exec();
 			},
 			//获取推荐课程
 			async getRecommended(ids) {
