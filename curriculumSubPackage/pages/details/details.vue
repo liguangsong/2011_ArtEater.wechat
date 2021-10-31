@@ -26,15 +26,15 @@
 							</view>
 							<text>课表</text>
 						</view>
-						<view>
+						<view @click="share">
 							<view class="img">
 								<image src="../../../static/icon/icon_share.png"></image>
 							</view>
 							<text>分享</text>
 						</view>
-						<view>
+						<view @click="operateCollection(false)">
 							<view class="img">
-								<image src="../../../static/icon/icon_collection.png"></image>
+								<image :src="collectionStatus?active:unactive"></image>
 							</view>
 							<text>收藏</text>
 						</view>
@@ -120,6 +120,9 @@
 				tabbarheight: 0,
 				navbarheight: 0,
 				infoTop: 0,
+				collectionStatus:false,
+				active:"../../../static/icon/icon_collection_active.png",
+				unactive:"../../../static/icon/icon_collection.png",
 				timetable: false,	// 课表是否显示
 				curriculumInfo:{},//当前课程详情
 				recommendedList:[],//推荐课程
@@ -131,7 +134,7 @@
 		onLoad(options) {
 			this.objectId=options.objectId;
 			// 获取当前课程详情
-			this.getCurriculum()
+			this.getCurriculum();
 		},
 		filters:{
 		/**
@@ -170,6 +173,8 @@
 				console.log(res,88899)
 				let info = res[0];
 				this.curriculumInfo=info;
+				// 获取收藏状态
+				await this.operateCollection(true);
 				if(info.checkData&&info.checkData.length){
 					//获取推荐课程
 					this.getRecommended(info.checkData);
@@ -212,6 +217,22 @@
 					this.curriculumInfo=item;
 				}
 				
+			},
+			//分享
+			share() {
+				
+			},
+			// 收藏操作
+			async operateCollection(init) {
+				console.log(init,7788)
+				if(init){
+					let res= await Curriculum.getCollectionstatus(this.curriculumInfo.objectId);
+					console.log(res,4444);
+					this.collectionStatus=res;
+				}else{
+					let res= await Curriculum.operateCollections(this.curriculumInfo.objectId);
+					this.collectionStatus=res
+				};
 			},
 			goToLearn() {
 				console.log('wwww')

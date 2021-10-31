@@ -103,5 +103,85 @@ export default{
 		newContent = newContent.replace(/style="/gi, '$& max-width:100% !important; ');
 		newContent = newContent.replace(/<br[^>]*\/>/gi, '');
 		return newContent;
+	},
+	//添加取消收藏
+	async operateCollections(id) {
+		let that=this;
+		let openid= uni.getStorageSync('openid');
+		let Collections= Parse.Object.extend('Collections');
+		let newCollections= new Collections();
+		let collections= new Parse.Query('Collections');
+			collections.equalTo('openId',openid);
+			let res = await collections.first();
+				if(res){
+					let ids=res.get('ids');
+							if(ids.includes(id)){
+								let newIds=ids.filter(v=>v!=v);
+									res.set('ids',newIds);
+									let unsave=await res.save();
+									if(unsave){
+										uni.showToast({
+											title:'取消收藏！'
+										});
+										return false;
+									}else{
+										uni.showToast({
+											title:'取消失败！',
+											icon:'error'
+										});
+										return true;
+									}
+							}else{
+								res.set('ids',[...ids,id]);
+								let save=await res.save();
+								if(save){
+									uni.showToast({
+										title:'收藏成功！'
+									});
+									return true;
+								}else{
+									uni.showToast({
+										title:'收藏失败！',
+										icon:'error'
+									});
+									return false;
+								}
+							}
+				}else{
+					newCollections.set('openId',openid);
+					newCollections.set('ids',[id]);
+				    let status=await newCollections.save();
+					if(status){
+						uni.showToast({
+							title:'收藏成功！'
+						});
+						return true;
+					}else{
+						uni.showToast({
+							title:'收藏失败！',
+							icon:'error'
+						});
+						return false;
+					}
+				}
+		
+	},
+	//初始获取收藏状态
+	async getCollectionstatus(id){
+		let that=this;
+		let openid= uni.getStorageSync('openid');
+		let collections= new Parse.Query('Collections');
+			collections.equalTo('openId',openid);
+			let res = await collections.first();
+			if(res){
+				let ids=res.get('ids');
+					if(ids&&ids.includes(id)){
+						return true;
+					}else{
+						return false;
+					}
+				}else{
+					return false;
+				}
 	}
 }

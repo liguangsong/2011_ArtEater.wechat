@@ -151,9 +151,13 @@
 		methods: {
 			onClickItem(item) {
 				console.log(item)
-				uni.navigateTo({
-				  url: '/curriculumSubPackage/pages/details/details?objectId=' +item.objectId
-				});
+				if(item.kind!=4){
+					uni.navigateTo({
+					  url: '/curriculumSubPackage/pages/details/details?objectId=' +item.objectId
+					});
+				}else{
+					
+				}
 			}
 		}
 	}
