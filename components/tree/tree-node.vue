@@ -1,17 +1,19 @@
 <template>
 	<view class="tree-item">
-		<view class="leave0" v-if='item.leave == 0'>
-			{{item.label}}
+		<view class="leave0" v-if='item.level == 1&&item.kind==4'>
+			{{item.subjectName}}
 		</view>
-		<view v-else class="item" @click='changeItem'>
-			<view class="leave" :style='{paddingLeft: item.leave*52 + "rpx"}'>
+		<view v-else class="item" @click.stop='changeItem'>
+			<view class="leave" :style='{paddingLeft: item.level*52 + "rpx", color:item.kind==4 && (!item.children || !item.children.length)?"rgba(0,0,0,0.3)":"rgba(0,0,0,0.7)"}'>
 				<view class="title">
-					<image :src="item.type == 'mp4' ? video : audio"></image>
-					{{item.label}}
+					<image class="icon" :src="item.kind == '1' ? video :item.kind == '2'? audio:''"></image>
+					{{item.subjectName}}
 				</view>
 				<view class="acllow-left">
-					<text class='study'>正在学习</text>
-					<text class='left'>></text>
+					<text class='study'>上次学习</text>
+				</view>
+				<view class="arrow-box" @click.stop='close'>
+					<image class='left' src="../../curriculumSubPackage/static/icon_tg.png" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -44,6 +46,9 @@
 		methods: {
 			changeItem() {
 				this.onClickItem(this.item)
+			},
+			close() {
+				console.log('8888888*****')
 			}
 		}
 	}
@@ -76,16 +81,19 @@
 		padding-left: 48rpx;
 	}
 	.leave {
-		font-size: 24rpx;
-		height: 85rpx;
+		/* height: 85rpx; */
 		border-top: 1px solid #f7f7f7;
 		display: flex;
 		justify-content: space-between;
+		font-size: 24rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: rgba(0,0,0,0.7);
 	}
 	.leave .title {
 		position: relative;
 	}
-	.leave image {
+	.leave .icon {
 		position: absolute;
 		top: 24rpx;
 		left: -42rpx;
@@ -93,12 +101,25 @@
 		height: 36rpx;
 	}
 	.acllow-left {
-		padding-right: 40rpx;
-		color: rgba(0,0,0,0.3)
+		/* padding-right: 40rpx; */
+		font-size: 16rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,0.3);
+		line-height: inherit;
+		position: absolute;
+		right: 88rpx;
 	}
-	.acllow-left .study {
-		font-size: 22rpx;
-		margin-right: 32rpx;
+	.arrow-box{
+		width:88rpx;
+	}
+	.arrow-box image {
+		margin-left: 24rpx;
+	}
+	.left{
+		width: 22rpx;
+		height: 34rpx;
+		vertical-align: text-top;
 	}
 	.none {
 		color: #ccc;

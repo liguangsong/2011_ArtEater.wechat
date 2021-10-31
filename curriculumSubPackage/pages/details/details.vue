@@ -141,19 +141,7 @@
 		 * 4.去掉<br/>标签
 		 */
 		formatRichText(html) { //控制小程序中图片大小
-		console.log(html,6678)
-			let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
-				console.log(match.search(/style=/gi));
-				
-				if(match.search(/style=/gi) == -1){
-					match = match.replace(/\<img/gi,'<img style=""');
-				}
-				return match;
-			});
-			
-			newContent = newContent.replace(/style="/gi, '$& max-width:100% !important; ');
-			newContent = newContent.replace(/<br[^>]*\/>/gi, '');
-			return newContent;
+		   return Curriculum.formatRichText(html);
 		    }
 		},
 		created() {
@@ -201,9 +189,12 @@
 			// 获取课表
 			async getAllTimetable(rootId) {
 				let res = await Curriculum.getAllTimetable(rootId);
+				console.log(res,667788)
 				   res = res.filter(v=>{
-				   if(!v.rootId && !v.kind){
+				   if(v.rootId==='0' && !v.kind){
+					   
 					   this.timetableRoot=v;
+					   console.log(this.timetableRoot,v,11222)
 				   }
 				   return (v.rootId && v.kind && v.kind!=4);
 				   });
