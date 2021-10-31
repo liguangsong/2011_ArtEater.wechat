@@ -91,7 +91,8 @@
 					<view class="cont">
 						<view class="title">
 							<text>我的优惠券</text>
-							<u-badge v-if="couponCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="couponCount"></u-badge>
+							<view v-if="couponCount > 0">{{couponCount}}</view>
+							<!-- <u-badge v-if="couponCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="couponCount"></u-badge> -->
 						</view>
 						<view class="icon">
 							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
@@ -105,6 +106,7 @@
 					<view class="cont">
 						<view class="title">
 							<text>考试记录</text>
+							<view>0</view>
 						</view>
 						<view class="icon">
 							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
@@ -132,10 +134,10 @@
 					</view>
 					<view class="cont">
 						<view class="title">
-							<text>意见反馈</text>
-							<view>0</view>
+							<text>消息中心</text>
+							<view v-if="msgCount > 0">{{msgCount}}</view>
 							<!-- <view style="position: relative;">消息中心
-								<u-badge v-if="msgCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="msgCount"></u-badge>
+								<u-badge  type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="msgCount"></u-badge>
 							</view> -->
 						</view>
 						<view class="icon">
@@ -150,7 +152,6 @@
 					<view class="cont">
 						<view class="title">
 							<text>意见反馈</text>
-							<view>0</view>
 						</view>
 						<view class="icon">
 							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
