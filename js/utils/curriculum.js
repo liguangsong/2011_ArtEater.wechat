@@ -70,7 +70,7 @@ export default {
 		// 	//vip单课程点击时跳转到开通会员
 		// 	toUrl = '/mineSubPackage/pages/vip/vip';
 		// }
-		
+		console.log(item,5556)
 		if(!item.course.isVipCourse){
 			if(item.course.flag==1){
 				if(item.course.level==0){
