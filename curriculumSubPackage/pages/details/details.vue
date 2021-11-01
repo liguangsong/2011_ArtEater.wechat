@@ -30,7 +30,8 @@
 							<view class="img">
 								<image src="../../../static/icon/icon_share.png"></image>
 							</view>
-							<text>分享</text>
+							<!-- <text>分享</text> -->
+							<button type="default" open-type='share'>分享</button>
 						</view>
 						<view @click="operateCollection(false)">
 							<view class="img">
@@ -128,7 +129,7 @@
 				recommendedList:[],//推荐课程
 				timetableRoot:{}, //
 				timetableList:[],//课表弹框数据
-				play: false
+				play: false,
 			}
 		},
 		onLoad(options) {
@@ -136,6 +137,16 @@
 			this.objectId=options.objectId;
 			// 获取当前课程详情
 			this.getCurriculum();
+		},
+		//用户点击右上角分享朋友圈
+		onShareTimeline: function () {
+			return {
+		      title: '食艺兽',
+		      query: {
+		        key: value
+		      },
+		      imageUrl: ''
+		    }
 		},
 		filters:{
 		/**
@@ -222,7 +233,19 @@
 			},
 			//分享
 			share() {
-				
+				console.log(123);
+				uni.share({
+				    provider: "weixin",
+				    scene: "WXSceneSession",
+				    type: 1,
+				    summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
+				    success: function (res) {
+				        console.log("success:" + JSON.stringify(res));
+				    },
+				    fail: function (err) {
+				        console.log("fail:" + JSON.stringify(err));
+				    }
+				});
 			},
 			// 收藏操作
 			async operateCollection(init) {
@@ -323,6 +346,26 @@
 						image {
 							width: 64rpx;
 							height: 64rpx;
+						}
+						button {
+							font-size: 20rpx;
+							height: 64rpx;
+							width: 170rpx;
+							line-height: 64rpx;
+							background: none;
+							border: none;
+							border-radius: 0;
+							box-sizing: border-box;
+							margin-left: 0;
+							margin-right: 0;
+							padding-right: 0;
+							position: relative;
+							text-align: right;
+							left: -46rpx;
+							text-decoration: none;
+							&:after {
+								border: none;
+							}
 						}
 					}
 				}
@@ -444,7 +487,6 @@
 		.timetable {
 			position: fixed;
 			width: 100%;
-			/* height: 836rpx; */
 			bottom: 0;
 			.content {
 				position: absolute;
