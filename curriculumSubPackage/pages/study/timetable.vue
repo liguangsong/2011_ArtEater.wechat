@@ -152,9 +152,16 @@
 			onClickItem(item) {
 				console.log(item)
 				if(item.kind!=4){
-					uni.navigateTo({
+					if(!item.isVipCourse){
+						uni.navigateTo({
 					  url: '/curriculumSubPackage/pages/details/details?objectId='+item.objectId
 					});
+					}else{
+						uni.navigateTo({
+						  url: '/mineSubPackage/pages/vip/vip'
+						});
+					}
+					
 				}else{
 					
 				}
