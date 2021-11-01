@@ -19,7 +19,6 @@
 					'https://img1.baidu.com/it/u=2548045501,3373948589&fm=26&fmt=auto',
 					'https://img1.baidu.com/it/u=82323508,2412665068&fm=26&fmt=auto'
 				],
-				img: '../../static/1.png',
 				pdbtm:0,//兼容iphonexr+
 				windowHeight:0,
 				list: [

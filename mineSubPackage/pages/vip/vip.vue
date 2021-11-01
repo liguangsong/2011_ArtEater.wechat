@@ -7,7 +7,7 @@
 			<view class="box">
 				<view class="head">
 					<view class="image">
-						<image class="img" src="../../../static/1.png"></image>
+						<image class="img" src="../../static/icon.png"></image>
 						<image class='icon' src="../../static/icon.png"></image>
 					</view>
 					<view class="info">
