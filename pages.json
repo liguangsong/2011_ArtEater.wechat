@@ -40,14 +40,7 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, {
-			"path": "pages/subject/subject",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
+		},  {
 			"path": "pages/mine/order",
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
@@ -60,14 +53,6 @@
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
 				"navigationBarTitleText": "模拟考试",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/subject/exam",
-			"style": {
-				"navigationBarBackgroundColor": "#fbfbfa",
-				"navigationBarTitleText": "章节练习",
 				"enablePullDownRefresh": false
 			}
 
@@ -147,14 +132,6 @@
 				"enablePullDownRefresh": false
 			}
 		}, {
-			"path": "pages/subject/result",
-			"style": {
-				"navigationBarBackgroundColor": "#fbfbfa",
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
 			"path": "pages/important/result",
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
@@ -218,10 +195,36 @@
 		   {
 			"root": "homeSubPackage",
 			"pages": [
+				{
+					"path": "pages/subject/subject",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				
+				},
+				{
+					"path": "pages/subject/exam",
+					"style": {
+						"navigationBarBackgroundColor": "#fbfbfa",
+						"navigationBarTitleText": "章节练习",
+						"enablePullDownRefresh": false
+					}
+				
+				},
+				{
+					"path": "pages/subject/result",
+					"style": {
+						"navigationBarBackgroundColor": "#fbfbfa",
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				
+				},
                 {
 				"path": "pages/curriculumList/curriculumList",
 				"style": {
-					"navigationBarTitleText": "课程动态",
+					"navigationBarTitleText": "",
 					"enablePullDownRefresh": false
 				}
 			  },

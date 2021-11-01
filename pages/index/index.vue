@@ -688,7 +688,7 @@
 				if(this.userInfo&&this.userInfo.openid){
 					if(this.userInfo.phone){
 						uni.navigateTo({
-							url:'../subject/subject?sid='+item.objectId
+							url:'/homeSubPackage/pages/subject/subject?sid='+item.objectId
 						})
 					} else {
 						uni.reLaunch({
@@ -697,7 +697,7 @@
 					}
 				} else {
 					this.isShowLogin = true
-					this.toUrl = '/pages/subject/subject?sid='+item.objectId
+					this.toUrl = '/homeSubPackage/pages/subject/subject?sid='+item.objectId
 				}
 			},
 			/*点击推荐*/

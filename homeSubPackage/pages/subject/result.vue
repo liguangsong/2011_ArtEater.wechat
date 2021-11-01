@@ -11,7 +11,7 @@
 		<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
 		<!-- <button @click="handleShare" class="btnShare">分享</button> -->
 		<view @click="handleShare" class="btnShare">
-			<image src="../../static/icon_sharebg.png"></image>
+			<image src="../../../static/icon_sharebg.png"></image>
 			<view class="title">分享</view>
 		</view>
 		<button @click="handHomePage" class="btnPrev">返回</button>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-	import config from 'static/config/index.js'
+	// import config from 'static/config/index.js'
 	export default {
 		data() {
 			return {
@@ -219,7 +219,7 @@
 							const context = uni.createCanvasContext('mycanvas')
 							context.draw() // 先清空画布
 							context.fillRect(0, 0, 750 * factor, picHeight * factor)
-							context.drawImage('../../static/sharebg.png', 0, 0, picWidth, picHeight);
+							context.drawImage('../../../static/sharebg.png', 0, 0, picWidth, picHeight);
 							context.setFillStyle('black')
 							self.roundRect(context, 30*factor, 220 * factor, 690 * factor, 1072 * factor, 40 * factor) // 绘制半透明的圆角背景
 							
