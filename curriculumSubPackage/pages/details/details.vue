@@ -36,7 +36,7 @@
 							<view class="img">
 								<image :src="collectionStatus?active:unactive"></image>
 							</view>
-							<text>收藏</text>
+							<text>{{collectionStatus?'已收藏':'收藏'}}</text>
 						</view>
 					</view>
 				</view>
@@ -69,9 +69,13 @@
 						<image v-if="item.portrait&&item.portrait.length" :src="item.portrait[0]"></image>
 						<text>{{item.lecturerName}}</text>
 					</view>
-					<view class="btn" @click="goToLearn">
+					<view class="btn">
 						<text>学习</text>
 					</view>
+				</view>
+				<view class="vip" v-if='item.isVipCourse'>
+					<image v-if='item.isVipCourse && vip' :src="unlock" />
+					<image v-else :src="lock" />
 				</view>
 			</view>
 		</view>
@@ -128,7 +132,10 @@
 				recommendedList:[],//推荐课程
 				timetableRoot:{}, //
 				timetableList:[],//课表弹框数据
-				play: false
+				play: false,
+				vip:true,//当前哦用户是否是vip
+				lock: '../../../static/vip-lock.png',
+				unlock: '../../../static/vip-unlock.png',
 			}
 		},
 		onLoad(options) {
@@ -235,9 +242,6 @@
 					let res= await Curriculum.operateCollections(this.curriculumInfo.objectId);
 					this.collectionStatus=res
 				};
-			},
-			goToLearn() {
-				console.log('wwww')
 			},
 			back() {
 				uni.navigateBack({
@@ -367,6 +371,7 @@
 				}
 			}
 			.recommend-item {
+				position: relative;
 				width: 690rpx;
 				height: 220rpx;
 				background: #fff;
@@ -420,6 +425,15 @@
 						text-align: center;
 						line-height: 40rpx;
 					}
+				}
+				.vip {
+					position: absolute;
+					top: -6rpx;
+					right: -6rpx;
+				}
+				.vip image {
+					width: 116rpx;
+					height: 116rpx;
 				}
 			}
 		}
