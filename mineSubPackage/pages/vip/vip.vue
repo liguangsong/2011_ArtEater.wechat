@@ -15,7 +15,7 @@
 							<view>侍朋雁</view>
 							<view>铂金VIP</view>
 						</view>
-						<view class="vip-btn">
+						<view class="vip-btn" @click='showFixed = true'>
 							<text>续费</text>
 						</view>
 					</view>
@@ -46,19 +46,85 @@
 										<text>¥498</text>
 										<text>¥678</text>
 									</view>
-									<view class="vip-btn">
+									<view class="vip-btn" @click='showFixed = true'>
 										<text>续费</text>
 									</view>
 								</view>
 							</view>
 						</view>
 						<view class="list">
-							<view class="item" v-for='(item,i) in [1,2,3,5,6,7,8]' :keys='i'>
+							<view class="item">
 								<view class="item-img">
 									<image src="../../static/icon.png"></image>
 								</view>
 								<view class="item-title">
 									VIP课程畅听
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									题库一卡通
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									课堂福利
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									独家工具书
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									专属备考顾问
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									备考学习群
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									专属头像勋章
 								</view>
 								<view class="item-txt">
 									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
@@ -74,7 +140,7 @@
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
-									<text>黑金VIP</text>
+									<text>铂金VIP</text>
 								</view>
 								<view class="viewItem-vip-txt">
 									<text>黑金VIP共享7项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text>
@@ -84,19 +150,63 @@
 										<text>¥498</text>
 										<text>¥678</text>
 									</view>
-									<view class="vip-btn">
+									<view class="vip-btn" @click='showFixed = true'>
 										<text>续费</text>
 									</view>
 								</view>
 							</view>
 						</view>
 						<view class="list">
-							<view class="item" v-for='(item,i) in [1,2,3,5,6]' :keys='i'>
+							<view class="item">
 								<view class="item-img">
 									<image src="../../static/icon.png"></image>
 								</view>
 								<view class="item-title">
 									VIP课程畅听
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									课堂福利
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									独家工具书
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									专属备考顾问
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									专属头像勋章
 								</view>
 								<view class="item-txt">
 									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
@@ -112,7 +222,7 @@
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
-									<text>黑金VIP</text>
+									<text>白银VIP</text>
 								</view>
 								<view class="viewItem-vip-txt">
 									<text>黑金VIP共享7项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text>
@@ -122,19 +232,41 @@
 										<text>¥498</text>
 										<text>¥678</text>
 									</view>
-									<view class="vip-btn">
+									<view class="vip-btn" @click='showFixed = true'>
 										<text>续费</text>
 									</view>
 								</view>
 							</view>
 						</view>
 						<view class="list">
-							<view class="item" v-for='(item,i) in [1,2,3]' :keys='i'>
+							<view class="item">
 								<view class="item-img">
 									<image src="../../static/icon.png"></image>
 								</view>
 								<view class="item-title">
-									VIP课程畅听
+									题库一卡通
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									课堂福利
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									专属头像勋章
 								</view>
 								<view class="item-txt">
 									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
@@ -149,67 +281,41 @@
 		<view class="fixed" :class='{leval: showFixed}'>
 			<view class="bg" @click='showFixed = false'></view>
 			<view class="fixed-bottom">
-				<view @click='showFixed = !showFixed'>限时优惠498，立即畅想课程</view>
+				<view @click='changeShowFixed'>{{showFixed ? '' : '限时优惠498，'}}立即畅想课程</view>
 			</view>
 			<view class="openfixed">
 				<view class="openfixed-title">
 					食艺兽大会员
 				</view>
 				<view class="openbox">
-			
-						<view class="list">
-							<view class="item heijin">
-								<view class="img">
-									<image class='imgbg' src="../../static/heijin.png"></image>
-									<!-- <image class='righttop' src="../../static/bojin.png"></image> -->
+					<view class="list">
+						<view class="item"
+							v-for='(item,i) in list'
+							:keys='item.id'
+							:class='{heijin: item.surfaceId == 2, bojin: item.surfaceId == 1, baiyin: item.surfaceId == 0}'
+							@click='active = i'
+						>
+							<view class="img" :class='{active: active == i}'>
+								<image class='imgbg' :src="item.surface"></image>
+								<image class='righttop' v-if='item.preferentialPrice' src="../../static/time.png"></image>
+							</view>
+							<view class="info">
+								<view class="title">
+									<text>{{item.memberName}}</text>
 								</view>
-								<view class="info">
-									<view class="title">
-										<text>年度大会员</text>
-									</view>
-									<view class="price">
-										<text class='discount'>¥498</text>
-										<text class='old-price'>¥698</text>
-									</view>
+								<view class="price">
+									<text class='discount'>¥{{item.preferentialPrice}}</text>
+									<text class='old-price' style='text-decoration: line-through;;'>¥{{item.memberPrice}}</text>
 								</view>
 							</view>
-							<view class="item bojin">
-								<view class="img">
-									<image class='imgbg' src="../../static/bojin.png"></image>
-									<!-- <image class='righttop' src="../../static/bojin.png"></image> -->
-								</view>
-								<view class="info">
-									<view class="title">
-										<text >年度大会员</text>
-									</view>
-									<view class="price">
-										<text class='discount'>¥498</text>
-										<text class='old-price'>¥698</text>
-									</view>
-								</view>
-							</view>
-							<view class="item baiyin">
-								<view class="img">
-									<image class='imgbg' src="../../static/baiyin.png"></image>
-									<!-- <image class='righttop' src="../../static/bojin.png"></image> -->
-								</view>
-								<view class="info">
-									<view class="title">
-										<text >年度大会员</text>
-									</view>
-									<view class="price">
-										<text class='discount'>¥498</text>
-										<text class='old-price'>¥698</text>
-									</view>
-								</view>
-							</view>
-						</view>
+						</view>					
+					</view>
 				</view>
 				<view class="buy-info">
 					<view class="buy-title">购买说明</view>
 					<view class="buy-info-item">
 						<view>
-							1.自开通之日起一年内，为您的有效服务期，
+							1.{{list[active].explain}}
 						</view>
 						<view>
 							可享受该计划对应服务权益
@@ -242,14 +348,59 @@
 	export default {
 		data() {
 			return {
-				showFixed: false
+				showFixed: false,
+				list: null,
+				active: 0,
 			}
 		},
 		components: {
 			Navbar
 		},
+		async created() {
+			var query = new this.Parse.Query('setMember')
+			this.list = await query.find();
+			console.log(this.list);
+		},
 		methods: {
-			
+			changeShowFixed() {
+				if (!this.showFixed) {
+					this.showFixed = true;
+					return ;
+				}
+				this.payment()
+			},
+			payment() {
+				var cash = this.list[active].preferentialPrice || this.list[active].memberPrice;
+				cash *= 100;
+				if(cash == 0){
+					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss')+GetRandomNum(5)
+					self.PayCallBack(orderNo, _subjectId, _subjectName)
+				} else {
+					this.Parse.Cloud.run('initiatePayment',
+						{price: cash,},
+						{sessionToken: user.get('sessToken'),}).then(res=>{
+						var payload = res.payload
+						var tradeId = res.tradeId
+						uni.requestPayment({
+							appId: payload.appId,
+							timeStamp: payload.timeStamp,
+							nonceStr: payload.nonceStr,
+							package: payload.package,
+							signType: payload.signType,
+							paySign: payload.paySign,
+							success (res) {
+								self.PayCallBack(tradeId, _subjectId, _subjectName)
+							},
+							fail (res) {
+							uni.hideLoading()
+							self.loading = false
+							console.log("支付失败"+ JSON.stringify(res))
+							}
+						})
+					})
+				}
+				
+			}
 		}
 	}
 </script>
@@ -567,17 +718,22 @@
 							left: 0;
 							width: 100%;
 							height: 100%;
+							border-radius: 20rpx;
+							overflow: hidden;
 							.imgbg {
 								width: 100%;
 								height: 100%;
 							}
 							.righttop {
-								width: 116rpx;
-								height: 116rpx;
+								width: 110rpx;
+								height: 110rpx;
 								position: absolute;
-								top: 0;
-								right: 0;
+								top: 4rpx;
+								right: 4rpx;
 							}
+						}
+						.active {
+							box-shadow: 0 0 10rpx 8rpx rgba(0,0,0,.3) inset;
 						}
 						.info {
 							position: relative;
@@ -599,7 +755,6 @@
 									font-weight: 600;
 									line-height: 44rpx;
 									margin-left: 48rpx;
-									text-direction: line-through;
 								}
 							}
 						}
@@ -615,6 +770,7 @@
 				font-weight: 400;
 				color: #995D05;
 				line-height: 30rpx;
+				padding: 0 50rpx;
 				.buy-title {
 					font-size: 24rpx;
 					font-weight: 500;
