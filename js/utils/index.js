@@ -1,5 +1,6 @@
 import Parse from '@/parse/index.js'
 import store from '@/store'
+import { dateFormat, GetRandomNum} from '../../js/common.js'
 export default {
 	async getcount() {
 		let userInfo={},msgCount= 0,couponCount= 0;
@@ -29,5 +30,39 @@ export default {
 				msgCount,
 				couponCount
 			};
+	},
+	initiatePayment(prePayInfo,that,sFun) {
+		let user = Parse.User.current();
+		let cash=prePayInfo.cash * 100;
+		if(cash == 0){
+			var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss')+GetRandomNum(5);
+			that.PayCallBack(orderNo)
+		} else {
+			Parse.Cloud.run('initiatePayment',
+				{price: cash},
+				{sessionToken: user.get('sessToken')}).then(async res=>{
+				var payload = res.payload
+				var tradeId = res.tradeId
+				uni.requestPayment({
+				  appId: payload.appId,
+				  timeStamp: payload.timeStamp,
+				  nonceStr: payload.nonceStr,
+				  package: payload.package,
+				  signType: payload.signType,
+				  paySign: payload.paySign,
+				  success (res) {
+					  that[sFun](tradeId)
+				  },
+				  fail (res) {
+					uni.hideLoading();
+					uni.showToast({
+						title:'支付失败',
+						icon:'none'
+					})
+					console.log("支付失败"+ JSON.stringify(res))
+				  }
+				})
+			})
+		}
 	}
 }
