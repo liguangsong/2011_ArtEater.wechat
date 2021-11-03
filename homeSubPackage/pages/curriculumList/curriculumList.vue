@@ -1,12 +1,14 @@
 <template>
 	<view>
-		<audition :list="curriculumList" v-if="curriculumList.length" @changeUrl="changeUrl"></audition>
+		<audition-learning :list="curriculumList" v-if="curriculumList.length&&moduleName=='正在学习'" @learnChangeUrl="changeUrl"></audition-learning>
+		<audition :list="curriculumList" v-else-if="curriculumList.length" @changeUrl="changeUrl"></audition>
 	</view>
 </template>
 
 <script>
 	import Curriculum from '@/js/utils/curriculum.js'
 	import audition from '@/components/audition/audition.vue'
+	import auditionLearning from '@/components/audition/auditionLearning.vue'
 	export default {
 		data() {
 			return {
@@ -15,7 +17,7 @@
 				curriculumList:[]
 			}
 		},
-		comments:{audition},
+		components:{audition,auditionLearning},
 		onLoad(options) {
 			this.moduleName=options.moduleName;
 			uni.setNavigationBarTitle({
@@ -26,19 +28,26 @@
 		}
 		},
 		async onShow() {
-			if(this.moduleName!='免费试听'){
-				await this.getModuleCurrList();
-			}else{
+			if(this.moduleName=='免费试听'){
 				await this.getFreeCurrList();
+			}else if(this.moduleName=='正在学习'){
+				await this.getLearning();
+			}else{
+				await this.getModuleCurrList();
 			}
 			
 		},
 		methods: {
 			async changeUrl(item) {
 				//配置url
-				let toUrl=await Curriculum.configUrl(item);
-				// 记录点击量
-				await Curriculum.recordClickNum(item.objectId);
+				let toUrl='';
+				if(this.moduleName=='正在学习'){
+					toUrl=await Curriculum.configUrl({course:item});
+				}else{
+					toUrl=await Curriculum.configUrl(item);
+					// 记录点击量
+					await Curriculum.recordClickNum(item.objectId);
+				}
 				uni.navigateTo({
 					url:toUrl
 				})
@@ -55,6 +64,12 @@
 				this.curriculumList=[];
 				let res=await Curriculum.getFreeCurrList(1);
 				this.curriculumList=res;
+			},
+			async getLearning() {
+				this.curriculumList=[];
+				let res=await Curriculum.getLearning();
+				this.curriculumList=res;
+				console.log(this.curriculumList,6667777)
 			}
 		}
 	}

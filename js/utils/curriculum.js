@@ -57,6 +57,38 @@ export default {
 		    	return [];
 		    }
 	},
+	//初始获取正在学习的列表
+	async getLearning(){
+		let curriculum= new Parse.Query('coursesModule');
+		let openid= uni.getStorageSync('openid');
+		let learning= new Parse.Query('Learning');
+			learning.equalTo('openId',openid);
+			let res = await learning.first();
+			let ids=res.get('ids');
+			if(ids){
+				 curriculum.containedIn('objectId',ids);
+				let  course=await curriculum.find();
+				   if(course){
+					   let newres=[]
+					   ids.forEach(s=>{
+						   course.forEach(v=>{
+							   v = v.toJSON();
+							   v.objectId==s && newres.push(v);
+						   })
+					   })
+					   res=newres;
+				   }else{
+					   res = []
+				   }
+			}else{
+				res = []
+			}
+			return res;
+	},
+	//添加正在学习数据****************
+	async operateCollections(id) {
+		
+	},
 	// 配置模块的课程被点击时的跳转url
 	async configUrl(item) {
 		let toUrl=''
