@@ -44,7 +44,7 @@
 			</view>
 			<!-- 音频 -->
 			<view class="mp3" v-if="curriculumInfo.kind&&curriculumInfo.kind==2">
-				<k-audio :play.sync='play' :src='curriculumInfo.link'></k-audio>
+				<k-audio :play.sync='play' :audioTimeTotal="curriculumInfo.getDurations" :src='curriculumInfo.link' @changeLearn="changeLearn"></k-audio>
 			</view>
 			<view class="br"></view>
 		</view>
@@ -113,6 +113,7 @@
 </template>
 
 <script>
+	import Utils from '@/js/utils/curriculum.js'
 	import Curriculum from '../../js/curriculum.js'
 	import kAudio from '../../../components/audio/audio.vue'
 	import kVideo from '../../../components/video/kVideo.vue'
@@ -183,6 +184,9 @@
 			
 		},
 		methods: {
+			async changeLearn(status) {
+				let res=await Utils.changeLearn(this.curriculumInfo.objectId,status);
+			},
 			// 获取详情
 			async getCurriculum() {
 				let res = await Curriculum.getCurriculum(this.objectId);

@@ -95,8 +95,8 @@
 		</view> -->
 		<!--热门专题 end-->
 		
-		<audition title="正在学习" :showMore="studyList.length>2" :list="studyList.slice(0,2)"></audition>
-		<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)" :showMore="1" v-for="(item,index) in moduleList" :key="index" @changeUrl="changeUrl" @checkMore="checkMore"></audition>
+		<audition-learning v-if="studyList.length" title="正在学习" :showMore="studyList.length>1" :list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore"></audition-learning>
+		<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)" :showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index" @changeUrl="changeUrl" @checkMore="checkMore"></audition>
 		<!--精品推荐 start-->
 		<view class="groupView" style="margin-top: 24rpx;">
 			<view class="headView">
@@ -294,12 +294,14 @@
 	import Tabbar from '@/components/tabBar/tabBar.vue'
 	import login from '../../components/login/login.vue'
 	import audition from '@/components/audition/audition.vue'
+	import auditionLearning from '@/components/audition/auditionLearning.vue'
 	import Curriculum from '@/js/utils/curriculum.js'
 	export default {
 		components:{
 			login,
 			'view-tabbar': Tabbar,
 			audition,
+			auditionLearning,
 			Navbar
 		},
 		data() {
@@ -328,32 +330,7 @@
 				windowHeight: 0,
 				msgCount: 0,
 				couponCount: 0,
-				studyList:[
-					{
-						type: 'mp4',
-						time: '6:31',
-						play_num: '12.1w',
-						tag_title: '这是副标题，一般是标签',
-						title: '先秦美术发展历程视频术发展历程视频',
-						img: '',
-						src: '3',
-					},{
-						type: 'mp4',
-						time: '6:31',
-						play_num: '12.1w',
-						tag_title: '这是副标题，一般是标签',
-						title: '先秦美术发展历程视频术发展历程视频',
-						img: '',
-						src: '2',
-					},{
-						type: 'mp4',
-						time: '6:31',
-						play_num: '12.1w',
-						tag_title: '这是副标题，一般是标签',
-						title: '先秦美术发展历程视频术发展历程视频',
-						img: '',
-						src: '1',
-					}],
+				studyList:[],
 				moduleList: []//动态模块
 			}
 		},
@@ -366,12 +343,13 @@
 					this.userInfo=res.userInfo;
 					this.msgCount=res.msgCount;
 					this.couponCount=res.couponCount;
+					// //获取本地正在学习的课程
+					this.getLearning();
 				}
 			    this.bindConfig();
 				//获取所有的模块
 				this.getModules();
-				// //获取本地正在学习的课程
-				// this.getLearning();
+				
 				
 		},
 		onLoad() {
@@ -422,6 +400,13 @@
 			})
 		},
 		methods: {
+			// 正在学习的item被点击时
+			async learnChangeUrl(item) {
+				let toUrl=await Curriculum.configUrl({course:item});
+				uni.navigateTo({
+					url:toUrl
+				})
+			},
 			async changeUrl(item) {
 				//配置url
 				let toUrl=await Curriculum.configUrl(item);
@@ -443,6 +428,12 @@
 					this.relationId=item.objectId;
 					this.toUrl = toUrl;
 				}
+			},
+			// 正在学习
+			async learnCheckMore(params) {
+				uni.navigateTo({
+					url:'/homeSubPackage/pages/curriculumList/curriculumList?&moduleName='+params.moduleName
+				})
 			},
 			async checkMore(params) {
 				if(this.userInfo&&this.userInfo.openid){
@@ -493,7 +484,9 @@
 			},
 			//正在学习
 			async getLearning() {
-				// let learning=uni.getStorageSync('userInfo').learning;
+				let res=await Curriculum.getLearning();
+				console.log(res,4567865)
+				    this.studyList=res;
 			},
 			//获取模块
 			async getModules() {
