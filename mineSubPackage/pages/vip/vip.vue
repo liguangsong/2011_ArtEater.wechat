@@ -7,12 +7,12 @@
 			<view class="box">
 				<view class="head">
 					<view class="image">
-						<image class="img" src="../../static/icon.png"></image>
+						<image class="img" :src="userInfo.avatarUrl"></image>
 						<image class='icon' src="../../static/icon.png"></image>
 					</view>
 					<view class="info">
 						<view class="txt">
-							<view>侍朋雁</view>
+							<view>{{userInfo.nickName}}</view>
 							<view>铂金VIP</view>
 						</view>
 						<view class="vip-btn" @click='showFixed = true'>
@@ -345,40 +345,64 @@
 
 <script>
 	import Navbar from '../../../components/navBar/navbar.vue'
+	import { dateFormat, GetRandomNum } from '../../../js/common.js'
 	export default {
 		data() {
 			return {
 				showFixed: false,
 				list: null,
 				active: 0,
+				userInfo: null,
 			}
 		},
 		components: {
 			Navbar
 		},
 		async created() {
+			var _this = this;
 			var query = new this.Parse.Query('setMember')
 			this.list = await query.find();
-			console.log(this.list);
+			// console.log(this.list[this.active]);
+			this.userInfo = this.Parse.User.current();
+			console.log(this.userInfo);
+			// uni.getStorage({
+			// 	key:'userInfo',
+			// 	success(u) {
+			// 		_this.userInfo  = u.data
+			// 	}
+			// })
+			this.createMember()
 		},
 		methods: {
 			changeShowFixed() {
+				var _this = this;
 				if (!this.showFixed) {
 					this.showFixed = true;
 					return ;
 				}
-				this.payment()
+				uni.showModal({
+					title: '提示',
+					content: `确定购买${_this.list[_this.active].attributes.memberName}吗？`,
+					success: (res) => {
+						if (res.confirm) {
+							this.payment()
+						}
+					}
+				})
 			},
+			// 支付
 			payment() {
-				var cash = this.list[active].preferentialPrice || this.list[active].memberPrice;
-				cash *= 100;
+				var user = this.Parse.User.current()
+				var cash = this.list[this.active].preferentialPrice || this.list[this.active].memberPrice;
+				cash = 0;
 				if(cash == 0){
-					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss')+GetRandomNum(5)
-					self.PayCallBack(orderNo, _subjectId, _subjectName)
+					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss')+GetRandomNum(5);
+					this.paymentSuccess(orderNo);
+					this.createOrder(orderNo);
 				} else {
 					this.Parse.Cloud.run('initiatePayment',
 						{price: cash,},
-						{sessionToken: user.get('sessToken'),}).then(res=>{
+						{sessionToken: user.get('sessToken')}).then(res=>{
 						var payload = res.payload
 						var tradeId = res.tradeId
 						uni.requestPayment({
@@ -388,18 +412,83 @@
 							package: payload.package,
 							signType: payload.signType,
 							paySign: payload.paySign,
-							success (res) {
-								self.PayCallBack(tradeId, _subjectId, _subjectName)
+							async success (res) {
+								await this.paymentFail(tradeId);
+								this.createOrder(tradeId)
+								console.log(1);
 							},
 							fail (res) {
-							uni.hideLoading()
-							self.loading = false
-							console.log("支付失败"+ JSON.stringify(res))
+								this.paymentSuccess();
+								console.log(2);
 							}
 						})
 					})
 				}
 				
+			},
+			// 支付成功
+			paymentSuccess(tradeId) {
+				this.getIntegral()
+			},
+			// 支付失败
+			paymentFail() {
+				
+			},
+			// 获取积分与赠送积分
+			async getIntegral() {				
+				await this.Parse.Config.get().then(async config=>{
+					var n = this.list[this.active].attributes.preferentialPrice || this.list[this.active].attributes.memberPrice;
+					this.userInfo.score = this.userInfo.score || 0 + parseInt(n * config.attributes.shopScore);
+					this.userInfo.set('score', this.userInfo.score);
+					this.userInfo.set('score_all', this.userInfo.score);
+					this.userInfo.save();
+					uni.setStorage({
+						key: 'userInfo',
+						data: this.userInfo
+					})
+				})
+			},
+			// 创建订单
+			createOrder(tradeId) {
+				var item = this.list[this.active];
+				var attr = item.attributes;
+				var dbOrder = this.Parse.Object.extend("Order")
+				var order = new dbOrder()
+				order.set('orderNo', tradeId)
+				order.set("subjectId",  item.id)
+				order.set("subjectName",  attr.memberName)
+				order.set("price",  attr.preferentialPrice || attr.memberPrice)
+				order.set("cash",  attr.preferentialPrice || attr.memberPrice)
+				order.set('couponAmount', 0)
+				order.set('scoreAmount', this.userInfo.score)
+				order.set('couponId', '')
+				order.set("openId", this.userInfo.openid)
+				order.set("state", 1)
+				order.set("wechatPayOrderId", '') // 支付流水号
+				order.save().then(_order => {
+					uni.showModal({
+						content:'恭喜，购买成功',
+						showCancel: false
+					})
+				},(error)=>{
+					uni.showModal({
+						content:'购买失败',
+						showCancel: false
+					})
+				})
+			},
+			// 创建会员
+			async createMember() {
+				var query = new this.Parse.Query('member');
+				query.equalTo("openid", this.userInfo.attributes.openid);
+				var results = await query.first();
+				// console.log(results);
+				if (results.length) {
+					
+				} else {
+					// 初次创建
+					
+				}
 			}
 		}
 	}
