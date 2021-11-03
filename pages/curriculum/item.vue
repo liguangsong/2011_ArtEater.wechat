@@ -18,7 +18,7 @@
 					<text v-else @click='unlockFn'>解锁</text>
 				</view>
 				<view class="btn study" v-else>
-					<text @click='jumpDefault'>学习</text>
+					<text @click='jumpDefault(item)'>学习</text>
 				</view>
 			</view>
 		</view>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+	import Curriculum from '@/js/utils/curriculum.js'
 	export default {
 		props: {
 			item: {
@@ -45,9 +46,10 @@
 			}
 		},
 		methods: {
-			jumpDefault(item) {
+			async jumpDefault(item) {
+				let toUrl=await Curriculum.configUrl({course:item})
 				uni.navigateTo({
-					url: '/curriculumSubPackage/pages/study/study?item='+JSON.stringify(item)
+					url:toUrl
 				})
 			},
 			unlockFn() {

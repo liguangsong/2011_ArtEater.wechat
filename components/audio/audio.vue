@@ -30,6 +30,11 @@ function sToHs(s) {
 }
 export default {
 	props: {
+		audioTimeTotal:{
+			type:String,
+			required:true,
+			default:''
+		},
 		play: {
 			type: Boolean,
 			required: true
@@ -100,7 +105,7 @@ export default {
 	data() {
 		return {
 			audioTimeUpdate: '00:00',
-			audioTimeTotal: '00:00',
+			// audioTimeTotal: '00:00',
 			innerAudioContext: null,
 			value: 0
 		};
@@ -141,24 +146,28 @@ export default {
 			innerAudioContext.autoplay = _this.autoplay;
 			innerAudioContext.loop = _this.loop;
 			
-			innerAudioContext.onCanplay(() => {
-				setTimeout(() => {
-					_this.audioTimeTotal = sToHs(Math.floor(innerAudioContext.duration * 1000));
-				}, 100)
-				_this.audioTimeTotal = sToHs(Math.floor(innerAudioContext.duration * 1000));
-			});
+			// innerAudioContext.onCanplay(() => {
+			// 	setTimeout(() => {
+			// 		_this.audioTimeTotal = sToHs(Math.floor(innerAudioContext.duration * 1000));
+			// 	}, 100)
+			// 	_this.audioTimeTotal = sToHs(Math.floor(innerAudioContext.duration * 1000));
+			// });
 			innerAudioContext.onPlay(() => {
+				console.log('刚开始')
 				_this.audioTimeUpdate = sToHs(Math.floor(innerAudioContext.currentTime * 1000));
 				_this.audioPlay();
+			    _this.$emit('changeLearn',true)
 			});
 			innerAudioContext.onTimeUpdate(function() {
 				_this.audioTimeUpdate = sToHs(Math.floor(innerAudioContext.currentTime * 1000));
 				_this.value = (innerAudioContext.currentTime / innerAudioContext.duration) * 100; // 不在拖动状态下
 			});
 			innerAudioContext.onEnded(function() {
+				console.log('结束')
 				_this.audioTimeUpdate = sToHs(Math.floor(innerAudioContext.duration * 1000));
 				_this.value = 100;
 				_this.audioPause();
+				_this.$emit('changeLearn',false)
 			});
 			_this.innerAudioContext = innerAudioContext;
 		},

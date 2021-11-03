@@ -1,6 +1,6 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<view class="" @click="gotoDetail">
+		<view class="">
 			<Item v-for='(item,i) in list' v-if='!item.isHideCourse' :key='i' :item='item'/>
 		</view>
 		<view-tabbar :current="1" @tabbarChange="tabbarChange"></view-tabbar>
@@ -37,11 +37,6 @@
 			});	
 		},
 		methods: {
-			gotoDetail() {
-				uni.navigateTo({
-					url:'/curriculumSubPackage/pages/curriculumDetail/curriculumDetail'
-				})
-			},
 			tabbarChange(item) {
 				uni.switchTab({
 					url:item.path

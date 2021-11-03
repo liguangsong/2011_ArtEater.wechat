@@ -86,8 +86,25 @@ export default {
 			return res;
 	},
 	//添加正在学习数据****************
-	async operateCollections(id) {
-		
+	async changeLearn(id,status) {
+		let openid= uni.getStorageSync('openid');
+		let learning= new Parse.Query('Learning');
+			learning.equalTo('openId',openid);
+			let res = await learning.first();
+			let ids=res.get('ids');
+			if(ids){
+				if(ids.includes(id)&&status!=true){
+				   ids.splice(ids.indexOf(id),1)
+				}
+				if(!ids.includes(id)&&status==true){
+					ids=[id,...ids];
+				}
+			}else{
+				ids=[id]
+			}
+			res.set('ids',ids);
+			console.log(ids),1122233;
+			await res.save()
 	},
 	// 配置模块的课程被点击时的跳转url
 	async configUrl(item) {
