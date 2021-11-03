@@ -350,8 +350,10 @@
 					var query = new this.Parse.Query('member');
 					query.equalTo("openId", this.userInfo.openid);
 					var results = await query.first();
-					console.log(results);
-					app.globalData.member = JSON.parse(JSON.stringify(results));
+					if(results){
+						app.globalData.member = JSON.parse(JSON.stringify(results));
+					}
+					
 				}
 			    this.bindConfig();
 				//获取所有的模块
