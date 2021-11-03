@@ -360,6 +360,7 @@
 			Navbar
 		},
 		async created() {
+			let app = getApp();
 			var _this = this;
 			uni.getStorage({
 				key:'userInfo',

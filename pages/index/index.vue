@@ -335,6 +335,7 @@
 			}
 		},
 		async onShow() {
+			let app = getApp();
 			uni.hideTabBar({
 				animation: false
 			});	
@@ -345,6 +346,12 @@
 					this.couponCount=res.couponCount;
 					// //获取本地正在学习的课程
 					this.getLearning();
+					
+					var query = new this.Parse.Query('member');
+					query.equalTo("openId", this.userInfo.openid);
+					var results = await query.first();
+					console.log(results);
+					app.globalData.member = JSON.parse(JSON.stringify(results));
 				}
 			    this.bindConfig();
 				//获取所有的模块
