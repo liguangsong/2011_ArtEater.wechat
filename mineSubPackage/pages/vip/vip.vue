@@ -7,15 +7,15 @@
 			<view class="box">
 				<view class="head">
 					<view class="image">
-						<image class="img" src="../../static/icon.png"></image>
+						<image class="img" :src="userInfo.avatarUrl"></image>
 						<image class='icon' src="../../static/icon.png"></image>
 					</view>
 					<view class="info">
 						<view class="txt">
-							<view>侍朋雁</view>
+							<view>{{userInfo.nickName}}</view>
 							<view>铂金VIP</view>
 						</view>
-						<view class="vip-btn">
+						<view class="vip-btn" @click='showFixed = true'>
 							<text>续费</text>
 						</view>
 					</view>
@@ -46,19 +46,85 @@
 										<text>¥498</text>
 										<text>¥678</text>
 									</view>
-									<view class="vip-btn">
+									<view class="vip-btn" @click='showFixed = true'>
 										<text>续费</text>
 									</view>
 								</view>
 							</view>
 						</view>
 						<view class="list">
-							<view class="item" v-for='(item,i) in [1,2,3,5,6,7,8]' :keys='i'>
+							<view class="item">
 								<view class="item-img">
 									<image src="../../static/icon.png"></image>
 								</view>
 								<view class="item-title">
 									VIP课程畅听
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									题库一卡通
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									课堂福利
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									独家工具书
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									专属备考顾问
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									备考学习群
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									专属头像勋章
 								</view>
 								<view class="item-txt">
 									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
@@ -74,7 +140,7 @@
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
-									<text>黑金VIP</text>
+									<text>铂金VIP</text>
 								</view>
 								<view class="viewItem-vip-txt">
 									<text>黑金VIP共享7项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text>
@@ -84,19 +150,63 @@
 										<text>¥498</text>
 										<text>¥678</text>
 									</view>
-									<view class="vip-btn">
+									<view class="vip-btn" @click='showFixed = true'>
 										<text>续费</text>
 									</view>
 								</view>
 							</view>
 						</view>
 						<view class="list">
-							<view class="item" v-for='(item,i) in [1,2,3,5,6]' :keys='i'>
+							<view class="item">
 								<view class="item-img">
 									<image src="../../static/icon.png"></image>
 								</view>
 								<view class="item-title">
 									VIP课程畅听
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									课堂福利
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									独家工具书
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									专属备考顾问
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									专属头像勋章
 								</view>
 								<view class="item-txt">
 									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
@@ -112,7 +222,7 @@
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
-									<text>黑金VIP</text>
+									<text>白银VIP</text>
 								</view>
 								<view class="viewItem-vip-txt">
 									<text>黑金VIP共享7项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text>
@@ -122,19 +232,41 @@
 										<text>¥498</text>
 										<text>¥678</text>
 									</view>
-									<view class="vip-btn">
+									<view class="vip-btn" @click='showFixed = true'>
 										<text>续费</text>
 									</view>
 								</view>
 							</view>
 						</view>
 						<view class="list">
-							<view class="item" v-for='(item,i) in [1,2,3]' :keys='i'>
+							<view class="item">
 								<view class="item-img">
 									<image src="../../static/icon.png"></image>
 								</view>
 								<view class="item-title">
-									VIP课程畅听
+									题库一卡通
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									课堂福利
+								</view>
+								<view class="item-txt">
+									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
+								</view>
+							</view>
+							<view class="item">
+								<view class="item-img">
+									<image src="../../static/icon.png"></image>
+								</view>
+								<view class="item-title">
+									专属头像勋章
 								</view>
 								<view class="item-txt">
 									关于会员权益中的描述性文字，关于会员权益中的描述性文字，关于会员权益中的描述性文字。
@@ -149,67 +281,41 @@
 		<view class="fixed" :class='{leval: showFixed}'>
 			<view class="bg" @click='showFixed = false'></view>
 			<view class="fixed-bottom">
-				<view @click='showFixed = !showFixed'>限时优惠498，立即畅想课程</view>
+				<view @click='changeShowFixed'>{{showFixed ? '' : '限时优惠498，'}}立即畅想课程</view>
 			</view>
 			<view class="openfixed">
 				<view class="openfixed-title">
 					食艺兽大会员
 				</view>
 				<view class="openbox">
-			
-						<view class="list">
-							<view class="item heijin">
-								<view class="img">
-									<image class='imgbg' src="../../static/heijin.png"></image>
-									<!-- <image class='righttop' src="../../static/bojin.png"></image> -->
+					<view class="list">
+						<view class="item"
+							v-for='(item,i) in list'
+							:keys='item.id'
+							:class='{heijin: item.surfaceId == 2, bojin: item.surfaceId == 1, baiyin: item.surfaceId == 0}'
+							@click='active = i'
+						>
+							<view class="img" :class='{active: active == i}'>
+								<image class='imgbg' :src="item.surface"></image>
+								<image class='righttop' v-if='item.preferentialPrice' src="../../static/time.png"></image>
+							</view>
+							<view class="info">
+								<view class="title">
+									<text>{{item.memberName}}</text>
 								</view>
-								<view class="info">
-									<view class="title">
-										<text>年度大会员</text>
-									</view>
-									<view class="price">
-										<text class='discount'>¥498</text>
-										<text class='old-price'>¥698</text>
-									</view>
+								<view class="price">
+									<text class='discount'>¥{{item.preferentialPrice}}</text>
+									<text class='old-price' style='text-decoration: line-through;;'>¥{{item.memberPrice}}</text>
 								</view>
 							</view>
-							<view class="item bojin">
-								<view class="img">
-									<image class='imgbg' src="../../static/bojin.png"></image>
-									<!-- <image class='righttop' src="../../static/bojin.png"></image> -->
-								</view>
-								<view class="info">
-									<view class="title">
-										<text >年度大会员</text>
-									</view>
-									<view class="price">
-										<text class='discount'>¥498</text>
-										<text class='old-price'>¥698</text>
-									</view>
-								</view>
-							</view>
-							<view class="item baiyin">
-								<view class="img">
-									<image class='imgbg' src="../../static/baiyin.png"></image>
-									<!-- <image class='righttop' src="../../static/bojin.png"></image> -->
-								</view>
-								<view class="info">
-									<view class="title">
-										<text >年度大会员</text>
-									</view>
-									<view class="price">
-										<text class='discount'>¥498</text>
-										<text class='old-price'>¥698</text>
-									</view>
-								</view>
-							</view>
-						</view>
+						</view>					
+					</view>
 				</view>
 				<view class="buy-info">
 					<view class="buy-title">购买说明</view>
 					<view class="buy-info-item">
 						<view>
-							1.自开通之日起一年内，为您的有效服务期，
+							1.{{list[active].explain}}
 						</view>
 						<view>
 							可享受该计划对应服务权益
@@ -239,17 +345,151 @@
 
 <script>
 	import Navbar from '../../../components/navBar/navbar.vue'
+	import { dateFormat, GetRandomNum } from '../../../js/common.js'
 	export default {
 		data() {
 			return {
-				showFixed: false
+				showFixed: false,
+				list: null,
+				active: 0,
+				userInfo: null,
 			}
 		},
 		components: {
 			Navbar
 		},
+		async created() {
+			var _this = this;
+			var query = new this.Parse.Query('setMember')
+			this.list = await query.find();
+			// console.log(this.list[this.active]);
+			this.userInfo = this.Parse.User.current();
+			console.log(this.userInfo);
+			// uni.getStorage({
+			// 	key:'userInfo',
+			// 	success(u) {
+			// 		_this.userInfo  = u.data
+			// 	}
+			// })
+			this.createMember()
+		},
 		methods: {
-			
+			changeShowFixed() {
+				var _this = this;
+				if (!this.showFixed) {
+					this.showFixed = true;
+					return ;
+				}
+				uni.showModal({
+					title: '提示',
+					content: `确定购买${_this.list[_this.active].attributes.memberName}吗？`,
+					success: (res) => {
+						if (res.confirm) {
+							this.payment()
+						}
+					}
+				})
+			},
+			// 支付
+			payment() {
+				var user = this.Parse.User.current()
+				var cash = this.list[this.active].preferentialPrice || this.list[this.active].memberPrice;
+				cash = 0;
+				if(cash == 0){
+					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss')+GetRandomNum(5);
+					this.paymentSuccess(orderNo);
+					this.createOrder(orderNo);
+				} else {
+					this.Parse.Cloud.run('initiatePayment',
+						{price: cash,},
+						{sessionToken: user.get('sessToken')}).then(res=>{
+						var payload = res.payload
+						var tradeId = res.tradeId
+						uni.requestPayment({
+							appId: payload.appId,
+							timeStamp: payload.timeStamp,
+							nonceStr: payload.nonceStr,
+							package: payload.package,
+							signType: payload.signType,
+							paySign: payload.paySign,
+							async success (res) {
+								await this.paymentFail(tradeId);
+								this.createOrder(tradeId)
+								console.log(1);
+							},
+							fail (res) {
+								this.paymentSuccess();
+								console.log(2);
+							}
+						})
+					})
+				}
+				
+			},
+			// 支付成功
+			paymentSuccess(tradeId) {
+				this.getIntegral()
+			},
+			// 支付失败
+			paymentFail() {
+				
+			},
+			// 获取积分与赠送积分
+			async getIntegral() {				
+				await this.Parse.Config.get().then(async config=>{
+					var n = this.list[this.active].attributes.preferentialPrice || this.list[this.active].attributes.memberPrice;
+					this.userInfo.score = this.userInfo.score || 0 + parseInt(n * config.attributes.shopScore);
+					this.userInfo.set('score', this.userInfo.score);
+					this.userInfo.set('score_all', this.userInfo.score);
+					this.userInfo.save();
+					uni.setStorage({
+						key: 'userInfo',
+						data: this.userInfo
+					})
+				})
+			},
+			// 创建订单
+			createOrder(tradeId) {
+				var item = this.list[this.active];
+				var attr = item.attributes;
+				var dbOrder = this.Parse.Object.extend("Order")
+				var order = new dbOrder()
+				order.set('orderNo', tradeId)
+				order.set("subjectId",  item.id)
+				order.set("subjectName",  attr.memberName)
+				order.set("price",  attr.preferentialPrice || attr.memberPrice)
+				order.set("cash",  attr.preferentialPrice || attr.memberPrice)
+				order.set('couponAmount', 0)
+				order.set('scoreAmount', this.userInfo.score)
+				order.set('couponId', '')
+				order.set("openId", this.userInfo.openid)
+				order.set("state", 1)
+				order.set("wechatPayOrderId", '') // 支付流水号
+				order.save().then(_order => {
+					uni.showModal({
+						content:'恭喜，购买成功',
+						showCancel: false
+					})
+				},(error)=>{
+					uni.showModal({
+						content:'购买失败',
+						showCancel: false
+					})
+				})
+			},
+			// 创建会员
+			async createMember() {
+				var query = new this.Parse.Query('member');
+				query.equalTo("openid", this.userInfo.attributes.openid);
+				var results = await query.first();
+				// console.log(results);
+				if (results.length) {
+					
+				} else {
+					// 初次创建
+					
+				}
+			}
 		}
 	}
 </script>
@@ -567,17 +807,22 @@
 							left: 0;
 							width: 100%;
 							height: 100%;
+							border-radius: 20rpx;
+							overflow: hidden;
 							.imgbg {
 								width: 100%;
 								height: 100%;
 							}
 							.righttop {
-								width: 116rpx;
-								height: 116rpx;
+								width: 110rpx;
+								height: 110rpx;
 								position: absolute;
-								top: 0;
-								right: 0;
+								top: 4rpx;
+								right: 4rpx;
 							}
+						}
+						.active {
+							box-shadow: 0 0 10rpx 8rpx rgba(0,0,0,.3) inset;
 						}
 						.info {
 							position: relative;
@@ -599,7 +844,6 @@
 									font-weight: 600;
 									line-height: 44rpx;
 									margin-left: 48rpx;
-									text-direction: line-through;
 								}
 							}
 						}
@@ -615,6 +859,7 @@
 				font-weight: 400;
 				color: #995D05;
 				line-height: 30rpx;
+				padding: 0 50rpx;
 				.buy-title {
 					font-size: 24rpx;
 					font-weight: 500;

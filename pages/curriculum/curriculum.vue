@@ -10,7 +10,6 @@
 <script>
 	import Tabbar from '@/components/tabBar/tabBar.vue';
 	import Item from './item.vue'
-	import Audition from '@/components/audition/audition.vue'
 	export default {
 		data() {
 			return {
@@ -21,13 +20,11 @@
 		},
 		components:{
 			'view-tabbar': Tabbar,
-			Item,
-			Audition
+			Item
 		},
 		async created() {
 			var query = new this.Parse.Query('coursesModule')
 			this.list = await query.find();
-			console.log(this.list);
 		},
 		onLoad() {
 			let app = getApp();
@@ -54,8 +51,3 @@
 	}
 </script>
 
-<style lang="scss" scoped>
-.myPage{
-	
-}
-</style>

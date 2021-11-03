@@ -39,7 +39,6 @@
 		},
 		data() {
 			return {
-				// random: Math.random() > 0.5 ? true : false,
 				vip: false,
 				lock: '../../static/vip-lock.png',
 				unlock: '../../static/vip-unlock.png',

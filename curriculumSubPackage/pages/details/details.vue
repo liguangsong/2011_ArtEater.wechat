@@ -259,7 +259,6 @@
 				console.log(init,7788)
 				if(init){
 					let res= await Curriculum.getCollectionstatus(this.curriculumInfo.objectId);
-					console.log(res,4444);
 					this.collectionStatus=res;
 				}else{
 					let res= await Curriculum.operateCollections(this.curriculumInfo.objectId);
@@ -344,8 +343,6 @@
 						.img {
 							width: 64rpx;
 							height: 64rpx;
-							/* border: 1px dashed #ccc; */
-							/* padding: 7rpx; */
 						}
 						image {
 							width: 64rpx;
