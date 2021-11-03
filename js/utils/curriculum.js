@@ -93,17 +93,24 @@ export default {
 			let res = await learning.first();
 			let ids=res.get('ids');
 			if(ids){
+				// 数据库有课程时 
 				if(ids.includes(id)&&status!=true){
+					// 如果有当前学习的课程学习完需要删除
 				   ids.splice(ids.indexOf(id),1)
-				}
-				if(!ids.includes(id)&&status==true){
+				}else if(ids.includes(id)&&status==true){
+					// 如果有当前学习的课程未学习完需要取出来放到最前
+				   let did=ids.splice(ids.indexOf(id),1);
+				       ids=[...did,...ids];
+				}else if(!ids.includes(id)&&status==true){
+					//如果数据库没当前的学习课程，需要存直接存
 					ids=[id,...ids];
 				}
-			}else{
+			}else if(!ids&&status==true){
+				//如果没学习过课程则直接存进去
 				ids=[id]
 			}
 			res.set('ids',ids);
-			console.log(ids),1122233;
+			console.log(ids,1212121+'qqqqq');
 			await res.save()
 	},
 	// 配置模块的课程被点击时的跳转url

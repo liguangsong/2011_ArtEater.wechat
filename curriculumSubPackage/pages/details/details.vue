@@ -10,7 +10,7 @@
 			</view>
 			<!-- 视频 -->
 			<view class='mp4' v-if="curriculumInfo.kind&&curriculumInfo.kind==1">
-				<k-video :src='curriculumInfo.link'></k-video>
+				<k-video :src='curriculumInfo.link' @changeLearn="changeLearn"></k-video>
 			</view>
 			<view class="info">
 				<view class="info-title">{{curriculumInfo.subjectName}}</view>

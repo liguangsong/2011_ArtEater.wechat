@@ -128,6 +128,7 @@
 			},
 			// 视频播放触发
 			videoPlayFn() {
+				this.$emit('changeLearn',true);
 				this.play = true;
 				if (this.warning) {
 					this.warning = false;
@@ -148,6 +149,7 @@
 			},
 			// 视频播放结束触发
 			endedFn() {
+				this.$emit('changeLearn',false);
 				this.play = false;
 			},
 			// 缓冲时触发
