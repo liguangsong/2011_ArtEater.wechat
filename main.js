@@ -11,6 +11,9 @@ Vue.prototype.$store = store
 Vue.prototype.Parse = parse
 Vue.BaseConfig = config
 
+let Member = parse.Object.extend("member");
+Vue.prototype.$member = JSON.parse(JSON.stringify(new Member()))
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'

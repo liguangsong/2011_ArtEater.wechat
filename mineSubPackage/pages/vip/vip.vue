@@ -351,8 +351,9 @@
 			return {
 				showFixed: false,
 				list: null,
-				active: 0,
+				active: 3,
 				userInfo: null,
+				user: null,
 			}
 		},
 		components: {
@@ -360,29 +361,32 @@
 		},
 		async created() {
 			var _this = this;
+			uni.getStorage({
+				key:'userInfo',
+				success(u) {
+					_this.userInfo  = u.data;
+				}
+			})
 			var query = new this.Parse.Query('setMember')
 			this.list = await query.find();
-			// console.log(this.list[this.active]);
-			this.userInfo = this.Parse.User.current();
-			console.log(this.userInfo);
-			// uni.getStorage({
-			// 	key:'userInfo',
-			// 	success(u) {
-			// 		_this.userInfo  = u.data
-			// 	}
-			// })
-			this.createMember()
+			this.list = this.list.map(item => JSON.parse(JSON.stringify(item)));
 		},
 		methods: {
+			// 获取会员截止日期的毫秒数
+			getTime(n) {
+				var date= new Date();
+				var month = date.getMonth() + 1;
+				date.setMonth(month + Number(n) - 1)
+				return date.getTime()
+			},
 			changeShowFixed() {
-				var _this = this;
 				if (!this.showFixed) {
 					this.showFixed = true;
 					return ;
 				}
 				uni.showModal({
 					title: '提示',
-					content: `确定购买${_this.list[_this.active].attributes.memberName}吗？`,
+					content: `确定购买${this.list[this.active].memberName}吗？`,
 					success: (res) => {
 						if (res.confirm) {
 							this.payment()
@@ -392,17 +396,16 @@
 			},
 			// 支付
 			payment() {
-				var user = this.Parse.User.current()
+				this.user = this.Parse.User.current()
 				var cash = this.list[this.active].preferentialPrice || this.list[this.active].memberPrice;
 				cash = 0;
 				if(cash == 0){
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss')+GetRandomNum(5);
 					this.paymentSuccess(orderNo);
-					this.createOrder(orderNo);
 				} else {
 					this.Parse.Cloud.run('initiatePayment',
 						{price: cash,},
-						{sessionToken: user.get('sessToken')}).then(res=>{
+						{sessionToken: this.user.get('sessToken')}).then(res=>{
 						var payload = res.payload
 						var tradeId = res.tradeId
 						uni.requestPayment({
@@ -412,14 +415,11 @@
 							package: payload.package,
 							signType: payload.signType,
 							paySign: payload.paySign,
-							async success (res) {
-								await this.paymentFail(tradeId);
-								this.createOrder(tradeId)
-								console.log(1);
+							success (res) {
+								this.paymentFail(tradeId);
 							},
 							fail (res) {
 								this.paymentSuccess();
-								console.log(2);
 							}
 						})
 					})
@@ -427,8 +427,10 @@
 				
 			},
 			// 支付成功
-			paymentSuccess(tradeId) {
-				this.getIntegral()
+			async paymentSuccess(tradeId) {
+				await this.getIntegral();
+				this.createOrder(tradeId);
+				this.createMember(tradeId)
 			},
 			// 支付失败
 			paymentFail() {
@@ -437,11 +439,11 @@
 			// 获取积分与赠送积分
 			async getIntegral() {				
 				await this.Parse.Config.get().then(async config=>{
-					var n = this.list[this.active].attributes.preferentialPrice || this.list[this.active].attributes.memberPrice;
-					this.userInfo.score = this.userInfo.score || 0 + parseInt(n * config.attributes.shopScore);
-					this.userInfo.set('score', this.userInfo.score);
-					this.userInfo.set('score_all', this.userInfo.score);
-					this.userInfo.save();
+					var n = this.list[this.active].preferentialPrice || this.list[this.active].memberPrice;
+					this.userInfo.score = (this.userInfo.score || 0) + parseInt(n * config.attributes.shopScore);
+					this.user.set('score', this.userInfo.score);
+					this.user.set('score_all', this.userInfo.score);
+					this.user.save();
 					uni.setStorage({
 						key: 'userInfo',
 						data: this.userInfo
@@ -450,15 +452,15 @@
 			},
 			// 创建订单
 			createOrder(tradeId) {
+				var _this = this;
 				var item = this.list[this.active];
-				var attr = item.attributes;
 				var dbOrder = this.Parse.Object.extend("Order")
 				var order = new dbOrder()
 				order.set('orderNo', tradeId)
-				order.set("subjectId",  item.id)
-				order.set("subjectName",  attr.memberName)
-				order.set("price",  attr.preferentialPrice || attr.memberPrice)
-				order.set("cash",  attr.preferentialPrice || attr.memberPrice)
+				order.set("subjectId",  item.objectId)
+				order.set("subjectName",  item.memberName)
+				order.set("price",  item.preferentialPrice || item.memberPrice)
+				order.set("cash",  item.preferentialPrice || item.memberPrice)
 				order.set('couponAmount', 0)
 				order.set('scoreAmount', this.userInfo.score)
 				order.set('couponId', '')
@@ -468,7 +470,10 @@
 				order.save().then(_order => {
 					uni.showModal({
 						content:'恭喜，购买成功',
-						showCancel: false
+						showCancel: false,
+						success(){
+							_this.showFixed = false;
+						}
 					})
 				},(error)=>{
 					uni.showModal({
@@ -478,16 +483,75 @@
 				})
 			},
 			// 创建会员
-			async createMember() {
+			async createMember(tradeId) {
+				console.log(12);
+				var item = this.list[this.active];
 				var query = new this.Parse.Query('member');
-				query.equalTo("openid", this.userInfo.attributes.openid);
+				query.equalTo("openId", this.userInfo.openid);
 				var results = await query.first();
-				// console.log(results);
-				if (results.length) {
-					
-				} else {
+				var res = null;
+				if (results) {
+					res = JSON.parse(JSON.stringify(results));
+				}
+				var time = Date.now();
+				var endTime = '';		// 截止日期
+				var permanent = false;		// 是否永久
+				var orderArr = [];		// 购买编号
+				var memberType = 'whiteSilver';		//确认购买的是那种会员
+				
+				if (item.surfaceId == 2) {
+					memberType = 'blockGold';
+				}
+				if (item.surfaceId == 1) {
+					memberType = 'whiteGold';
+				}
+				
+				switch(item.memberPeriod) {
+					case 'threeWeek':
+						endTime = time + (1000*60*60*24*21)
+						break;
+					case 'twoWeek':
+						endTime = time + (1000*60*60*24*14)
+						break;
+					case 'oneWeek':
+						endTime = time + (1000*60*60*24*7)
+						break;
+					case 'perpetual':
+						permanent = true;
+					default:
+						endTime = this.getTime(item.memberPeriod)
+				}
+
+				if (!results) {
 					// 初次创建
-					
+					var Member = this.Parse.Object.extend("member");
+					var member = new Member();
+					member.set("openId", this.userInfo.openid);
+					member.set('orderArr', [tradeId]);
+					member.set(memberType, {
+						endTime,
+						vip: true,
+						permanent
+					});
+					member.save()
+				} else {
+					console.log(res);
+					var obj = res[memberType];
+					var arr = res.orderArr
+					if (obj) {
+						obj.endTime = obj.endTime - time + endTime;
+						obj.permanent = permanent;
+					} else {
+						obj = {
+							endTime,
+							vip: true,
+							permanent
+						}
+					}
+					arr.push(tradeId);
+					results.set(memberType, obj);
+					results.set('orderArr', arr);
+					results.save();
 				}
 			}
 		}
