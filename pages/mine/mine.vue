@@ -106,7 +106,7 @@
 					<view class="cont">
 						<view class="title">
 							<text>考试记录</text>
-							<view>0</view>
+							<!-- <view>0</view> -->
 						</view>
 						<view class="icon">
 							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>

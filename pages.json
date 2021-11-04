@@ -189,13 +189,6 @@
 				"navigationBarTitleText": "课程",
 				"enablePullDownRefresh": false
 			}
-		}, {
-			"path": "pages/questionBank/qbstudy",
-			"style": {
-				"navigationBarTitleText": "题库详情",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#F7F7F7"
-			}
 		}
 	],
 	"subPackages": [

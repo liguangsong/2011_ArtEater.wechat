@@ -1,17 +1,17 @@
 <template>
 	<view class='questionbank-item'>
 		<view class='img'>
-			<image :src="item.img"></image>
+			<image :src="item.backgroundImg"></image>
 		</view>
 		<view class="content">
-			<view class="title" @click='jump'>{{item.title}}</view>
+			<view class="title" @click='jump(item)'>{{item.subject_name}}</view>
 			<view class="info">
 				<view>
-					<view>已完成{{item.complete}}/{{item.total}}</view>
-					<view>正确率：{{item.successRate}}</view>
+					<view>已完成：{{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}}</view>
+					<!-- <view>正确率：{{subjectTree.progress?(100/subjectTree.progress):0}}%</view> -->
 				</view>
-				<view class="btn" @click='jump'>
-					<text>练习</text>
+				<view class="btn" @click='jump(item)'>
+					<text>学习</text>
 				</view>
 			</view>
 		</view>
@@ -28,14 +28,205 @@
 		},
 		data() {
 			return {
-				
+				subjectTree:[],
+				userInfo: null,
+				subjectId:'',
+				subjectDetail: null,
+				subjects: [],
+				questionHistory: [],
+				subjectProgress: []
 			}
 		},
+		created() {
+			var self = this
+			uni.loadFontFace ({
+			  family: 'PingFangSC-Medium',
+			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
+			  success: function(){
+				  console.log('load font success')
+			  }
+			})
+			this.subjectId = this.item.objectId
+			uni.getStorage({
+				key:'userInfo',
+				success: res => {
+					self.userInfo = res.data;
+					self.bindSubjectDetail()
+				}
+			})
+		},
 		methods: {
-			jump() {
+			/*加载科目详情*/
+			bindSubjectDetail(){
+				var self = this
+				var query = new this.Parse.Query("Subjects")
+				query.get(this.subjectId).then(res=>{
+					res.set('progress', 0)
+					res.set('childrenCount', 0)
+					self.subjectDetail = res
+					self.bindSubjectTree()
+				})
+			},
+			/* 加载科目树*/
+			async bindSubjectTree(){
+				var self = this
+				uni.showLoading({
+					title:'加载中……'
+				})
+				var query = new this.Parse.Query("Subjects")
+				query.ascending('createdAt');
+				let count=await query.count();
+				query.limit(count)
+				query.find().then(async res=>{
+					self.subjects = res
+					var queryProgress = new self.Parse.Query("SubjectProgress")
+					queryProgress.equalTo('openid',self.userInfo.openid)
+					queryProgress.equalTo('isImportant', 0)
+					let ProgressCount=await queryProgress.count();
+					queryProgress.limit(ProgressCount)
+					queryProgress.find().then(pres=>{
+							self.subjectProgress = pres
+							var hisQuery = new self.Parse.Query("QuestionHistory")
+							hisQuery.equalTo("isImportant", 0)
+							hisQuery.equalTo("openid", self.userInfo.openid)
+							hisQuery.find().then(questionHistory=>{
+								self.questionHistory = questionHistory
+								var tree = self.initSubjectTree(res, self.subjectId, pres)
+								self.subjectTree = {
+									quesCount: self.subjectDetail.quesCount,
+									// extend: false,
+									has_down_level: self.subjectDetail.get('has_down_level'),
+									value: self.subjectDetail.id,
+									progress: 0,
+									childrenCount: 0,
+									children: tree
+								}
+								self.handleGetTestCount(self.subjectTree)
+								uni.hideLoading()
+							})
+					})
+				})
+			},
+			/** 构造树形科目 */
+			initSubjectTree(subjects, parentId, subjectProgress){
+				var self = this
+				var treeValue = []
+				let _subjects = subjects.filter((_item)=>{
+					return _item.get('parent_ID') == parentId
+				})
+				_subjects.forEach((_subject, _index)=> {
+					let subject = {
+						quesCount: _subject.quesCount,
+						// extend: false,
+						has_down_level: _subject.get('has_down_level'),
+						value: _subject.id,
+						progress: 0,
+						childrenCount: 0
+					}
+					let childrens = subjects.filter(_item=>{
+						return _item.get('parent_ID') == _subject.id
+					})
+					subject.progress = 0
+					subject.childrenCount = 0
+					if(childrens.length > 0) { // 有子集
+						subject.children = self.initSubjectTree(subjects, _subject.id, subjectProgress)
+						let subjectIds = []
+						if(subject.children&&subject.children.length>0){
+							subject.children.forEach(t=>{
+								subjectIds.push(t.value)
+							})
+							let quesIndex = 0
+							let quesCount = 0
+							subjectProgress.forEach(t=>{
+								if(subjectIds.indexOf(t.get('subjectId'))!=-1){
+									quesIndex+= t.get('subjectIndex')
+									quesCount+= t.get('quesCount')
+								}
+							})
+							subject.progress = (quesIndex ? quesIndex : 0)
+							if(quesCount>0){
+								subject.childrenCount = quesCount
+							}
+						}
+					}
+					treeValue.push(subject)
+				})
+				return treeValue
+			},
+			getSubjectChildIds(tree, subjectIds){
+				var self = this
+				if(tree){
+					tree.forEach(item=>{
+						subjectIds.push(item.value)
+						if(item.children){
+							self.getSubjectChildIds(item.children, subjectIds)
+						}
+					})
+				}
+			},
+			/*查看科目下题目数量*/
+			handleGetTestCount(subject){
+				var self = this
+				var ids = []
+				ids.push(subject.value)
+				self.getSubjectChildIds(subject.children, ids)
+				uni.showLoading({
+					title:'加载中……'
+				})
+				var quesQuery = new self.Parse.Query("TestQuestions")
+				quesQuery.containedIn('subjects', ids)
+				quesQuery.limit(10000)
+				quesQuery.find().then(ques=>{
+					subject.childrenCount = ques.length
+					self.subjectProgress.forEach(t=>{
+						if(t.get('subjectId') == subject.value){
+							if(t.get('subjectIndex')){
+								subject.progress = t.get('subjectIndex')
+							} else {
+								subject.progress = 0
+							}
+						}
+					})
+					let subIndex = 0
+					if(subject.children && subject.children.length > 0) {
+						subject.children.forEach(item => {
+							let _quesCount = 0
+							let _ids = []
+							_ids.push(item.value)
+							self.getSubjectChildIds(item.children, _ids)
+							ques.forEach(t=>{
+								_ids.forEach(id=>{
+									if(t.get('subjects').indexOf(id)!=-1){
+										_quesCount++
+									}
+								})
+							})
+							item.quesCount = _quesCount //questions.length
+							if(item.quesCount > 0) {
+								item.childrenCount = item.quesCount
+								let quesIndex = 0
+								self.subjectProgress.forEach(t=>{
+									if(t.get('subjectId') == item.value){
+										if(t.get('subjectIndex')){
+											quesIndex += t.get('subjectIndex')
+										}
+									}
+								})
+								item.progress = (quesIndex ? quesIndex : 0)
+							}
+							subIndex+=item.progress
+						})
+					}
+					if(subIndex>0&&subject.progress==0){
+						subject.progress = subIndex
+					}
+					uni.hideLoading()
+				})
+			},
+			jump(item) {
 				uni.navigateTo({
-					url:'./qbstudy'
-				})	
+					url:'/homeSubPackage/pages/subject/subject?sid='+item.objectId
+				})
 			}
 		}
 	}
@@ -45,7 +236,7 @@
 	.questionbank-item {
 		width: 690rpx;
 		height: 220rpx;
-		margin: 0 auto 24rpx;
+		margin: 24rpx auto 0;
 		display: flex;
 		box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.1);
 		border-radius: 24rpx;
