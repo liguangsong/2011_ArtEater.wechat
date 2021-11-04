@@ -138,6 +138,9 @@
 				vip:true,//当前哦用户是否是vip
 				lock: '../../../static/vip-lock.png',
 				unlock: '../../../static/vip-unlock.png',
+				screenHeight:0,
+				allheight:0,
+				status:false
 			}
 		},
 		onLoad(options) {
@@ -146,6 +149,30 @@
 			// 获取当前课程详情
 			this.getCurriculum();
 		},
+		onShow() {
+			let that=this;
+			uni.getSystemInfo({
+			    success: function (res) {
+			        that.screenHeight=res.screenHeight;
+			    }
+			});
+		},
+		 onPageScroll(res) {
+			 let that=this;
+			 let scrollTop=res.scrollTop;
+			 let view = uni.createSelectorQuery().in(this).select(".details");
+			 view.boundingClientRect(data => {
+			   that.allheight=data.height;
+			 }).exec();
+			  let param=scrollTop/(this.allheight-this.screenHeight);
+		        if(param>=0.8 && !this.status){
+					this.status=true;
+					that.changeLearn(false);
+				}else if(param<0.8 && this.status){
+					this.status=false;
+					that.changeLearn(true);
+				}
+		    },
 		//用户点击右上角分享朋友圈
 		onShareTimeline: function () {
 			return {
@@ -193,6 +220,9 @@
 				console.log(res,88899)
 				let info = res[0];
 				this.curriculumInfo=info;
+				if(info.kind==3){
+					this.changeLearn(true);
+				}
 				// 获取收藏状态
 				await this.operateCollection(true);
 				if(info.checkData&&info.checkData.length){
