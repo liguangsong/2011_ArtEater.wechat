@@ -34,7 +34,7 @@
 		methods: {
 			jump() {
 				uni.navigateTo({
-					url:'/pages/important/subject'
+					url:'./qbstudy'
 				})	
 			}
 		}

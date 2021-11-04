@@ -283,7 +283,7 @@
 			/*加载科目详情*/
 			bindSubjectDetail(){
 				var self = this
-				var query = new this.Parse.Query("Subjects")
+				var query = new this.Parse.Query("TestQuestions")
 				query.get(this.subjectId).then(res => {
 					res.set('progress', 0)
 					res.set('childrenCount', 0)
@@ -298,7 +298,7 @@
 					title:'加载中……'
 				})
 				var query = new this.Parse.Query("Subjects")
-				// query.equalTo("parent_ID", this.subjectId)
+				// query.equalTo("parent_ID", this.subjectId)TestQuestions
 				query.ascending('createdAt')
 				query.limit(10000)
 				query.find().then(res=>{

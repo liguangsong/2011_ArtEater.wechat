@@ -113,6 +113,7 @@
 			},
 			handleSubjectClick(e){
 				var item = e.currentTarget.dataset.item
+				console.log(e);
 				uni.navigateTo({
 					url:'./subject?sid='+item.id
 				})
