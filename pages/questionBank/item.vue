@@ -34,8 +34,8 @@
 		methods: {
 			jump() {
 				uni.navigateTo({
-					url: '/curriculumSubPackage/pages/study/study'
-				})
+					url:'/pages/important/subject'
+				})	
 			}
 		}
 	}

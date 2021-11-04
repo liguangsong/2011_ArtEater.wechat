@@ -40,7 +40,7 @@
 				curriculumInfo:{},//详情root节点的
 				timetableList:[],//课表页面
 				height: '0',
-				tabbar: true,
+				tabbar: false,
 				isVip: false,
 				item: null
 			}
@@ -53,6 +53,21 @@
 		onLoad(options) {
 			this.item = options;
 			this.getCurriculum();
+		},
+		created() {
+			var app = getApp();
+			var member = app.globalData.member;
+			if (member && member.blockGold) {
+				if (member.blockGold.endTime > Date.now() || member.permanent) {
+					this.tabbar = true;
+					return ;
+				}
+			}
+			if (member && member.whiteGold) {
+				if (member.whiteGold.endTime > Date.now() || whiteGold.permanent) {
+					this.tabbar = true;
+				}
+			}
 		},
 		methods: {
 			// 获取详情
