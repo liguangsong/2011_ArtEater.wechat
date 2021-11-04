@@ -1,6 +1,6 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<Item v-for='(item, i) in list' :item='item' :key='i'/>
+		<Item v-for='(item, i) in subjects' :item='item' :key='i'/>
 		<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
@@ -13,11 +13,11 @@
 			return {
 				scrollTop: 0,
 				userInfo: null,
-				arr: [
-					'https://img2.baidu.com/it/u=2151359767,1164216166&fm=26&fmt=auto',
-					'https://img1.baidu.com/it/u=2548045501,3373948589&fm=26&fmt=auto',
-					'https://img1.baidu.com/it/u=82323508,2412665068&fm=26&fmt=auto'
-				],
+				
+				count: 0,
+				subjects:[],
+				subjectProgress:[],
+				
 				pdbtm:0,//兼容iphonexr+
 				windowHeight:0,
 				list: [
@@ -56,6 +56,7 @@
 				key:'userInfo',
 				success: res => {
 					_this.userInfo = res.data;
+					_this.bindSubjectTree()
 				},
 			})
 		},
@@ -72,6 +73,25 @@
 			tabbarChange(item) {
 				uni.switchTab({
 					url:item.path
+				})
+			},
+			// 获取数据
+			bindSubjectTree(){
+				var _this = this
+				uni.showLoading({
+					title:'加载中……'
+				})
+				var query = new this.Parse.Query("Subjects")
+				// query.equalTo("parent_ID", this.subjectId)
+				query.ascending('createdAt')
+				query.limit(10000)
+				query.find().then(res=>{
+					// var tree = _this.initSubjectTree(res, '0')
+					// _this.subjects = tree
+					console.log(res);
+				})
+				uni.hideLoading({
+					title:'加载中……'
 				})
 			},
 			handleImportantClick(){
