@@ -114,7 +114,7 @@ export default {
 			await res.save()
 	},
 	// 配置模块的课程被点击时的跳转url
-	async configUrl(item) {
+	async configUrl(item, vip) {
 		let toUrl=''
 		// if(item.course.flag==1 && item.course.level==0){
 		// 	// 系列课程点击时到详情页有介绍有详情
@@ -126,7 +126,8 @@ export default {
 		// 	//vip单课程点击时跳转到开通会员
 		// 	toUrl = '/mineSubPackage/pages/vip/vip';
 		// }
-		console.log(item,5556)
+		// console.log(item,5556)
+		
 		if(!item.course.isVipCourse){
 			if(item.course.flag==1){
 				if(item.course.level==0){
@@ -147,11 +148,19 @@ export default {
 					toUrl = '/curriculumSubPackage/pages/study/study?objectId='+item.course.objectId;
 				}else{
 					//vip单课程点击时跳转到开通会员
-					toUrl = '/mineSubPackage/pages/vip/vip';
+					if (vip) {
+						toUrl = '/curriculumSubPackage/pages/study/study?objectId='+item.course.objectId;
+					} else {
+						toUrl = '/mineSubPackage/pages/vip/vip';
+					}
 				}
 			}else{
 				   //vip单课程点击时跳转到开通会员
-				   toUrl = '/mineSubPackage/pages/vip/vip';
+					 if (vip) {
+							toUrl = '/curriculumSubPackage/pages/details/details?objectId='+item.course.objectId;
+					 } else {
+							toUrl = '/mineSubPackage/pages/vip/vip';
+					 }
 			}
 		}
 		

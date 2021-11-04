@@ -1,7 +1,7 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<view class="">
-			<Item v-for='(item,i) in list' v-if='!item.isHideCourse' :key='i' :item='item'/>
+			<Item v-for='(item,i) in list' v-if='!item.isHideCourse' :key='i' :item='item' :vip='vip'/>
 		</view>
 		<view-tabbar :current="1" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
@@ -15,7 +15,8 @@
 			return {
 				windowHeight:0,
 				pdbtm:0,//兼容iphonexr+
-				list: []
+				list: [],
+				vip: false,
 			}
 		},
 		components:{
@@ -25,6 +26,19 @@
 		async created() {
 			var query = new this.Parse.Query('coursesModule')
 			this.list = await query.find();
+			var app = getApp();
+			var member = app.globalData.member;
+			if (member && member.blockGold) {
+				if (member.blockGold.endTime > Date.now() || member.permanent) {
+					this.vip = true;
+					return ;
+				}
+			}
+			if (member && member.whiteGold) {
+				if (member.whiteGold.endTime > Date.now() || whiteGold.permanent) {
+					this.vip = true;
+				}
+			}
 		},
 		onLoad() {
 			let app = getApp();

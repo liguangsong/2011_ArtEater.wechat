@@ -36,18 +36,22 @@
 			item: {
 				type: Object,
 				default: {}
+			},
+			vip: {
+				type: Boolean
 			}
 		},
 		data() {
 			return {
-				vip: false,
 				lock: '../../static/vip-lock.png',
 				unlock: '../../static/vip-unlock.png',
 			}
 		},
 		methods: {
-			async jumpDefault(item) {
-				let toUrl=await Curriculum.configUrl({course:item})
+			async jumpDefault(item, vip) {
+				// console.log(item);
+				// return;
+				let toUrl=await Curriculum.configUrl({course:item}, vip)
 				uni.navigateTo({
 					url:toUrl
 				})
