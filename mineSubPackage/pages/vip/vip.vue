@@ -12,11 +12,16 @@
 					</view>
 					<view class="info">
 						<view class="txt">
-							<view>{{userInfo.nickName}}</view>
-							<view>铂金VIP</view>
+							<view class="txtname">{{userInfo.nickName}}</view>
+							<view class='txttype' v-if='memberInfo && memberInfo.memberType'>
+								{{memberInfo.memberType == 0 ? '黑金VIP' : memberInfo.memberType == 1 ? '铂金VIP' : '白银VIP'}}
+							</view>
+							<view class="txttype" v-else>
+								暂未开通
+							</view>
 						</view>
 						<view class="vip-btn" @click='showFixed = true'>
-							<text>续费</text>
+							<text>{{isMember && memberInfo.memberType ? '续费' : '立即开通'}}</text>
 						</view>
 					</view>
 				</view>
@@ -32,7 +37,7 @@
 					<view class="viewItem">
 						<view class="viewItem-vip">
 							<view class="bg">
-								<image src="../../static/heijin.png"></image>
+								<image :src="list[0].surface"></image>
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
@@ -43,11 +48,11 @@
 								</view>
 								<view class="viewItem-vip-bottom">
 									<view class="viewItem-vip-price">
-										<text>¥498</text>
-										<text>¥678</text>
+										<text class='price'>¥{{list[0].preferentialPrice}}</text>
+										<text class='oldprice' v-if='list[0].memberPrice && list[0].discount '>¥{{list[0].memberPrice}}</text>
 									</view>
 									<view class="vip-btn" @click='showFixed = true'>
-										<text>续费</text>
+										<text>{{isMember && memberInfo.memberType == 0 ? '续费' : '立即开通'}}</text>
 									</view>
 								</view>
 							</view>
@@ -136,22 +141,22 @@
 					<view class="viewItem bojin">
 						<view class="viewItem-vip">
 							<view class="bg">
-								<image src="../../static/bojin.png"></image>
+								<image :src="list[1].surface"></image>
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
 									<text>铂金VIP</text>
 								</view>
 								<view class="viewItem-vip-txt">
-									<text>黑金VIP共享7项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text>
+									<text>铂金VIP共享5项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text>
 								</view>
 								<view class="viewItem-vip-bottom">
 									<view class="viewItem-vip-price">
-										<text>¥498</text>
-										<text>¥678</text>
+										<text class='price'>¥{{list[1].preferentialPrice}}</text>
+										<text class='oldprice' v-if='list[1].memberPrice && list[1].discount'>¥{{list[1].memberPrice}}</text>
 									</view>
 									<view class="vip-btn" @click='showFixed = true'>
-										<text>续费</text>
+										<text>{{memberInfo && memberInfo.memberType == 1 ? '续费' : '立即开通'}}</text>
 									</view>
 								</view>
 							</view>
@@ -218,22 +223,22 @@
 					<view class="viewItem baiyin">
 						<view class="viewItem-vip">
 							<view class="bg">
-								<image src="../../static/baiyin.png"></image>
+								<image :src="list[2].surface"></image>
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
 									<text>白银VIP</text>
 								</view>
 								<view class="viewItem-vip-txt">
-									<text>黑金VIP共享7项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text>
+									<text>白银VIP共享3项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text>
 								</view>
 								<view class="viewItem-vip-bottom">
 									<view class="viewItem-vip-price">
-										<text>¥498</text>
-										<text>¥678</text>
+										<text class='price'>¥{{list[2].preferentialPrice}}</text>
+										<text class='oldprice' v-if='list[2].memberPrice && list[2].discount'>¥{{list[2].memberPrice}}</text>
 									</view>
 									<view class="vip-btn" @click='showFixed = true'>
-										<text>续费</text>
+										<text>{{isMember && memberInfo.memberType == 2 ? '续费' : '立即开通'}}</text>
 									</view>
 								</view>
 							</view>
@@ -292,12 +297,12 @@
 						<view class="item"
 							v-for='(item,i) in list'
 							:keys='item.id'
-							:class='{heijin: item.surfaceId == 2, bojin: item.surfaceId == 1, baiyin: item.surfaceId == 0}'
+							:class='{heijin: item.surfaceId == 0, bojin: item.surfaceId == 1, baiyin: item.surfaceId == 2}'
 							@click='active = i'
 						>
 							<view class="img" :class='{active: active == i}'>
 								<image class='imgbg' :src="item.surface"></image>
-								<image class='righttop' v-if='item.preferentialPrice' src="../../static/time.png"></image>
+								<image class='righttop' v-if='item.preferentialPrice && item.discount' src="../../static/time.png"></image>
 							</view>
 							<view class="info">
 								<view class="title">
@@ -305,7 +310,7 @@
 								</view>
 								<view class="price">
 									<text class='discount'>¥{{item.preferentialPrice}}</text>
-									<text class='old-price' style='text-decoration: line-through;;'>¥{{item.memberPrice}}</text>
+									<text class='old-price' style='text-decoration: line-through;' v-if='item.preferentialPrice && item.discount'>¥{{item.memberPrice}}</text>
 								</view>
 							</view>
 						</view>					
@@ -316,9 +321,6 @@
 					<view class="buy-info-item">
 						<view>
 							1.{{list[active].explain}}
-						</view>
-						<view>
-							可享受该计划对应服务权益
 						</view>
 					</view>
 					<view class="buy-info-item">
@@ -351,28 +353,55 @@
 			return {
 				showFixed: false,
 				list: null,
-				active: 3,
+				active: 0,
 				userInfo: null,
 				user: null,
+				member: null,
+				memberInfo: null,
+				renew: false,			//是否为升级
 			}
 		},
 		components: {
 			Navbar
 		},
 		async created() {
-			let app = getApp();
-			var _this = this;
-			uni.getStorage({
-				key:'userInfo',
-				success(u) {
-					_this.userInfo  = u.data;
-				}
-			})
+			this.user = this.Parse.User.current();
+			this.userInfo = JSON.parse(JSON.stringify(this.user));
+			
 			var query = new this.Parse.Query('setMember')
 			this.list = await query.find();
-			this.list = this.list.map(item => JSON.parse(JSON.stringify(item)));
+			this.list = this.list.map(item => JSON.parse(JSON.stringify(item))).sort((a,b)=>a.surfaceId-b.surfaceId);
+			
+			var time = new Date().toLocaleDateString().split('/').map(item=>item.length==1 ? '0'+item : item).join('-')
+			this.list.forEach(item => {
+				 if (item.expirationDate >= time) {
+					 item.discount = true;
+				 } else {
+					 item.discount = false;
+				 }
+			})
+			
+			this.getMember();
+		},
+		computed: {
+			isMember() {
+				if (this.memberInfo && Date.now() < this.memberInfo.endTime) {
+					return true;
+				} else {
+					return false;
+				}
+			}
 		},
 		methods: {
+			// 获取是否是会员
+			async getMember() {
+				var Member = new this.Parse.Query('member')
+				Member.equalTo("openId", this.userInfo.openid);
+				this.member = await Member.first();
+				if (this.member) {
+					this.memberInfo = JSON.parse(JSON.stringify(this.member));
+				}
+			},
 			// 获取会员截止日期的毫秒数
 			getTime(n) {
 				var date= new Date();
@@ -385,20 +414,85 @@
 					this.showFixed = true;
 					return ;
 				}
-				uni.showModal({
-					title: '提示',
-					content: `确定购买${this.list[this.active].memberName}吗？`,
-					success: (res) => {
-						if (res.confirm) {
-							this.payment()
+				// 此步骤是在续费
+				console.log(this.isMember);
+				if (this.isMember) {
+					var memberType = this.memberInfo.memberType;	// 之前购买的会员类型
+					var surfaceId = this.list[this.active].surfaceId ;	// 现在购买的会员类型
+					if (surfaceId != memberType) {
+						// 之前购买了白银，却续费白金
+						if (memberType == '2' && surfaceId == 1) {
+							uni.showModal({
+								content:'只能续费白银或升级为黑金',
+								showCancel: false,
+							})
+							return ;
 						}
+						// 之前购买了白金，却续费白银
+						if (memberType == '1' && surfaceId == 2) {
+							uni.showModal({
+								content:'只能续费白金或升级为黑金',
+								showCancel: false,
+							})
+							return ;
+						}
+						// 之前购买了黑金，现在买的却不是黑金
+						if (memberType == '0' && surfaceId != 0) {
+							uni.showModal({
+								content:'只能续费黑金',
+								showCancel: false,
+							})
+							return ;
+						}
+						// 之前购买了白金或白银，升级为黑金时
+						if (surfaceId == '0' && memberType != 0) {
+							uni.showModal({
+								content:'继续操作将自动升级为黑金卡',
+								success: (res) => {
+									if (res.confirm) {
+										this.renew = true;
+										this.payment()
+									}
+								}
+							})
+							return ;
+						}
+					} else {
+						uni.showModal({
+							title: '提示',
+							content: `确定购买${this.list[this.active].memberName}吗？`,
+							success: (res) => {
+								if (res.confirm) {
+									this.payment()
+								}
+							}
+						})
 					}
-				})
+				} else {
+					uni.showModal({
+						title: '提示',
+						content: `确定购买${this.list[this.active].memberName}吗？`,
+						success: (res) => {
+							if (res.confirm) {
+								this.payment()
+							}
+						}
+					})
+				}
 			},
 			// 支付
 			payment() {
-				this.user = this.Parse.User.current()
+				// this.user = this.Parse.User.current()
+				// 补价算法，使用了n天，（黑金会员价-白金会员价）/365 * （365-n）=差价
+				// return ;
 				var cash = this.list[this.active].preferentialPrice || this.list[this.active].memberPrice;
+				// 升级为黑金
+				if (this.renew) {
+					var time = Math.ceil((this.memberInfo.endTime - Date.now())/(1000*60*60*24));
+					var n1 = this.list[0].preferentialPrice || this.list[0].memberPrice;
+					var n2 = this.list[this.active].preferentialPrice || this.list[this.active].memberPrice;
+					cash = (n1 - n2)/365*(365-time) * 100;
+				}
 				cash = 0;
 				if(cash == 0){
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss')+GetRandomNum(5);
@@ -485,7 +579,32 @@
 			},
 			// 创建会员
 			async createMember(tradeId) {
-				console.log(12);
+				var item = this.list[this.active];
+				var memberType = item.surfaceId + '';
+				if (this.member) {
+					var arr = this.memberInfo.orderArr;
+					arr.push(tradeId);
+					this.member.set('orderArr', arr);
+					if (this.renew) {
+						this.member.set('memberType', '0');
+					} else {
+						this.member.set('endTime', this.getTime(12) + Number(this.memberInfo.endTime) - Date.now() )
+					}
+					await this.member.save();
+				} else {
+					// 初次创建
+					var Member = this.Parse.Object.extend("member");
+					var member = new Member();
+					member.set("openId", this.userInfo.openid);
+					member.set('orderArr', [tradeId]);
+					member.set('endTime', this.getTime(12))
+					member.set('memberType', memberType)
+					await member.save();
+				}
+				this.getMember();
+			},
+			// 原先的创建会员
+			async createMember11(tradeId) {
 				var item = this.list[this.active];
 				var query = new this.Parse.Query('member');
 				query.equalTo("openId", this.userInfo.openid);
@@ -607,20 +726,18 @@
 				justify-content: space-between;
 				align-items: center;
 				.txt {
-					view {
-						&:first-child {
-							font-size: 36rpx;
-							font-weight: 600;
-							color: #FFFFFF;
-							line-height: 50rpx;
-						}
-						&:last-child {
-							font-size: 20rpx;
-							font-weight: 400;
-							color: #FFFFFF;
-							line-height: 28rpx;
-							margin-top: 10rpx;
-						}
+					.txtname {
+						font-size: 36rpx;
+						font-weight: 600;
+						color: #FFFFFF;
+						line-height: 50rpx;
+					}
+					.txttype {
+						font-size: 20rpx;
+						font-weight: 400;
+						color: #FFFFFF;
+						line-height: 28rpx;
+						margin-top: 10rpx;
 					}
 				}
 			}
@@ -698,18 +815,16 @@
 							align-items: center;
 							justify-content: space-between;
 							.viewItem-vip-price {
-								text {
-									font-weight: 600;
-									&:first-child {
-										font-size: 48rpx;
-										line-height: 66rpx;
-										margin-right: 48rpx;
-									}
-									&:last-child {
-										font-size: 32rpx;
-										line-height: 44rpx;
-										text-decoration: line-through;
-									}
+								font-weight: 600;
+								.price {
+									font-size: 48rpx;
+									line-height: 66rpx;
+									margin-right: 48rpx;
+								}
+								.oldprice {
+									font-size: 32rpx;
+									line-height: 44rpx;
+									text-decoration: line-through;
 								}
 							}
 						}
