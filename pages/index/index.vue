@@ -845,7 +845,7 @@
 			      bottom right,
 			      linear-gradient(0deg, transparent 0rpx, #fff 0)
 			      bottom left;
-			      background-size: 50.01% 50.01%;
+			      background-size: 50.0% 50.0%;
 			      background-repeat: no-repeat;
 		}
 		.nav-box:nth-last-of-type(1){
@@ -859,7 +859,7 @@
 			      bottom right,
 			      linear-gradient(45deg, transparent 6rpx, #fff 0)
 			      bottom left;
-			      background-size: 50.01% 50.01%;
+			      background-size: 50.0% 50.0%;
 			      background-repeat: no-repeat;
 				  
 		}

@@ -9,7 +9,7 @@
 					<image class="icon" :src="item.kind == '1' ? video :item.kind == '2'? audio:''"></image>
 					{{item.subjectName}}
 				</view>
-				<view class="acllow-left">
+				<view class="acllow-left" v-if="item.preLearn">
 					<text class='study'>上次学习</text>
 				</view>
 				<view class="arrow-box" @click.stop='close'>

@@ -9,7 +9,7 @@
 		<view class="auditon">
 			<view class="item" v-for='(item,i) in list' :key='i' @click='jump(item)'>
 				<view class="image-info">
-					<image :src="surfaces[Math.floor(Math.random()*surfaces.length+1)-1]" mode="widthFix" class="main-image"></image>
+					<image :src="newsurfaces[i]" mode="widthFix" class="main-image"></image>
 					<view class="image-bottom-info">
 						<view class="view">
 							<!-- <image src="../../static/icon/play.png" class="play-image"></image> -->
@@ -55,11 +55,11 @@
 		},
 		data() {
 			return {
-			  surfaces:[]
+				newsurfaces:[],
+			    surfaces:[]
 			}
 		},
 		created() {
-			this.getLearningFace()
 			uni.loadFontFace ({
 						  family: 'PingFangSC-Medium',
 						  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
@@ -67,6 +67,19 @@
 							  console.log('load font success')
 						  }
 						})
+		},
+		watch:{
+			list: {
+				async handler() {
+					this.newsurfaces=[];
+					await this.getLearningFace();
+					this.list.forEach((v)=>{
+						 this.newsurfaces.push(this.surfaces[(Math.floor(Math.random()*this.surfaces.length+1)-1)]);
+					})
+				},
+				deep:true,
+				immediate:true
+			}
 		},
 		methods: {
 			gotolist() {

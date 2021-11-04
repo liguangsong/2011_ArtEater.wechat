@@ -15,6 +15,44 @@ export default{
 			  }
 			  return res;
 	},
+	////初始获取上次学习的课程
+	async getPreLearn(id){
+		let openid= uni.getStorageSync('openid');
+		let learning= new Parse.Query('Learning');
+			learning.equalTo('openId',openid);
+			let res = await learning.first();
+		let courseId=undefined;
+			if(res){
+				let ids=res.get('preIds');
+				if(ids){
+					courseId=ids[id];
+				}
+			}
+			return courseId;
+	},
+	//更新上次学习课程Id
+	async updatePreLearn(key,value) {
+		console.log(4444555)
+		let openid= uni.getStorageSync('openid');
+		let Learning = Parse.Object.extend('Learning');
+		let newLearning= new Learning();
+		let learning= new Parse.Query('Learning');
+			learning.equalTo('openId',openid);
+			let res = await learning.first();
+			if(res){
+				let ids=res.get('preIds');
+				if(ids){
+					ids[key]=value;
+				}else{
+					ids={[key]:value}
+				}
+				await res.save();
+			}else{
+				newLearning.set('openId',openid);
+				newLearning.set('preIds',{[key]:value});
+				await newLearning.save();
+			}
+	},
 	// 获取当前课程下的推荐课程
 	async getRecommended(ids) {
 		let curriculum= new Parse.Query('coursesModule');
@@ -38,7 +76,16 @@ export default{
 		const mainQuery = Parse.Query.or(curriculum, coursesModuleRoot);
 		let res=await mainQuery.find();
 		    if(res){
-		    	res = res.map(v=>v.toJSON());  
+				// 获取上次学习的课程Id
+				let preId = await this.getPreLearn(res[0].id);
+		    	res = res.map(v=>{    
+					v=v.toJSON();
+					if(preId && v.objectId==preId){
+						v.preLearn=true;
+					}
+					return v;
+				}
+				);  
 		    }else{
 		        res=[]
 		    }

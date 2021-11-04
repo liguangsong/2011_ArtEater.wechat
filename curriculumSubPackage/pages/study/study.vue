@@ -52,6 +52,8 @@
 		},
 		onLoad(options) {
 			this.item = options;
+		},
+		onShow() {
 			this.getCurriculum();
 		},
 		created() {

@@ -220,6 +220,10 @@
 				console.log(res,88899)
 				let info = res[0];
 				this.curriculumInfo=info;
+				if(info.flag==1){
+					// 存储上次学习
+				    await Curriculum.updatePreLearn(info['rootId'],info.objectId);
+				}
 				if(info.kind==3){
 					this.changeLearn(true);
 				}
@@ -261,7 +265,7 @@
 				   this.timetableList=res;
 			},
 			// 切换课程时判断是否是vip课程
-			changeCurriculum(item) {
+			async changeCurriculum(item) {
 				if(item.isVipCourse){
 					// 是vip课程则要跳转到vip中心买会员
 					uni.navigateTo({
@@ -269,6 +273,8 @@
 					})
 				}else{
 					this.curriculumInfo=item;
+					// 存储上次学习
+					await Curriculum.updatePreLearn(item['rootId'],item.objectId);
 				}
 				
 			},

@@ -64,22 +64,26 @@ export default {
 		let learning= new Parse.Query('Learning');
 			learning.equalTo('openId',openid);
 			let res = await learning.first();
-			let ids=res.get('ids');
-			if(ids){
-				 curriculum.containedIn('objectId',ids);
-				let  course=await curriculum.find();
-				   if(course){
-					   let newres=[]
-					   ids.forEach(s=>{
-						   course.forEach(v=>{
-							   v = v.toJSON();
-							   v.objectId==s && newres.push(v);
+			if(res){
+				let ids=res.get('ids');
+				if(ids){
+					 curriculum.containedIn('objectId',ids);
+					let  course=await curriculum.find();
+					   if(course){
+						   let newres=[]
+						   ids.forEach(s=>{
+							   course.forEach(v=>{
+								   v = v.toJSON();
+								   v.objectId==s && newres.push(v);
+							   })
 						   })
-					   })
-					   res=newres;
-				   }else{
-					   res = []
-				   }
+						   res=newres;
+					   }else{
+						   res = []
+					   }
+				}else{
+					res = []
+				}
 			}else{
 				res = []
 			}
@@ -88,9 +92,12 @@ export default {
 	//添加正在学习数据****************
 	async changeLearn(id,status) {
 		let openid= uni.getStorageSync('openid');
+		let Learning = Parse.Object.extend('Learning');
+		let newLearning= new Learning();
 		let learning= new Parse.Query('Learning');
 			learning.equalTo('openId',openid);
 			let res = await learning.first();
+			if(res){
 			let ids=res.get('ids');
 			if(ids){
 				// 数据库有课程时 
@@ -112,6 +119,11 @@ export default {
 			res.set('ids',ids);
 			console.log(ids,1212121+'qqqqq');
 			await res.save()
+		}else{
+			newLearning.set('openId',openid);
+			newLearning.set('ids',[id]);
+			await newLearning.save()
+		}
 	},
 	// 配置模块的课程被点击时的跳转url
 	async configUrl(item, vip) {
