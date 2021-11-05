@@ -43,7 +43,7 @@
 				let app = getApp();
 				let member = app.globalData.member;
 				let vip=false;
-				if(member && member.memberType!=2){
+				if(member && member.memberType!=2 && (member.endTime > Date.now())){
                   vip=true;
 				}
 				let toUrl='';

@@ -162,7 +162,7 @@ export default {
 				}else{
 					//vip单课程点击时跳转到开通会员
 					if (vip) {
-						toUrl = '/curriculumSubPackage/pages/study/study?objectId='+item.course.objectId;
+						toUrl = '/curriculumSubPackage/pages/details/details?objectId='+item.course.objectId;
 					} else {
 						toUrl = '/mineSubPackage/pages/vip/vip';
 					}
