@@ -68,6 +68,7 @@ export default {
 				let ids=res.get('ids');
 				if(ids){
 					 curriculum.containedIn('objectId',ids);
+					 curriculum.notEqualTo('isHideCourse',true);
 					let  course=await curriculum.find();
 					   if(course){
 						   let newres=[]
