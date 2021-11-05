@@ -58,3 +58,9 @@
 	}
 </script>
 
+<style scoped>
+	.myPage {
+		background: #F7F7F7;
+	}
+</style>
+

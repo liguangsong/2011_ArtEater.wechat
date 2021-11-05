@@ -187,7 +187,8 @@
 			"path": "pages/curriculum/curriculum",
 			"style": {
 				"navigationBarTitleText": "课程",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#F7F7F7"
 			}
 		}
 	],
