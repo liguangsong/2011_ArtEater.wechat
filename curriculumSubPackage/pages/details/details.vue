@@ -158,20 +158,22 @@
 			});
 		},
 		 onPageScroll(res) {
-			 let that=this;
-			 let scrollTop=res.scrollTop;
-			 let view = uni.createSelectorQuery().in(this).select(".details");
-			 view.boundingClientRect(data => {
-			   that.allheight=data.height;
-			 }).exec();
-			  let param=scrollTop/(this.allheight-this.screenHeight);
-		        if(param>=0.8 && !this.status){
-					this.status=true;
-					that.changeLearn(false);
-				}else if(param<0.8 && this.status){
-					this.status=false;
-					that.changeLearn(true);
-				}
+			 if(this.curriculumInfo.kind==3){
+                let that=this;
+				let scrollTop=res.scrollTop;
+				let view = uni.createSelectorQuery().in(this).select(".details");
+				view.boundingClientRect(data => {
+				that.allheight=data.height;
+				}).exec();
+				let param=scrollTop/(this.allheight-this.screenHeight);
+					if(param>=0.8 && !this.status){
+						this.status=true;
+						that.changeLearn(false);
+					}else if(param<0.8 && this.status){
+						this.status=false;
+						that.changeLearn(true);
+					}
+			 }
 		    },
 		//用户点击右上角分享朋友圈
 		onShareTimeline: function () {

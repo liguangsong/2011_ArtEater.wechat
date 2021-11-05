@@ -363,18 +363,29 @@
 			})
 		},
 		methods: {
+			checkVip() {
+				let app = getApp();
+				let member = app.globalData.member;
+				let vip=false;
+				if(member && member.memberType!=2){
+                  vip=true;
+				}
+				return vip;
+			},
 			// 正在学习的item被点击时
 			async learnChangeUrl(item) {
+				let vip= this.checkVip();
 				let toUrl = await Curriculum.configUrl({
 					course: item
-				});
+				},vip);
 				uni.navigateTo({
 					url: toUrl
 				})
 			},
 			async changeUrl(item) {
+				let vip= this.checkVip();
 				//配置url
-				let toUrl = await Curriculum.configUrl(item);
+				let toUrl = await Curriculum.configUrl(item,vip);
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						// 记录点击量

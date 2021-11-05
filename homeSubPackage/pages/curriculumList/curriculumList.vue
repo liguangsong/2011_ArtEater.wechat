@@ -40,11 +40,17 @@
 		methods: {
 			async changeUrl(item) {
 				//配置url
+				let app = getApp();
+				let member = app.globalData.member;
+				let vip=false;
+				if(member && member.memberType!=2){
+                  vip=true;
+				}
 				let toUrl='';
 				if(this.moduleName=='正在学习'){
-					toUrl=await Curriculum.configUrl({course:item});
+					toUrl=await Curriculum.configUrl({course:item},vip);
 				}else{
-					toUrl=await Curriculum.configUrl(item);
+					toUrl=await Curriculum.configUrl(item,vip);
 					// 记录点击量
 					await Curriculum.recordClickNum(item.objectId);
 				}

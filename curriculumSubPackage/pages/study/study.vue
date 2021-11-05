@@ -1,5 +1,5 @@
 <template>
-	<view class='study'>
+	<view class='study' v-if="curriculumInfo">
 		<Navbar navbarBg='#fff' :height='height' title='课程' fontColor="#000" iconColor='#000'>
 			<template v-slot:img>
 				<image style='width: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
@@ -75,8 +75,11 @@
 			// 获取详情
 			async getCurriculum() {
 				let res = await Curriculum.getCurriculum(this.item.objectId);
-				console.log(res,88899)
 				let info = res[0];
+				if(!info){
+					this.curriculumInfo=undefined;
+					return false;
+				}
 				this.curriculumInfo=info;
 				if(info.headImg&&info.headImg.length){
 					this.height='478rpx';
