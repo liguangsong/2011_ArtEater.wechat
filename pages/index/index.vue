@@ -305,6 +305,7 @@
 				query.equalTo("openId", this.userInfo.openid);
 				var results = await query.first();
 				if (results) {
+					console.log(results);
 					app.globalData.member = JSON.parse(JSON.stringify(results));
 				}
 

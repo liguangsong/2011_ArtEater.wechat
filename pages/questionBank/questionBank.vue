@@ -1,6 +1,6 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<Item v-for='(item, i) in subjects' :item='item' :key='i'/>
+		<Item v-for='(item, i) in subjects' :item='item' :img='arr[i]' :key='i'/>
 		<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
@@ -14,7 +14,12 @@
 				userInfo: null,
 				subjects:[],
 				pdbtm:0,//兼容iphonexr+
-				windowHeight:0
+				windowHeight:0,
+				arr: [
+					'../../static/c1.png',
+					'../../static/c2.png',
+					'../../static/c3.png'
+				]
 			}
 		},
 		components:{
@@ -53,8 +58,7 @@
 				query.ascending("createdAt")
 				query.equalTo("parent_ID", "0")
 				query.find().then(list => {
-					this.subjects = list
-					// console.log(list);
+					this.subjects = list.filter(item => item.attributes.subject_name != '科技文艺常识')
 				})
 			}
 		}

@@ -333,8 +333,6 @@
 				subjectProgress: []
 			}
 		},
-		onShow() {
-		},
 		onLoad(options) {
 			var self = this
 			uni.loadFontFace ({

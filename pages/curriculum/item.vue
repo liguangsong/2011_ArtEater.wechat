@@ -1,5 +1,5 @@
 <template>
-	<view class='curriculum-item' v-if='!item.level'>
+	<view class='curriculum-item'>
 		<view class="content">
 			<view class='font'>
 				<view class="title" @click='jumpDefault(item)'>{{item.subjectName}}</view>

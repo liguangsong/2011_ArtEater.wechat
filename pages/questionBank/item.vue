@@ -1,7 +1,7 @@
 <template>
 	<view class='questionbank-item'>
 		<view class='img'>
-			<image :src="item.backgroundImg"></image>
+			<image :src="img"></image>
 		</view>
 		<view class="content">
 			<view class="title" @click='jump(item)'>{{item.subject_name}}</view>
@@ -24,6 +24,9 @@
 			item: {
 				type: Object,
 				default: {}
+			},
+			img: {
+				type: String
 			}
 		},
 		data() {

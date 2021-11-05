@@ -23,7 +23,7 @@
 			</view>
 			<view class="tab">
 				<Timetable v-if='tabbar' :list="timetableList"/>
-				<Details v-else :detail="curriculumInfo.introduce" :isVip="isVip"/>
+				<Details v-else :detail="curriculumInfo.introduce" :isVip="tabbar"/>
 			</view>
 		</Navbar>
 	</view>
@@ -59,14 +59,8 @@
 		created() {
 			var app = getApp();
 			var member = app.globalData.member;
-			if (member && member.blockGold) {
-				if (member.blockGold.endTime > Date.now() || member.permanent) {
-					this.tabbar = true;
-					return ;
-				}
-			}
-			if (member && member.whiteGold) {
-				if (member.whiteGold.endTime > Date.now() || whiteGold.permanent) {
+			if (member && member.memberType != 2) {
+				if (member.endTime > Date.now()) {
 					this.tabbar = true;
 				}
 			}

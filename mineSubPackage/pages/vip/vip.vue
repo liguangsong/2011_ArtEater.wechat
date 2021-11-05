@@ -525,7 +525,7 @@
 			async paymentSuccess(tradeId) {
 				await this.getIntegral();
 				this.createOrder(tradeId);
-				this.createMember(tradeId)
+				this.createMember(tradeId);
 			},
 			// 支付失败
 			paymentFail() {
@@ -602,6 +602,13 @@
 					await member.save();
 				}
 				this.getMember();
+				let app = getApp();
+				var query = new this.Parse.Query('member');
+				query.equalTo("openId", this.userInfo.openid);
+				var results = await query.first();
+				if (results) {
+					app.globalData.member = JSON.parse(JSON.stringify(results));
+				}
 			},
 			// 原先的创建会员
 			async createMember11(tradeId) {
