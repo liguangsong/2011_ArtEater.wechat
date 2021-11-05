@@ -28,15 +28,10 @@
 			this.list = await query.find();
 			var app = getApp();
 			var member = app.globalData.member;
-			if (member && member.blockGold) {
-				if (member.blockGold.endTime > Date.now() || member.permanent) {
+			if (member && member.memberType != 2) {
+				if (member.endTime > Date.now()) {
 					this.vip = true;
 					return ;
-				}
-			}
-			if (member && member.whiteGold) {
-				if (member.whiteGold.endTime > Date.now() || whiteGold.permanent) {
-					this.vip = true;
 				}
 			}
 		},

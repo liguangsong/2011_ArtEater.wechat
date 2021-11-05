@@ -54,6 +54,7 @@
 				query.equalTo("parent_ID", "0")
 				query.find().then(list => {
 					this.subjects = list
+					// console.log(list);
 				})
 			}
 		}

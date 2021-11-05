@@ -12,8 +12,8 @@
 					</view>
 					<view>
 						<view class="nickName">{{userInfo.nickName}}</view>
-						<view class="icon">
-							铂金VIP<u-icon name="arrow-right" color="#f4f4f4" size="20"></u-icon>
+						<view class="icon" v-if='memberType'>
+							{{memberType}}<u-icon name="arrow-right" color="#f4f4f4" size="20"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -41,7 +41,7 @@
 		
 		<view class="scroll">
 			<view class="box vipView">
-				<view class='open' @click='jumpvip'>立即开通</view>
+				<view class='open' @click='jumpvip'>{{memberType ? '续费' : '立即开通'}}</view>
 				<image src="../../static/mine-card.png"></image>
 			</view>		
 			<view class="box actionView">
@@ -180,6 +180,7 @@
 				tabbarHeight: 0,
 				navbarHeight: 0,
 				opacity: 0,
+				memberType: ''
 			}
 		},
 		components: {
@@ -198,8 +199,23 @@
 					this.navbarHeight = customBar * 2 - e.statusBarHeight * 2;
 				}
 			})
+			var app = getApp();
+			var member = app.globalData.member;
+			console.log(member,'--');
+			if (member) {
+				if (member.memberType == 0) {
+					this.memberType = '黑金VIP'
+				}
+				if (member.memberType == 1) {
+					this.memberType = '铂金VIP'
+				}
+				if (member.memberType == 2) {
+					this.memberType = '白银VIP'
+				}
+			}
 		},
 		async onShow() {
+			
 			uni.hideTabBar({
 				animation: false
 			});	
