@@ -16,9 +16,9 @@
 				pdbtm:0,//兼容iphonexr+
 				windowHeight:0,
 				arr: [
-					'../../static/c1.png',
-					'../../static/c2.png',
-					'../../static/c3.png'
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/c1.png?versionId=CAEQIBiBgICC4Zq95xciIDI4OWRmNTBjMzVjNDRiZDI5YTRhZmQyNDA1NWM3ZTBj',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/c2.png?versionId=CAEQIBiBgIDQ35q95xciIDk2ZDdiMmVhYjkxZDRjOTZiNmFlZTQzMTAwYjVlZmJk',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/c3.png?versionId=CAEQIBiBgMDP35q95xciIDFhYTRkMjY3NWI4MTRmNjJiZGNiM2E5MWM5OGExZGJl'
 				]
 			}
 		},

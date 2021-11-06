@@ -13,7 +13,8 @@
 					<view>
 						<view class="nickName">{{userInfo.nickName}}</view>
 						<view class="icon" v-if='memberType'>
-							{{memberType}}<u-icon name="arrow-right" color="#f4f4f4" size="20"></u-icon>
+							{{memberType}}
+							<u-icon name="arrow-right" color="#f4f4f4" size="20"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -38,12 +39,12 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="scroll">
 			<view class="box vipView">
 				<view class='open' @click='jumpvip'>{{memberType ? '续费' : '立即开通'}}</view>
 				<image src="../../static/mine-card.png"></image>
-			</view>		
+			</view>
 			<view class="box actionView">
 				<view class="actionItem" @click="handleSignInClick">
 					<view class="licon">
@@ -169,8 +170,8 @@
 	export default {
 		data() {
 			return {
-        pdbtm:0,//兼容iphonexr+
-				windowHeight:0,
+				pdbtm: 0, //兼容iphonexr+
+				windowHeight: 0,
 				userInfo: {},
 				rightCount: 0,
 				errorCount: 0,
@@ -199,94 +200,91 @@
 					this.navbarHeight = customBar * 2 - e.statusBarHeight * 2;
 				}
 			})
-			var app = getApp();
-			var member = app.globalData.member;
-			console.log(member,'--');
-			if (member) {
-				if (member.memberType == 0) {
-					this.memberType = '黑金VIP'
-				}
-				if (member.memberType == 1) {
-					this.memberType = '铂金VIP'
-				}
-				if (member.memberType == 2) {
-					this.memberType = '白银VIP'
-				}
-			}
 		},
 		async onShow() {
-			
 			uni.hideTabBar({
 				animation: false
-			});	
+			});
 			var self = this
 			var userQuery = new self.Parse.Query(self.Parse.User)
-			userQuery.equalTo('openid',self.Parse.User.current().get('openid'))
-			userQuery.first().then(res=>{
+			userQuery.equalTo('openid', self.Parse.User.current().get('openid'))
+			userQuery.first().then(res => {
 				uni.setStorage({
-					key:'userInfo',
-					data:res
+					key: 'userInfo',
+					data: res
 				})
 				self.userInfo = res
 				var query = new self.Parse.Query("ErrorHistory")
-				query.equalTo('openid',self.userInfo.get('openid'))
-				query.count().then(count=>{
+				query.equalTo('openid', self.userInfo.get('openid'))
+				query.count().then(count => {
 					self.errorCount = count
 				})
 				var query = new self.Parse.Query("RightHistory")
-				query.equalTo('openid',self.userInfo.get('openid'))
-				query.first().then(r=>{
-					if(r){
+				query.equalTo('openid', self.userInfo.get('openid'))
+				query.first().then(r => {
+					if (r) {
 						self.rightCount = r.get('questions').length
 					}
 				})
 			})
-			let res=await Utils.getcount();
-			    if(res){
-			    this.msgCount=res.msgCount;
-			    this.couponCount=res.couponCount;
+			let res = await Utils.getcount();
+			if (res) {
+				this.msgCount = res.msgCount;
+				this.couponCount = res.couponCount;
+			}
+			
+			var app = getApp();
+			var member = app.globalData.member;
+			// 判断是不是会员
+			if (member) {
+				if (member.endTime > Date.now()) {
+					if (member.memberType == 0) {
+						this.memberType = '黑金VIP'
+					}
+					if (member.memberType == 1) {
+						this.memberType = '铂金VIP'
+					}
+					if (member.memberType == 2) {
+						this.memberType = '白银VIP'
+					}
+				} else {
+					var query = new this.Parse.Query('member');
+					var user1 = JSON.parse(JSON.stringify(user));
+					query.equalTo("openId", user1.openid);
+					var results = await query.first();
+					results.set('memberType', '');
+					results.save();
 				}
-			// uni.getStorage({
-			// 	key:'openid',
-			// 	success(ores) {
-			// 		var query =  new self.Parse.Query('MessageReadHistory')
-			// 		query.equalTo('openid', ores.data)
-			// 		query.first().then(res=>{
-			// 			var msgQuery = new self.Parse.Query("Message")
-			// 			if(res){
-			// 				self.readHistory = res
-			// 				msgQuery.notContainedIn('objectId',res.get('MessageIds'))
-			// 			}
-			// 			msgQuery.count().then(count=>{
-			// 				self.msgCount = count
-			// 			})
-			// 		})
-			// 		let cquery = new self.Parse.Query('CouponRecord')
-			// 		cquery.equalTo('openid', ores.data)
-			// 		cquery.equalTo('state', 0)
-			// 		cquery.greaterThan('useEndTime', new Date())
-			// 		cquery.descending('useEndTime', 'state')
-			// 		cquery.count().then(count=>{
-			// 			self.couponCount = count
-			// 		})
-			// 	}
-			// })
+			} else {
+				var user = await this.Parse.User.current();
+				var query = new this.Parse.Query('member');
+				var user1 = JSON.parse(JSON.stringify(user));
+				query.equalTo("openId", user1.openid);
+				var results = await query.first();
+				if (results) {
+					var r = JSON.parse(JSON.stringify(results));
+					app.globalData.member = r;
+					if (r.memberType == 0) {
+						this.memberType = '黑金VIP'
+					}
+					if (r.memberType == 1) {
+						this.memberType = '铂金VIP'
+					}
+					if (r.memberType == 2) {
+						this.memberType = '白银VIP'
+					}
+				}
+			}
+
 		},
 		onLoad() {
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
-			this.pdbtm=125+app.globalData.paddingBottomHeight;
-			// uni.getSystemInfo({
-			// 			   success: res => {
-			// 				this.windowHeight = res.windowHeight;
-			// 			   }
-			// 			})
-			uni.loadFontFace ({
-			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			  success: function(){
-				  console.log('load font success')
-			  }
+			this.pdbtm = 125 + app.globalData.paddingBottomHeight;
+
+			uni.loadFontFace({
+				family: 'PingFangSC-Medium',
+				source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
 			})
 		},
 		methods: {
@@ -297,72 +295,72 @@
 			},
 			tabbarChange(item) {
 				uni.switchTab({
-					url:item.path
+					url: item.path
 				})
 			},
 			/*查看已购项目*/
-			handleOrderClick(){
+			handleOrderClick() {
 				uni.navigateTo({
-					url:'./order'
+					url: './order'
 				})
 			},
 			/*查看我的优惠券*/
-			handleCouponClick(){
+			handleCouponClick() {
 				uni.navigateTo({
-					url:'/mineSubPackage/pages/mycoupon/mycoupon'
+					url: '/mineSubPackage/pages/mycoupon/mycoupon'
 				})
 			},
 			/*签到*/
-			handleSignInClick(){
+			handleSignInClick() {
 				uni.navigateTo({
-					url:'/mineSubPackage/pages/signin/signin'
+					url: '/mineSubPackage/pages/signin/signin'
 				})
 			},
 			/*积分排行榜*/
-			handleScoreListClick(){
+			handleScoreListClick() {
 				uni.navigateTo({
-					url:'/mineSubPackage/pages/score/score'
+					url: '/mineSubPackage/pages/score/score'
 				})
 			},
 			/*查看考试记录*/
-			handleTestHisClick(){
+			handleTestHisClick() {
 				uni.navigateTo({
-					url:'/mineSubPackage/pages/testhistory/testhistory'
+					url: '/mineSubPackage/pages/testhistory/testhistory'
 				})
 			},
-			handleInvitationClick(){
+			handleInvitationClick() {
 				uni.navigateTo({
 					url: '/mineSubPackage/pages/invitation/invitation'
 				})
 			},
 			/* 消息中心 */
-			handleMessageClick(){
+			handleMessageClick() {
 				uni.navigateTo({
-					url:'/mineSubPackage/pages/message/message'
+					url: '/mineSubPackage/pages/message/message'
 				})
 			},
 			/* 查看详情 */
-			handleInfoClick(){
+			handleInfoClick() {
 				uni.navigateTo({
-					url:'/mineSubPackage/pages/info/info'
+					url: '/mineSubPackage/pages/info/info'
 				})
 			},
 			/*反馈*/
-			handleFeedBackClick(){
+			handleFeedBackClick() {
 				uni.navigateTo({
-					url:'/mineSubPackage/pages/feedback/feedback'
+					url: '/mineSubPackage/pages/feedback/feedback'
 				})
 			},
 			/*错题集*/
-			handleNoteClick(){
-				if(this.userInfo&&this.userInfo.openid){
-					if(this.userInfo.phone){
+			handleNoteClick() {
+				if (this.userInfo && this.userInfo.openid) {
+					if (this.userInfo.phone) {
 						uni.navigateTo({
-							url:'/homeSubPackage/pages/error/index'
+							url: '/homeSubPackage/pages/error/index'
 						})
 					} else {
 						uni.reLaunch({
-							url:'/pages/login/login'
+							url: '/pages/login/login'
 						})
 					}
 				} else {
@@ -370,9 +368,9 @@
 					this.toUrl = '/homeSubPackage/pages/error/index'
 				}
 			},
-			handleScoreRecord(){
+			handleScoreRecord() {
 				uni.navigateTo({
-					url:'/mineSubPackage/pages/scorerecord/scorerecord'
+					url: '/mineSubPackage/pages/scorerecord/scorerecord'
 				})
 			}
 		}
@@ -384,11 +382,13 @@
 		padding-top: 560rpx;
 		background: #F7F7F7;
 	}
+
 	.fixed {
 		position: fixed;
 		top: 0;
 		width: 100%;
 		z-index: 90;
+
 		.title {
 			position: fixed;
 			top: 0;
@@ -400,10 +400,12 @@
 			padding-left: 62rpx;
 			align-items: center;
 		}
+
 		.headView1 {
 			width: 100%;
 			height: 450rpx;
 			position: relative;
+
 			.headCon {
 				position: relative;
 				display: flex;
@@ -412,29 +414,34 @@
 				z-index: 199;
 				padding: 204rpx 0 0 72rpx;
 				color: #FFFFFF;
+
 				.headIconView {
 					width: 128rpx;
 					height: 128rpx;
 					border-radius: 50%;
 					overflow: hidden;
 					margin-right: 28rpx;
+
 					image {
 						width: 100%;
 						height: 100%;
 					}
 				}
+
 				.nickName {
 					font-size: 36rpx;
 					font-weight: 600;
 					line-height: 50rpx;
 					margin: 26rpx 0 16rpx;
 				}
+
 				.icon {
 					font-size: 20rpx;
 					font-weight: 400;
 					line-height: 28rpx;
 				}
 			}
+
 			.bg {
 				position: absolute;
 				top: 0;
@@ -444,60 +451,71 @@
 			}
 		}
 	}
+
 	.box {
 		width: 690rpx;
 		margin: 0 auto 24rpx;
 		background: #fff;
-		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.06);
+		box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.06);
 		border-radius: 24rpx;
 	}
+
 	.scoreView {
 		position: absolute;
 		height: 132rpx;
 		top: 400rpx;
 		left: 30rpx;
 		z-index: 210;
+
 		.content {
-			height: 100%;;
+			height: 100%;
+			;
 			display: flex;
 			justify-content: space-around;
 			align-items: center;
+
 			.scoreItem {
 				height: 100%;
 				padding-top: 20rpx;
 				flex: 1 1 auto;
 				position: relative;
 				text-align: center;
+
 				.score {
 					font-size: 46rpx;
 					font-weight: 500;
 					color: #000;
 					line-height: 64rpx;
 				}
+
 				.contentTitle {
 					font-size: 22rpx;
 					font-weight: 400;
-					color: rgba(0,0,0,.6);
+					color: rgba(0, 0, 0, .6);
 					line-height: 32rpx;
 				}
 			}
+
 			.br {
 				position: absolute;
 				right: 0;
 				top: 36rpx;
 				width: 0;
 				height: 62rpx;
-				border-right: 1px solid rgba(0,0,0,.1);
+				border-right: 1px solid rgba(0, 0, 0, .1);
 			}
 		}
 	}
+
 	.scroll {
 		position: relative;
 		z-index: 0;
 	}
+
 	.vipView {
 		height: 120rpx;
 		position: relative;
+
 		image {
 			position: absolute;
 			top: 0;
@@ -506,6 +524,7 @@
 			width: 100%;
 			height: 100%;
 		}
+
 		.open {
 			position: relative;
 			z-index: 200;
@@ -521,27 +540,31 @@
 			border-radius: 24rpx;
 		}
 	}
-	
+
 	.actionView {
 		.actionItem {
 			height: 84rpx;
 			display: flex;
+
 			.licon {
 				flex: 0 1 116rpx;
 				display: flex;
 				align-items: center;
 				justify-content: center;
+
 				image {
 					width: 64rpx;
 					height: 64rpx;
 				}
 			}
+
 			.cont {
 				flex: 1 0 auto;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				border-bottom: 1px solid rgba(0,0,0,.1);
+				border-bottom: 1px solid rgba(0, 0, 0, .1);
+
 				.title {
 					flex: 1 0 auto;
 					display: flex;
@@ -550,6 +573,7 @@
 					font-weight: 400;
 					color: #352026;
 					margin-right: 50rpx;
+
 					view {
 						height: 30rpx;
 						border-radius: 15rpx;
@@ -557,13 +581,15 @@
 						color: #fff;
 						min-width: 30rpx;
 						text-align: center;
-						background: linear-gradient(rgba(218,39,39,1),rgba(218,39,39,.3));
+						background: linear-gradient(rgba(218, 39, 39, 1), rgba(218, 39, 39, .3));
 					}
 				}
+
 				.icon {
 					margin-right: 40rpx;
 				}
 			}
+
 			&:last-child {
 				.cont {
 					border-bottom: none;
@@ -571,7 +597,8 @@
 			}
 		}
 	}
-	page{
+
+	page {
 		background-color: #fbfbfb;
 	}
 </style>

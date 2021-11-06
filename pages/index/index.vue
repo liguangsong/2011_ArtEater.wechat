@@ -191,46 +191,44 @@
 				<u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true" :zoom="false" @click="handleStep">
 					<view v-if="step==1" class="step bottom">
 						<view class="navItem">
-							<image src="../../static/mask/mask1.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask1.png"></image>
 						</view>
 					</view>
 					<view v-if="step==2" class="step bottom">
 						<view class="navItem">
-							<image src="../../static/mask/mask2.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask2.png"></image>
 						</view>
 					</view>
 					<view v-if="step==3" class="step top">
 						<view class="navItem">
-							<image src="../../static/mask/mask3.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask3.png"></image>
 						</view>
 					</view>
 					<view v-if="step==4" class="step top">
 						<view class="navItem">
-							<image src="../../static/mask/mask4.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask4.png"></image>
 						</view>
 					</view>
 					<view v-if="step==5" class="step top">
 						<view class="navItem">
-							<image src="../../static/mask/mask5.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask5.png"></image>
 						</view>
 					</view>
 					<view v-if="step==6" class="step top">
 						<view class="navItem">
-							<image src="../../static/mask/mask6.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask6.png"></image>
 						</view>
 					</view>
 					<view v-if="step==7" class="step top">
 						<view class="navItem">
-							<image src="../../static/mask/mask7.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask7.png"></image>
 						</view>
 					</view>
 					<view v-if="step==8" class="step top">
 						<view class="navItem">
-							<image src="../../static/mask/mask8.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask8.png"></image>
 						</view>
 					</view>
-
-
 				</u-mask>
 			</template>
 
@@ -289,7 +287,6 @@
 			}
 		},
 		async onShow() {
-			let app = getApp();
 			uni.hideTabBar({
 				animation: false
 			});
@@ -300,15 +297,43 @@
 				this.couponCount = res.couponCount;
 				// //获取本地正在学习的课程
 				this.getLearning();
-
-				var query = new this.Parse.Query('member');
-				query.equalTo("openId", this.userInfo.openid);
-				var results = await query.first();
-				if (results) {
-					console.log(results);
-					app.globalData.member = JSON.parse(JSON.stringify(results));
+				
+				var app = getApp();
+				var member = app.globalData.member;
+				// 判断是不是会员
+				if (member) {
+					if (member.memberType != 2) {
+						if (member.endTime > Date.now()) {
+							this.vip = true;
+						} else {
+							var query = new this.Parse.Query('member');
+							var user1 = JSON.parse(JSON.stringify(user));
+							query.equalTo("openId", user1.openid);
+							var results = await query.first();
+							results.set('memberType', '');
+							results.save();
+						}
+					}
+				} else {
+					var user = await this.Parse.User.current();
+					var query = new this.Parse.Query('member');
+					var user1 = JSON.parse(JSON.stringify(user));
+					query.equalTo("openId", user1.openid);
+					var results = await query.first();
+					if (results) {
+						var r = JSON.parse(JSON.stringify(results));
+						app.globalData.member = r;
+						if (r.memberType != 2) {
+							if (r.endTime > Date.now()) {
+								this.vip = true;
+							} else {
+								results.set('memberType', '');
+								results.save();
+							}
+						}
+					}
 				}
-
+						
 			}
 			this.bindConfig();
 			//获取所有的模块
@@ -762,8 +787,6 @@
 	}
 
 	.swiperItem {
-		// height: 320rpx;
-		// display: inline-block;
 		vertical-align: middle;
 	}
 
@@ -781,8 +804,6 @@
 		height: 340rpx;
 		border-radius: 15rpx;
 		filter: drop-shadow(0rpx 4rpx 12rpx rgba(0, 0, 0, 0.08));
-		// -webkit-filter: drop-shadow(8px 8px 6px #333);
-		// 	        filter: drop-shadow(8px 8px 6px #333);
 		position: relative;
 		top: -18rpx;
 
@@ -791,7 +812,6 @@
 			height: 340rpx;
 			display: flex;
 			background: #fff;
-			// box-shadow: -5px -5px 10px -4px red, -5px 5px 10px -4px red;
 			flex-flow: row wrap;
 			justify-content: space-around;
 
@@ -926,9 +946,7 @@
 		display: inline-block;
 		width: 354rpx;
 		height: 172rpx;
-		/* margin-left: 30rpx; */
 		text-align: center;
-		/* border: 1rpx solid #2C405A; */
 		border-radius: 64rpx;
 		position: relative;
 	}
@@ -1115,7 +1133,7 @@
 	}
 
 	.bottom image {
-		bottom: -22rpx;
+		top: calc(100vh - 368rpx);
 	}
 
 	.top image {
