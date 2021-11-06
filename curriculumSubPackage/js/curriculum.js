@@ -1,8 +1,9 @@
 import Parse from '@/parse/index.js'
+import Config from '@/static/config/index.js'
 export default{
 	//获取课程及详情
 	async getCurriculum(id) {
-		  let curriculum= new Parse.Query('coursesModule');
+		  let curriculum= new Parse.Query('CoursesModule');
 		  if(id){
 			  curriculum.equalTo('objectId',id);
 		  }
@@ -235,5 +236,67 @@ export default{
 				}else{
 					return false;
 				}
-	}
+	},
+	// 扫码方法
+		scanCode() {
+			     let that=this;
+				 uni.scanCode({
+					  success:async (res)=> {
+						   this.scaninfo=res;
+						   console.log(res,666)
+						   if(res.result){//res.result
+						   if(res.result.includes(Config.ScanUrl)){
+							    let url=decodeURIComponent(res.result);
+							   	let id=url.split('/')[url.split('/').length-1];
+								let data = await that.getCurriculum(id);
+								if(data.length){
+									let info=data[0];
+									let toUrl = await this.configUrl(info);
+									uni.reLaunch({
+										url:toUrl
+									})
+								}else{
+								    uni.showToast({
+								    	title:'未找到当前课程',
+								    	icon:'none'
+								    })
+								}
+						   }else{
+							   uni.showToast({
+							   	title:'二维码错误',
+								icon:'none'
+							   })
+						   }
+						   // '0016429'||
+						   
+						   // `../pages/index/index`
+						//    console.log(res.result,'内部扫码')
+						   }
+					  },
+					  fail() {
+					  	 uni.showToast({
+							 icon:'none',
+							 title:'扫码失败'
+						 })
+					  }
+				  });
+		},
+		configUrl(item) {
+			let toUrl= '';
+				if(item.flag==1){
+					if(item.level==0){
+						// 系列课程点击时到详情页有介绍有详情
+						toUrl = '/curriculumSubPackage/pages/shareStudy/study?objectId='+item.objectId;
+					}else{
+						//单课程点击时直接播放页
+						toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId='+item.objectId;
+					}
+				}else{
+					   //单课程点击时直接播放页
+					   toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId='+item.objectId;
+				}
+			
+			return toUrl;
+			
+		}
 }

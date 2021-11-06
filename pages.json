@@ -253,7 +253,31 @@
             ]},
 			{
 			"root": "curriculumSubPackage",
-			"pages": [{
+			"pages": [
+				{
+					"path": "pages/sharePage/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/shareStudy/study",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+					    "navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/shareDetails/details",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+					    "navigationStyle": "custom"
+					}
+				},
+				{
 				"path": "pages/study/study",
 				"style": {
 					"navigationBarTitleText": "课程",
