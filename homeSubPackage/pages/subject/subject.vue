@@ -330,7 +330,22 @@
 				windowHeight: 0,
 				subjects: [],
 				questionHistory: [],
-				subjectProgress: []
+				subjectProgress: [],
+				isMember: false
+			}
+		},
+		onShow() {
+			var app = getApp();
+			var member = app.globalData.member;
+			// 判断是不是会员
+			console.log(member);
+			if (member) {
+				if (member.memberType == 0 || member.memberType == 2) {
+					if (member.endTime > Date.now()) {
+						this.isMember = true;
+						console.log(this.isMember, '///');
+					}
+				}
 			}
 		},
 		onLoad(options) {
@@ -588,6 +603,7 @@
 			/*查看详情*/
 			handleNameClick(e){
 				var item = e.currentTarget.dataset.item
+				// console.log(item);
 				if(item.content){
 					this.currSubjectDetail = item
 					this.isShowSubjectDetail = true
@@ -598,7 +614,22 @@
 				var self = this
 				var item = e.currentTarget.dataset.item
 				if(item.price > 0 && !self.hasBuyed) {
-					// this.isShowSubjectBuy = true
+					if (this.isMember) {
+						var item = e.currentTarget.dataset.item
+						uni.navigateTo({
+							url:'exam?bsid='+self.subjectId+'&sid=' + item.value,
+							success(res) {
+								res.eventChannel.emit('subjectTree', item)
+							},
+							events: {
+								buySuccess: function(data) {
+									self.bindOrder()
+									self.bindSubjectTree()
+								}
+							}
+						})
+						return
+					}
 					var self = this
 					uni.navigateTo({
 						url:'/pages/buy/buy?subjectId=' + this.subjectDetail.id,
