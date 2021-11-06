@@ -1,7 +1,7 @@
 <template>
 	<view class="myPage" :style="{'overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<view class="">
-			<Item v-for='(item,i) in list' v-if='!item.isHideCourse' :key='i' :item='item' :vip='vip'/>
+			<Item v-for='(item,i) in list' v-if='!item.hide' :key='i' :item='item' :vip='vip'/>
 			<view style='height:33rpx'></view>
 		</view>
 		<view-tabbar :current="1" @tabbarChange="tabbarChange"></view-tabbar>
@@ -25,7 +25,7 @@
 			Item
 		},
 		async created() {
-			var query = new this.Parse.Query('coursesModule')
+			var query = new this.Parse.Query('CoursesModule')
 			query.containedIn('level', [0,undefined])
 			// query.containedIn('level', [0,undefined])
 			this.list = await query.find();

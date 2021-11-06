@@ -7,7 +7,7 @@ export default{
 		  if(id){
 			  curriculum.equalTo('objectId',id);
 		  }
-		  curriculum.notEqualTo('isHideCourse',true);
+		  curriculum.notEqualTo('hide',true);
 		  curriculum.ascending('createdAt');
 		  let res=await curriculum.find();
 		      if(res){
@@ -57,8 +57,8 @@ export default{
 	},
 	// 获取当前课程下的推荐课程
 	async getRecommended(ids) {
-		let curriculum= new Parse.Query('coursesModule');
-		    curriculum.notEqualTo('isHideCourse',true);
+		let curriculum= new Parse.Query('CoursesModule');
+		    curriculum.notEqualTo('hide',true);
 			curriculum.containedIn('objectId',ids);
 			curriculum.ascending('createdAt');
 		let res=await curriculum.find();
@@ -71,12 +71,12 @@ export default{
 	},
 	// 获取当前课程所属的整个系列课程
 	async getAllTimetable(rootId,recursion) {
-		let curriculum= new Parse.Query('coursesModule');
-		    curriculum.notEqualTo('isHideCourse',true);
+		let curriculum= new Parse.Query('CoursesModule');
+		    curriculum.notEqualTo('hide',true);
 			curriculum.equalTo('rootId',rootId);
 			curriculum.ascending('createdAt');
-		const coursesModuleRoot = new Parse.Query("coursesModule");
-		    coursesModuleRoot.notEqualTo('isHideCourse',true);
+		const coursesModuleRoot = new Parse.Query("CoursesModule");
+		    coursesModuleRoot.notEqualTo('hide',true);
 			coursesModuleRoot.equalTo("objectId", rootId);
 		const mainQuery = Parse.Query.or(curriculum, coursesModuleRoot);
 		let res=await mainQuery.find();

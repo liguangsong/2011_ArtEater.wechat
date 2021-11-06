@@ -59,7 +59,7 @@ export default {
 	},
 	//初始获取正在学习的列表
 	async getLearning(){
-		let curriculum= new Parse.Query('coursesModule');
+		let curriculum= new Parse.Query('CoursesModule');
 		let openid= uni.getStorageSync('openid');
 		let learning= new Parse.Query('Learning');
 			learning.equalTo('openId',openid);
@@ -68,7 +68,7 @@ export default {
 				let ids=res.get('ids');
 				if(ids){
 					 curriculum.containedIn('objectId',ids);
-					 curriculum.notEqualTo('isHideCourse',true);
+					 curriculum.notEqualTo('hide',true);
 					let  course=await curriculum.find();
 					   if(course){
 						   let newres=[]
