@@ -415,7 +415,7 @@
 					return ;
 				}
 				// 此步骤是在续费
-				console.log(this.isMember);
+				// console.log(this.isMember);
 				if (this.isMember) {
 					var memberType = this.memberInfo.memberType;	// 之前购买的会员类型
 					var surfaceId = this.list[this.active].surfaceId ;	// 现在购买的会员类型
@@ -588,7 +588,11 @@
 					if (this.renew) {
 						this.member.set('memberType', '0');
 					} else {
-						this.member.set('endTime', this.getTime(12) + Number(this.memberInfo.endTime) - Date.now() )
+						if (this.memberInfo.memberType = '') {
+							this.member.set('endTime', this.getTime(12))
+						} else {
+							this.member.set('endTime', this.getTime(12) + Number(this.memberInfo.endTime) - Date.now() )
+						}
 					}
 					await this.member.save();
 				} else {
