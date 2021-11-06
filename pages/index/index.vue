@@ -192,12 +192,12 @@
 				<u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true" :zoom="false" @click="handleStep">
 					<view v-if="step==1" class="step bottom">
 						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask1.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask1.png"></image>
 						</view>
 					</view>
 					<view v-if="step==2" class="step bottom">
 						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask2.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask2.png"></image>
 						</view>
 					</view>
 					<view v-if="step==3" class="step top">
