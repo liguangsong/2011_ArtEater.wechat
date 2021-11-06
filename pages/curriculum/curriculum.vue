@@ -36,17 +36,47 @@
 			this.windowHeight = app.globalData.windowHeight;
 			this.pdbtm=125+app.globalData.paddingBottomHeight;
 		},
-		onShow() {
+		async onShow() {
 			uni.hideTabBar({
 				animation: false
-			});	
+			});
+			
 			var app = getApp();
 			var member = app.globalData.member;
-			if (member && member.memberType != 2) {
-				if (member.endTime > Date.now()) {
-					this.vip = true;
+			// 判断是不是会员
+			if (member) {
+				if (member.memberType != 2) {
+					if (member.endTime > Date.now()) {
+						this.vip = true;
+					} else {
+						var query = new this.Parse.Query('member');
+						var user1 = JSON.parse(JSON.stringify(user));
+						query.equalTo("openId", user1.openid);
+						var results = await query.first();
+						results.set('memberType', '');
+						results.save();
+					}
+				}
+			} else {
+				var user = await this.Parse.User.current();
+				var query = new this.Parse.Query('member');
+				var user1 = JSON.parse(JSON.stringify(user));
+				query.equalTo("openId", user1.openid);
+				var results = await query.first();
+				if (results) {
+					var r = JSON.parse(JSON.stringify(results));
+					app.globalData.member = r;
+					if (r.memberType != 2) {
+						if (r.endTime > Date.now()) {
+							this.vip = true;
+						} else {
+							results.set('memberType', '');
+							results.save();
+						}
+					}
 				}
 			}
+		
 		},
 		methods: {
 			tabbarChange(item) {

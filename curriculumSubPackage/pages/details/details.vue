@@ -115,7 +115,7 @@
 <script>
 	import Utils from '@/js/utils/curriculum.js'
 	import Curriculum from '../../js/curriculum.js'
-	import kAudio from '../../../components/audio/audio.vue'
+	import kAudio from '../../../components/audio/bg-audio.vue'
 	import kVideo from '../../../components/video/kVideo.vue'
 	export default {
 		components: {
