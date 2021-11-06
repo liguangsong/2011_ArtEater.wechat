@@ -99,7 +99,7 @@
 		</view> -->
 				<!--热门专题 end-->
 
-				<audition-learning v-if="studyList.length" title="正在学习" :showMore="studyList.length>1"
+				<audition-learning v-if="studyList.length" title="正在学习" :showMore="studyList.length>2"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
 				</audition-learning>
 				<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)"
@@ -297,6 +297,7 @@
 				this.couponCount = res.couponCount;
 				// //获取本地正在学习的课程
 				this.getLearning();
+
 				
 				var app = getApp();
 				var member = app.globalData.member;
@@ -333,7 +334,7 @@
 						}
 					}
 				}
-						
+			
 			}
 			this.bindConfig();
 			//获取所有的模块
@@ -393,7 +394,7 @@
 				let app = getApp();
 				let member = app.globalData.member;
 				let vip=false;
-				if(member && member.memberType!=2){
+				if(member && member.memberType!=2 && (member.endTime > Date.now())){
                   vip=true;
 				}
 				return vip;

@@ -268,13 +268,20 @@
 			},
 			// 切换课程时判断是否是vip课程
 			async changeCurriculum(item) {
-				if(item.isVipCourse){
+				let app = getApp();
+				let member = app.globalData.member;
+				let vip=false;
+				if(member && member.memberType!=2 && (member.endTime > Date.now())){
+                  vip=true;
+				}
+				if(item.isVipCourse && !vip){
 					// 是vip课程则要跳转到vip中心买会员
 					uni.navigateTo({
 						url:'../../../mineSubPackage/pages/vip/vip'
 					})
 				}else{
 					this.curriculumInfo=item;
+					this.timetable = false;
 					// 存储上次学习
 					await Curriculum.updatePreLearn(item['rootId'],item.objectId);
 				}

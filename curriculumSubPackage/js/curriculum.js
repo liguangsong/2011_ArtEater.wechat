@@ -95,6 +95,7 @@ export default{
 		    }
 			if(recursion){
 				res=await this.arrToTree(res,'0');
+				console.log(res,666555444)
 			}else{
 				res=await this.arrToTree(res,'0');
 				res=await this.treeToArr(res,[]);
