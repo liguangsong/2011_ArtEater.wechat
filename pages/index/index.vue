@@ -102,6 +102,7 @@
 				<audition-learning v-if="studyList.length" title="正在学习" :showMore="studyList.length>2"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
 				</audition-learning>
+				<view class="h-line" v-if="studyList.length"></view>
 				<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)"
 					:showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index"
 					@changeUrl="changeUrl" @checkMore="checkMore"></audition>
@@ -785,7 +786,7 @@
 		// 	        filter: drop-shadow(8px 8px 6px #333);
 		position: relative;
 		top: -18rpx;
-
+        margin-bottom:-18rpx;
 		.nav-box {
 			width: 50%;
 			height: 340rpx;
@@ -851,7 +852,12 @@
 			flex-grow: 4;
 		}
 	}
-
+    .h-line{
+		width: 750rpx;
+		height: 12rpx;
+		background: rgba(0, 0, 0, 0.05);
+		box-shadow: 0rpx 0rpx 6rpx 0rpx rgba(0,0,0,0.08) inset;
+	}
 	.navSection .navItem .img {
 		width: 92rpx;
 		height: 92rpx;

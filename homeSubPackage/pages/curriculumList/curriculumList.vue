@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="list">
 		<audition-learning :list="curriculumList" v-if="curriculumList.length&&moduleName=='正在学习'" @learnChangeUrl="changeUrl"></audition-learning>
 		<audition :list="curriculumList" v-else-if="curriculumList.length" @changeUrl="changeUrl"></audition>
 	</view>
@@ -81,6 +81,8 @@
 	}
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+  .list{
+	  padding-top: 30rpx;
+  }
 </style>
