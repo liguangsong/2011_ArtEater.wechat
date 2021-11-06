@@ -83,7 +83,7 @@
 <style lang="scss" scoped>
 	.list{
 		position: relative;
-		margin:20rpx 0;
+		// margin:20rpx 0;
 		.title-before{
 			display: inline-block;
 			margin-right: 8rpx;
@@ -100,9 +100,10 @@
 			color: #000000;
 			line-height: 40rpx;
 			padding-left: 30rpx;
+			margin: 24rpx 0 0rpx 0;
 		}
 		.more{
-			width: 80rpx;
+			// width: 80rpx;
 			font-size: 16rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 500;
@@ -118,7 +119,7 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		padding: 20rpx 30rpx 12rpx 30rpx;
+		padding: 0rpx 30rpx 0rpx 30rpx;
 		justify-content: space-between;
 	}
 	// .auditon::after{
@@ -128,6 +129,7 @@
 	.item {
 		width: 336rpx;
 		position: relative;
+		margin-top:24rpx;
 		.icon-vip{
 			position: absolute;
 			right: 0;

@@ -102,6 +102,7 @@
 				<audition-learning v-if="studyList.length" title="正在学习" :showMore="studyList.length>2"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
 				</audition-learning>
+				<view class="h-line" v-if="studyList.length"></view>
 				<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)"
 					:showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index"
 					@changeUrl="changeUrl" @checkMore="checkMore"></audition>
@@ -191,12 +192,12 @@
 				<u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true" :zoom="false" @click="handleStep">
 					<view v-if="step==1" class="step bottom">
 						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask1.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask1.png"></image>
 						</view>
 					</view>
 					<view v-if="step==2" class="step bottom">
 						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask2.png"></image>
+							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask2.png"></image>
 						</view>
 					</view>
 					<view v-if="step==3" class="step top">
@@ -807,7 +808,7 @@
 		filter: drop-shadow(0rpx 4rpx 12rpx rgba(0, 0, 0, 0.08));
 		position: relative;
 		top: -18rpx;
-
+        margin-bottom:-18rpx;
 		.nav-box {
 			width: 50%;
 			height: 340rpx;
@@ -872,7 +873,12 @@
 			flex-grow: 4;
 		}
 	}
-
+    .h-line{
+		width: 750rpx;
+		height: 12rpx;
+		background: rgba(0, 0, 0, 0.05);
+		box-shadow: 0rpx 0rpx 6rpx 0rpx rgba(0,0,0,0.08) inset;
+	}
 	.navSection .navItem .img {
 		width: 92rpx;
 		height: 92rpx;
