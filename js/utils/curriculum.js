@@ -1,13 +1,13 @@
 import Parse from '@/parse/index.js'
 export default {
 	//获取所有模块
-	async getHomeSetting(id) {
-		  let homeSetting= new Parse.Query('homeSetting');
+	async getModule(id) {
+		  let module= new Parse.Query('Module');
 		  if(id){
-			  homeSetting.equalTo('objectId',id);
+			  module.equalTo('objectId',id);
 		  }
-		  homeSetting.ascending('showOrder');
-		  let res=await homeSetting.find();
+		  module.ascending('showOrder');
+		  let res=await module.find();
 		      if(res){
 				res = res.map(v=>v.toJSON());
 				for(let i=0; i<res.length; i++){
@@ -27,8 +27,8 @@ export default {
 	//根据分类获取课程
 	async getCategoryCurriculum(objectId) {
 		let ModuleAssociatedCourses= new Parse.Query('ModuleAssociatedCourses');
-		var homeSetting = Parse.Object.extend("homeSetting")
-		let category= homeSetting.createWithoutData(objectId);
+		var module = Parse.Object.extend("Module")
+		let category= module.createWithoutData(objectId);
 		    ModuleAssociatedCourses.equalTo('module',category);
 			ModuleAssociatedCourses.include('module');
 			ModuleAssociatedCourses.include('course');

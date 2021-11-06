@@ -48,7 +48,7 @@
 								</view>
 								<view class="viewItem-vip-bottom">
 									<view class="viewItem-vip-price">
-										<text class='price'>¥{{list[0].preferentialPrice}}</text>
+										<text class='price'>¥{{list[0].promotionPrice}}</text>
 										<text class='oldprice' v-if='list[0].memberPrice && list[0].discount '>¥{{list[0].memberPrice}}</text>
 									</view>
 									<view class="vip-btn" @click='showFixed = true'>
@@ -152,7 +152,7 @@
 								</view>
 								<view class="viewItem-vip-bottom">
 									<view class="viewItem-vip-price">
-										<text class='price'>¥{{list[1].preferentialPrice}}</text>
+										<text class='price'>¥{{list[1].promotionPrice}}</text>
 										<text class='oldprice' v-if='list[1].memberPrice && list[1].discount'>¥{{list[1].memberPrice}}</text>
 									</view>
 									<view class="vip-btn" @click='showFixed = true'>
@@ -234,7 +234,7 @@
 								</view>
 								<view class="viewItem-vip-bottom">
 									<view class="viewItem-vip-price">
-										<text class='price'>¥{{list[2].preferentialPrice}}</text>
+										<text class='price'>¥{{list[2].promotionPrice}}</text>
 										<text class='oldprice' v-if='list[2].memberPrice && list[2].discount'>¥{{list[2].memberPrice}}</text>
 									</view>
 									<view class="vip-btn" @click='showFixed = true'>
@@ -302,15 +302,15 @@
 						>
 							<view class="img" :class='{active: active == i}'>
 								<image class='imgbg' :src="item.surface"></image>
-								<image class='righttop' v-if='item.preferentialPrice && item.discount' src="../../static/time.png"></image>
+								<image class='righttop' v-if='item.promotionPrice && item.discount' src="../../static/time.png"></image>
 							</view>
 							<view class="info">
 								<view class="title">
 									<text>{{item.memberName}}</text>
 								</view>
 								<view class="price">
-									<text class='discount'>¥{{item.preferentialPrice}}</text>
-									<text class='old-price' style='text-decoration: line-through;' v-if='item.preferentialPrice && item.discount'>¥{{item.memberPrice}}</text>
+									<text class='discount'>¥{{item.promotionPrice}}</text>
+									<text class='old-price' style='text-decoration: line-through;' v-if='item.promotionPrice && item.discount'>¥{{item.memberPrice}}</text>
 								</view>
 							</view>
 						</view>					
@@ -368,7 +368,7 @@
 			this.user = this.Parse.User.current();
 			this.userInfo = JSON.parse(JSON.stringify(this.user));
 			
-			var query = new this.Parse.Query('setMember')
+			var query = new this.Parse.Query('MemberType')
 			this.list = await query.find();
 			this.list = this.list.map(item => JSON.parse(JSON.stringify(item))).sort((a,b)=>a.surfaceId-b.surfaceId);
 			
@@ -485,12 +485,12 @@
 				// this.user = this.Parse.User.current()
 				// 补价算法，使用了n天，（黑金会员价-白金会员价）/365 * （365-n）=差价
 				// return ;
-				var cash = this.list[this.active].preferentialPrice || this.list[this.active].memberPrice;
+				var cash = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
 				// 升级为黑金
 				if (this.renew) {
 					var time = Math.ceil((this.memberInfo.endTime - Date.now())/(1000*60*60*24));
-					var n1 = this.list[0].preferentialPrice || this.list[0].memberPrice;
-					var n2 = this.list[this.active].preferentialPrice || this.list[this.active].memberPrice;
+					var n1 = this.list[0].promotionPrice || this.list[0].memberPrice;
+					var n2 = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
 					cash = (n1 - n2)/365*(365-time) * 100;
 				}
 				cash = 0;
@@ -534,7 +534,7 @@
 			// 获取积分与赠送积分
 			async getIntegral() {				
 				await this.Parse.Config.get().then(async config=>{
-					var n = this.list[this.active].preferentialPrice || this.list[this.active].memberPrice;
+					var n = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
 					this.userInfo.score = (this.userInfo.score || 0) + parseInt(n * config.attributes.shopScore);
 					this.user.set('score', this.userInfo.score);
 					this.user.set('score_all', this.userInfo.score);
@@ -554,8 +554,8 @@
 				order.set('orderNo', tradeId)
 				order.set("subjectId",  item.objectId)
 				order.set("subjectName",  item.memberName)
-				order.set("price",  item.preferentialPrice || item.memberPrice)
-				order.set("cash",  item.preferentialPrice || item.memberPrice)
+				order.set("price",  item.promotionPrice || item.memberPrice)
+				order.set("cash",  item.promotionPrice || item.memberPrice)
 				order.set('couponAmount', 0)
 				order.set('scoreAmount', this.userInfo.score)
 				order.set('couponId', '')

@@ -103,7 +103,7 @@
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
 				</audition-learning>
 				<view class="h-line" v-if="studyList.length"></view>
-				<audition :title="item.moduleName" :list="item.list.slice(0,item.showAmount)"
+				<audition :title="item.name" :list="item.list.slice(0,item.showAmount)"
 					:showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index"
 					@changeUrl="changeUrl" @checkMore="checkMore"></audition>
 				<!--精品推荐 start-->
@@ -496,7 +496,7 @@
 			},
 			//获取模块
 			async getModules() {
-				let res = await Curriculum.getHomeSetting();
+				let res = await Curriculum.getModule();
 				console.log(JSON.parse(JSON.stringify(res)), 89989999)
 				this.moduleList = res;
 			},
