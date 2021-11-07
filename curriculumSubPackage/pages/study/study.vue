@@ -8,8 +8,8 @@
 				<view class="title">{{curriculumInfo.subjectName}}</view>
 				<view class="info">
 					<view>
-						<text v-if="curriculumInfo.subheadingOne" class='studynum'>{{curriculumInfo.subheadingOne}}</text>
-						<text v-if="curriculumInfo.subheadingTwo">{{curriculumInfo.subheadingTwo}}</text>
+						<text v-if="curriculumInfo.subTitle1" class='studynum'>{{curriculumInfo.subTitle1}}</text>
+						<text v-if="curriculumInfo.subTitle2">{{curriculumInfo.subTitle2}}</text>
 					</view>
 					<view class="teacher">
 						<image v-if="curriculumInfo.portrait&&curriculumInfo.portrait.length" :src="curriculumInfo.portrait[0]"></image>
@@ -79,7 +79,7 @@
 					this.height='478rpx';
 				}
 				// 判断是否为vip课程
-				if(info.isVipCourse){
+				if(info.vip){
 					this.isVip=true
 				}else{
 					this.isVip=false;

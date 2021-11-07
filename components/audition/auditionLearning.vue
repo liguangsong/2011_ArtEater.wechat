@@ -13,21 +13,21 @@
 					<view class="image-bottom-info">
 						<view class="view">
 							<!-- <image src="../../static/icon/play.png" class="play-image"></image> -->
-							<!-- {{(item.cardinalNum+item.N*(item.realNum||0))<10000?item.cardinalNum+item.N*(item.realNum||0):((item.cardinalNum+item.N*(item.realNum||0))/10000).toFixed(1)+'w'}} -->
+							<!-- {{(item.baseNum+item.N*(item.realNum||0))<10000?item.baseNum+item.N*(item.realNum||0):((item.baseNum+item.N*(item.realNum||0))/10000).toFixed(1)+'w'}} -->
 						</view>
-						<text class='time' v-if="item.getDurations&&item.getDurations!='00:00'">
-							{{item.getDurations || ''}}
+						<text class='time' v-if="item.duration&&item.duration!='00:00'">
+							{{item.duration || ''}}
 						</text>
 					</view>
 					<view class="opcity"></view>
 				</view>
-				<image src="../../static/icon/icon_vip.png" class="icon-vip" v-if="item.isVipCourse"></image>
+				<image src="../../static/icon/icon_vip.png" class="icon-vip" v-if="item.vip"></image>
 				<view class="txt-info">
 					<view class="txt-title">
 						{{item.subjectName}}
 					</view>
-					<text class='tag' v-if="item.subheadingOne||item.subheadingTwo">
-						{{(item.subheadingOne+' '+item.subheadingTwo+' ').trim()||''}}
+					<text class='tag' v-if="item.subTitle1||item.subTitle2">
+						{{(item.subTitle1+' '+item.subTitle2+' ').trim()||''}}
 					</text>
 				</view>
 			</view>
@@ -92,6 +92,7 @@
 				let DefaultCover=new Parse.Query('DefaultCover');
 				    let count = await DefaultCover.count();
 					    DefaultCover.limit(count);
+						DefaultCover.equalTo('isUse',true);
 						DefaultCover.notEqualTo('surface',undefined)
 						DefaultCover.notEqualTo('surface',[])
 				   let res = await DefaultCover.find();

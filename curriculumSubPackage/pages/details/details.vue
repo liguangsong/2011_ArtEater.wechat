@@ -44,7 +44,7 @@
 			</view>
 			<!-- 音频 -->
 			<view class="mp3" v-if="curriculumInfo.kind&&curriculumInfo.kind==2">
-				<k-audio :play.sync='play' :audioTimeTotal="curriculumInfo.getDurations" :src='curriculumInfo.link' @changeLearn="changeLearn"></k-audio>
+				<k-audio :play.sync='play' :audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn"></k-audio>
 			</view>
 			<view class="br"></view>
 		</view>
@@ -61,8 +61,8 @@
 				<view class='font'>
 					<view class="title">{{item.subjectName}}</view>
 					<view class="info">
-						<text v-if="item.subheadingOne">{{item.subheadingOne}}</text>
-						<text v-if="item.subheadingTwo">{{item.subheadingTwo}}</text>
+						<text v-if="item.subTitle1">{{item.subTitle1}}</text>
+						<text v-if="item.subTitle2">{{item.subTitle2}}</text>
 					</view>
 				</view>
 				<view class="teacher">
@@ -74,8 +74,8 @@
 						<text>学习</text>
 					</view>
 				</view>
-				<view class="vip" v-if='item.isVipCourse'>
-					<image v-if='item.isVipCourse && vip' :src="unlock" />
+				<view class="vip" v-if='item.vip'>
+					<image v-if='item.vip && vip' :src="unlock" />
 					<image v-else :src="lock" />
 				</view>
 			</view>
@@ -274,7 +274,7 @@
 				if(member && member.memberType!=2 && (member.endTime > Date.now())){
                   vip=true;
 				}
-				if(item.isVipCourse && !vip){
+				if(item.vip && !vip){
 					// 是vip课程则要跳转到vip中心买会员
 					uni.navigateTo({
 						url:'../../../mineSubPackage/pages/vip/vip'

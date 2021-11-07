@@ -395,7 +395,7 @@
 		methods: {
 			// 获取是否是会员
 			async getMember() {
-				var Member = new this.Parse.Query('member')
+				var Member = new this.Parse.Query('MemberList')
 				Member.equalTo("openId", this.userInfo.openid);
 				this.member = await Member.first();
 				if (this.member) {
@@ -597,7 +597,7 @@
 					await this.member.save();
 				} else {
 					// 初次创建
-					var Member = this.Parse.Object.extend("member");
+					var Member = this.Parse.Object.extend("MemberList");
 					var member = new Member();
 					member.set("openId", this.userInfo.openid);
 					member.set('orderArr', [tradeId]);
@@ -607,7 +607,7 @@
 				}
 				this.getMember();
 				let app = getApp();
-				var query = new this.Parse.Query('member');
+				var query = new this.Parse.Query('MemberList');
 				query.equalTo("openId", this.userInfo.openid);
 				var results = await query.first();
 				if (results) {
@@ -617,7 +617,7 @@
 			// 原先的创建会员
 			async createMember11(tradeId) {
 				var item = this.list[this.active];
-				var query = new this.Parse.Query('member');
+				var query = new this.Parse.Query('MemberList');
 				query.equalTo("openId", this.userInfo.openid);
 				var results = await query.first();
 				var res = null;
@@ -655,7 +655,7 @@
 
 				if (!results) {
 					// 初次创建
-					var Member = this.Parse.Object.extend("member");
+					var Member = this.Parse.Object.extend("MemberList");
 					var member = new Member();
 					member.set("openId", this.userInfo.openid);
 					member.set('orderArr', [tradeId]);

@@ -159,7 +159,7 @@
 				}
 				console.log(vip,45678)
 				if(item.kind!=4){
-					if(item.isVipCourse && !vip){
+					if(item.vip && !vip){
 						uni.navigateTo({
 						  url: '/mineSubPackage/pages/vip/vip'
 						});

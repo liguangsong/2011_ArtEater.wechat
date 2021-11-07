@@ -6,7 +6,7 @@ export default {
 		  if(id){
 			  module.equalTo('objectId',id);
 		  }
-		  module.ascending('showOrder');
+		  module.ascending('order');
 		  let res=await module.find();
 		      if(res){
 				res = res.map(v=>v.toJSON());
@@ -32,7 +32,7 @@ export default {
 		    ModuleAssociatedCourses.equalTo('module',category);
 			ModuleAssociatedCourses.include('module');
 			ModuleAssociatedCourses.include('course');
-		    ModuleAssociatedCourses.ascending('displayOrder');
+		    ModuleAssociatedCourses.ascending('order');
 		let count=await ModuleAssociatedCourses.count();
 			ModuleAssociatedCourses.limit(count)
 		let res = await ModuleAssociatedCourses.find();
@@ -49,7 +49,7 @@ export default {
 			ModuleAssociatedCourses.include('course');
 		let count=await ModuleAssociatedCourses.count();
 			ModuleAssociatedCourses.limit(count)
-			ModuleAssociatedCourses.ascending('displayOrder');
+			ModuleAssociatedCourses.ascending('order');
 		let res = await ModuleAssociatedCourses.find();
 		    if(res){
 		    	return res;
@@ -132,16 +132,16 @@ export default {
 		// if(item.course.flag==1 && item.course.level==0){
 		// 	// 系列课程点击时到详情页有介绍有详情
 		// 	toUrl = '/curriculumSubPackage/pages/study/study?objectId='+item.course.objectId;
-		// }else if((!item.course.isVipCourse&&item.course.flag==2) || (!item.course.isVipCourse&&item.course.flag==1 && item.course.level!=0)){
+		// }else if((!item.course.vip&&item.course.flag==2) || (!item.course.vip&&item.course.flag==1 && item.course.level!=0)){
 		// 	//非vip单课程点击时直接播放页
 		// 	toUrl = '/curriculumSubPackage/pages/details/details?objectId='+item.course.objectId;
-		// }else if((item.course.isVipCourse&&item.course.flag==2) || (item.course.isVipCourse&&item.course.flag==1&& item.course.level!=0)){
+		// }else if((item.course.vip&&item.course.flag==2) || (item.course.vip&&item.course.flag==1&& item.course.level!=0)){
 		// 	//vip单课程点击时跳转到开通会员
 		// 	toUrl = '/mineSubPackage/pages/vip/vip';
 		// }
 		// console.log(item,5556)
 		
-		if(!item.course.isVipCourse){
+		if(!item.course.vip){
 			if(item.course.flag==1){
 				if(item.course.level==0){
 					// 系列课程点击时到详情页有介绍有详情

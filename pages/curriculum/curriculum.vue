@@ -49,7 +49,7 @@
 					if (member.endTime > Date.now()) {
 						this.vip = true;
 					} else {
-						var query = new this.Parse.Query('member');
+						var query = new this.Parse.Query('MemberList');
 						var user1 = JSON.parse(JSON.stringify(user));
 						query.equalTo("openId", user1.openid);
 						var results = await query.first();
@@ -59,7 +59,7 @@
 				}
 			} else {
 				var user = await this.Parse.User.current();
-				var query = new this.Parse.Query('member');
+				var query = new this.Parse.Query('MemberList');
 				var user1 = JSON.parse(JSON.stringify(user));
 				query.equalTo("openId", user1.openid);
 				var results = await query.first();

@@ -13,21 +13,21 @@
 					<view class="image-bottom-info">
 						<view class="view">
 							<image src="../../static/icon/play.png" class="play-image"></image>
-							{{(item.cardinalNum+item.N*(item.realNum||0))<10000?item.cardinalNum+item.N*(item.realNum||0):((item.cardinalNum+item.N*(item.realNum||0))/10000).toFixed(1)+'w'}}
+							{{(item.baseNum+item.N*(item.realNum||0))<10000?item.baseNum+item.N*(item.realNum||0):((item.baseNum+item.N*(item.realNum||0))/10000).toFixed(1)+'w'}}
 						</view>
-						<text class='time' v-if="item.course.getDurations&&item.course.getDurations!='00:00'">
-							{{item.course.getDurations || ''}}
+						<text class='time' v-if="item.course.duration&&item.course.duration!='00:00'">
+							{{item.course.duration || ''}}
 						</text>
 					</view>
 					<view class="opcity"></view>
 				</view>
-				<image src="../../static/icon/icon_vip.png" class="icon-vip" v-if="item.course.isVipCourse"></image>
+				<image src="../../static/icon/icon_vip.png" class="icon-vip" v-if="item.course.vip"></image>
 				<view class="txt-info">
 					<view class="txt-title">
 						{{item.title}}
 					</view>
-					<text class='tag' v-if="item.subheading">
-						{{item.subheading||''}}
+					<text class='tag' v-if="item.subTitle">
+						{{item.subTitle||''}}
 					</text>
 				</view>
 			</view>

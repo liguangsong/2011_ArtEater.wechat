@@ -4,8 +4,8 @@
 			<view class='font'>
 				<view class="title" @click='jumpDefault(item)'>{{item.subjectName}}</view>
 				<view class="info">
-					<text v-if='item.subheadingOne'>{{item.subheadingOne}}</text>
-					<text>{{item.subheadingTwo}}</text>
+					<text v-if='item.subTitle1'>{{item.subTitle1}}</text>
+					<text>{{item.subTitle2}}</text>
 				</view>
 			</view>
 			<view class="teacher">
@@ -13,7 +13,7 @@
 					<image :src="item.portrait[0]" mode='aspectFill'></image>
 					<text>{{item.lecturerName}}</text>
 				</view>
-				<view class="btn" v-if='item.isVipCourse' :class='{study: item.isVipCourse && vip }'>
+				<view class="btn" v-if='item.vip' :class='{study: item.vip && vip }'>
 					<text v-if='vip' @click='jumpDefault(item)'>学习</text>
 					<text v-else @click='unlockFn'>解锁</text>
 				</view>
@@ -22,8 +22,8 @@
 				</view>
 			</view>
 		</view>
-		<view class="vip" v-if='item.isVipCourse'>
-			<image v-if='item.isVipCourse && vip' :src="unlock" />
+		<view class="vip" v-if='item.vip'>
+			<image v-if='item.vip && vip' :src="unlock" />
 			<image v-else :src="lock" />
 		</view>
 	</view>
