@@ -23,7 +23,8 @@
 			</view>
 			<view class="tab">
 				<Timetable v-if='tabbar' :list="timetableList"/>
-				<Details v-else :detail="curriculumInfo.introduce" :isVip="tabbar"/>
+				<!-- :isVip="tabbar" -->
+				<Details v-else :detail="curriculumInfo.introduce" />
 			</view>
 		</Navbar>
 	</view>
@@ -41,7 +42,7 @@
 				timetableList:[],//课表页面
 				height: '0',
 				tabbar: false,
-				isVip: false,
+				// isVip: false,
 				item: null
 			}
 		},
@@ -68,7 +69,7 @@
 		methods: {
 			// 获取详情
 			async getCurriculum() {
-				let res = await Curriculum.getCurriculum(this.item.objectId);
+				let res = await Curriculum.getCurriculum(this.item.objectId,true);
 				let info = res[0];
 				if(!info){
 					this.curriculumInfo=undefined;
@@ -79,11 +80,11 @@
 					this.height='478rpx';
 				}
 				// 判断是否为vip课程
-				if(info.vip){
-					this.isVip=true
-				}else{
-					this.isVip=false;
-				}
+				// if(info.vip){
+				// 	this.isVip=true
+				// }else{
+				// 	this.isVip=false;
+				// }
 				//获取课表
 				if(info.objectId){
 					this.getAllTimetable(info.objectId);
@@ -91,7 +92,7 @@
 			},
 			async getAllTimetable(objectId) {
 				this.timetableList=[]
-				let res = await Curriculum.getAllTimetable(objectId,true);
+				let res = await Curriculum.getAllTimetable(objectId,true,true);
 				console.log(res,343234)
 				if(res[0].children&&res[0].children.length){
 					console.log(res,343234)

@@ -53,7 +53,7 @@
 			<rich-text :nodes='curriculumInfo.explain|formatRichText'></rich-text>
 		</view>
 		<!-- 推荐学习 -->
-		<view class="recommend">
+		<!-- <view class="recommend">
 			<view class="recommend-title">
 				推荐学习
 			</view>
@@ -79,7 +79,7 @@
 					<image v-else :src="lock" />
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<view class="bg" v-if='timetable'  @click='timetable = false'></view>
 		<view class="timetable" :class='{"show-timetable": timetable}'>
 			<view class="content">
@@ -135,9 +135,9 @@
 				timetableRoot:{}, //
 				timetableList:[],//课表弹框数据
 				play: false,
-				vip:true,//当前哦用户是否是vip
-				lock: '../../../static/vip-lock.png',
-				unlock: '../../../static/vip-unlock.png',
+				// vip:true,//当前哦用户是否是vip
+				// lock: '../../../static/vip-lock.png',
+				// unlock: '../../../static/vip-unlock.png',
 				screenHeight:0,
 				allheight:0,
 				status:false
@@ -268,23 +268,25 @@
 			},
 			// 切换课程时判断是否是vip课程
 			async changeCurriculum(item) {
-				let app = getApp();
-				let member = app.globalData.member;
-				let vip=false;
-				if(member && member.memberType!=2 && (member.endTime > Date.now())){
-                  vip=true;
-				}
-				if(item.vip && !vip){
-					// 是vip课程则要跳转到vip中心买会员
-					uni.navigateTo({
-						url:'../../../mineSubPackage/pages/vip/vip'
-					})
-				}else{
-					this.curriculumInfo=item;
-					this.timetable = false;
-					// 存储上次学习
-					await Curriculum.updatePreLearn(item['rootId'],item.objectId);
-				}
+				this.curriculumInfo=item;
+				this.timetable = false;
+				// let app = getApp();
+				// let member = app.globalData.member;
+				// let vip=false;
+				// if(member && member.memberType!=2 && (member.endTime > Date.now())){
+                //   vip=true;
+				// }
+				// if(item.vip && !vip){
+				// 	// 是vip课程则要跳转到vip中心买会员
+				// 	uni.navigateTo({
+				// 		url:'../../../mineSubPackage/pages/vip/vip'
+				// 	})
+				// }else{
+				// 	this.curriculumInfo=item;
+				// 	this.timetable = false;
+				// 	// 存储上次学习
+				// 	await Curriculum.updatePreLearn(item['rootId'],item.objectId);
+				// }
 				
 			},
 			//分享
@@ -515,15 +517,15 @@
 						line-height: 40rpx;
 					}
 				}
-				.vip {
-					position: absolute;
-					top: -6rpx;
-					right: -6rpx;
-				}
-				.vip image {
-					width: 116rpx;
-					height: 116rpx;
-				}
+				// .vip {
+				// 	position: absolute;
+				// 	top: -6rpx;
+				// 	right: -6rpx;
+				// }
+				// .vip image {
+				// 	width: 116rpx;
+				// 	height: 116rpx;
+				// }
 			}
 		}
 		.show-timetable {

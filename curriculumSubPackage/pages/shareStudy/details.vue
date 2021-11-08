@@ -12,9 +12,9 @@
 				<image src="../../../static/3.png"></image>
 			</view> -->
 		</view>
-		<view class="unlock" v-if='isVip' @click='gotoVip'>
+		<!-- <view class="unlock" v-if='isVip' @click='gotoVip'>
 			立即解锁
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -26,10 +26,10 @@
 				type:String,
 				default:''
 			},
-			isVip:{
-				type:Boolean,
-				default:false
-			},
+			// isVip:{
+			// 	type:Boolean,
+			// 	default:false
+			// },
 		},
 		filters:{
 		/**
@@ -43,11 +43,11 @@
 		    }
 		},
 		methods:{
-			gotoVip() {
-				uni.navigateTo({
-					url:'/mineSubPackage/pages/vip/vip'
-				})
-			}
+			// gotoVip() {
+			// 	uni.navigateTo({
+			// 		url:'/mineSubPackage/pages/vip/vip'
+			// 	})
+			// }
 		}
 	}
 </script>
@@ -83,7 +83,7 @@
 		line-height: 40rpx;
 		font-size: 24rpx;
 	}
-	.unlock {
+	/* .unlock {
 		width: 690rpx;
 		height: 92rpx;
 		background: #ED3535;
@@ -99,5 +99,5 @@
 		margin-left: 30rpx;
 		z-index: 1;
 		text-align: center;
-	}
+	} */
 </style>

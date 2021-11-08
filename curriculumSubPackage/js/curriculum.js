@@ -2,12 +2,16 @@ import Parse from '@/parse/index.js'
 import Config from '@/static/config/index.js'
 export default{
 	//获取课程及详情
-	async getCurriculum(id) {
+	async getCurriculum(id,hide) {
 		  let curriculum= new Parse.Query('CoursesModule');
 		  if(id){
 			  curriculum.equalTo('objectId',id);
 		  }
-		  curriculum.notEqualTo('hide',true);
+		  if(hide){
+              curriculum.equalTo('hide',true);
+		  }else{
+			  curriculum.notEqualTo('hide',true);
+		  }
 		  curriculum.ascending('createdAt');
 		  let res=await curriculum.find();
 		      if(res){
@@ -70,13 +74,22 @@ export default{
 		    return res;
 	},
 	// 获取当前课程所属的整个系列课程
-	async getAllTimetable(rootId,recursion) {
+	async getAllTimetable(rootId,recursion,hide) {
 		let curriculum= new Parse.Query('CoursesModule');
-		    curriculum.notEqualTo('hide',true);
+		    if(hide){
+                // curriculum.equalTo('hide',true);
+			}else{
+				curriculum.notEqualTo('hide',true);
+			}
+		    
 			curriculum.equalTo('rootId',rootId);
 			curriculum.ascending('createdAt');
 		const coursesModuleRoot = new Parse.Query("CoursesModule");
-		    coursesModuleRoot.notEqualTo('hide',true);
+			if(hide){
+				coursesModuleRoot.equalTo('hide',true);
+			}else{
+				coursesModuleRoot.notEqualTo('hide',true);
+			}
 			coursesModuleRoot.equalTo("objectId", rootId);
 		const mainQuery = Parse.Query.or(curriculum, coursesModuleRoot);
 		let res=await mainQuery.find();
@@ -248,7 +261,7 @@ export default{
 						   if(res.result.includes(Config.ScanUrl)){
 							    let url=decodeURIComponent(res.result);
 							   	let id=url.split('/')[url.split('/').length-1];
-								let data = await that.getCurriculum(id);
+								let data = await that.getCurriculum(id,true);
 								if(data.length){
 									let info=data[0];
 									let toUrl = await this.configUrl(info);
