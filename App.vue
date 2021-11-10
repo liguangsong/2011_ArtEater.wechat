@@ -158,4 +158,7 @@
 
 <style>
 	/*每个页面公共css */
+	text, view {
+		font-family: 'PingFang';
+	}
 </style>

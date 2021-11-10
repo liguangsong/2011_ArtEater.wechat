@@ -25,7 +25,6 @@
 						</view>
 					</view>
 				</view>
-
 				<view class="view">
 					<view class="viewHead">
 						<view class="vipuser">
@@ -63,13 +62,7 @@
 										此VIP会员服务有效期为365天 到期后系统将自动关闭所有会员权限 为不影响使用，请提前续费
 									</view>
 									<view class="vip-btn" @click='showFixed = true'>
-										<view v-if='isMember'>
-											<text v-if='memberInfo.memberType == 0'>续费</text> 
-											<text v-else>立即升级黑金会员</text> 
-										</view>
-										<view v-else>
-											<text>立即开通</text> 
-										</view>
+										<text>{{isMember && memberInfo.memberType == 0 ? '续费' : '立即开通'}}</text>
 									</view>
 								</view>
 							</view>
@@ -204,13 +197,7 @@
 										此VIP会员服务有效期为365天 到期后系统将自动关闭所有会员权限 为不影响使用，请提前续费
 									</view>
 									<view class="vip-btn" @click='showFixed = true'>
-										<view v-if='isMember'>
-											<text v-if='memberInfo.memberType == 1'>续费</text> 
-											<text v-else>立即升级黑金会员</text> 
-										</view>
-										<view v-else>
-											<text>立即开通</text> 
-										</view>
+										<text>{{isMember && memberInfo.memberType == 0 ? '续费' : '立即开通'}}</text>
 									</view>
 								</view>
 							</view>
@@ -317,13 +304,7 @@
 										此VIP会员服务有效期为365天 到期后系统将自动关闭所有会员权限 为不影响使用，请提前续费
 									</view>
 									<view class="vip-btn" @click='showFixed = true'>
-										<view v-if='isMember'>
-											<text v-if='memberInfo.memberType == 2'>续费</text> 
-											<text v-else>立即升级黑金会员</text> 
-										</view>
-										<view v-else>
-											<text>立即开通</text> 
-										</view>
+										<text>{{isMember && memberInfo.memberType == 0 ? '续费' : '立即开通'}}</text>
 									</view>
 								</view>
 							</view>
@@ -381,36 +362,34 @@
 		<view class="fixed" :class='{leval: showFixed}'>
 			<view class="bg" @click='showFixed = false'></view>
 			<view class="fixed-bottom">
-				<!-- <view @click='changeShowFixed'> -->
-				<view>
-					<view v-if='memberInfo'>
-						<view v-if='memberInfo.memberType == 0' @click='heijinRenew'>
+				<view @click='changeShowFixed'>
+				<!-- {{showFixed ? '' : '限时优惠498，'}}立即畅想课程 -->
+					<!-- <text>{{memberInfo.memberType}}</text> -->
+					<!-- <view v-if='memberInfo'>
+						<view v-if='memberInfo.memberType == 0'>
 							<text>续费黑金VIP</text>
 							即刻畅享
 						</view>
-						<view v-if='memberInfo.memberType == 1' @click='bojinRenew'>
+						<view v-if='memberInfo.memberType == 1'>
 							<text v-if='active == "" || active == 1'>续费铂金VIP</text>
 							<text v-else>升级黑金VIP</text>
 							即刻畅享
 						</view>
-						<view v-if='memberInfo.memberType == 2' @click='baiyinRenew'>
-							<text v-if='active == 2'>续费白银VIP</text>
+						<view v-if='memberInfo.memberType == 2'>
+							<text v-if='active == "" || active == 2'>续费白银VIP</text>
 							<text v-else>升级黑金VIP</text>
 							即刻畅享
 						</view>
 					</view>
 					<view v-else>
-						<view v-if='!showFixed' @click='showFixed = true'>
-							<text>开通会员VIP</text>
-							即刻畅享
-						</view>
-						<view v-else @click='firstBuy'>
+						<text v-if='showFixed'>开通会员VIP</text>
+						<view v-else>
 							<text v-if='active == 0'>购买黑金VIP</text>
 							<text v-if='active == 1'>购买铂金VIP</text>
 							<text v-if='active == 2'>购买白银VIP</text>
-							即刻畅享
 						</view>
-					</view>
+						即刻畅享
+					</view> -->
 				</view>
 			</view>
 			<view class="openfixed">
@@ -466,13 +445,12 @@
 									<text class='old-price' style='text-decoration: line-through;' v-if='item.promotionPrice && item.discount'>¥{{item.memberPrice}}</text>
 								</view>
 							</view>
-						</view>	
-										
+						</view>					
 					</view>
 				</view>
 				<view class="buchajia" v-if='isChajia'>
 					<view class="icon"></view>
-					<text>您的剩余时长可以抵扣金额，只需支付{{cash}}元即可升级！ 升级后会员时长为：{{cashTime1}}至{{cashTime2}}</text>
+					<text>您的剩余时长可以抵扣金额，只需支付123元即可升级！ 升级后会员时长为：2021.12.11 至 2022.12.10</text>
 				</view>
 				<view class="buy-info" :style='{height: isChajia ? "240rpx" : "320rpx"}'>
 					<view class="buy-title">购买说明</view>
@@ -511,13 +489,11 @@
 				showFixed: false,
 				list: null,
 				active: 0,
-				user: null,
 				userInfo: null,
+				user: null,
 				member: null,
 				memberInfo: null,
-				cash: 0,		// 差价金额
-				cashTime1: '',
-				cashTime2: '',
+				renew: false,			//是否为升级
 			}
 		},
 		components: {
@@ -526,6 +502,8 @@
 		async created() {
 			this.user = this.Parse.User.current();
 			this.userInfo = JSON.parse(JSON.stringify(this.user));
+			
+			console.log(this.userInfo,'-----');
 			
 			var query = new this.Parse.Query('MemberType');
 			this.list = await query.find();
@@ -539,9 +517,8 @@
 					 item.discount = false;
 				 }
 			})
-			// console.log(this.list);
+			console.log('list', this.list);
 			this.getMember();
-			
 		},
 		computed: {
 			isMember() {
@@ -552,27 +529,11 @@
 				}
 			},
 			isChajia() {
-				if (this.memberInfo && this.memberInfo.memberType == 1 && this.active != 1) {
-					// 现在白银的价格
-					var baiyinPrice = this.list[1].promotionPrice || this.list[1].memberPrice;
-					var time = Math.ceil((this.memberInfo.endTime - Date.now())/(1000*60*60*24));
-					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					this.cash = (n - baiyinPrice)/365*Math.abs(time-365) * 100;
-					this.cashTime1 = new Date().toLocaleDateString()
-					this.cashTime2 = new Date(this.memberInfo.endTime).toLocaleDateString()
+				if (this.memberInfo.memberType && this.memberInfo.memberType != 0 && this.active != 0) {
 					return true;
+				} else {
+					return false;
 				}
-				if (this.memberInfo && this.memberInfo.memberType == 2 && this.active != 2) {
-					// 现在白银的价格
-					var bojinPrice = this.list[2].promotionPrice || this.list[2].memberPrice;
-					var time = Math.ceil((this.memberInfo.endTime - Date.now())/(1000*60*60*24));
-					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					this.cash = (n - baiyinPrice)/365*Math.abs(time-365) * 100;
-					this.cashTime1 = new Date().toLocaleDateString()
-					this.cashTime2 = new Date(this.memberInfo.endTime).toLocaleDateString()
-					return true;
-				}
-				return false;
 			}
 		},
 		methods: {
@@ -581,9 +542,9 @@
 				var Member = new this.Parse.Query('MemberList')
 				Member.equalTo("openId", this.userInfo.openid);
 				this.member = await Member.first();
-				console.log(this.member, 'member');
 				if (this.member) {
 					this.memberInfo = JSON.parse(JSON.stringify(this.member));
+					console.log(this.memberInfo);
 					this.active = Number(this.memberInfo.memberType);
 				}
 			},
@@ -594,82 +555,113 @@
 				date.setMonth(month + Number(n) - 1)
 				return date.getTime()
 			},
-			// 不是会员第一次进行购买
-			firstBuy() {
-				this.showFixed = true;
-				var cash = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
-				this.payment(cash*100)
-			},
-			// 白银续费
-			baiyinRenew() {
+			changeShowFixed() {
 				if (!this.showFixed) {
 					this.showFixed = true;
 					return ;
 				}
-				let cash = 0;
-				// 现在白银的价格
-				var baiyinPrice = this.list[2].promotionPrice || this.list[2].memberPrice;
-				if (this.isChajia) {
-					var _this = this;
+				// 此步骤是在续费
+				// console.log(this.isMember, '----');
+				if (this.isMember) {
+					if (this.active == "") {
+						this.active = Number(this.memberInfo.memberType);
+					}
+					var memberType = this.memberInfo.memberType;	// 之前购买的会员类型
+					var surfaceId = this.list[this.active].surfaceId ;	// 现在购买的会员类型
+					console.log(memberType, surfaceId);
+					
+					if (memberType == 0) {
+						this.active = 0;
+					}
+					if (memberType == 1) {
+						this
+					}
+					if (memberType == 2) {
+						
+					}
+					return
+					if (surfaceId != memberType) {
+						
+						// 之前购买了白银，却续费白金
+						// if (memberType == '2' && surfaceId == 1) {
+						// 	uni.showModal({
+						// 		content:'只能续费白银或升级为黑金',
+						// 		showCancel: false,
+						// 	})
+						// 	return ;
+						// }
+						// // 之前购买了白金，却续费白银
+						// if (memberType == '1' && surfaceId == 2) {
+						// 	uni.showModal({
+						// 		content:'只能续费白金或升级为黑金',
+						// 		showCancel: false,
+						// 	})
+						// 	return ;
+						// }
+						// // 之前购买了黑金，现在买的却不是黑金
+						// if (memberType == '0' && surfaceId != 0) {
+						// 	uni.showModal({
+						// 		content:'只能续费黑金',
+						// 		showCancel: false,
+						// 	})
+						// 	return ;
+						// }
+						// // 之前购买了白金或白银，升级为黑金时
+						// if (surfaceId == '0' && memberType != 0) {
+						// 	uni.showModal({
+						// 		content:'继续操作将自动升级为黑金卡',
+						// 		success: (res) => {
+						// 			if (res.confirm) {
+						// 				this.renew = true;
+						// 				this.payment()
+						// 			}
+						// 		}
+						// 	})
+						// 	return ;
+						// }
+					} else {
+						uni.showModal({
+							title: '提示',
+							content: `确定购买${this.list[this.active].memberName}吗？`,
+							success: (res) => {
+								if (res.confirm) {
+									this.payment()
+								}
+							}
+						})
+					}
+				} else {
 					uni.showModal({
-						title: '购买完成将自动升级为黑金VIP会员',
-						success() {
-							// 升级为黑金
-							var time = Math.ceil((_this.memberInfo.endTime - Date.now())/(1000*60*60*24));
-							var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-							cash = (n - baiyinPrice)/365*Math.abs(time-365) * 100;
-							_this.payment(cash)
+						title: '提示',
+						content: `确定购买${this.list[this.active].memberName}吗？`,
+						success: (res) => {
+							if (res.confirm) {
+								this.payment()
+							}
 						}
 					})
-				} else {
-					this.payment(baiyinPtice*100)
 				}
 			},
-			// 铂金续费
-			bojinRenew() {
-				if (!this.showFixed) {
-					this.showFixed = true;
-					return ;
-				}
-				let cash = 0;
-				// 现在铂金的价格
-				var bojinPrice = this.list[1].promotionPrice || this.list[1].memberPrice;
-				if (this.isChajia) {
-					var _this = this;
-					uni.showModal({
-						title: '购买完成将自动升级为黑金VIP会员',
-						success() {
-							// 升级为黑金
-							var time = Math.ceil((_this.memberInfo.endTime - Date.now())/(1000*60*60*24));
-							var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-							cash = (n - bojinPrice)/365*Math.abs(time-365);
-							_this.payment(cash * 100)
-						}
-					})
-				} else {
-					this.payment(bojinPrice*100)
-				}
-			},
-			// 黑金续费
-			heijinRenew() {
-				if (!this.showFixed) {
-					this.showFixed = true;
-					return ;
-				}
-				var heijinPrice = this.list[0].promotionPrice || this.list[0].memberPrice;
-				this.payment(heijinPrice*100)
-			},
-
 			// 支付
-			payment(cash) {
-				console.log(cash);
+			payment() {
+				// this.user = this.Parse.User.current()
+				// 补价算法，使用了n天，（黑金会员价-白金会员价）/365 * （365-n）=差价
+				// return ;
+				var cash = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
+				// 升级为黑金
+				if (this.renew) {
+					var time = Math.ceil((this.memberInfo.endTime - Date.now())/(1000*60*60*24));
+					var n1 = this.list[0].promotionPrice || this.list[0].memberPrice;
+					var n2 = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
+					cash = (n1 - n2)/365*(365-time) * 100;
+				}
 				cash = 0;
 				if(cash == 0){
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss')+GetRandomNum(5);
-					this.paymentSuccess(orderNo,cash);
+					this.paymentSuccess(orderNo);
 				} else {
 					this.Parse.Cloud.run('initiatePayment',
-						{price: cash},
+						{price: cash,},
 						{sessionToken: this.user.get('sessToken')}).then(res=>{
 						var payload = res.payload
 						var tradeId = res.tradeId
@@ -692,8 +684,8 @@
 				
 			},
 			// 支付成功
-			async paymentSuccess(tradeId,cash) {
-				await this.getIntegral(cash/100);
+			async paymentSuccess(tradeId) {
+				await this.getIntegral();
 				this.createOrder(tradeId);
 				this.createMember(tradeId);
 			},
@@ -702,11 +694,10 @@
 				
 			},
 			// 获取积分与赠送积分
-			async getIntegral(cash) {		
-				cash = 100;
+			async getIntegral() {				
 				await this.Parse.Config.get().then(async config=>{
-					// var n = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
-					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes.shopScore);
+					var n = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
+					this.userInfo.score = (this.userInfo.score || 0) + parseInt(n * config.attributes.shopScore);
 					this.user.set('score', this.userInfo.score);
 					this.user.set('score_all', this.userInfo.score);
 					this.user.save();
@@ -750,39 +741,24 @@
 			},
 			// 创建会员
 			async createMember(tradeId) {
-				
-				console.log(this.member);
+				var item = this.list[this.active];
+				var memberType = item.surfaceId + '';
 				if (this.member) {
 					var arr = this.memberInfo.orderArr;
 					arr.push(tradeId);
 					this.member.set('orderArr', arr);
-					if (this.memberInfo.memberType == 0) {
+					if (this.renew) {
 						this.member.set('memberType', '0');
-					}
-					if (this.memberInfo.memberType == 1) {
-						if (this.active == 1) {
-							this.member.set('memberType', '1');
-						} else {
-							this.member.set('memberType', '0');
-						}
-					}
-					if (this.memberInfo.memberType == 2) {
-						if (this.active == 2) {
-							this.member.set('memberType', '2');
-						} else {
-							this.member.set('memberType', '0');
-						}
-					}
-					if (this.memberInfo.memberType = '') {
-						this.member.set('endTime', this.getTime(12))
 					} else {
-						this.member.set('endTime', this.getTime(12) + Number(this.memberInfo.endTime) - Date.now() )
+						if (this.memberInfo.memberType = '') {
+							this.member.set('endTime', this.getTime(12))
+						} else {
+							this.member.set('endTime', this.getTime(12) + Number(this.memberInfo.endTime) - Date.now() )
+						}
 					}
 					await this.member.save();
 				} else {
 					// 初次创建
-					var item = this.list[this.active];
-					var memberType = item.surfaceId + '';
 					var Member = this.Parse.Object.extend("MemberList");
 					var member = new Member();
 					member.set("openId", this.userInfo.openid);
@@ -799,6 +775,77 @@
 				if (results) {
 					app.globalData.member = JSON.parse(JSON.stringify(results));
 				}
+			},
+			// 原先的创建会员
+			async createMember11(tradeId) {
+				var item = this.list[this.active];
+				var query = new this.Parse.Query('MemberList');
+				query.equalTo("openId", this.userInfo.openid);
+				var results = await query.first();
+				var res = null;
+				if (results) {
+					res = JSON.parse(JSON.stringify(results));
+				}
+				var time = Date.now();
+				var endTime = '';		// 截止日期
+				var permanent = false;		// 是否永久
+				var orderArr = [];		// 购买编号
+				var memberType = 'whiteSilver';		//确认购买的是那种会员
+				
+				if (item.surfaceId == 2) {
+					memberType = 'blockGold';
+				}
+				if (item.surfaceId == 1) {
+					memberType = 'whiteGold';
+				}
+				
+				switch(item.memberPeriod) {
+					case 'threeWeek':
+						endTime = time + (1000*60*60*24*21)
+						break;
+					case 'twoWeek':
+						endTime = time + (1000*60*60*24*14)
+						break;
+					case 'oneWeek':
+						endTime = time + (1000*60*60*24*7)
+						break;
+					case 'perpetual':
+						permanent = true;
+					default:
+						endTime = this.getTime(item.memberPeriod)
+				}
+
+				if (!results) {
+					// 初次创建
+					var Member = this.Parse.Object.extend("MemberList");
+					var member = new Member();
+					member.set("openId", this.userInfo.openid);
+					member.set('orderArr', [tradeId]);
+					member.set(memberType, {
+						endTime,
+						vip: true,
+						permanent
+					});
+					member.save()
+				} else {
+					console.log(res);
+					var obj = res[memberType];
+					var arr = res.orderArr
+					if (obj) {
+						obj.endTime = obj.endTime - time + endTime;
+						obj.permanent = permanent;
+					} else {
+						obj = {
+							endTime,
+							vip: true,
+							permanent
+						}
+					}
+					arr.push(tradeId);
+					results.set(memberType, obj);
+					results.set('orderArr', arr);
+					results.save();
+				}
 			}
 		}
 	}
@@ -813,8 +860,7 @@
 		position: absolute;
 		top: 174rpx;
 		.vip-btn {
-			min-width: 144rpx;
-			padding: 0 20rpx;
+			width: 144rpx;
 			height: 48rpx;
 			line-height: 46rpx;
 			text-align: center;
@@ -1092,9 +1138,6 @@
 				background: linear-gradient(90deg, #efdec3, #e3c89a);
 				text-align: center;
 				line-height: 80rpx;
-				text {
-					margin-right: 30rpx;
-				}
 			}
 		}
 		.openfixed {

@@ -151,27 +151,27 @@
 		methods: {
 			onClickItem(item) {
 				console.log('777888')
-				// let app = getApp();
-				// let member = app.globalData.member;
-				// let vip=false;
-				// if(member && member.memberType!=2 && (member.endTime > Date.now())){
-                //   vip=true;
-				// }
-				// console.log(vip,45678)
+				let app = getApp();
+				let member = app.globalData.member;
+				let vip=false;
+				if(member && member.memberType!=2 && (member.endTime > Date.now())){
+                  vip=true;
+				}
+				console.log(vip,45678)
 				if(item.kind!=4){
-					// if(item.vip && !vip){
-					// 	uni.navigateTo({
-					// 	  url: '/mineSubPackage/pages/vip/vip'
-					// 	});
-					// }else{
+					if(item.vip && !vip){
+						uni.navigateTo({
+						  url: '/mineSubPackage/pages/vip/vip'
+						});
+					}else{
 						uni.navigateTo({
 						  url: '/curriculumSubPackage/pages/details/details?objectId='+item.objectId
 						});
 						
-					// }
+					}
 					
 				}else{
-					// 目录情况下在这里操作
+					
 				}
 			}
 		}

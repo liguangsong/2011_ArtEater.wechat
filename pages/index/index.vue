@@ -372,12 +372,19 @@
 				self.subjects = list
 			})
 			uni.loadFontFace({
-				family: 'PingFangSC-Medium',
-				source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
+				family: 'PingFang',
+				source: 'url("https://www.arteater.cn/PingFang.ttc")',
 				success: function() {
 					console.log('load font success')
 				}
 			})
+			// uni.loadFontFace({
+			// 	family: 'PingFangSC-Medium',
+			// 	source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
+			// 	success: function() {
+			// 		console.log('load font success')
+			// 	}
+			// })
 			var bannerQuery = new this.Parse.Query('Banner')
 			bannerQuery.equalTo('state', 1)
 			bannerQuery.ascending('sort')
@@ -1078,6 +1085,12 @@
 		font-size: 34rpx;
 		color: #352026;
 		font-weight: bold;
+		word-break: break-all;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
 	}
 
 	.newsView .newsItem .conView .content {

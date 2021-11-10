@@ -53,32 +53,11 @@
 			<rich-text :nodes='curriculumInfo.explain|formatRichText'></rich-text>
 		</view>
 		<!-- 推荐学习 -->
-		<view class="recommend">
+		<view class="recommend" v-if='recommendedList.length'>
 			<view class="recommend-title">
 				推荐学习
 			</view>
-			<view class="recommend-item" v-for='(item,i) in recommendedList' :key='i'>
-				<view class='font'>
-					<view class="title">{{item.subjectName}}</view>
-					<view class="info">
-						<text v-if="item.subTitle1">{{item.subTitle1}}</text>
-						<text v-if="item.subTitle2">{{item.subTitle2}}</text>
-					</view>
-				</view>
-				<view class="teacher">
-					<view class='img'>
-						<image v-if="item.portrait&&item.portrait.length" :src="item.portrait[0]"></image>
-						<text>{{item.lecturerName}}</text>
-					</view>
-					<view class="btn">
-						<text>学习</text>
-					</view>
-				</view>
-				<view class="vip" v-if='item.vip'>
-					<image v-if='item.vip && vip' :src="unlock" />
-					<image v-else :src="lock" />
-				</view>
-			</view>
+			<Item v-for='(item,i) in recommendedList' v-if='!item.hide' :key='i' :item='item' :vip='vip'/>
 		</view>
 		<view class="bg" v-if='timetable'  @click='timetable = false'></view>
 		<view class="timetable" :class='{"show-timetable": timetable}'>
@@ -117,9 +96,10 @@
 	import Curriculum from '../../js/curriculum.js'
 	import kAudio from '../../../components/audio/bg-audio.vue'
 	import kVideo from '../../../components/video/kVideo.vue'
+	import Item from '@/pages/curriculum/item.vue'
 	export default {
 		components: {
-			kAudio, kVideo
+			kAudio, kVideo, Item
 		},
 		data() {
 			return {
@@ -135,7 +115,7 @@
 				timetableRoot:{}, //
 				timetableList:[],//课表弹框数据
 				play: false,
-				vip:true,//当前哦用户是否是vip
+				vip: false,
 				lock: '../../../static/vip-lock.png',
 				unlock: '../../../static/vip-unlock.png',
 				screenHeight:0,
@@ -149,13 +129,49 @@
 			// 获取当前课程详情
 			this.getCurriculum();
 		},
-		onShow() {
+		async onShow() {
 			let that=this;
 			uni.getSystemInfo({
 			    success: function (res) {
 			        that.screenHeight=res.screenHeight;
 			    }
 			});
+			
+			var app = getApp();
+			var member = app.globalData.member;
+			// 判断是不是会员
+			if (member) {
+				if (member.memberType != 2) {
+					if (member.endTime > Date.now()) {
+						this.vip = true;
+					} else {
+						var query = new this.Parse.Query('MemberList');
+						var user1 = JSON.parse(JSON.stringify(user));
+						query.equalTo("openId", user1.openid);
+						var results = await query.first();
+						results.set('memberType', '');
+						results.save();
+					}
+				}
+			} else {
+				var user = await this.Parse.User.current();
+				var query = new this.Parse.Query('MemberList');
+				var user1 = JSON.parse(JSON.stringify(user));
+				query.equalTo("openId", user1.openid);
+				var results = await query.first();
+				if (results) {
+					var r = JSON.parse(JSON.stringify(results));
+					app.globalData.member = r;
+					if (r.memberType != 2) {
+						if (r.endTime > Date.now()) {
+							this.vip = true;
+						} else {
+							results.set('memberType', '');
+							results.save();
+						}
+					}
+				}
+			}
 		},
 		 onPageScroll(res) {
 			 if(this.curriculumInfo.kind==3){
@@ -209,9 +225,6 @@
 				}
 			})
 		},
-		mounted() {
-			
-		},
 		methods: {
 			async changeLearn(status) {
 				let res=await Utils.changeLearn(this.curriculumInfo.objectId,status);
@@ -231,9 +244,10 @@
 				}
 				// 获取收藏状态
 				await this.operateCollection(true);
-				if(info.checkData&&info.checkData.length){
+				if(info.recommendCourse&&info.recommendCourse.length){
+					console.log('获取推荐课程');
 					//获取推荐课程
-					await this.getRecommended(info.checkData);
+					await this.getRecommended(info.recommendCourse);
 				}
 				if(info.rootId){
 					// 获取课表
@@ -246,24 +260,21 @@
 			},
 			//获取推荐课程
 			async getRecommended(ids) {
-				console.log(ids,8888)
+					console.log('ids',ids);
 				  let res = await Curriculum.getRecommended(ids);
-				  console.log(res,777)
-				     this.recommendedList = res;
+					console.log('res', res);
+				  this.recommendedList = res;
 			},
 			// 获取课表
 			async getAllTimetable(rootId) {
 				let res = await Curriculum.getAllTimetable(rootId);
-				console.log(res,667788)
 				   res = res.filter(v=>{
 				   if(v.rootId==='0' && !v.kind){
 					   
 					   this.timetableRoot=v;
-					   console.log(this.timetableRoot,v,11222)
 				   }
 				   return (v.rootId && v.kind && v.kind!=4);
 				   });
-				   console.log(res,9999)
 				   this.timetableList=res;
 			},
 			// 切换课程时判断是否是vip课程
@@ -289,7 +300,6 @@
 			},
 			//分享
 			share() {
-				console.log(123);
 				uni.share({
 				    provider: "weixin",
 				    scene: "WXSceneSession",
@@ -305,7 +315,6 @@
 			},
 			// 收藏操作
 			async operateCollection(init) {
-				console.log(init,7788)
 				if(init){
 					let res= await Curriculum.getCollectionstatus(this.curriculumInfo.objectId);
 					this.collectionStatus=res;
@@ -320,7 +329,6 @@
 				})
 			},
 			timetablefn() {
-				console.log(12);
 				this.timetable = true
 			}
 		}
@@ -411,7 +419,7 @@
 							padding-right: 0;
 							position: relative;
 							text-align: right;
-							left: -46rpx;
+							left: -30rpx;
 							text-decoration: none;
 							&:after {
 								border: none;
@@ -461,6 +469,7 @@
 			}
 			.recommend-item {
 				position: relative;
+				z-index: 0;
 				width: 690rpx;
 				height: 220rpx;
 				background: #fff;

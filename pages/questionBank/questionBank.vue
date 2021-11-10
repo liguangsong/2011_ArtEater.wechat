@@ -1,7 +1,10 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<Item v-for='(item, i) in subjects' :item='item' :img='arr[i]' :key='i'/>
-		<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
+		<!-- <view style='height: 100vh;'> -->
+			
+			<Item v-for='(item, i) in subjects' :item='item' :img='arr[i]' :key='i'/>
+			<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
+		<!-- </view> -->
 	</view>
 </template>
 

@@ -69,12 +69,13 @@
 		methods: {
 			// 获取详情
 			async getCurriculum() {
-				let res = await Curriculum.getCurriculum(this.item.objectId,true);
+				let res = await Curriculum.getHideCurriculum(this.item.objectId);
 				let info = res[0];
 				if(!info){
 					this.curriculumInfo=undefined;
 					return false;
 				}
+				console.log(info,'=======');
 				this.curriculumInfo=info;
 				if(info.headImg&&info.headImg.length){
 					this.height='478rpx';
@@ -92,10 +93,8 @@
 			},
 			async getAllTimetable(objectId) {
 				this.timetableList=[]
-				let res = await Curriculum.getAllTimetable(objectId,true,true);
-				console.log(res,343234)
+				let res = await Curriculum.getAllTimetable(objectId,true);
 				if(res[0].children&&res[0].children.length){
-					console.log(res,343234)
 					this.timetableList=res[0].children;
 				}else{
 					this.timetableList = [];

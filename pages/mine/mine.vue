@@ -16,6 +16,9 @@
 							{{memberType}}
 							<u-icon name="arrow-right" color="#f4f4f4" size="20"></u-icon>
 						</view>
+						<view class="icon" v-else>
+							未开通会员
+						</view>
 					</view>
 				</view>
 				<image class='bg' src="../../static/mine-head.png" mode='aspectFill'></image>
@@ -48,7 +51,7 @@
 			<view class="box actionView">
 				<view class="actionItem" @click="handleSignInClick">
 					<view class="licon">
-						<image src="../../static/icon/icon_action_daka.png"></image>
+						<image src="../../static/mine/mine_qiandao.png"></image>
 					</view>
 					<view class="cont">
 						<view class="title">
@@ -61,7 +64,7 @@
 				</view>
 				<view class="actionItem" @click="handleScoreListClick">
 					<view class="licon">
-						<image src="../../static/icon/icon_action_paihang.png"></image>
+						<image src="../../static/mine/mine_paihang.png"></image>
 					</view>
 					<view class="cont">
 						<view class="title">
@@ -74,7 +77,7 @@
 				</view>
 				<view class="actionItem" @click="handleOrderClick">
 					<view class="licon">
-						<image src="../../static/icon/icon_action_yigou.png"></image>
+						<image src="../../static/mine/mine_huiyuan.png"></image>
 					</view>
 					<view class="cont">
 						<view class="title">
@@ -87,7 +90,7 @@
 				</view>
 				<view class="actionItem" @click="handleCouponClick">
 					<view class="licon">
-						<image src="../../static/icon/icon_action_mycoupon.png"></image>
+						<image src="../../static/mine/mine_youhui.png"></image>
 					</view>
 					<view class="cont">
 						<view class="title">
@@ -102,7 +105,7 @@
 				</view>
 				<view class="actionItem" @click="handleTestHisClick">
 					<view class="licon">
-						<image src="../../static/icon/icon_action_kaoshijilu.png"></image>
+						<image src="../../static/mine/mine_jilu.png"></image>
 					</view>
 					<view class="cont">
 						<view class="title">
@@ -114,11 +117,24 @@
 						</view>
 					</view>
 				</view>
+				<view class="actionItem" @click="handleCollectionClick">
+					<view class="licon">
+						<image src="../../static/mine/mine_shoucang.png"></image>
+					</view>
+					<view class="cont">
+						<view class="title">
+							<text>收藏</text>
+						</view>
+						<view class="icon">
+							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+						</view>
+					</view>
+				</view>
 			</view>
 			<view class="box actionView">
 				<view class="actionItem" @click="handleInvitationClick">
 					<view class="licon">
-						<image src="../../static/icon/icon_action_share.png"></image>
+						<image src="../../static/mine/mine_fenxiang.png"></image>
 					</view>
 					<view class="cont">
 						<view class="title">
@@ -131,7 +147,7 @@
 				</view>
 				<view class="actionItem" @click="handleMessageClick">
 					<view class="licon">
-						<image src="../../static/icon/icon_action_xiaoxi.png"></image>
+						<image src="../../static/mine/mine_xiaoxi.png"></image>
 					</view>
 					<view class="cont">
 						<view class="title">
@@ -148,7 +164,7 @@
 				</view>
 				<view class="actionItem" @click="handleFeedBackClick">
 					<view class="licon">
-						<image src="../../static/icon/icon_action_fankui.png"></image>
+						<image src="../../static/mine/mine_yijian.png"></image>
 					</view>
 					<view class="cont">
 						<view class="title">
@@ -326,6 +342,12 @@
 			handleTestHisClick() {
 				uni.navigateTo({
 					url: '/mineSubPackage/pages/testhistory/testhistory'
+				})
+			},
+			/*查看收藏*/
+			handleCollectionClick() {
+				uni.navigateTo({
+					url: '/mineSubPackage/pages/collection/collection'
 				})
 			},
 			handleInvitationClick() {

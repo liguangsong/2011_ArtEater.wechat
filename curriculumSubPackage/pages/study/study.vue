@@ -92,14 +92,11 @@
 			async getAllTimetable(objectId) {
 				this.timetableList=[]
 				let res = await Curriculum.getAllTimetable(objectId,true);
-				console.log(res,343234)
 				if(res[0].children&&res[0].children.length){
-					console.log(res,343234)
-					this.timetableList=res[0].children;
+					this.timetableList=res[0].children.filter(item => !item.has_down_level);
 				}else{
 					this.timetableList = [];
 				}
-				
 			}
 		}
 	}

@@ -359,6 +359,13 @@
 					}
 				},
 				{
+					"path": "pages/collection/collection",
+					"style": {
+						"navigationBarTitleText": "课程收藏",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "pages/invitation/invitation",
 					"style": {
 						"navigationBarBackgroundColor": "#fbfbfa",
