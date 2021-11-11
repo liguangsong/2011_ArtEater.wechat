@@ -132,13 +132,17 @@ export default {
 		return res;
 	},
 	// 获取当前课程所属的整个系列课程 扫码分享情况
-	async getAllTimetable_hide(rootId, recursion) {
+	async getAllTimetable_hide(rootId, recursion,root) {
 		let coursesModuleRoot = new Parse.Query("CoursesModule");
-			coursesModuleRoot.notEqualTo('hide', true);
+		if(root){
+			coursesModuleRoot.equalTo('hide', true);
+		}
 			coursesModuleRoot.ascending('createdAt');
 			coursesModuleRoot.equalTo("objectId", rootId);
 		let curriculum = new Parse.Query('CoursesModule');
-			curriculum.notEqualTo('hide', true);
+			if(root){
+				curriculum.notEqualTo('hide', true);
+			}
 			curriculum.equalTo('rootId', rootId);
 			curriculum.ascending('createdAt');
 		const mainQuery = Parse.Query.or(coursesModuleRoot,curriculum);
@@ -326,10 +330,15 @@ export default {
 				// 	return ;
 				// }
 				let toUrl = await that.configUrl(info,vip);
-				console.log(toUrl,12345678)
-				uni.navigateTo({
-					url: toUrl
-				})
+				if(toUrl=='/pages/login/login'){
+					uni.navigateTo({
+						url: toUrl
+					})
+				}else{
+					uni.reLaunch({
+						url: toUrl
+					})
+				}
 			} else {
 				uni.showToast({
 					title: '未找到当前课程',

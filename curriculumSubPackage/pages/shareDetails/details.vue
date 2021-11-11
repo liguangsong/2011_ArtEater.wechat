@@ -71,15 +71,18 @@
 					</view>
 				</view>
 				<view class="list">
-					<view class="item" v-for='(item,i) in timetableList' :key='i' :class='{active: curriculumInfo.objectId==item.objectId}' @click="changeCurriculum(item)">
-						<view class="item-title">
-							<text>{{item.subjectName}}</text>
-						</view>
-						<view class="item-type">
-							<text v-if='curriculumInfo.objectId==item.objectId'>当前课程</text>
-							<image :src="item.kind==1?'../../static/video.png':item.kind==2?'../../static/audio.png':''" mode=""></image>
-						</view>
-					</view>
+					<template v-for='(item,i) in timetableList'>
+						<view class="item" v-if="shareType || !item.hide || !shareType&&item.hide&&item.objectId==objectId" :key='i' :class='{active: curriculumInfo.objectId==item.objectId}' @click="changeCurriculum(item)">
+							<view class="item-title">
+								<text>{{item.subjectName}}</text>
+							</view>
+							<view class="item-type">
+								<text v-if='curriculumInfo.objectId==item.objectId'>当前课程</text>
+								<image :src="item.kind==1?'../../static/video.png':item.kind==2?'../../static/audio.png':''" mode=""></image>
+							</view>
+					    </view>
+					</template>
+					
 				</view>
 				<view class="close">
 					<view class="btn" @click='timetable = false'>
@@ -103,6 +106,7 @@
 		},
 		data() {
 			return {
+				shareType:0,
 				tabbarheight: 0,
 				navbarheight: 0,
 				infoTop: 0,
@@ -126,6 +130,9 @@
 		onLoad(options) {
 			this.curriculumInfo={};
 			this.objectId=options.objectId;
+			if(options.shareType){
+				this.shareType=options.shareType;
+			}
 			// 获取当前课程详情
 			this.getCurriculum();
 		},
@@ -267,7 +274,7 @@
 			},
 			// 获取课表
 			async getAllTimetable(rootId) {
-				let res = await Curriculum.getAllTimetable_hide(rootId,false,rootId==='0'); //rootId=='0'true为分享的整个系列课程，false为扫码分享的系列课程中的单课程
+				let res = await Curriculum.getAllTimetable_hide(rootId,false,this.shareType==1); //rootId=='0'true为分享的整个系列课程，false为扫码分享的系列课程中的单课程
 				   res = res.filter(v=>{
 				   if(v.rootId==='0' && !v.kind){
 					   

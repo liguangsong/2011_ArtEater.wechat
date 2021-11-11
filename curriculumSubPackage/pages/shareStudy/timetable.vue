@@ -165,7 +165,7 @@
 						});
 					}else{
 						uni.navigateTo({
-						  url: '/curriculumSubPackage/pages/details/details?objectId='+item.objectId
+						  url: '/curriculumSubPackage/pages/details/details?objectId='+item.objectId+'&shareType=1'
 						});
 						
 					}

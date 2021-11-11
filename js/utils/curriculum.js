@@ -67,6 +67,7 @@ export default {
 			if(res){
 				let ids=res.get('ids');
 				if(ids){
+					console.log(ids,66666)
 					 curriculum.containedIn('objectId',ids);
 					 curriculum.notEqualTo('hide',true);
 					let  course=await curriculum.find();

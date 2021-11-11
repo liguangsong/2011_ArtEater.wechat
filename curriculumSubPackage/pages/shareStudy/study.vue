@@ -93,7 +93,7 @@
 			},
 			async getAllTimetable(objectId) {
 				this.timetableList=[]
-				let res = await Curriculum.getAllTimetable(objectId,true);
+				let res = await Curriculum.getAllTimetable_hide(objectId,true,true);
 				if(res[0].children&&res[0].children.length){
 					this.timetableList=res[0].children;
 				}else{
