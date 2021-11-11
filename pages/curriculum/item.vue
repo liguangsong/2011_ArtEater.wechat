@@ -13,13 +13,15 @@
 					<image :src="item.portrait[0]" mode='aspectFill'></image>
 					<text>{{item.lecturerName}}</text>
 				</view>
-				<view class="btn" v-if='item.vip' :class='{study: item.vip && vip }'>
-					<text v-if='vip' @click='jumpDefault(item)'>学习</text>
-					<text v-else @click='unlockFn'>解锁</text>
-				</view>
-				<view class="btn study" v-else>
-					<text @click='jumpDefault(item)'>学习</text>
-				</view>
+				<!-- <view class="box"> -->
+					<view class="btn" v-if='item.vip' :class='{study: item.vip && vip }'>
+						<text v-if='vip' @click='jumpDefault(item)'>学习</text>
+						<text v-else @click='unlockFn'>解锁</text>
+					</view>
+					<view class="btn study" v-else>
+						<text @click='jumpDefault(item)'>学习</text>
+					</view>
+				<!-- </view> -->
 			</view>
 		</view>
 		<view class="vip" v-if='item.vip'>
@@ -78,7 +80,7 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
-		padding: 32rpx 48rpx 20rpx;
+		padding: 32rpx 48rpx 0;
 		justify-content: space-between;
 	}
 	.title {
@@ -102,7 +104,16 @@
 	.teacher {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 		font-size: 20rpx;
+		height: 92rpx;
+	}
+	.teacher .box {
+		height: 70rpx;
+		width: 150rpx;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
 	}
 	.teacher .img {
 		display: flex;

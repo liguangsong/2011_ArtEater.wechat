@@ -17,8 +17,12 @@
 					</view>
 				</view>
 				<view class="tabber">
-					<view :class='{text: !tabbar}' @click='tabbar = false'>详情</view>
-					<view :class='{text: tabbar}' @click='tabbar = true'>目录</view>
+					<view style='padding: 0 20rpx;' @click='tabbar = false'>
+						<view :class='{text: !tabbar}'>详情</view>
+					</view>
+					<view style='padding: 0 20rpx;' @click='tabbar = true'>
+					<view :class='{text: tabbar}'>目录</view>
+					</view>
 				</view>
 			</view>
 			<view class="tab">

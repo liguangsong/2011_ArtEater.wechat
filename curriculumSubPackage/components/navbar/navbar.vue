@@ -7,8 +7,8 @@
 			>
 				<view class='bg' :style='{background: navbarBg, opacity: opacity}'></view>
 				<view class="nav" :style='{height:navbarheight + "rpx", top:tabbarheight - navbarheight + "rpx"}'>
-					<view class="icon" v-if='icon'>
-						<u-icon @click='back' :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
+					<view  @click='back' class="icon" v-if='icon'>
+						<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
 					</view>
 					<view class="title" :style='{color: fontColor, textAlign: align, paddingLeft: icon ? 0 : titleLeft}'>
 						<text>{{title}}</text>
@@ -155,6 +155,7 @@
 	}
 	.icon {
 		flex: 0 1 50rpx;
+		height: 50rpx;
 		text-align: center;
 	}
 	.title {
