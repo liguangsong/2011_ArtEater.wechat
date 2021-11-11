@@ -1,6 +1,6 @@
 <template>
 	<view class='study' v-if="curriculumInfo">
-		<Navbar navbarBg='#fff' :height='height' title='课程' fontColor="#000" iconColor='#000'>
+		<Navbar navbarBg='#fff' :height='height' fontColor="#000" iconColor='#000'>
 			<template v-slot:img>
 				<image style='width: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
 			</template>
@@ -57,7 +57,6 @@
 		onShow() {
 			var app = getApp();
 			var member = app.globalData.member;
-			console.log(111111222);
 			if (member && member.memberType != 2) {
 				if (member.endTime > Date.now()) {
 					this.tabbar = true;

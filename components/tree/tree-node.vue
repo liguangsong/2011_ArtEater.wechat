@@ -9,7 +9,7 @@
 				<view class="title">
 					<image class="icon" :src="item.kind == '1' ? video :item.kind == '2'? audio:''"></image>
 					{{item.subjectName}}
-					<text class='free' v-if='item.vip'>免费</text>
+					<text class='free' v-if='!item.vip'>免费</text>
 				</view>
 				<view class="acllow-left" v-if="item.preLearn">
 					<text class='study'>上次学习</text>
@@ -80,15 +80,16 @@
 		padding-left: 48rpx;
 	}
 	.free {
+		display: inline-block;
 		height: 24rpx;
 		width: 44rpx;
 		background: #eee;
 		color: #ccc;
-		border: 1px dashed #aaa;
 		font-size: 14rpx;
 		line-height: 24rpx;
 		text-align: center;
 		margin-left: 20rpx;
+		border-radius: 4rpx;
 	}
 	.leave {
 		/* height: 85rpx; */

@@ -2,15 +2,20 @@
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow': 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<!-- <view style='height: 100vh;'> -->
 			
+			<!-- <Item v-for='(item, i) in subjects' :item='item' :img='arr[i]' :key='i'/>
+			<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar> -->
+		<!-- </view> -->
+		<Navbar navbarBg='#F7F7F7' :icon='false' title='题库' align='center' fontColor="#000" iconColor='#000'>
 			<Item v-for='(item, i) in subjects' :item='item' :img='arr[i]' :key='i'/>
 			<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
-		<!-- </view> -->
+		</Navbar>
 	</view>
 </template>
 
 <script>
 	import Tabbar from '@/components/tabBar/tabBar.vue';
 	import Item from './item.vue'
+	import Navbar from '../../components/navBar/navbar.vue';
 	export default {
 		data() {
 			return {
@@ -27,7 +32,8 @@
 		},
 		components:{
 			'view-tabbar': Tabbar,
-			Item
+			Item,
+			Navbar
 		},
 		created() {
 			var _this = this;

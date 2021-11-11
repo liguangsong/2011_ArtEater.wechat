@@ -1,16 +1,18 @@
 <template>
 	<view class="myPage" :style="{'overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<view class="">
+		<Navbar navbarBg='#F7F7F7' title='课程' :icon='false' align='center' fontColor="#000" iconColor='#000'>
+			<view style='height:20rpx;'></view>
 			<Item v-for='(item,i) in list' v-if='!item.hide' :key='i' :item='item' :vip='vip'/>
 			<view style='height:33rpx'></view>
-		</view>
+		</Navbar>
 		<view-tabbar :current="1" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
 
 <script>
 	import Tabbar from '@/components/tabBar/tabBar.vue';
-	import Item from './item.vue'
+	import Item from './item.vue';
+	import Navbar from '../../components/navBar/navbar.vue';
 	export default {
 		data() {
 			return {
@@ -22,19 +24,22 @@
 		},
 		components:{
 			'view-tabbar': Tabbar,
-			Item
+			Item,
+			Navbar
 		},
-		async created() {
-			var query = new this.Parse.Query('CoursesModule')
-			query.containedIn('level', [0,undefined])
-			this.list = await query.find();
-		},
+		// async created() {
+			
+		// },
 		onLoad() {
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
 			this.pdbtm=125+app.globalData.paddingBottomHeight;
 		},
 		async onShow() {
+			var query = new this.Parse.Query('CoursesModule')
+			query.containedIn('level', [0,undefined])
+			this.list = await query.find();
+			
 			uni.hideTabBar({
 				animation: false
 			});

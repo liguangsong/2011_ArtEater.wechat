@@ -44,7 +44,7 @@
 			</view>
 			<!-- 音频 -->
 			<view class="mp3" v-if="curriculumInfo.kind&&curriculumInfo.kind==2">
-				<k-audio :play.sync='play' :audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn"></k-audio>
+				<k-audio :play.sync='play' :duration='curriculumInfo.duration' :poster='curriculumInfo.portrait[0]' :audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn"></k-audio>
 			</view>
 			<view class="br"></view>
 		</view>
@@ -136,7 +136,6 @@
 			        that.screenHeight=res.screenHeight;
 			    }
 			});
-			
 			var app = getApp();
 			var member = app.globalData.member;
 			// 判断是不是会员
@@ -232,9 +231,16 @@
 			// 获取详情
 			async getCurriculum() {
 				let res = await Curriculum.getCurriculum(this.objectId);
-				console.log(res,88899)
 				let info = res[0];
 				this.curriculumInfo=info;
+				// console.log(info, 'infoo');
+				var q = new this.Parse.Query('CoursesModule')
+				q.equalTo('objectId', info.rootId)
+				q.find().then(data => {
+					// console.log(data, 'ddddd ');
+					this.curriculumInfo.portrait = data[0].attributes.portrait;
+					this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
+				})
 				if(info.flag==1){
 					// 存储上次学习
 				    await Curriculum.updatePreLearn(info['rootId'],info.objectId);
@@ -366,7 +372,7 @@
 				.info-title {
 					font-size: 36rpx;
 					line-height: 50rpx;
-					color: #D81E1F;
+					color: rgba(216, 30, 31, 1);
 					font-weight: 600;
 					margin-bottom: 14rpx;
 				}
@@ -380,7 +386,7 @@
 					.teacher {
 						flex: 0 1 278rpx;
 						display: flex;
-						align-content: center;
+						align-items: center;
 						image {
 							width: 48rpx;
 							height: 48rpx;
@@ -392,6 +398,12 @@
 						display: flex;
 						width:33.33%;
 						align-content: center;
+						text {
+							font-size: 20rpx;
+							font-family: PingFangSC-Regular, PingFang SC;
+							font-weight: 400;
+							color: rgba(23, 23, 23, 0.6);
+						}
 					}
 					.btn {
 						flex: 1 0 auto;
@@ -413,13 +425,14 @@
 							background: none;
 							border: none;
 							border-radius: 0;
+							color: rgba(23, 23, 23, 0.6);
 							box-sizing: border-box;
 							margin-left: 0;
 							margin-right: 0;
 							padding-right: 0;
 							position: relative;
 							text-align: right;
-							left: -30rpx;
+							left: -42rpx;
 							text-decoration: none;
 							&:after {
 								border: none;
@@ -436,7 +449,7 @@
 				box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.05), 0 -4rpx 8rpx 0 rgba(0,0,0,0.05);
 			}
 			.br {
-				border-bottom: 1px solid #ccc;
+				border-bottom: 1px solid rgba(0,0,0,.1);
 				margin: 0 24rpx;
 			}
 		}

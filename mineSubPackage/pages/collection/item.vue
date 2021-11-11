@@ -3,7 +3,7 @@
 		<view class="content">
 			<view class='font'>
 				<view class="title" @click='jumpDefault(item)'>{{item.subjectName}}</view>
-				<view class="info">
+				<view class="info" v-if='!item.level'>
 					<text v-if='item.subTitle1'>{{item.subTitle1}}</text>
 					<text>{{item.subTitle2}}</text>
 				</view>
@@ -70,7 +70,7 @@
 		height: 220rpx;
 		margin: 0 auto 24rpx;
 		background: #fff;
-		border-radius: 12rpx;
+		border-radius: 24rpx;
 		box-shadow: rgba(0,0,0,.1) 0 4rpx 10rpx 0;
 		position: relative;
 	}

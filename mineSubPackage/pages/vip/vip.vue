@@ -428,8 +428,25 @@
 							<!-- :class='{active: active == i}' -->
 							<view class="img">
 								<image class='imgbg' :src="item.surface"></image>
-								<image class='righttop' v-if='item.promotionPrice && item.discount'
-									src="../../static/time.png"></image>
+								<view v-if='isMember'>
+									<view v-if='memberInfo.memberType == 0'>
+										<image class='righttop' src="../../static/upgrade.png"></image>
+									</view>
+									<view v-if='memberInfo.memberType == 1'>
+										<image class='righttop' v-if='i==1' src="../../static/time.png"></image>
+										<image class='righttop' v-else src="../../static/upgrade.png"></image>
+									</view>
+									<view v-if='memberInfo.memberType == 2'>
+										<image class='righttop' v-if='i==2' src="../../static/time.png"></image>
+										<image class='righttop' v-else src="../../static/upgrade.png"></image>
+									</view>
+								</view>
+								<view v-else>
+									<view v-if='item.promotionPrice && item.discount'>
+										<image class='righttop' v-if='!isChajia' src="../../static/time.png"></image>
+										<image class='righttop' v-else src="../../static/upgrade.png"></image>
+									</view>
+								</view>
 							</view>
 							<view class="info">
 								<view class="title">
@@ -476,26 +493,11 @@
 					<view class="icon"></view>
 					<text>您的剩余时长可以抵扣金额，只需支付{{cash}}元即可升级！ 升级后会员时长为：{{cashTime1}}至{{cashTime2}}</text>
 				</view>
-				<view class="buy-info" :style='{height: isChajia ? "240rpx" : "320rpx"}'>
+				<view class="buy-info" :style='{height: isChajia ? "240rpx" : "360rpx"}'>
 					<view class="buy-title">购买说明</view>
 					<view class="buy-info-item">
-						<view>
-							1.您购买的会员服务为线上数字化商品，一经购买不支持退订、转让。
-						</view>
-						<view>
-							2.自开通之日起365个自然日内为您的服务有效期，期限内您将享受会员等级对应的全部会员权益。
-						</view>
-						<view>
-							3.会员服务到期后系统将自动关闭所有会员权限，但仍会保留您的使用数据，为不影响正常使用，请提前续费。
-						</view>
-						<view>
-							4.科学、合理使用食艺兽小程序，让它真正替你清除备考综合焦虑。
-						</view>
-						<view>
-							5.您可通过客服电话 13811219735（微信同号）与我们取得联系，也可在小程序首页点击【我的-意见反馈】提出你的疑问。
-						</view>
-						<view>
-							6.请详细阅读会员产品说明及购买说明，开通视为已知悉并接受以上内容。
+						<view v-for='(item,i) in list[active].explain' :key='i'>
+							{{item}}
 						</view>
 					</view>
 				</view>
@@ -546,6 +548,7 @@
 			var time = ' ' + year + month + day;
 			this.list.forEach(item => {
 				var time1 = parseInt(item.expirationDate.split('-').join(''));
+				item.explain = this.parseStrToHtml(item.explain)
 				if (time1 >= time) {
 					item.discount = true;
 				} else {
@@ -555,6 +558,7 @@
 			this.getMember();
 
 		},
+		
 		computed: {
 			isMember() {
 				if (this.memberInfo && Date.now() < this.memberInfo.endTime) {
@@ -569,7 +573,8 @@
 					var baiyinPrice = this.list[1].promotionPrice || this.list[1].memberPrice;
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					this.cash = (n - baiyinPrice) / 365 * Math.abs(time - 365);
+					this.cash = (n - baiyinPrice) / 365 * (Math.abs(time - 365) || 365);
+					console.log(n, time, this.cash, baiyinPrice);
 					this.cashTime1 = this.getDateTime();
 					this.cashTime2 = this.getDateTime(this.memberInfo.endTime)
 					return true;
@@ -579,7 +584,7 @@
 					var bojinPrice = this.list[2].promotionPrice || this.list[2].memberPrice;
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					this.cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
+					this.cash = (n - bojinPrice) / 365 * (Math.abs(time - 365) || 365);
 					this.cashTime1 = this.getDateTime();
 					this.cashTime2 = this.getDateTime(this.memberInfo.endTime)
 					return true;
@@ -588,6 +593,10 @@
 			}
 		},
 		methods: {
+			// 解析换行
+			parseStrToHtml(str) {
+				return str.replace(/\n/g,'-+-').split('-+-');
+			},
 			getDateTime(time) {
 				var date = null;
 				if (time) {
@@ -645,12 +654,15 @@
 					var _this = this;
 					uni.showModal({
 						title: '购买完成将自动升级为黑金VIP会员',
-						success() {
+						confirmColor: '#ED3535',
+						success(res) {
 							// 升级为黑金
-							var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
-							var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-							cash = (n - baiyinPrice) / 365 * Math.abs(time - 365) * 100;
-							_this.payment(cash)
+							if (res.confirm) {
+								var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+								var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+								cash = (n - baiyinPrice) / 365 * Math.abs(time - 365) * 100;
+								_this.payment(cash)
+							}
 						}
 					})
 				} else {
@@ -670,12 +682,15 @@
 					var _this = this;
 					uni.showModal({
 						title: '购买完成将自动升级为黑金VIP会员',
+						confirmColor: '#ED3535',
 						success() {
 							// 升级为黑金
-							var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
-							var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-							cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
-							_this.payment(cash * 100)
+							if (res.confirm) {
+								var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+								var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+								cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
+								_this.payment(cash * 100)
+							}
 						}
 					})
 				} else {

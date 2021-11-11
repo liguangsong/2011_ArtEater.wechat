@@ -14,10 +14,10 @@
 					activeColor="#D81E1F"
 					:value="current"
 					:max="duration"
-					@change="seek=true,clickSeek($event.detail.value)"
-					@changing="seek=true,current=$event.detail.value"
 				/>
-				<text class="audio-time">{{format(duration)}}</text>
+				<!-- 	@change="seek=true,clickSeek($event.detail.value)"
+					@changing="seek=true,current=$event.detail.value" -->
+				<text class="audio-time">{{duration}}</text>
 			</view>
 		</view>
 	</view>
@@ -42,6 +42,11 @@
 			img: String, //音频链接
 			title: String, //标题
 			autoplay: Boolean, //是否自动播放
+			poster: String,	// 背景图片
+			duration: {
+				type: String, // 时长
+				default: "00:00"
+			}
 		},
 		methods: {
 			oncePlay() {
@@ -88,7 +93,7 @@
 			// 重要 缺失 音频进入可以播放状态
 			this.audio.onCanplay(() => {
 				if(this.audio.duration){
-					console.log(this.audio.duration)
+					console.log(this.audio.duration,)
 				}
 			})
 			//音频进度更新事件
@@ -99,11 +104,10 @@
 				因为音频进度更新事件运行频率过快，两个时间会引起冲突，
 				因此需要通过设置开关，判断seek真假，若seek为假则未点击进度条，若seek为真则跳过此次赋值并修改seek值重置为假
 				*/
-			 // console.log(this.current);
 				if (!this.seek) {
 					this.current = this.audio.currentTime
 				}else{
-					console.log("修改一次进度条")
+					// console.log("修改一次进度条")
 					console.log(this.current)
 					this.seek = false
 				}
@@ -113,12 +117,12 @@
 			})
 			//音频暂停事件
 			this.audio.onPause(() => {
-				console.log("暂停")
+				// console.log("暂停")
 				this.paused = true
 			})
 			//音频结束事件
 			this.audio.onEnded(() => {
-				console.log(11111,this.isPlay);
+				// console.log(11111,this.isPlay);
 				this.isPlay = true;
 				if (!this.continue) {
 					this.paused = true
@@ -137,9 +141,9 @@
 		watch: {
 			src(src, old) {
 				this.createAudio(src)
-				console.log("重置")
+				// console.log("重置")
 				if (old || this.autoplay) {
-					console.log("监控")
+					// console.log("监控")
 					this.clickPlay()
 				}
 			}

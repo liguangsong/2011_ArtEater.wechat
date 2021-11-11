@@ -69,7 +69,7 @@
 		height: 220rpx;
 		margin: 0 auto 24rpx;
 		background: #fff;
-		border-radius: 12rpx;
+		border-radius: 24rpx;
 		box-shadow: rgba(0,0,0,.1) 0 4rpx 10rpx 0;
 		position: relative;
 	}
