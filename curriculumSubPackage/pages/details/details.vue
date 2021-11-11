@@ -239,7 +239,7 @@
 				let res = await Curriculum.getCurriculum(this.objectId);
 				let info = res[0];
 				this.curriculumInfo=info;
-				console.log(info, 'infoo');
+				// console.log(info, 'infoo');
 				var q = new this.Parse.Query('CoursesModule')
 				q.equalTo('objectId', info.rootId)
 				q.find().then(data => {
@@ -247,8 +247,10 @@
 					this.curriculumInfo.portrait = data[0].attributes.portrait;
 					this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
 				})
+				// console.log(info.flag);
 				if(info.flag==1){
 					// 存储上次学习
+					console.log(info['rootId'],info.objectId,'存储上次学习');
 				    await Curriculum.updatePreLearn(info['rootId'],info.objectId);
 				}
 				if(info.kind==3){
