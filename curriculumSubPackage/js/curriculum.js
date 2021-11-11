@@ -22,6 +22,7 @@ export default {
 	async getHideCurriculum(id) {
 		console.log(id,'ppppp')
 		let curriculum = new Parse.Query('CoursesModule');
+		    curriculum.equalTo('hide', true);
 		if (id) {
 			curriculum.equalTo('objectId', id);
 		}
@@ -92,16 +93,55 @@ export default {
 	},
 	// 获取当前课程所属的整个系列课程
 	async getAllTimetable(rootId, recursion) {
+		let coursesModuleRoot = new Parse.Query("CoursesModule");
+			coursesModuleRoot.notEqualTo('hide', true);
+			coursesModuleRoot.ascending('createdAt');
+			coursesModuleRoot.equalTo("objectId", rootId);
 		let curriculum = new Parse.Query('CoursesModule');
 			curriculum.notEqualTo('hide', true);
-		curriculum.equalTo('rootId', rootId);
-		curriculum.ascending('createdAt');
-		const coursesModuleRoot = new Parse.Query("CoursesModule");
-	
+			curriculum.equalTo('rootId', rootId);
+			curriculum.ascending('createdAt');
+		const mainQuery = Parse.Query.or(coursesModuleRoot,curriculum);
+		let res = await mainQuery.find();
+		if (res) {
+			// 获取上次学习的课程Id
+			let preId = await this.getPreLearn(res[0].id);
+			res = res.map(v => {
+				v = v.toJSON();
+				if (preId && v.objectId == preId) {
+					v.preLearn = true;
+				}
+				return v;
+			});
+		} else {
+			res = []
+		}
+		if (recursion) {
+			res = await this.arrToTree(res, '0');
+			console.log(res, 666555444)
+		} else {
+			res = await this.arrToTree(res, '0');
+			res = await this.treeToArr(res, []);
+			// 删除children字段
+			res.forEach(v => {
+				if (v.children) {
+					delete v.children;
+				}
+			})
+		}
+		return res;
+	},
+	// 获取当前课程所属的整个系列课程 扫码分享情况
+	async getAllTimetable_hide(rootId, recursion) {
+		let coursesModuleRoot = new Parse.Query("CoursesModule");
 			coursesModuleRoot.notEqualTo('hide', true);
-		
-		coursesModuleRoot.equalTo("objectId", rootId);
-		const mainQuery = Parse.Query.or(curriculum, coursesModuleRoot);
+			coursesModuleRoot.ascending('createdAt');
+			coursesModuleRoot.equalTo("objectId", rootId);
+		let curriculum = new Parse.Query('CoursesModule');
+			curriculum.notEqualTo('hide', true);
+			curriculum.equalTo('rootId', rootId);
+			curriculum.ascending('createdAt');
+		const mainQuery = Parse.Query.or(coursesModuleRoot,curriculum);
 		let res = await mainQuery.find();
 		if (res) {
 			// 获取上次学习的课程Id
