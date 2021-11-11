@@ -241,12 +241,16 @@
 				this.curriculumInfo=info;
 				console.log(info, 'infoo');
 				var q = new this.Parse.Query('CoursesModule')
-				q.equalTo('objectId', info.rootId)
-				q.find().then(data => {
-					// console.log(data, 'ddddd ');
-					this.curriculumInfo.portrait = data[0].attributes.portrait;
-					this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
-				})
+				if(info.rootId){
+					q.equalTo('objectId', info.rootId)
+					q.find().then(data => {
+						// console.log(data, 'ddddd ');
+						console.log(data,11121)
+						this.curriculumInfo.portrait = data[0].attributes.portrait;
+						this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
+					})
+				}
+				
 				if(info.flag==1){
 					// 存储上次学习
 				    await Curriculum.updatePreLearn(info['rootId'],info.objectId);
