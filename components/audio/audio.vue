@@ -1,8 +1,8 @@
 <template>
 	<view class="audio-warp" :style="[style]">
 		<view class="cover-warp" :class="{ hasbg: !poster }">
-			<!-- :src="poster" -->
-			<image class="cover-img" src='https://art-eater.oss-cn-beijing.aliyuncs.com/photo/m.png' v-if="poster"></image>
+			<!-- :src="poster" v-if="poster" -->
+			<image class="cover-img" src='https://art-eater.oss-cn-beijing.aliyuncs.com/photo/m.png'></image>
 			<view class="play-btn" :class="{ pause: play }" @click="handleBtnClick"></view>
 		</view>
 		<view class="audio-con">

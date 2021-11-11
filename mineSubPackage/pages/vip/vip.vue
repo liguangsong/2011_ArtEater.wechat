@@ -647,6 +647,7 @@
 			// 不是会员第一次进行购买
 			firstBuy() {
 				this.showFixed = true;
+				console.log(this.active);
 				var cash = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
 				this.payment(cash * 100)
 			},
@@ -692,6 +693,7 @@
 					uni.showModal({
 						title: '购买完成将自动升级为黑金VIP会员',
 						confirmColor: '#ED3535',
+						confirmText: '继续购买',
 						success(res) {
 							// 升级为黑金
 							if (res.confirm) {
@@ -809,7 +811,7 @@
 			// 创建会员
 			async createMember(tradeId) {
 
-				console.log(this.member);
+				// console.log(this.member);
 				if (this.member) {
 					var arr = this.memberInfo.orderArr;
 					arr.push(tradeId);
@@ -840,7 +842,7 @@
 				} else {
 					// 初次创建
 					var item = this.list[this.active];
-					var memberType = item.surfaceId + '';
+					var memberType = item.surfaceId - 1 + '';
 					var Member = this.Parse.Object.extend("MemberList");
 					var member = new Member();
 					member.set("openId", this.userInfo.openid);
