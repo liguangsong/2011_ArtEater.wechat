@@ -23,7 +23,7 @@
 			</view>
 			<view class="tab">
 				<Timetable v-if='tabbar' :list="timetableList"/>
-				<Details v-else :detail="curriculumInfo.introduce" :isVip="tabbar"/>
+				<Details v-else :detail="curriculumInfo.introduce" :isVip="vip"/>
 			</view>
 		</Navbar>
 	</view>
@@ -42,6 +42,7 @@
 				height: '0',
 				tabbar: false,
 				isVip: false,
+				vip: false,
 				item: null
 			}
 		},
@@ -54,16 +55,16 @@
 			this.item = options;
 		},
 		onShow() {
-			this.getCurriculum();
-		},
-		created() {
 			var app = getApp();
 			var member = app.globalData.member;
+			console.log(111111222);
 			if (member && member.memberType != 2) {
 				if (member.endTime > Date.now()) {
 					this.tabbar = true;
+					this.vip = true;
 				}
 			}
+			this.getCurriculum();
 		},
 		methods: {
 			// 获取详情
@@ -93,7 +94,7 @@
 				this.timetableList=[]
 				let res = await Curriculum.getAllTimetable(objectId,true);
 				if(res[0].children&&res[0].children.length){
-					this.timetableList=res[0].children.filter(item => !item.has_down_level);
+					this.timetableList=res[0].children.filter(item => item.has_down_level);
 				}else{
 					this.timetableList = [];
 				}

@@ -12,7 +12,7 @@
 				<image src="../../../static/3.png"></image>
 			</view> -->
 		</view>
-		<view class="unlock" v-if='isVip' @click='gotoVip'>
+		<view class="unlock" v-if='!isVip' @click='gotoVip'>
 			立即解锁
 		</view>
 	</view>
@@ -27,9 +27,11 @@
 				default:''
 			},
 			isVip:{
-				type:Boolean,
-				default:false
+				type:Boolean
 			},
+		},
+		created() {
+			console.log(this.isVip,'///////------');
 		},
 		filters:{
 		/**
@@ -59,12 +61,11 @@
 		padding: 0 48rpx;
 	}
 	.introduce .title{
-		height: 40rpx;
-		font-size: 28rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		display: block;
+		font-size: 30rpx;
+		margin-bottom: 40rpx;
+		font-weight: 900;
 		color: #D81E1F;
-		line-height: 40rpx;
 	}
 	.introduce .title:before {
 		display: inline-block;

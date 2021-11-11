@@ -48,10 +48,8 @@
 			}
 		},
 		methods: {
-			async jumpDefault(item, vip) {
-				// console.log(item);
-				// return;
-				let toUrl=await Curriculum.configUrl({course:item}, vip)
+			async jumpDefault(item) {
+				let toUrl=await Curriculum.configUrl({course:item}, this.vip)
 				uni.navigateTo({
 					url:toUrl
 				})

@@ -14,21 +14,6 @@
 									<image :src="item.img"></image>
 								</view>
 							</swiper-item>
-							<!-- <swiper-item>
-								<view class="swiperItem">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210122%209.9%E5%85%83%E7%A7%92%E6%9D%80%E5%9B%BE-02.jpg"></image>
-								</view>
-							</swiper-item>
-							<swiper-item>
-								<view class="swiperItem">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210106%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A6%96%E9%A1%B5%E5%9B%BE_%E7%94%BB%E6%9D%BF%201%20%E5%89%AF%E6%9C%AC%204.jpg"></image>
-								</view>
-							</swiper-item>
-							<swiper-item>
-								<view class="swiperItem">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210106%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A6%96%E9%A1%B5%E5%9B%BE_%E7%94%BB%E6%9D%BF%201%20%E5%89%AF%E6%9C%AC%205.jpg"></image>
-								</view>
-							</swiper-item> -->
 						</swiper>
 					</view>
 				</view>
@@ -73,31 +58,7 @@
 							<view class="title">{{item.subject_name}}</view>
 						</view>
 					</view>
-
-					<!-- <view class="navItem" @click="handleMyClick">
-					<view class="img" style="position: relative;">
-						<image src="../../static/icon/icon_mine.png"></image>
-						<view style="position: absolute;top: 30rpx;left: 22rpx;width: 100rpx;height: 100rpx;">
-							<u-badge v-if="(msgCount+couponCount) > 0" fontSize="24" size="mini" type="error" bgColor="#ff7c7c" :offset="[-15,-10]" :count="(msgCount+couponCount)"></u-badge>
-						</view>
-					</view>
-					<view class="title">个人中心</view>
-				</view> -->
-
-
-
 				</view>
-				<!--导航 end-->
-
-				<!--热门专题 start-->
-				<!-- <view class="groupView">
-			<view class="subjectView">
-				<view class="subjectItem" @click="handleSubjectClick" :data-item="item" v-for="(item,index) in subjects" :key='item.id'>
-					<image :src="item.backgroundImg"></image>
-				</view>
-			</view>
-		</view> -->
-				<!--热门专题 end-->
 
 				<audition-learning v-if="studyList.length" title="正在学习" :showMore="studyList.length>2"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
@@ -122,33 +83,6 @@
 								<view class="content"></view>
 							</view>
 						</view>
-						<!-- <view class="newsItem" @click="handleToOtherMiniApp" data-url="https://mp.weixin.qq.com/s/7JIUt_qVXGOLiTM80r8Maw">
-					<view class="imgView">
-						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210121%E9%A3%9F%E8%89%BA%E5%85%BD%E5%B0%8F%E7%B2%BE%E7%81%B5%E5%AE%98%E6%96%B9%E5%AE%A2%E6%9C%8D-02.jpg"></image>
-					</view>
-					<view class="conView">
-						<view class="title">食艺兽官方客服：【食艺兽小精灵】</view>
-						<view class="content"></view>
-					</view>
-				</view>
-				<view class="newsItem" @click="handleToOtherMiniApp" data-url="https://mp.weixin.qq.com/s/F72bE0bqjt8aFAtNWTQ9OA">
-					<view class="imgView">
-						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210106%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A6%96%E9%A1%B5%E5%9B%BE-09.jpg"></image>
-					</view>
-					<view class="conView">
-						<view class="title">考纲题库更多免费体验已开放！即刻开刷！</view>
-						<view class="content"></view>
-					</view>
-				</view>
-				<view class="newsItem" @click="handleToOtherMiniApp" data-url="https://mp.weixin.qq.com/s/P0uaebj8kBGLNR90k-wIxA">
-					<view class="imgView">
-						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/20210115%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C-07.jpg"></image>
-					</view>
-					<view class="conView">
-						<view class="title">【食艺兽2.0】小程序操作手册</view>
-						<view class="content"></view>
-					</view>
-				</view> -->
 					</view>
 				</view>
 				<!--精品推荐 end-->
@@ -189,7 +123,8 @@
 				<!--购买重点题库 end-->
 				<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl">
 				</login>
-				<u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true" :zoom="false" @click="handleStep">
+				<u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true"
+					:zoom="false" @click="handleStep">
 					<view v-if="step==1" class="step bottom">
 						<view class="navItem">
 							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask1.png"></image>
@@ -299,7 +234,7 @@
 				// //获取本地正在学习的课程
 				this.getLearning();
 
-				
+
 				var app = getApp();
 				var member = app.globalData.member;
 				// 判断是不是会员
@@ -335,7 +270,7 @@
 						}
 					}
 				}
-			
+
 			}
 			this.bindConfig();
 			//获取所有的模块
@@ -360,11 +295,6 @@
 			})
 			const Subjects = this.Parse.Object.extend("Subjects")
 			const query = new this.Parse.Query('Subjects')
-			// uni.getSystemInfo({
-			//    success: res => {
-			//  	self.windowHeight = res.windowHeight
-			//    }
-			// })
 
 			query.ascending("createdAt")
 			query.equalTo("parent_ID", "0")
@@ -378,13 +308,7 @@
 					console.log('load font success')
 				}
 			})
-			// uni.loadFontFace({
-			// 	family: 'PingFangSC-Medium',
-			// 	source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			// 	success: function() {
-			// 		console.log('load font success')
-			// 	}
-			// })
+
 			var bannerQuery = new this.Parse.Query('Banner')
 			bannerQuery.equalTo('state', 1)
 			bannerQuery.ascending('sort')
@@ -401,26 +325,26 @@
 			checkVip() {
 				let app = getApp();
 				let member = app.globalData.member;
-				let vip=false;
-				if(member && member.memberType!=2 && (member.endTime > Date.now())){
-                  vip=true;
+				let vip = false;
+				if (member && member.memberType != 2 && (member.endTime > Date.now())) {
+					vip = true;
 				}
 				return vip;
 			},
 			// 正在学习的item被点击时
 			async learnChangeUrl(item) {
-				let vip= this.checkVip();
+				let vip = this.checkVip();
 				let toUrl = await Curriculum.configUrl({
 					course: item
-				},vip);
+				}, vip);
 				uni.navigateTo({
 					url: toUrl
 				})
 			},
 			async changeUrl(item) {
-				let vip= this.checkVip();
+				let vip = this.checkVip();
 				//配置url
-				let toUrl = await Curriculum.configUrl(item,vip);
+				let toUrl = await Curriculum.configUrl(item, vip);
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						// 记录点击量
@@ -731,16 +655,7 @@
 								url: _item.href
 							})
 						}
-						// else {
-						// 	if(this.userInfo&&this.userInfo.openid){
-						// 		uni.navigateTo({
-						// 			url: '/pages/course/course?rid=' + _item.objectId
-						// 		})
-						// 	} else {
-						// 		this.isShowLogin = true
-						// 		this.toUrl = '/pages/course/course?rid=' + _item.objectId
-						// 	}
-						// }	
+
 					}
 				})
 			},
@@ -781,17 +696,11 @@
 
 	.myPage {
 		background-color: #F7F7F7;
-		/* padding-bottom: 125rpx; */
 	}
 
 	.swiper {
-		/* margin-top: 20rpx; */
-		// border-radius: 20rpx;
-		/* width: 690rpx; */
-		/* width: calc(100% - 60rpx); */
 		height: 514rpx;
 		line-height: 18rpx;
-		/* padding: 0 30rpx; */
 		text-align: center;
 	}
 
@@ -815,7 +724,8 @@
 		filter: drop-shadow(0rpx 4rpx 12rpx rgba(0, 0, 0, 0.08));
 		position: relative;
 		top: -18rpx;
-        margin-bottom:-18rpx;
+		margin-bottom: -18rpx;
+
 		.nav-box {
 			width: 50%;
 			height: 340rpx;
@@ -880,12 +790,14 @@
 			flex-grow: 4;
 		}
 	}
-    .h-line{
+
+	.h-line {
 		width: 750rpx;
 		height: 12rpx;
 		background: rgba(0, 0, 0, 0.05);
-		box-shadow: 0rpx 0rpx 6rpx 0rpx rgba(0,0,0,0.08) inset;
+		box-shadow: 0rpx 0rpx 6rpx 0rpx rgba(0, 0, 0, 0.08) inset;
 	}
+
 	.navSection .navItem .img {
 		width: 92rpx;
 		height: 92rpx;
@@ -1138,11 +1050,18 @@
 		font-size: 34rpx;
 	}
 
+	.step {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		z-index: 9999;
+	}
 	.step .navItem {
 		flex: 1;
 		width: 100%;
 		height: 100vh;
 		position: relative;
+		z-index: 1999;
 	}
 
 

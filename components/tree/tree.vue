@@ -42,7 +42,6 @@
 		},
 		mounted() {
 			let px = uni.upx2px(600);
-			// console.log(px, '--');
 			if (this.showAllbtn) {
 				const query = uni.createSelectorQuery().in(this);
 				query.select('#tree').boundingClientRect(data => {

@@ -27,9 +27,7 @@
 		async created() {
 			var query = new this.Parse.Query('CoursesModule')
 			query.containedIn('level', [0,undefined])
-			// query.containedIn('level', [0,undefined])
 			this.list = await query.find();
-			console.log(this.list);
 		},
 		onLoad() {
 			let app = getApp();

@@ -7,7 +7,7 @@
 			>
 				<view class='bg' :style='{background: navbarBg, opacity: opacity}'></view>
 				<view class="nav" :style='{height:navbarheight + "rpx", top:tabbarheight - navbarheight + "rpx"}'>
-					<view class="icon" v-if='icon'>
+					<view class="icon" v-if='icon' @click='back'>
 						<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
 					</view>
 					<view class="title" :style='{color: fontColor, textAlign: align, paddingLeft: icon ? 0 : titleLeft}'>
@@ -102,6 +102,11 @@
 			})
 		},
 		methods: {
+			back() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
 			scroll(e) {var that=this;
 					const query = uni.createSelectorQuery().in(that);
 					query.select('.tabbar').boundingClientRect(data => {

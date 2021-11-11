@@ -1,6 +1,5 @@
 <template>
 	<view class="timetable">
-		<!-- <view :class="{content: unlock}"> -->
 		<view>
 			<view class="catalogue">
 				<text>课程目录</text>
@@ -33,14 +32,12 @@
 		},
 		methods: {
 			onClickItem(item) {
-				console.log('777888')
 				let app = getApp();
 				let member = app.globalData.member;
 				let vip=false;
 				if(member && member.memberType!=2 && (member.endTime > Date.now())){
                   vip=true;
 				}
-				console.log(vip,45678)
 				if(item.kind!=4){
 					if(item.vip && !vip){
 						uni.navigateTo({
@@ -50,11 +47,7 @@
 						uni.navigateTo({
 						  url: '/curriculumSubPackage/pages/details/details?objectId='+item.objectId
 						});
-						
 					}
-					
-				}else{
-					
 				}
 			}
 		}

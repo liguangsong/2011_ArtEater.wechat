@@ -2,12 +2,14 @@
 	<view class="tree-item">
 		<view class="leave0" v-if='item.level == 1&&item.kind==4'>
 			{{item.subjectName}}
+			<text class='free' v-if='item.vip'>免费</text>
 		</view>
 		<view v-else class="item" @click.stop='changeItem'>
 			<view class="leave" :style='{paddingLeft: item.level*52 + "rpx", color:item.kind==4 && (!item.children || !item.children.length)?"rgba(0,0,0,0.3)":"rgba(0,0,0,0.7)"}'>
 				<view class="title">
 					<image class="icon" :src="item.kind == '1' ? video :item.kind == '2'? audio:''"></image>
 					{{item.subjectName}}
+					<text class='free' v-if='item.vip'>免费</text>
 				</view>
 				<view class="acllow-left" v-if="item.preLearn">
 					<text class='study'>上次学习</text>
@@ -46,9 +48,6 @@
 		methods: {
 			changeItem() {
 				this.onClickItem(this.item)
-			},
-			close() {
-				console.log('8888888*****')
 			}
 		}
 	}
@@ -80,6 +79,17 @@
 		background: #fff;
 		padding-left: 48rpx;
 	}
+	.free {
+		height: 24rpx;
+		width: 44rpx;
+		background: #eee;
+		color: #ccc;
+		border: 1px dashed #aaa;
+		font-size: 14rpx;
+		line-height: 24rpx;
+		text-align: center;
+		margin-left: 20rpx;
+	}
 	.leave {
 		/* height: 85rpx; */
 		border-top: 1px solid #f7f7f7;
@@ -101,7 +111,6 @@
 		height: 36rpx;
 	}
 	.acllow-left {
-		/* padding-right: 40rpx; */
 		font-size: 16rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
