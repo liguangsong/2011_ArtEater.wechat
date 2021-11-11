@@ -269,6 +269,7 @@
 			this.bindConfig();
 			//获取所有的模块
 			this.getModules();
+			this.getLearning()
 		},
 		onLoad() {
 			var self = this
@@ -314,6 +315,10 @@
 		},
 		methods: {
 			async getMember() {
+				var r = uni.getStorageSync('userInfo');
+				if (!r) {
+					return
+				}
 				var app = getApp();
 				var user = await this.Parse.User.current();
 				var query = new this.Parse.Query('MemberList');
@@ -345,20 +350,9 @@
 			},
 			// 正在学习的item被点击时
 			async learnChangeUrl(item) {
-				// let vip = this.checkVip();
-				// let toUrl = await Curriculum.configUrl({
-				// 	course: item
-				// }, vip);
-				// uni.navigateTo({
-				// 	url: toUrl
-				// })
-				
-				item.course = {
-					vip: item.vip
-				}
-				let vip = this.checkVip();
+				let vip = await this.checkVip();
 				//配置url
-				let toUrl = await Curriculum.configUrl(item, vip);
+				let toUrl = await Curriculum.configUrl({course: item}, vip);
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						uni.navigateTo({
@@ -372,10 +366,10 @@
 				} 
 			},
 			async changeUrl(item) {
-
-				let vip = this.checkVip();
+				let vip = await this.checkVip();
 				//配置url
 				let toUrl = await Curriculum.configUrl(item, vip);
+				
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						// 记录点击量
@@ -400,6 +394,8 @@
 				// uni.navigateTo({
 				// 	url: '/homeSubPackage/pages/curriculumList/curriculumList?&moduleName=' + params.moduleName
 				// })
+
+				// })
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						uni.navigateTo({
@@ -417,6 +413,10 @@
 				}
 			},
 			async checkMore(params) {
+				// var r = uni.getStorageSync('userInfo');
+				// if (!r) {
+				// 	this.isShowLogin = true;
+				// }
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						uni.navigateTo({
@@ -468,7 +468,7 @@
 			//正在学习
 			async getLearning() {
 				let res = await Curriculum.getLearning();
-				console.log(res, 4567865)
+				// console.log(res, 4567865)
 				this.studyList = res;
 			},
 			//获取模块
@@ -479,6 +479,7 @@
 			},
 			/* 登录完成 */
 			handleLoginComplate() {
+				console.log(11111111000000);
 				var self = this
 				this.isShowLogin = false
 				uni.getStorage({
@@ -1127,7 +1128,7 @@
 	}
 
 	.bottom image {
-		top: calc(100vh - 368rpx);
+		top: calc(100vh - 368rpx + 10rpx);
 	}
 
 	.top image {

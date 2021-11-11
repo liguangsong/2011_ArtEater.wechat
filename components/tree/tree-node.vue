@@ -2,7 +2,7 @@
 	<view class="tree-item">
 		<view class="leave0" v-if='item.level == 1&&item.kind==4'>
 			{{item.subjectName}}
-			<text class='free' v-if='item.vip'>免费</text>
+			<text class='free' v-if='!item.vip'>免费</text>
 		</view>
 		<view v-else class="item" @click.stop='changeItem'>
 			<view class="leave" :style='{paddingLeft: item.level*52 + "rpx", color:item.kind==4 && (!item.children || !item.children.length)?"rgba(0,0,0,0.3)":"rgba(0,0,0,0.7)"}'>

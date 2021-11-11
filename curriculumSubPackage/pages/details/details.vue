@@ -31,7 +31,7 @@
 								<image src="../../../static/icon/icon_share.png"></image>
 							</view>
 							<!-- <text>分享</text> -->
-							<button type="default" open-type='share'>分享</button>
+							<button type="default"  :data-objectId='objectId' open-type='share'>分享</button>
 						</view>
 						<view @click="operateCollection(false)">
 							<view class="img">
@@ -52,6 +52,7 @@
 		<view class="html" :style='{paddingTop: infoTop + 4 + "px"}' v-if="curriculumInfo.explain">
 			<rich-text :nodes='curriculumInfo.explain|formatRichText'></rich-text>
 		</view>
+		<view v-else  :style='{paddingTop: infoTop + 4 + "px"}'></view>
 		<!-- 推荐学习 -->
 		<view class="recommend" v-if='recommendedList.length'>
 			<view class="recommend-title">
@@ -120,7 +121,8 @@
 				unlock: '../../../static/vip-unlock.png',
 				screenHeight:0,
 				allheight:0,
-				status:false
+				status:false,
+				objectId: '',
 			}
 		},
 		onLoad(options) {

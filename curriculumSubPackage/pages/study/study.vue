@@ -88,6 +88,7 @@
 				}else{
 					this.isVip=false;
 					this.vip = true;
+					this.tabbar = true;
 				}
 				//获取课表
 				if(info.objectId){

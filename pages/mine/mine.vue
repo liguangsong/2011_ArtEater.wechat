@@ -1,5 +1,5 @@
 <template>
-	<view class="myView1" :style="{'height':windowHeight + 'px','overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
+	<view class="myView1" :style="{'padding-bottom':pdbtm+'rpx'}">
 		<view-tabbar :current="3" @tabbarChange="tabbarChange"></view-tabbar>
 		<view class='fixed'>
 			<view class="headView1">
@@ -590,7 +590,7 @@
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				border-bottom: 1px solid rgba(0, 0, 0, .1);
+				border-bottom: 1px solid rgba(0, 0, 0, .06);
 
 				.title {
 					flex: 1 0 auto;
