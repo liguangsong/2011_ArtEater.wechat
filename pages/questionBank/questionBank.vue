@@ -1,10 +1,5 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<!-- <view style='height: 100vh;'> -->
-			
-			<!-- <Item v-for='(item, i) in subjects' :item='item' :img='arr[i]' :key='i'/>
-			<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar> -->
-		<!-- </view> -->
 		<Navbar navbarBg='#F7F7F7' :icon='false' title='题库' align='center' fontColor="#000" iconColor='#000'>
 			<Item v-for='(item, i) in subjects' :item='item' :img='arr[i]' :key='i'/>
 			<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
@@ -68,6 +63,8 @@
 				query.equalTo("parent_ID", "0")
 				query.find().then(list => {
 					this.subjects = list.filter(item => item.attributes.subject_name != '科技文艺常识')
+					// this.subjects = list;
+					// console.log(list);
 				})
 			}
 		}
