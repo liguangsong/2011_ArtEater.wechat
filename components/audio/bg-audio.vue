@@ -93,9 +93,10 @@
 			})
 			// 重要 缺失 音频进入可以播放状态
 			this.audio.onCanplay(() => {
-				if(this.audio.duration){
-					console.log(this.audio.duration,)
-				}
+				this.$emit('changeLearn',true)
+				// if(this.audio.duration){
+				// 	console.log(this.audio.duration,)
+				// }
 			})
 			//音频进度更新事件
 			this.audio.onTimeUpdate(() => {

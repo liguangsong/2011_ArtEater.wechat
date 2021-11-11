@@ -40,7 +40,7 @@ export default {
 		let learning = new Parse.Query('Learning');
 		learning.equalTo('openId', openid);
 		let res = await learning.first();
-		let courseId = undefined;
+		var courseId = undefined;
 		if (res) {
 			let ids = res.get('preIds');
 			if (ids) {
@@ -51,7 +51,6 @@ export default {
 	},
 	//更新上次学习课程Id
 	async updatePreLearn(key, value) {
-		console.log(4444555)
 		let openid = uni.getStorageSync('openid');
 		let Learning = Parse.Object.extend('Learning');
 		let newLearning = new Learning();
@@ -67,6 +66,7 @@ export default {
 					[key]: value
 				}
 			}
+			res.set('preIds', ids)
 			await res.save();
 		} else {
 			newLearning.set('openId', openid);
@@ -119,7 +119,6 @@ export default {
 		}
 		if (recursion) {
 			res = await this.arrToTree(res, '0');
-			console.log(res, 666555444)
 		} else {
 			res = await this.arrToTree(res, '0');
 			res = await this.treeToArr(res, []);
@@ -164,7 +163,6 @@ export default {
 		}
 		if (recursion) {
 			res = await this.arrToTree(res, '0');
-			console.log(res, 666555444)
 		} else {
 			res = await this.arrToTree(res, '0');
 			res = await this.treeToArr(res, []);
@@ -186,12 +184,10 @@ export default {
 				this.treeToArr(item.children, res);
 			}
 		});
-		console.log(res, 7789)
 		return res;
 	},
 	// 依次在数组中找到每一层级对应的元素，同时每个元素的 children 属性对应的 value 通过 pid 去找到，然后递归执行下去
 	arrToTree(arr, pid = '0') {
-		console.log(arr, 8888)
 		const res = [];
 		arr.forEach(item => {
 			if (item.parent_ID === pid) {
@@ -212,13 +208,11 @@ export default {
 				}
 			}
 		});
-		console.log(res, 123454321)
 		return res;
 	},
 	// 序列化富文本图片自适应
 	formatRichText(html) {
 		let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
-			console.log(match.search(/style=/gi));
 
 			if (match.search(/style=/gi) == -1) {
 				match = match.replace(/\<img/gi, '<img style=""');
@@ -320,7 +314,6 @@ export default {
 		if (url.includes(Config.ScanUrl)) {
 			let id = url.split('/')[url.split('/').length - 1];
 			let data = await that.getHideCurriculum(id);
-			console.log(data,123453)
 			if (data.length) {	
 				let info = data[0];
 				
@@ -434,7 +427,7 @@ export default {
 									//非vip单课程点击时直接播放页
 									toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId='+item.objectId;
 								}
-							}else{ console.log('qqqqqq')
+							}else{ 
 								   //非vip单课程点击时直接播放页
 								   toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId='+item.objectId;
 							}
