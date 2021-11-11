@@ -544,7 +544,6 @@
 			month = month >= 10 ? month : '0' + month;
 			day = day >= 10 ? day : '0' + day;
 			var time = ' ' + year + month + day;
-			time = parseInt(time.split('-').join(''))
 			this.list.forEach(item => {
 				var time1 = parseInt(item.expirationDate.split('-').join(''));
 				if (time1 >= time) {
@@ -571,8 +570,8 @@
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
 					this.cash = (n - baiyinPrice) / 365 * Math.abs(time - 365);
-					this.cashTime1 = new Date().toLocaleDateString()
-					this.cashTime2 = new Date(this.memberInfo.endTime).toLocaleDateString()
+					this.cashTime1 = this.getDateTime();
+					this.cashTime2 = this.getDateTime(this.memberInfo.endTime)
 					return true;
 				}
 				if (this.memberInfo && this.memberInfo.memberType == 2 && this.active != 2) {
@@ -581,14 +580,28 @@
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
 					this.cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
-					this.cashTime1 = new Date().toLocaleDateString()
-					this.cashTime2 = new Date(this.memberInfo.endTime).toLocaleDateString()
+					this.cashTime1 = this.getDateTime();
+					this.cashTime2 = this.getDateTime(this.memberInfo.endTime)
 					return true;
 				}
 				return false;
 			}
 		},
 		methods: {
+			getDateTime(time) {
+				var date = null;
+				if (time) {
+					date = new Date(time);
+				} else {
+					date = new Date();
+				}
+				var year = date.getFullYear(); //年
+				var month = date.getMonth() + 1; //月
+				var day = date.getDate(); //日
+				month = month >= 10 ? month : '0' + month;
+				day = day >= 10 ? day : '0' + day;
+				return year + '-' + month + '-' + day;
+			},
 			changeShowFixed(f) {
 				if (f != 1) {
 					this.showFixed = true;
@@ -601,7 +614,6 @@
 				var Member = new this.Parse.Query('MemberList')
 				Member.equalTo("openId", this.userInfo.openid);
 				this.member = await Member.first();
-				console.log(this.member, 'member');
 				if (this.member) {
 					this.memberInfo = JSON.parse(JSON.stringify(this.member));
 					this.active = Number(this.memberInfo.memberType);
@@ -682,7 +694,6 @@
 
 			// 支付
 			payment(cash) {
-				console.log(cash);
 				cash = 0;
 				if (cash == 0) {
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5);
