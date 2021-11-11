@@ -162,6 +162,7 @@
 	}
 	.icon {
 		flex: 0 1 50rpx;
+		height: 50rpx;
 		text-align: center;
 	}
 	.title {

@@ -19,9 +19,10 @@
 				pdbtm:0,//兼容iphonexr+
 				windowHeight:0,
 				arr: [
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/c1.png?versionId=CAEQIBiBgICC4Zq95xciIDI4OWRmNTBjMzVjNDRiZDI5YTRhZmQyNDA1NWM3ZTBj',
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/c2.png?versionId=CAEQIBiBgIDQ35q95xciIDk2ZDdiMmVhYjkxZDRjOTZiNmFlZTQzMTAwYjVlZmJk',
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/c3.png?versionId=CAEQIBiBgMDP35q95xciIDFhYTRkMjY3NWI4MTRmNjJiZGNiM2E5MWM5OGExZGJl'
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/c1.png',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/c2.png',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/c3.png',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/C4.png'
 				]
 			}
 		},
@@ -62,9 +63,8 @@
 				query.ascending("createdAt")
 				query.equalTo("parent_ID", "0")
 				query.find().then(list => {
-					this.subjects = list.filter(item => item.attributes.subject_name != '科技文艺常识')
-					// this.subjects = list;
-					// console.log(list);
+					// this.subjects = list.filter(item => item.attributes.subject_name != '科技文艺常识')
+					this.subjects = list;
 				})
 			}
 		}

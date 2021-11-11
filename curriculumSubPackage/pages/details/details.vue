@@ -44,7 +44,7 @@
 			</view>
 			<!-- 音频 -->
 			<view class="mp3" v-if="curriculumInfo.kind&&curriculumInfo.kind==2">
-				<k-audio :play.sync='play' :duration='curriculumInfo.duration' :poster='curriculumInfo.portrait[0]' :audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn"></k-audio>
+				<k-audio :play.sync='play' :title='curriculumInfo.subjectName' :duration='curriculumInfo.duration' :poster='curriculumInfo.portrait[0]' :audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn"></k-audio>
 			</view>
 			<view class="br"></view>
 		</view>

@@ -14,7 +14,7 @@
 						<view class="nickName">{{userInfo.nickName}}</view>
 						<view class="icon" v-if='memberType'>
 							{{memberType}}
-							<u-icon name="arrow-right" color="#f4f4f4" size="20"></u-icon>
+							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="20"></u-icon>
 						</view>
 						<view class="icon" v-else>
 							未开通会员
@@ -58,7 +58,7 @@
 							<text>签到</text>
 						</view>
 						<view class="icon">
-							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -71,7 +71,7 @@
 							<text>积分排行榜</text>
 						</view>
 						<view class="icon">
-							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -84,7 +84,7 @@
 							<text>会员中心</text>
 						</view>
 						<view class="icon">
-							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -99,7 +99,7 @@
 							<!-- <u-badge v-if="couponCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="couponCount"></u-badge> -->
 						</view>
 						<view class="icon">
-							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -113,7 +113,7 @@
 							<!-- <view>0</view> -->
 						</view>
 						<view class="icon">
-							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -126,7 +126,7 @@
 							<text>收藏</text>
 						</view>
 						<view class="icon">
-							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -141,7 +141,7 @@
 							<text>分享给好友</text>
 						</view>
 						<view class="icon">
-							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -158,7 +158,7 @@
 							</view> -->
 						</view>
 						<view class="icon">
-							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -171,7 +171,7 @@
 							<text>意见反馈</text>
 						</view>
 						<view class="icon">
-							<u-icon name="arrow-right" color="#f4f4f4" size="24"></u-icon>
+							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
 						</view>
 					</view>
 				</view>
@@ -540,7 +540,7 @@
 	}
 
 	.vipView {
-		height: 120rpx;
+		height: 108rpx;
 		position: relative;
 
 		image {

@@ -134,42 +134,42 @@
 		<view class='mask'  @click="handleStep" v-if='isShowTips'>
 			<view v-if="step==1" class="step bottom">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask1.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask1.png"></image>
 				</view>
 			</view>
 			<view v-if="step==2" class="step bottom">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask2.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask2.png"></image>
 				</view>
 			</view>
 			<view v-if="step==3" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask3.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask3.png"></image>
 				</view>
 			</view>
 			<view v-if="step==4" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask4.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask4.png"></image>
 				</view>
 			</view>
 			<view v-if="step==5" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask5.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask5.png"></image>
 				</view>
 			</view>
 			<view v-if="step==6" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask6.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask6.png"></image>
 				</view>
 			</view>
 			<view v-if="step==7" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask7.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask7.png"></image>
 				</view>
 			</view>
 			<view v-if="step==8" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask8.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask8.png"></image>
 				</view>
 			</view>
 		<!-- </u-mask> -->
@@ -345,15 +345,35 @@
 			},
 			// 正在学习的item被点击时
 			async learnChangeUrl(item) {
+				// let vip = this.checkVip();
+				// let toUrl = await Curriculum.configUrl({
+				// 	course: item
+				// }, vip);
+				// uni.navigateTo({
+				// 	url: toUrl
+				// })
+				
+				item.course = {
+					vip: item.vip
+				}
 				let vip = this.checkVip();
-				let toUrl = await Curriculum.configUrl({
-					course: item
-				}, vip);
-				uni.navigateTo({
-					url: toUrl
-				})
+				//配置url
+				let toUrl = await Curriculum.configUrl(item, vip);
+				if (this.userInfo && this.userInfo.openid) {
+					if (this.userInfo.phone) {
+						uni.navigateTo({
+							url: toUrl
+						})
+					} else {
+						uni.reLaunch({
+							url: '/pages/login/login'
+						})
+					}
+				} 
 			},
 			async changeUrl(item) {
+				console.log(item,22);
+				return
 				let vip = this.checkVip();
 				//配置url
 				let toUrl = await Curriculum.configUrl(item, vip);
@@ -378,9 +398,24 @@
 			},
 			// 正在学习
 			async learnCheckMore(params) {
-				uni.navigateTo({
-					url: '/homeSubPackage/pages/curriculumList/curriculumList?&moduleName=' + params.moduleName
-				})
+				// uni.navigateTo({
+				// 	url: '/homeSubPackage/pages/curriculumList/curriculumList?&moduleName=' + params.moduleName
+				// })
+				if (this.userInfo && this.userInfo.openid) {
+					if (this.userInfo.phone) {
+						uni.navigateTo({
+							url: '/homeSubPackage/pages/curriculumList/curriculumList?&moduleName=' + params.moduleName
+						})
+					} else {
+						uni.reLaunch({
+							url: '/pages/login/login'
+						})
+					}
+				} else {
+					this.isShowLogin = true
+					this.toUrl = '/homeSubPackage/pages/curriculumList/curriculumList?objId=' + params.objectId +
+						'&moduleName=' + params.moduleName;
+				}
 			},
 			async checkMore(params) {
 				if (this.userInfo && this.userInfo.openid) {
