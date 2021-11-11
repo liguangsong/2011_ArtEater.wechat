@@ -264,72 +264,156 @@ export default {
 		}
 	},
 	// 扫码方法
-	scanCode(member) {
+	async scanCode(member,url) {
+		let vip = false;
+		if(member&&member.memberType !=2){
+			vip = true;
+		}
 		let that = this;
-		uni.scanCode({
-			success: async (res) => {
-				this.scaninfo = res;
-				if (res.result) { //res.result
-					res.result = Config.ScanUrl + '1fUxfBh7Pu'
-					if (res.result.includes(Config.ScanUrl)) {
-						let url = decodeURIComponent(res.result);
-						let id = url.split('/')[url.split('/').length - 1];
-						let data = await that.getHideCurriculum(id);
-						if (data.length) {	
-							let info = data[0];
-							if (info.vip && (member.memberType != 0 && member.memberType != 1)) {
-								uni.showToast({
-									icon: 'none',
-									title: '您没有权限'
-								})
-								return ;
-							}
-							let toUrl = await this.configUrl(info);
-							uni.reLaunch({
-								url: toUrl
-							})
-						} else {
-							uni.showToast({
-								title: '未找到当前课程',
-								icon: 'none'
-							})
-						}
-					} else {
-						uni.showToast({
-							title: '二维码错误',
-							icon: 'none'
-						})
-					}
-					// '0016429'||
-
-					// `../pages/index/index`
-					//    console.log(res.result,'内部扫码')
-				}
-			},
-			fail() {
+		if (url.includes(Config.ScanUrl)) {
+			let id = url.split('/')[url.split('/').length - 1];
+			let data = await that.getHideCurriculum(id);
+			if (data.length) {	
+				let info = data[0];
+				
+				// if (info.vip && (member&&member.memberType != 0 && member.memberType != 1)) {
+				// 	uni.showToast({
+				// 		icon: 'none',
+				// 		title: '您没有权限'
+				// 	})
+				// 	return ;
+				// }
+				let toUrl = await that.configUrl(info,vip);
+				console.log(toUrl,12345678)
+				uni.navigateTo({
+					url: toUrl
+				})
+			} else {
 				uni.showToast({
-					icon: 'none',
-					title: '扫码失败'
+					title: '未找到当前课程',
+					icon: 'none'
 				})
 			}
-		});
-	},
-	configUrl(item) {
-		let toUrl = '';
-		if (item.flag == 1) {
-			if (item.level == 0) {
-				// 系列课程点击时到详情页有介绍有详情
-				toUrl = '/curriculumSubPackage/pages/shareStudy/study?objectId=' + item.objectId;
-			} else {
-				//单课程点击时直接播放页
-				toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId=' + item.objectId;
-			}
 		} else {
-			//单课程点击时直接播放页
-			toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId=' + item.objectId;
+			uni.showToast({
+				title: '二维码错误',
+				icon: 'none'
+			})
 		}
+	},
+	// // 扫码方法
+	// scanCode(member) {
+	// 	let that = this;
+	// 	uni.scanCode({
+	// 		success: async (res) => {
+	// 			this.scaninfo = res;
+	// 			if (res.result) { //res.result
+	// 				res.result = Config.ScanUrl + '1fUxfBh7Pu'
+	// 				if (res.result.includes(Config.ScanUrl)) {
+	// 					let url = decodeURIComponent(res.result);
+	// 					let id = url.split('/')[url.split('/').length - 1];
+	// 					let data = await that.getHideCurriculum(id);
+	// 					if (data.length) {	
+	// 						let info = data[0];
+	// 						if (info.vip && (member.memberType != 0 && member.memberType != 1)) {
+	// 							uni.showToast({
+	// 								icon: 'none',
+	// 								title: '您没有权限'
+	// 							})
+	// 							return ;
+	// 						}
+	// 						let toUrl = await this.configUrl(info);
+	// 						uni.reLaunch({
+	// 							url: toUrl
+	// 						})
+	// 					} else {
+	// 						uni.showToast({
+	// 							title: '未找到当前课程',
+	// 							icon: 'none'
+	// 						})
+	// 					}
+	// 				} else {
+	// 					uni.showToast({
+	// 						title: '二维码错误',
+	// 						icon: 'none'
+	// 					})
+	// 				}
+	// 				// '0016429'||
 
-		return toUrl;
+	// 				// `../pages/index/index`
+	// 				//    console.log(res.result,'内部扫码')
+	// 			}
+	// 		},
+	// 		fail() {
+	// 			uni.showToast({
+	// 				icon: 'none',
+	// 				title: '扫码失败'
+	// 			})
+	// 		}
+	// 	});
+	// },
+	async configUrl(item,vip) {
+		let toUrl = '';
+		// if (item.flag == 1) {
+		// 	if (item.level == 0) {
+		// 		// 系列课程点击时到详情页有介绍有详情
+		// 		toUrl = '/curriculumSubPackage/pages/shareStudy/study?objectId=' + item.objectId;
+		// 	} else {
+		// 		//单课程点击时直接播放页
+		// 		toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId=' + item.objectId;
+		// 	}
+		// } else {
+		// 	//单课程点击时直接播放页
+		// 	toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId=' + item.objectId;
+		// }
 
+		// return toUrl;
+		let res=await uni.getStorageSync('userInfo');
+				let userInfo=res;
+				if (userInfo && userInfo.openid) {
+					if (userInfo.phone) {
+						if(!item.vip){
+							if(item.flag==1){
+								if(item.level==0){
+									// 系列课程点击时到详情页有介绍有详情
+									toUrl = '/curriculumSubPackage/pages/shareStudy/study?objectId='+item.objectId;
+								}else{
+									//非vip单课程点击时直接播放页
+									toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId='+item.objectId;
+								}
+							}else{ console.log('qqqqqq')
+								   //非vip单课程点击时直接播放页
+								   toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId='+item.objectId;
+							}
+						}else {
+							if(item.flag==1){
+								if(item.level==0){
+									// 系列课程点击时到详情页有介绍有详情
+									toUrl = '/curriculumSubPackage/pages/shareStudy/study?objectId='+item.objectId;
+								}else{
+									//vip单课程点击时跳转到开通会员
+									if (vip) {
+										toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId='+item.objectId;
+									} else {
+										toUrl = '/mineSubPackage/pages/vip/vip';
+									}
+								}
+							}else{
+								   //vip单课程点击时跳转到开通会员
+									 if (vip) {
+											toUrl = '/curriculumSubPackage/pages/shareDetails/details?objectId='+item.objectId;
+									 } else {
+											toUrl = '/mineSubPackage/pages/vip/vip';
+									 }
+							}
+						}
+					}else{
+						toUrl = '/pages/login/login';
+					}
+					}else{
+						
+					}
+			
+         return toUrl;
 	}
 }

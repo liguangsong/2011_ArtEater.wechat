@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<button type="default" @click="scan">扫码</button>
+		<!-- <button type="default" @click="scan">扫码</button> -->
 		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl">
 		</login>
 	</view>
@@ -12,6 +12,7 @@
 	export default {
 		data() {
 			return {
+				url:undefined,
 				isShowLogin: false,
 			}
 		},
@@ -20,9 +21,21 @@
 		},
 		created() {
 			// Curriculum.scanCode();
-			this.handleLoginComplate()
+			// this.handleLoginComplate()
 		},
-		
+		onLoad(options) {
+			console.log(443322);
+           this.url=decodeURIComponent(options.q);
+		       if(this.url){
+				   this.handleLoginComplate();
+				   console.log(443322);
+			   }else{
+				   uni.showToast({
+							   title:'扫码失败',
+							   icon:'none'
+				   });
+			   }
+		},
 		methods: {
 			scan() {
 				Curriculum.scanCode();
@@ -33,7 +46,6 @@
 				uni.getStorage({
 					key: 'userInfo',
 					success: async res => {
-
 						var app = getApp();
 						var member = app.globalData.member;
 						// 判断是不是会员
@@ -47,7 +59,7 @@
 							}
 						}
 						console.log(member,'member');
-						Curriculum.scanCode(member);
+						Curriculum.scanCode(member,this.url);
 					},
 					fail() {
 						_this.isShowLogin = true;
