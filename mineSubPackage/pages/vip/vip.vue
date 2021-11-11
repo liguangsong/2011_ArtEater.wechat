@@ -531,6 +531,9 @@
 			Navbar
 		},
 		async onShow() {
+			uni.showLoading({
+				title:'加载中……'
+			})
 			this.user = this.Parse.User.current();
 			this.userInfo = JSON.parse(JSON.stringify(this.user));
 
@@ -556,7 +559,6 @@
 				}
 			})
 			this.getMember();
-
 		},
 		
 		computed: {
@@ -627,6 +629,7 @@
 					this.memberInfo = JSON.parse(JSON.stringify(this.member));
 					this.active = Number(this.memberInfo.memberType);
 				}
+				uni.hideLoading()
 			},
 			// 获取会员截止日期的毫秒数
 			getTime(n) {
@@ -709,7 +712,6 @@
 
 			// 支付
 			payment(cash) {
-				cash = 0;
 				if (cash == 0) {
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5);
 					this.paymentSuccess(orderNo, cash);

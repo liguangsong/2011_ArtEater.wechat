@@ -1,6 +1,6 @@
 <template>
 	<view class="myPage"
-		:style="{'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll','padding-bottom':pdbtm+'rpx'}">
+		:style="{'height':height+'px','overflow-y': isShowTips ? 'auto' : 'scroll','padding-bottom':pdbtm+'rpx'}">
 		<!--轮播 start-->
 		<Navbar :icon="false" title="食艺兽" height="514rpx" navbarBg="#fff" :fontColor="fontColor" :fontSize="34"
 			titleLeft="62rpx">
@@ -123,55 +123,57 @@
 				<!--购买重点题库 end-->
 				<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl">
 				</login>
-				<u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true"
-					:zoom="false" @click="handleStep">
-					<view v-if="step==1" class="step bottom">
-						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask1.png"></image>
-						</view>
-					</view>
-					<view v-if="step==2" class="step bottom">
-						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask2.png"></image>
-						</view>
-					</view>
-					<view v-if="step==3" class="step top">
-						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask3.png"></image>
-						</view>
-					</view>
-					<view v-if="step==4" class="step top">
-						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask4.png"></image>
-						</view>
-					</view>
-					<view v-if="step==5" class="step top">
-						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask5.png"></image>
-						</view>
-					</view>
-					<view v-if="step==6" class="step top">
-						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask6.png"></image>
-						</view>
-					</view>
-					<view v-if="step==7" class="step top">
-						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask7.png"></image>
-						</view>
-					</view>
-					<view v-if="step==8" class="step top">
-						<view class="navItem">
-							<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask8.png"></image>
-						</view>
-					</view>
-				</u-mask>
+				
 			</template>
 
 		</Navbar>
 
 		<!--轮播 end-->
-
+		<!-- <u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true"
+			:zoom="false" @click="handleStep"> -->
+		<view class='mask'  @click="handleStep" v-if='isShowTips'>
+			<view v-if="step==1" class="step bottom">
+				<view class="navItem">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask1.png"></image>
+				</view>
+			</view>
+			<view v-if="step==2" class="step bottom">
+				<view class="navItem">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask2.png"></image>
+				</view>
+			</view>
+			<view v-if="step==3" class="step top">
+				<view class="navItem">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask3.png"></image>
+				</view>
+			</view>
+			<view v-if="step==4" class="step top">
+				<view class="navItem">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask4.png"></image>
+				</view>
+			</view>
+			<view v-if="step==5" class="step top">
+				<view class="navItem">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask5.png"></image>
+				</view>
+			</view>
+			<view v-if="step==6" class="step top">
+				<view class="navItem">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask6.png"></image>
+				</view>
+			</view>
+			<view v-if="step==7" class="step top">
+				<view class="navItem">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask7.png"></image>
+				</view>
+			</view>
+			<view v-if="step==8" class="step top">
+				<view class="navItem">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask/mask8.png"></image>
+				</view>
+			</view>
+		<!-- </u-mask> -->
+		</view>
 		<view-tabbar :current="0" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
@@ -219,8 +221,18 @@
 				msgCount: 0,
 				couponCount: 0,
 				studyList: [],
-				moduleList: [] //动态模块
+				moduleList: [], //动态模块
+				height: 0
 			}
+		},
+		mounted() {
+			var _this = this;
+			uni.getSystemInfo({
+				success(res) {
+					_this.height = res.windowHeight;
+				}
+			})
+			
 		},
 		async onShow() {
 			uni.hideTabBar({
@@ -1050,6 +1062,15 @@
 		font-size: 34rpx;
 	}
 
+	.mask {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: rgba(0,0,0,0.7);
+		z-index: 99;
+	}
 	.step {
 		position: absolute;
 		top: 0;

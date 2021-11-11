@@ -27,19 +27,19 @@
 			Item,
 			Navbar
 		},
-		// async created() {
-			
-		// },
 		onLoad() {
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
 			this.pdbtm=125+app.globalData.paddingBottomHeight;
 		},
 		async onShow() {
+			uni.showLoading({
+				title:'加载中……'
+			})
 			var query = new this.Parse.Query('CoursesModule')
 			query.containedIn('level', [0,undefined])
 			this.list = await query.find();
-			
+			uni.hideLoading()
 			uni.hideTabBar({
 				animation: false
 			});

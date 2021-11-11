@@ -218,6 +218,10 @@
 			})
 		},
 		async onShow() {
+			uni.showLoading({
+				title:'加载中……'
+			})
+			uni.hideLoading()
 			uni.hideTabBar({
 				animation: false
 			});
@@ -247,6 +251,7 @@
 			if (res) {
 				this.msgCount = res.msgCount;
 				this.couponCount = res.couponCount;
+				uni.hideLoading()
 			}
 			
 			var app = getApp();

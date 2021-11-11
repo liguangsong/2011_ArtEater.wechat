@@ -124,12 +124,16 @@
 			}
 		},
 		onLoad(options) {
+			uni.showLoading({
+				title:'加载中……'
+			})
 			this.curriculumInfo={};
 			this.objectId=options.objectId;
 			// 获取当前课程详情
 			this.getCurriculum();
 		},
 		async onShow() {
+			
 			let that=this;
 			uni.getSystemInfo({
 			    success: function (res) {
@@ -263,6 +267,7 @@
 				query.select('.header').boundingClientRect(data => {
 					this.infoTop = data.height;
 				}).exec();
+				uni.hideLoading()
 			},
 			//获取推荐课程
 			async getRecommended(ids) {
