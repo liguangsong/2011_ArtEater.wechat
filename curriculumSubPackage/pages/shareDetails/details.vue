@@ -231,7 +231,7 @@
 			},
 			// 获取详情
 			async getCurriculum() {
-				let res = await Curriculum.getCurriculum(this.objectId);
+				let res = await Curriculum.getHideCurriculum(this.objectId);
 				console.log(res,88899)
 				let info = res[0];
 				this.curriculumInfo=info;
@@ -267,7 +267,7 @@
 			},
 			// 获取课表
 			async getAllTimetable(rootId) {
-				let res = await Curriculum.getAllTimetable(rootId);
+				let res = await Curriculum.getAllTimetable_hide(rootId,false,rootId==='0'); //rootId=='0'true为分享的整个系列课程，false为扫码分享的系列课程中的单课程
 				   res = res.filter(v=>{
 				   if(v.rootId==='0' && !v.kind){
 					   
