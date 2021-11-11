@@ -102,6 +102,7 @@ export default {
 			curriculum.equalTo('rootId', rootId);
 			curriculum.ascending('createdAt');
 		const mainQuery = Parse.Query.or(coursesModuleRoot,curriculum);
+		      mainQuery.ascending('createdAt');
 		let res = await mainQuery.find();
 		if (res) {
 			// 获取上次学习的课程Id
@@ -146,6 +147,7 @@ export default {
 			curriculum.equalTo('rootId', rootId);
 			curriculum.ascending('createdAt');
 		const mainQuery = Parse.Query.or(coursesModuleRoot,curriculum);
+		mainQuery.ascending('createdAt');
 		let res = await mainQuery.find();
 		if (res) {
 			// 获取上次学习的课程Id
