@@ -106,7 +106,7 @@
 		justify-content: space-around;
 		align-items: center;
 		width: 100%;
-		height: 116rpx;
+		// height: 116rpx;
 		background-color: #ffffff;
 		border-top: 2rpx solid #EFEFEF;
 
@@ -144,6 +144,10 @@
 				z-index: 9;
 				width: 16rpx;
 				height: 16rpx;
+				image{
+					width: 100%;
+					height: 100%;
+				}
 				// background: linear-gradient(180deg, #D81E1F 0%, rgba(238, 64, 66, 0.31) 100%);
 			}
 		}

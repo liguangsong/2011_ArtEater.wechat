@@ -233,8 +233,6 @@
 				this.couponCount = res.couponCount;
 				// //获取本地正在学习的课程
 				this.getLearning();
-
-
 				var app = getApp();
 				var member = app.globalData.member;
 				// 判断是不是会员
@@ -252,34 +250,15 @@
 						}
 					}
 				} else {
-					var user = await this.Parse.User.current();
-					var query = new this.Parse.Query('MemberList');
-					var user1 = JSON.parse(JSON.stringify(user));
-					query.equalTo("openId", user1.openid);
-					var results = await query.first();
-					if (results) {
-						var r = JSON.parse(JSON.stringify(results));
-						app.globalData.member = r;
-						if (r.memberType != 2) {
-							if (r.endTime > Date.now()) {
-								this.vip = true;
-							} else {
-								results.set('memberType', '');
-								results.save();
-							}
-						}
-					}
+					await this.getMember();
 				}
 
 			}
 			this.bindConfig();
 			//获取所有的模块
 			this.getModules();
-
-
 		},
 		onLoad() {
-
 			var self = this
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
@@ -322,7 +301,27 @@
 			})
 		},
 		methods: {
-			checkVip() {
+			async getMember() {
+				var user = await this.Parse.User.current();
+				var query = new this.Parse.Query('MemberList');
+				var user1 = JSON.parse(JSON.stringify(user));
+				query.equalTo("openId", user1.openid);
+				var results = await query.first();
+				if (results) {
+					var r = JSON.parse(JSON.stringify(results));
+					app.globalData.member = r;
+					if (r.memberType != 2) {
+						if (r.endTime > Date.now()) {
+							this.vip = true;
+						} else {
+							results.set('memberType', '');
+							results.save();
+						}
+					}
+				}
+			},
+			async checkVip() {
+				await this.getMember();
 				let app = getApp();
 				let member = app.globalData.member;
 				let vip = false;
