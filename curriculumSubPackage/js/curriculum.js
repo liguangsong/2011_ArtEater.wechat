@@ -20,6 +20,7 @@ export default {
 	},
 	//获取课程及详情
 	async getHideCurriculum(id) {
+		console.log(id,'ppppp')
 		let curriculum = new Parse.Query('CoursesModule');
 		if (id) {
 			curriculum.equalTo('objectId', id);
@@ -273,6 +274,7 @@ export default {
 		if (url.includes(Config.ScanUrl)) {
 			let id = url.split('/')[url.split('/').length - 1];
 			let data = await that.getHideCurriculum(id);
+			console.log(data,123453)
 			if (data.length) {	
 				let info = data[0];
 				
