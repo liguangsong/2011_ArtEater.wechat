@@ -539,6 +539,7 @@
 
 			var query = new this.Parse.Query('MemberType');
 			this.list = await query.find();
+			console.log(this.list);
 			this.list = this.list.map(item => JSON.parse(JSON.stringify(item))).sort((a, b) => a.surfaceId - b
 				.surfaceId);
 
