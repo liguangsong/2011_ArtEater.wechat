@@ -8,7 +8,7 @@
 						<view class="btnCancel" @click="handleCancle">取消</view>
 					</view>
 					<view class="btn">
-						<button @tap="handleGetuserinfo" class="btnConfirm">微信授权</button>
+						<button @click="handleGetuserinfo" class="btnConfirm">微信授权</button>
 					</view>
 				</view>
 			</view>
@@ -61,61 +61,74 @@
 				var self = this
 				console.log('开始授权，openid:' + self.openid)
 				uni.showLoading()
-				uni.getStorage({
-					key:'openid',
-					success:function(res){
-						      self.openid = res.data
-						     // 获取用户信息
-								uni.getUserProfile({//授权后可以通过wx.getUserInfo得到用户信息
-								  lang: "zh_CN",
-								  desc:'用于完善用户信息',
-								  success: res => {
-									self.avatarUrl = res.userInfo.avatarUrl
-									self.nickname = res.userInfo.nickName
-									var query = new self.Parse.Query(self.Parse.User);
-									query.equalTo('openid', self.openid)
-									query.first().then(user=>{
-										if(user){ // 已注册，直接登录
-											console.log('已注册，去登录')
-											self.Parse.User.logIn(self.openid,self.openid).then(lres=>{
-												uni.setStorage({
-													key:'userInfo',
-													data: lres
-												})
-												if(self.tabBarUrls.includes(self.to)){
-													uni.switchTab({
-														url: self.to
-													})
-												}else{
-													uni.navigateTo({
-														url: self.to
-													})
-												}
-												
-												self.$emit('ok')
-												console.log('登录成功')
-												uni.hideLoading()
-											}, error=>{
-												uni.hideLoading()
-												console.log('登录失败，' + error)
-											})
-										} else {
-											console.log('未注册，去注册')
-											self.handleSignUp()
-										}
-									})
-								  },
-								  fail(e) {
-										uni.hideLoading()
-										console.log('获取授权信息失败,'+e)
-								  }
+				let ores= uni.getStorageSync('openid');
+				if(ores){
+					console.log(ores,554433)
+					self.openid = ores
+					// 获取用户信息
+					uni.getUserProfile({//授权后可以通过wx.getUserInfo得到用户信息
+					  lang: "zh_CN",
+					  desc:'用于完善用户信息',
+					  success: res => {
+						  self.get(res);
+					  },
+					  fail(e) {
+							uni.hideLoading()
+							console.log('获取授权信息失败111,',e)
+					  }
+					})
+				}else{
+					uni.hideLoading()
+					console.log('获取授权信息失败222,',e)
+				}
+				// uni.getStorage({
+				// 	key:'openid',
+				// 	success:function(ores){
+				// 		      self.openid = ores.data
+						     
+				// 					console.log('已授权，'+self.openid)
+				// 				},
+				// 			 fail(e) {
+				// 				uni.hideLoading()
+				// 				console.log('获取授权信息失败222,',e)
+				// 			 }
+				// })
+			},
+			get(res) {
+				let self=this;
+				self.avatarUrl = res.userInfo.avatarUrl
+				self.nickname = res.userInfo.nickName
+				var query = new self.Parse.Query(self.Parse.User);
+				query.equalTo('openid', self.openid)
+				query.first().then(user=>{
+					if(user){ // 已注册，直接登录
+						console.log('已注册，去登录')
+						self.Parse.User.logIn(self.openid,self.openid).then(lres=>{
+							uni.setStorage({
+								key:'userInfo',
+								data: lres
+							})
+							if(self.tabBarUrls.includes(self.to)){
+								uni.switchTab({
+									url: self.to
 								})
-									console.log('已授权，'+self.openid)
-								},
-							 fail(e) {
-								uni.hideLoading()
-								console.log('获取授权信息失败,'+e)
-							 }
+							}else{
+								uni.navigateTo({
+									url: self.to
+								})
+							}
+							
+							self.$emit('ok')
+							console.log('登录成功')
+							uni.hideLoading()
+						}, error=>{
+							uni.hideLoading()
+							console.log('登录失败，' + error)
+						})
+					} else {
+						console.log('未注册，去注册')
+						self.handleSignUp()
+					}
 				})
 			},
 			/*注册*/
