@@ -44,7 +44,7 @@
 			</view>
 			<!-- 音频 -->
 			<view class="mp3" v-if="curriculumInfo.kind&&curriculumInfo.kind==2">
-				<k-audio :play.sync='play' :title='curriculumInfo.subjectName' :duration='curriculumInfo.duration' :poster='curriculumInfo.portrait[0]' :audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn"></k-audio>
+				<k-audio :play.sync='play' :title='curriculumInfo.subjectName' :poster='curriculumInfo.portrait[0]' :audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn"></k-audio>
 			</view>
 			<view class="br"></view>
 		</view>
@@ -237,7 +237,7 @@
 				let res = await Curriculum.getCurriculum(this.objectId);
 				let info = res[0];
 				this.curriculumInfo=info;
-				// console.log(info, 'infoo');
+				console.log(info, 'infoo');
 				var q = new this.Parse.Query('CoursesModule')
 				q.equalTo('objectId', info.rootId)
 				q.find().then(data => {

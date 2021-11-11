@@ -392,7 +392,7 @@
 							即刻畅享
 						</view>
 						<view v-if='memberInfo.memberType == 1' @click='bojinRenew'>
-							<text v-if='active == "" || active == 1'>续费铂金VIP</text>
+							<text v-if='active == 1'>续费铂金VIP</text>
 							<text v-else>升级黑金VIP</text>
 							即刻畅享
 						</view>
@@ -423,14 +423,14 @@
 				<view class="openbox">
 					<view class="list">
 						<view class="item" v-for='(item,i) in list' :keys='item.id'
-							:class='{heijin: item.surfaceId == 0, bojin: item.surfaceId == 1, baiyin: item.surfaceId == 2}'
+							:class='{heijin: item.surfaceId == 1, bojin: item.surfaceId == 2, baiyin: item.surfaceId == 3}'
 							@click='active = i'>
 							<!-- :class='{active: active == i}' -->
 							<view class="img">
 								<image class='imgbg' :src="item.surface"></image>
 								<view v-if='isMember'>
 									<view v-if='memberInfo.memberType == 0'>
-										<image class='righttop' src="../../static/upgrade.png"></image>
+										<image class='righttop' src="../../static/time.png"></image>
 									</view>
 									<view v-if='memberInfo.memberType == 1'>
 										<image class='righttop' v-if='i==1' src="../../static/time.png"></image>
@@ -538,9 +538,9 @@
 			this.userInfo = JSON.parse(JSON.stringify(this.user));
 
 			var query = new this.Parse.Query('MemberType');
-			this.list = await query.find();
-			console.log(this.list);
-			this.list = this.list.map(item => JSON.parse(JSON.stringify(item))).sort((a, b) => a.surfaceId - b
+			var ls = await query.find();
+			// console.log(this.list,'///--');
+			this.list = ls.map(item => JSON.parse(JSON.stringify(item))).sort((a, b) => a.surfaceId - b
 				.surfaceId);
 
 			var date = new Date();
@@ -552,7 +552,11 @@
 			var time = ' ' + year + month + day;
 			this.list.forEach(item => {
 				var time1 = parseInt(item.expirationDate.split('-').join(''));
-				item.explain = this.parseStrToHtml(item.explain)
+				ls.forEach(attr => {
+					if (attr.attributes.surfaceId == item.surfaceId) {
+						item.explain = this.parseStrToHtml(attr.attributes.explain)
+					}
+				})
 				if (time1 >= time) {
 					item.discount = true;
 				} else {
@@ -630,6 +634,7 @@
 					this.memberInfo = JSON.parse(JSON.stringify(this.member));
 					this.active = Number(this.memberInfo.memberType);
 				}
+				console.log(this.memberInfo);
 				uni.hideLoading()
 			},
 			// 获取会员截止日期的毫秒数
@@ -670,7 +675,7 @@
 						}
 					})
 				} else {
-					this.payment(baiyinPtice * 100)
+					this.payment(baiyinPrice * 100)
 				}
 			},
 			// 铂金续费
@@ -687,7 +692,7 @@
 					uni.showModal({
 						title: '购买完成将自动升级为黑金VIP会员',
 						confirmColor: '#ED3535',
-						success() {
+						success(res) {
 							// 升级为黑金
 							if (res.confirm) {
 								var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
@@ -713,6 +718,7 @@
 
 			// 支付
 			payment(cash) {
+				cash = 0;
 				if (cash == 0) {
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5);
 					this.paymentSuccess(orderNo, cash);

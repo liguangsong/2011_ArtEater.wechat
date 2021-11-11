@@ -372,8 +372,7 @@
 				} 
 			},
 			async changeUrl(item) {
-				console.log(item,22);
-				return
+
 				let vip = this.checkVip();
 				//配置url
 				let toUrl = await Curriculum.configUrl(item, vip);
