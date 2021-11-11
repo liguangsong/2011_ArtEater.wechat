@@ -17,7 +17,7 @@
 				/>
 				<!-- 	@change="seek=true,clickSeek($event.detail.value)"
 					@changing="seek=true,current=$event.detail.value" -->
-				<text class="audio-time">{{duration}}</text>
+				<text class="audio-time">{{audioTimeTotal}}</text>
 			</view>
 		</view>
 	</view>
@@ -43,7 +43,7 @@
 			title: String, //标题
 			autoplay: Boolean, //是否自动播放
 			poster: String,	// 背景图片
-			duration: {
+			audioTimeTotal: {
 				type: String, // 时长
 				default: "00:00"
 			}

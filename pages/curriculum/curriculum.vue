@@ -37,8 +37,12 @@
 				title:'加载中……'
 			})
 			var query = new this.Parse.Query('CoursesModule')
-			query.containedIn('level', [0,undefined])
-			this.list = await query.find();
+			// query.containedIn('level', [0, undefined])
+			query.equalTo("level", 0);
+			var res1 = await query.find();
+			query.equalTo("level", undefined);
+			var res2 = await query.find();
+			this.list = [...res1, ...res2]
 			uni.hideLoading()
 			uni.hideTabBar({
 				animation: false
@@ -93,6 +97,7 @@
 
 <style scoped>
 	.myPage {
+		height: 100vh;
 		background: #F7F7F7;
 	}
 </style>

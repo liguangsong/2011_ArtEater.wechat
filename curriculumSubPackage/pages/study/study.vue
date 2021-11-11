@@ -26,7 +26,7 @@
 				</view>
 			</view>
 			<view class="tab">
-				<Timetable v-if='tabbar' :list="timetableList"/>
+				<Timetable v-if='tabbar ' :list="timetableList"/>
 				<Details v-else :detail="curriculumInfo.introduce" :isVip="vip"/>
 			</view>
 		</Navbar>
@@ -87,6 +87,7 @@
 					this.isVip=true
 				}else{
 					this.isVip=false;
+					this.vip = true;
 				}
 				//获取课表
 				if(info.objectId){
