@@ -302,6 +302,7 @@
 		},
 		methods: {
 			async getMember() {
+				var app = getApp();
 				var user = await this.Parse.User.current();
 				var query = new this.Parse.Query('MemberList');
 				var user1 = JSON.parse(JSON.stringify(user));
