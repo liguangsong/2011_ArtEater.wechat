@@ -103,11 +103,12 @@
 				query.first().then(user=>{
 					if(user){ // 已注册，直接登录
 						console.log('已注册，去登录')
-						self.Parse.User.logIn(self.openid,self.openid).then(lres=>{
+						self.Parse.User.logIn(self.openid,self.openid).then(async lres=>{
 							uni.setStorage({
 								key:'userInfo',
 								data: lres
 							})
+							await this.getMember();
 							if(self.tabBarUrls.includes(self.to)){
 								uni.switchTab({
 									url: self.to
@@ -130,6 +131,22 @@
 						self.handleSignUp()
 					}
 				})
+			},
+			async getMember() {
+				var app = getApp();
+				var user = await this.Parse.User.current();
+				var query = new this.Parse.Query('MemberList');
+				var user1 = JSON.parse(JSON.stringify(user));
+				query.equalTo("openId", user1.openid);
+				var results = await query.first();
+				if (results) {
+					var r = JSON.parse(JSON.stringify(results));
+					app.globalData.member = r;
+					if (r.endTime < Date.now()) {
+						results.set('memberType', '');
+						results.save();
+					}
+				}
 			},
 			/*注册*/
 			handleSignUp(){
