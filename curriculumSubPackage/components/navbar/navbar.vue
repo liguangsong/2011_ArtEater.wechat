@@ -23,6 +23,10 @@
 <script>
 	export default {
 		props: {
+			customEvent:{
+				type:Boolean,
+				default:false
+			},
 			// 导航栏的北京颜色
 			navbarBg: {
 				type: String,
@@ -101,9 +105,14 @@
 		},
 		methods: {
 			back() {
-				uni.navigateBack({
-					delta: 1
-				})
+				if(!this.customEvent){
+					uni.navigateBack({
+						delta: 1
+					})
+				}else{
+					this.$emit('navEvent')
+				}
+				
 			},
 			scroll(e) {
 				if (this.height == 0) {

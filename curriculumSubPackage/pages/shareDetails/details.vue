@@ -3,8 +3,11 @@
 		<view class="header">
 			<view class="tabbar" :style='{height: tabbarheight+"rpx"}'>
 				<view class="navbar" :style='{height: navbarheight + "rpx", top: tabbarheight - navbarheight + "rpx"}'>
-					<view class="icon">
-						<u-icon @click='back' name="arrow-left" color="#000" size="34rpx"></u-icon>
+					<view class="icon" @click='gohome' v-if="shareType!=1">
+						<u-icon name="home" color="#000" size="34rpx"></u-icon>
+					</view>
+					<view class="icon" @click='back' v-else>
+						<u-icon name="arrow-left" color="#000" size="34rpx"></u-icon>
 					</view>
 				</view>
 			</view>
@@ -300,6 +303,12 @@
 				}else{
 					this.curriculumInfo=item;
 					this.timetable = false;
+					this.$nextTick(() => {
+						const query = uni.createSelectorQuery().in(this);
+						query.select('.header').boundingClientRect(data => {
+							this.infoTop = data.height;
+						}).exec();
+					})
 					// 存储上次学习
 					await Curriculum.updatePreLearn(item['rootId'],item.objectId);
 				}
@@ -329,6 +338,11 @@
 					let res= await Curriculum.operateCollections(this.curriculumInfo.objectId);
 					this.collectionStatus=res
 				};
+			},
+			gohome() {
+				uni.reLaunch({
+					url:'/pages/index/index'
+				})
 			},
 			back() {
 				uni.navigateBack({

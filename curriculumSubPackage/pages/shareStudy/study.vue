@@ -1,6 +1,6 @@
 <template>
 	<view class='study' v-if="curriculumInfo">
-		<Navbar navbarBg='#fff' :height='height' title='课程' fontColor="#000" iconColor='#000'>
+		<Navbar navbarBg='#fff' iconName="home" :height='height' fontColor="#000" iconColor='#000' :customEvent="true" @navEvent="navEvent">
 			<template v-slot:img>
 				<image style='width: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
 			</template>
@@ -100,6 +100,11 @@
 					this.timetableList = [];
 				}
 				
+			},
+			navEvent() {
+				uni.reLaunch({
+					url:'/pages/index/index'
+				})
 			}
 		}
 	}

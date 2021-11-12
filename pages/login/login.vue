@@ -57,6 +57,7 @@
 	export default {
 		data() {
 			return {
+				q:'',
 				customStyle:{'border-radius':'40rpx','min-height':'10rpx','height':'74rpx'},
 				labelStyle:{'height':'36rpx','margin-top':'30rpx','margin-bottom':'-3rpx','text-indent':'28rpx','font-size':'26rpx','color':'rgba(53,32,38,0.7)','font-family':'PingFangSC-Medium'},
 				openid:'',
@@ -132,7 +133,10 @@
 				canIUse: uni.canIUse('button.open-type.getUserInfo')
 			}
 		},
-		onLoad() {
+		onLoad(options) {
+			if(options.q){
+				this.q=options.q;
+			}
 			var self = this
 			uni.getStorage({
 				key:'sessionKey',
@@ -265,9 +269,16 @@
 								key:'userInfo',
 								data: ruser
 							})
-							uni.reLaunch({
-								url:'/pages/index/index'
-							})
+							if(!self.q){
+								uni.reLaunch({
+									url:'/pages/index/index'
+								})
+							}else{
+								uni.navigateBack({
+									delta:-1
+								})
+							}
+							
 							const eventChannel = self.getOpenerEventChannel()
 							eventChannel.emit('back', {});
 						},(error)=> {

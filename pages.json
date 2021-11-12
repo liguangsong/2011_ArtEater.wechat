@@ -260,7 +260,8 @@
 					"path": "pages/sharePage/index",
 					"style": {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+					    "navigationStyle": "custom"
 					}
 				},
 				{

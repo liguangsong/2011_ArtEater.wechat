@@ -414,10 +414,6 @@ export default {
 		// }
 
 		// return toUrl;
-		let res=await uni.getStorageSync('userInfo');
-				let userInfo=res;
-				if (userInfo && userInfo.openid) {
-					if (userInfo.phone) {
 						if(!item.vip){
 							if(item.flag==1){
 								if(item.level==0){
@@ -453,12 +449,6 @@ export default {
 									 }
 							}
 						}
-					}else{
-						toUrl = '/pages/login/login';
-					}
-					}else{
-						
-					}
 			
          return toUrl;
 	}
