@@ -1,5 +1,9 @@
 <template>
 	<view class="myPage">
+		<view v-if='!list.length' class='collection'>
+			暂无收藏
+		</view>
+		<view style='height: 20rpx;'></view>
 		<Item v-for='(item,i) in list' :key='i' :item='item' :vip='vip'/>
 	</view>
 </template>
@@ -43,7 +47,6 @@
 					q.containedIn('objectId', ids)
 					list = await q.find()
 					_this.list = list.map(item => JSON.parse(JSON.stringify(item))).filter(item=>!item.has_down_level);
-					console.log(_this.list);
 					_this.list.forEach(item => {
 						if (item.level != undefined) {
 							var q1 = new _this.Parse.Query('CoursesModule')
@@ -75,6 +78,14 @@
 	.myPage {
 		background: #F7F7F7;
 		height: 100vh;
+	}
+	.collection {
+		height: 600rpx;
+		font-family: PingFangSC-Medium;
+		font-size: 20px;
+		color: rgba(53, 32, 38, 0.4);
+		line-height: 600rpx;
+		text-align: center;
 	}
 </style>
 
