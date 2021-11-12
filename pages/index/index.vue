@@ -60,7 +60,7 @@
 					</view>
 				</view>
 
-				<audition-learning v-if="studyList.length" title="正在学习" :showMore="studyList.length>2"
+				<audition-learning v-if="studyList.length" title="正在学习" :showMore="showLearningMore"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
 				</audition-learning>
 				<view class="h-line" v-if="studyList.length"></view>
@@ -133,13 +133,13 @@
 			:zoom="false" @click="handleStep"> -->
 		<view class='mask'  @click="handleStep" v-if='isShowTips'>
 			<view v-if="step==1" class="step bottom">
-				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask1.png"></image>
+				<view class="navItem" style="right:4rpx">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask1.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
 				</view>
 			</view>
-			<view v-if="step==2" class="step bottom">
+			<view v-if="step==2" class="step bottom" style="left:4rpx">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask2.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask2.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
 				</view>
 			</view>
 			<view v-if="step==3" class="step top">
@@ -196,6 +196,8 @@
 		},
 		data() {
 			return {
+				tabbarPdBtm:0,
+				showLearningMore:false,
 				relationId: '',
 				fontColor: 'rgb(255,255,255)',
 				pdbtm: 0, //兼容iphonexr+
@@ -269,13 +271,15 @@
 			this.bindConfig();
 			//获取所有的模块
 			this.getModules();
-			this.getLearning()
+			// this.getLearning()
 		},
 		onLoad() {
 			var self = this
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
 			this.pdbtm = 116 + app.globalData.paddingBottomHeight;
+			this.tabbarPdBtm = app.globalData.paddingBottomHeight;
+			console.log(this.tabbarPdBtm,3333)
 			uni.getStorage({
 				key: 'hasHomeTiped',
 				success: (res) => {
@@ -470,6 +474,13 @@
 				let res = await Curriculum.getLearning();
 				// console.log(res, 4567865)
 				this.studyList = res;
+				this.$nextTick(()=>{
+					if(this.studyList.length>2){
+						this.showLearningMore=true;
+					}else{
+						this.showLearningMore=false;
+					}
+				})
 			},
 			//获取模块
 			async getModules() {
@@ -1127,9 +1138,9 @@
 		position: absolute;
 	}
 
-	.bottom image {
-		top: calc(100vh - 368rpx + 10rpx);
-	}
+	// .bottom image {
+	// 	// top: calc(100vh - 368rpx);
+	// }
 
 	.top image {
 		top: 480rpx;

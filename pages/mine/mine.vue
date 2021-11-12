@@ -81,7 +81,7 @@
 					</view>
 					<view class="cont">
 						<view class="title">
-							<text>会员中心</text>
+							<text>积分兑换</text>
 						</view>
 						<view class="icon">
 							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>

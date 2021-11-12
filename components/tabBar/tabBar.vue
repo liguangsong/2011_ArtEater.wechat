@@ -112,7 +112,7 @@
 
 		.tabbar-item {
 			display: flex;
-			width: 100%;
+			// width: 100%;
 			flex-direction: column;
 			align-items: center;
 			// justify-content: center;
@@ -130,7 +130,7 @@
 				text-align: center;
 				height: 28rpx;
 				// line-height: 28rpx;
-				margin-top: -4rpx;
+				margin-top: -11rpx;
 				font-family: PingFangSC-Medium, PingFang SC;
 			}
 
@@ -151,7 +151,6 @@
 				// background: linear-gradient(180deg, #D81E1F 0%, rgba(238, 64, 66, 0.31) 100%);
 			}
 		}
-
 		.tabbar-item:nth-of-type(1) .item-badge {
 			right: 3rpx
 		}

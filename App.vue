@@ -85,7 +85,7 @@
 				model.forEach(item => {
 				    //适配iphoneX以上的底部，给tabbar一定高度的padding-bottom
 				    if(res.model.indexOf(item) != -1 && res.model.indexOf('iPhone') != -1) {
-						this.globalData.paddingBottomHeight=40;
+						this.globalData.paddingBottomHeight=26;
 				    }
 				})
 				this.globalData.windowHeight = res.windowHeight;
