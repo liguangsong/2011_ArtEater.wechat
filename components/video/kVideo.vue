@@ -164,6 +164,7 @@
 			},
 			// 滑块拖动结束
 			_seek(e) {
+				this.videoContext.seek(e.detail.value);
 				this.showControlsFn();
 				this.videoContext.play();
 			},

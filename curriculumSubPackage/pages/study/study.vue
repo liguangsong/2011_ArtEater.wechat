@@ -103,7 +103,6 @@
 				}else{
 					this.timetableList = [];
 				}
-				console.log(this.timetableList,'[[[[[[[[[]]]]]]]]]');
 			}
 		}
 	}
