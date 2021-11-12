@@ -4,12 +4,12 @@ export default{
 	// parseServerJsKey:'123456',
 	// Master_Key:'myMaster_key',
 	
-	parseRestBaseUrl: 'https://www.arteater.cn',
-	// parseRestBaseUrl: 'http://101.200.34.189:1402',
+	// parseRestBaseUrl: 'https://www.arteater.cn',
+	parseRestBaseUrl: 'http://101.200.34.189:1402',
 	parseRestApiKey:'47d8ecg6a77aa2981b9c',
 	
-	parseServerBaseUrl: 'https://www.arteater.cn/api/1',
-	// parseServerBaseUrl: 'http://101.200.34.189:1402/api/1',
+	// parseServerBaseUrl: 'https://www.arteater.cn/api/1',
+	parseServerBaseUrl: 'http://101.200.34.189:1402/api/1',
 	ParseAppId:'8IXBcjIkgHNQ2v9k',
 	parseServerJsKey:'1uGXsOnrM70ElEuwWaxm1lp1zsE6nxJj',
 	Master_Key: 'LoOjxcEQS35Sr9QnAV3bOUaassBzScwM',

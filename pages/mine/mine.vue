@@ -268,34 +268,8 @@
 					if (member.memberType == 2) {
 						this.memberType = '白银VIP'
 					}
-				} else {
-					var query = new this.Parse.Query('MemberList');
-					var user1 = JSON.parse(JSON.stringify(user));
-					query.equalTo("openId", user1.openid);
-					var results = await query.first();
-					results.set('memberType', '');
-					results.save();
 				}
-			} else {
-				var user = await this.Parse.User.current();
-				var query = new this.Parse.Query('MemberList');
-				var user1 = JSON.parse(JSON.stringify(user));
-				query.equalTo("openId", user1.openid);
-				var results = await query.first();
-				if (results) {
-					var r = JSON.parse(JSON.stringify(results));
-					app.globalData.member = r;
-					if (r.memberType == 0) {
-						this.memberType = '黑金VIP'
-					}
-					if (r.memberType == 1) {
-						this.memberType = '铂金VIP'
-					}
-					if (r.memberType == 2) {
-						this.memberType = '白银VIP'
-					}
-				}
-			}
+			} 
 
 		},
 		onLoad() {

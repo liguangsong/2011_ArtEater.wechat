@@ -634,7 +634,6 @@
 					this.memberInfo = JSON.parse(JSON.stringify(this.member));
 					this.active = Number(this.memberInfo.memberType);
 				}
-				console.log(this.memberInfo);
 				uni.hideLoading()
 			},
 			// 获取会员截止日期的毫秒数
