@@ -152,6 +152,7 @@
 	.title {
 		flex: 1 1 auto;
 		padding-right: 50rpx;
+		text-shadow: 4rpx 6rpx 12rpx rgba(0,0,0,.6);
 	}
 	image {
 		width: 100%;

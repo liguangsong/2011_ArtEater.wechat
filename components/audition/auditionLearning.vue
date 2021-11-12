@@ -2,7 +2,7 @@
 	<view class="list" v-if="list.length">
 			<view class="title" v-if="title">
 				<text class="title-before"></text>
-			   {{title}}
+			   {{title}}1
 			</view>
 			<text class="more" v-if="showMore" @click="gotolist">查看更多 ></text>
 			
@@ -60,6 +60,13 @@
 			}
 		},
 		created() {
+			// uni.loadFontFace({
+			// 	family: 'PingFangSC-Medium, PingFang SC',
+			// 	source: 'url("https://www.arteater.cn/PingFang.ttf")',
+			// 	success: function() {
+			// 		console.log('load font success')
+			// 	}
+			// })
 			uni.loadFontFace ({
 						  family: 'PingFangSC-Medium',
 						  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
@@ -110,6 +117,7 @@
 
 <style lang="scss" scoped>
 	.list{
+		font-family: PingFang;
 		position: relative;
 		// margin:20rpx 0;
 		.title-before{
@@ -118,12 +126,12 @@
 			width: 10rpx;
 			height: 24rpx;
 			background: #D81E1F;
-			border-radius: 2rpx;
+			border-radius: 4rpx;
 		}
 		.title{
 			height: 40rpx;
 			font-size: 28rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
+			// font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #000000;
 			line-height: 40rpx;
@@ -133,7 +141,6 @@
 		.more{
 			// width: 80rpx;
 			font-size: 16rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 500;
 			color: #000000;
 			position: absolute;
@@ -150,10 +157,6 @@
 		padding: 0rpx 30rpx 0rpx 30rpx;
 		justify-content: space-between;
 	}
-	// .auditon::after{
-	// 	content: '';
-	// 	flex-grow: 4;
-	// }
 	.item {
 		width: 336rpx;
 		position: relative;
@@ -205,7 +208,6 @@
 		overflow: hidden;
 		height: 34rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #171717;
 		line-height: 34rpx;
@@ -222,7 +224,6 @@
 	.view{
 		height: 22rpx;
 		font-size: 16rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #FFFFFF;
 		margin-left: 12rpx;
@@ -237,7 +238,6 @@
 	.time{
 		height: 22rpx;
 		font-size: 16rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #FFFFFF;
 		line-height: 22rpx;

@@ -365,7 +365,8 @@
 					"path": "pages/collection/collection",
 					"style": {
 						"navigationBarTitleText": "课程收藏",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor":"#F7F7F7"
 					}
 				},
 				{

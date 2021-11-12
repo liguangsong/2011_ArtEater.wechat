@@ -221,7 +221,6 @@
 			uni.showLoading({
 				title:'加载中……'
 			})
-			uni.hideLoading()
 			uni.hideTabBar({
 				animation: false
 			});
@@ -256,6 +255,7 @@
 			
 			var app = getApp();
 			var member = app.globalData.member;
+			console.log(member, '///');
 			// 判断是不是会员
 			if (member) {
 				if (member.endTime > Date.now()) {
