@@ -58,13 +58,20 @@
 			}
 		},
 		created() {
-			uni.loadFontFace ({
-						  family: 'PingFangSC-Medium',
-						  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-						  success: function(){
-							  console.log('load font success')
-						  }
-						})
+			uni.loadFontFace({
+				family: 'PingFangSC-Medium, PingFang SC',
+				source: 'url("https://www.arteater.cn/PingFang.ttc")',
+				success: function() {
+					console.log('load font success')
+				}
+			})
+			// uni.loadFontFace ({
+			// 			  family: 'PingFangSC-Medium',
+			// 			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
+			// 			  success: function(){
+			// 				  console.log('load font success')
+			// 			  }
+			// 			})
 		},
 		methods: {
 			gotolist() {
@@ -90,7 +97,7 @@
 			width: 10rpx;
 			height: 24rpx;
 			background: #D81E1F;
-			border-radius: 2rpx;
+			border-radius: 4rpx;
 		}
 		.title{
 			height: 40rpx;

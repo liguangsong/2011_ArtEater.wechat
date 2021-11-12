@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class='login'>
 		<u-popup mode="center" width="640rpx" height="336rpx" border-radius="40" @close="handleCancle" v-model="isShowLogin">
 			<view class="content">
 				<view class="title">欢迎来到食艺兽小程序</view>
@@ -59,7 +59,7 @@
 			/*用户授权*/
 			handleGetuserinfo(e){
 				var self = this
-				console.log('开始授权，openid:' + self.openid)
+				// console.log('开始授权，openid:' + self.openid)
 				uni.showLoading()
 				let ores= uni.getStorageSync('openid');
 				if(ores){
@@ -81,18 +81,6 @@
 					uni.hideLoading()
 					console.log('获取授权信息失败222,',e)
 				}
-				// uni.getStorage({
-				// 	key:'openid',
-				// 	success:function(ores){
-				// 		      self.openid = ores.data
-						     
-				// 					console.log('已授权，'+self.openid)
-				// 				},
-				// 			 fail(e) {
-				// 				uni.hideLoading()
-				// 				console.log('获取授权信息失败222,',e)
-				// 			 }
-				// })
 			},
 			get(res) {
 				let self=this;
@@ -279,6 +267,14 @@
 </script>
 
 <style>
+	.login {
+		position: relative;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		z-index: 99999;
+	}
 	.content{
 		padding: 48rpx;
 		position: relative;
