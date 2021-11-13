@@ -13,7 +13,9 @@
 					<view class="image-bottom-info">
 						<view class="view">
 							<image src="../../static/icon/play.png" class="play-image"></image>
+							<text class="play-num">
 							{{(item.baseNum+item.N*(item.realNum||0))<10000?item.baseNum+item.N*(item.realNum||0):((item.baseNum+item.N*(item.realNum||0))/10000).toFixed(1)+'w'}}
+							</text> 
 						</view>
 						<text class='time' v-if="item.course.duration&&item.course.duration!='00:00'">
 							{{item.course.duration || ''}}
@@ -199,16 +201,22 @@
 		line-height: 22rpx;
 	}
 	.view{
-		height: 22rpx;
+		height: 24rpx;
 		font-size: 16rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #FFFFFF;
 		margin-left: 12rpx;
-		line-height: 22rpx;
+		line-height: 24rpx;
 		.play-image{
 			width: 24rpx;
 			height: 24rpx;
+			vertical-align: middle;
+		}
+		.play-num{
+			display: inline-block;
+			height: 24rpx;
+			line-height: 24rpx;
 			vertical-align: middle;
 		}
 		
