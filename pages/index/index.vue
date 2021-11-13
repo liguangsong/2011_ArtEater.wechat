@@ -21,46 +21,48 @@
 			<template v-slot:other>
 				<!--导航 start-->
 				<view class="navSection">
-					<view class="nav-box">
-						<view class="navItem" @click="handleAuditionClick">
-							<view class="img">
-								<image src="../../static/icon/icon_kcst.png"></image>
+					<view class="innerSection">
+							<view class="nav-box">
+							<view class="navItem" @click="handleAuditionClick">
+								<view class="img">
+									<image src="../../static/icon/icon_kcst.png"></image>
+								</view>
+								<view class="title">免费试听</view>
 							</view>
-							<view class="title">免费试听</view>
+							<view class="navItem" @click="handleImportantClick">
+								<view class="img">
+									<image src="../../static/icon/icon_question.png"></image>
+								</view>
+								<view class="title">必考题库</view>
+							</view>
+							<view class="navItem" @click="handleExamClick">
+								<view class="img">
+									<image src="../../static/icon/icon_test.png"></image>
+									<!-- <text class="badge">12待添加数字</text> -->
+								</view>
+								<view class="title">模拟试卷</view>
+							</view>
+							<view class="navItem" @click="handleNoteClick">
+								<view class="img">
+									<image src="../../static/icon/icon_errorques.png"></image>
+								</view>
+								<view class="title">错题集</view>
+							</view>
 						</view>
-						<view class="navItem" @click="handleImportantClick">
-							<view class="img">
-								<image src="../../static/icon/icon_question.png"></image>
+						<!-- <view class="line"></view> -->
+						<view class="nav-box">
+							<view class="navItem" @click="handleSubjectClick" :data-item="item"
+								v-for="(item,index) in subjects" :key='item.id'>
+								<view class="img">
+									<image :src="item.backgroundImg"></image>
+								</view>
+								<view class="title">{{item.subject_name}}</view>
 							</view>
-							<view class="title">必考题库</view>
-						</view>
-						<view class="navItem" @click="handleExamClick">
-							<view class="img">
-								<image src="../../static/icon/icon_test.png"></image>
-								<!-- <text class="badge">12待添加数字</text> -->
-							</view>
-							<view class="title">模拟试卷</view>
-						</view>
-						<view class="navItem" @click="handleNoteClick">
-							<view class="img">
-								<image src="../../static/icon/icon_errorques.png"></image>
-							</view>
-							<view class="title">错题集</view>
-						</view>
-					</view>
-					<view class="line"></view>
-					<view class="nav-box">
-						<view class="navItem" @click="handleSubjectClick" :data-item="item"
-							v-for="(item,index) in subjects" :key='item.id'>
-							<view class="img">
-								<image :src="item.backgroundImg"></image>
-							</view>
-							<view class="title">{{item.subject_name}}</view>
 						</view>
 					</view>
 				</view>
 
-				<audition-learning v-if="studyList.length" title="正在学习" :showMore="studyList.length>2"
+				<audition-learning v-if="studyList.length" title="正在学习" :showMore="showLearningMore"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
 				</audition-learning>
 				<view class="h-line" v-if="studyList.length"></view>
@@ -133,13 +135,13 @@
 			:zoom="false" @click="handleStep"> -->
 		<view class='mask'  @click="handleStep" v-if='isShowTips'>
 			<view v-if="step==1" class="step bottom">
-				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask1.png"></image>
+				<view class="navItem" style="right:4rpx">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask1.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
 				</view>
 			</view>
-			<view v-if="step==2" class="step bottom">
+			<view v-if="step==2" class="step bottom" style="left:4rpx">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask2.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask2.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
 				</view>
 			</view>
 			<view v-if="step==3" class="step top">
@@ -196,6 +198,8 @@
 		},
 		data() {
 			return {
+				tabbarPdBtm:0,
+				showLearningMore:false,
 				relationId: '',
 				fontColor: 'rgb(255,255,255)',
 				pdbtm: 0, //兼容iphonexr+
@@ -269,13 +273,14 @@
 			this.bindConfig();
 			//获取所有的模块
 			this.getModules();
-			this.getLearning()
+			// this.getLearning()
 		},
 		onLoad() {
 			var self = this
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
 			this.pdbtm = 116 + app.globalData.paddingBottomHeight;
+			this.tabbarPdBtm = app.globalData.paddingBottomHeight;
 			uni.getStorage({
 				key: 'hasHomeTiped',
 				success: (res) => {
@@ -464,6 +469,13 @@
 				let res = await Curriculum.getLearning();
 				// console.log(res, 4567865)
 				this.studyList = res;
+				this.$nextTick(()=>{
+					if(this.studyList.length>2){
+						this.showLearningMore=true;
+					}else{
+						this.showLearningMore=false;
+					}
+				})
 			},
 			//获取模块
 			async getModules() {
@@ -741,7 +753,7 @@
 
 	.swiper {
 		height: 514rpx;
-		line-height: 18rpx;
+		line-height: 36rpx;
 		text-align: center;
 	}
 
@@ -757,34 +769,35 @@
 	}
 
 	.navSection {
-		display: flex;
-		width: 690rpx;
+		
+		background: url(../../static/home_questions_bg.png) no-repeat;
+		background-size: cover;
 		margin: 0 auto;
-		height: 340rpx;
-		border-radius: 15rpx;
-		filter: drop-shadow(0rpx 4rpx 12rpx rgba(0, 0, 0, 0.08));
+		height: 364rpx;
 		position: relative;
-		top: -18rpx;
-		margin-bottom: -18rpx;
-
+		top: -30rpx;
+		margin-bottom: -30rpx;
+		.innerSection{
+			display: flex;
+			width: 690rpx;
+			margin: auto;
+		}
 		.nav-box {
 			width: 50%;
-			height: 340rpx;
+			height: 364rpx;
 			display: flex;
-			background: #fff;
 			flex-flow: row wrap;
 			justify-content: space-around;
-
 			.navItem {
 				// flex: 1;
 				width: 50%;
-				height: 170rpx;
+				height: 182rpx;
 				text-align: center;
 			}
 
 			.navItem:nth-of-type(1),
 			.navItem:nth-of-type(2) {
-				padding-top: 30rpx;
+				padding-top: 42rpx;
 			}
 
 			.navItem:nth-of-type(3),
@@ -792,40 +805,6 @@
 				padding-top: 12rpx;
 			}
 		}
-
-		.nav-box:nth-of-type(1) {
-			border-top-left-radius: 15rpx;
-			border-bottom-left-radius: 15rpx;
-			background: linear-gradient(0deg, transparent 0rpx, #fff 0) top left,
-				linear-gradient(-135deg, transparent 6rpx, #fff 0) top right,
-				linear-gradient(-45deg, transparent 6rpx, #fff 0) bottom right,
-				linear-gradient(0deg, transparent 0rpx, #fff 0) bottom left;
-			background-size: 50.0% 50.0%;
-			background-repeat: no-repeat;
-		}
-
-		.nav-box:nth-last-of-type(1) {
-			border-top-right-radius: 15rpx;
-			border-bottom-right-radius: 15rpx;
-			background: linear-gradient(135deg, transparent 6rpx, #fff 0) top left,
-				linear-gradient(0deg, transparent 0rpx, #fff 0) top right,
-				linear-gradient(0deg, transparent 0rpx, #fff 0) bottom right,
-				linear-gradient(45deg, transparent 6rpx, #fff 0) bottom left;
-			background-size: 50.0% 50.0%;
-			background-repeat: no-repeat;
-
-		}
-
-		.line {
-			width: 1rpx;
-			height: 260rpx;
-			background: #000000;
-			opacity: 0.1;
-			margin-top: 40rpx;
-			left: 344rpx;
-			position: absolute;
-		}
-
 		.nav-box::after {
 			content: "";
 			flex-grow: 4;
@@ -1120,9 +1099,9 @@
 		position: absolute;
 	}
 
-	.bottom image {
-		top: calc(100vh - 368rpx + 10rpx);
-	}
+	// .bottom image {
+	// 	top: calc(100vh - 368rpx + 10rpx);
+	// }
 
 	.top image {
 		top: 480rpx;

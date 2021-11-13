@@ -2,7 +2,7 @@
 	<view class="list" v-if="list.length">
 			<view class="title" v-if="title">
 				<text class="title-before"></text>
-			   {{title}}1
+			   {{title}}
 			</view>
 			<text class="more" v-if="showMore" @click="gotolist">查看更多 ></text>
 			
@@ -136,7 +136,7 @@
 			color: #000000;
 			line-height: 40rpx;
 			padding-left: 30rpx;
-			margin: 24rpx 0;
+			margin: 12rpx 0 18rpx 0;
 		}
 		.more{
 			// width: 80rpx;
