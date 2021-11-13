@@ -420,13 +420,14 @@
 				<view class="openfixed-title">
 					食艺兽大会员
 				</view>
-				<!-- @touchmove='touchmove' @touchstart='touchstart' @touchend='touchend' -->
-				<view class="openbox" @click='openboxClick'>
+				@touchmove='touchmove' @touchstart='touchstart' @touchend='touchend'
+				
+				<!-- <view class="openbox" @click='openboxClick'>
 					<view class="list" :style='{left: clientLeft + "rpx"}'>
 						<view class="item" v-for='(item,i) in list' :keys='item.id'
 							:class='{heijin: item.surfaceId == 0, bojin: item.surfaceId == 1, baiyin: item.surfaceId == 2}'
 							@click='active = i'>
-							<!-- :class='{active: active == i}' -->
+							:class='{active: active == i}'
 							<view class="img">
 								<image class='imgbg' :src="item.surface"></image>
 								<view v-if='isMember'>
@@ -490,6 +491,7 @@
 
 					</view>
 				</view>
+			 -->
 				<view class="buchajia" v-if='isChajia'>
 					<view class="icon"></view>
 					<text>您的剩余时长可以抵扣金额，只需支付{{cash}}元即可升级！ 升级后会员时长为：{{cashTime1}}至{{cashTime2}}</text>
