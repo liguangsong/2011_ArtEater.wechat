@@ -56,8 +56,9 @@
 
 <style scoped>
 	.catalogue {
+		margin-top: 4rpx;
 		font-size: 30rpx;
-		margin-bottom: 16rpx;
+		margin-bottom: 14rpx;
 		font-weight: 900;
 		padding-left: 48rpx;
 		color: #D81E1F;

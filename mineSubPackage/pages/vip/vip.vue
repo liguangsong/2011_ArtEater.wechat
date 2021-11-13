@@ -928,6 +928,7 @@
 					font-size: 16rpx;
 					line-height: 22rpx;
 					opacity: .4;
+					padding-top: 16rpx;
 				}
 			}
 

@@ -56,14 +56,15 @@
 
 <style>
 	.introduce {
-		margin-bottom:16rpx;
+		margin-top: 4rpx;
+		margin-bottom:14rpx;
 		font-weight: 900;
 		padding: 0 48rpx;
 	}
 	.introduce .title{
 		display: block;
 		font-size: 30rpx;
-		margin-bottom: 40rpx;
+		margin-bottom: 36rpx;
 		font-weight: 900;
 		color: #D81E1F;
 	}
