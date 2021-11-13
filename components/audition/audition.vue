@@ -219,21 +219,22 @@
 		}
 		.play-num{
 			display: inline-block;
-			height: 24rpx;
+			height: 22rpx;
 			font-size: 16rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
+			vertical-align: middle;
 			font-weight: 600;
 			color: #FFFFFF;
 		}
 		
 	}
 	.time{
-		height: 22rpx;
+		height: 24rpx;
 		font-size: 16rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #FFFFFF;
-		line-height: 22rpx;
+		line-height: 24rpx;
 		margin-right: 12rpx;
 	}
 </style>

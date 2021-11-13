@@ -242,12 +242,12 @@
 		
 	}
 	.time{
-		height: 22rpx;
+		height: 24rpx;
 		font-size: 16rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #FFFFFF;
-		line-height: 22rpx;
+		line-height: 24rpx;
 		margin-right: 12rpx;
 	}
 </style>
