@@ -204,20 +204,23 @@
 		height: 24rpx;
 		font-size: 16rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		font-weight: 600;
 		color: #FFFFFF;
 		margin-left: 12rpx;
-		line-height: 24rpx;
+		// line-height: 24rpx;
 		.play-image{
 			width: 24rpx;
 			height: 24rpx;
+			line-height: 24rpx;
 			vertical-align: middle;
 		}
 		.play-num{
 			display: inline-block;
 			height: 24rpx;
-			line-height: 24rpx;
-			vertical-align: middle;
+			font-size: 16rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 600;
+			color: #FFFFFF;
 		}
 		
 	}
@@ -225,7 +228,7 @@
 		height: 22rpx;
 		font-size: 16rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		font-weight: 600;
 		color: #FFFFFF;
 		line-height: 22rpx;
 		margin-right: 12rpx;
