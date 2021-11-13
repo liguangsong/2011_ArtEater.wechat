@@ -420,9 +420,7 @@
 				<view class="openfixed-title">
 					食艺兽大会员
 				</view>
-				@touchmove='touchmove' @touchstart='touchstart' @touchend='touchend'
-				
-				<!-- <view class="openbox" @click='openboxClick'>
+				<view class="openbox" @click='openboxClick' @touchmove='touchmove' @touchstart='touchstart' @touchend='touchend'>
 					<view class="list" :style='{left: clientLeft + "rpx"}'>
 						<view class="item" v-for='(item,i) in list' :keys='item.id'
 							:class='{heijin: item.surfaceId == 0, bojin: item.surfaceId == 1, baiyin: item.surfaceId == 2}'
@@ -491,7 +489,8 @@
 
 					</view>
 				</view>
-			 -->
+			
+	
 				<view class="buchajia" v-if='isChajia'>
 					<view class="icon"></view>
 					<text>您的剩余时长可以抵扣金额，只需支付{{cash}}元即可升级！ 升级后会员时长为：{{cashTime1}}至{{cashTime2}}</text>
@@ -630,17 +629,17 @@
 					this.showFixed = false;
 				}
 			},
-			// touchstart(e) {
-			// 	this.clientX = e.touches[0].clientX;
-			// },
-			// touchmove(e) {
-			// 	let x = e.touches[0].clientX;
-			// 	this.clientLeft = x - this.clientX;
-			// },
-			// touchend(e) {
-			// 	let x = e.touches[0].clientX;
-			// 	console.log(x);
-			// },
+			touchstart(e) {
+				this.clientX = e.touches[0].clientX;
+			},
+			touchmove(e) {
+				let x = e.touches[0].clientX;
+				this.clientLeft = x - this.clientX;
+			},
+			touchend(e) {
+				// let x = e.touches[0].clientX;
+				// console.log(x);
+			},
 			// 获取是否是会员
 			async getMember() {
 				var Member = new this.Parse.Query('MemberList')
