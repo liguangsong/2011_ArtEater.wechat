@@ -116,7 +116,7 @@
 			// width: 80rpx;
 			font-size: 16rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
+			font-weight: 600;
 			color: #000000;
 			position: absolute;
 			top:10rpx;
