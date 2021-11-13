@@ -56,14 +56,15 @@
 
 <style>
 	.introduce {
-		margin-bottom: 20rpx;
+		margin-top: 4rpx;
+		margin-bottom:14rpx;
 		font-weight: 900;
 		padding: 0 48rpx;
 	}
 	.introduce .title{
 		display: block;
 		font-size: 30rpx;
-		margin-bottom: 40rpx;
+		margin-bottom: 36rpx;
 		font-weight: 900;
 		color: #D81E1F;
 	}
@@ -88,7 +89,7 @@
 	.unlock {
 		width: 690rpx;
 		height: 92rpx;
-		background: #ED3535;
+		background: #ed3635;
 		box-shadow: 0rpx 4rpx 8rpx 0rpx rgba(0,0,0,0.2);
 		border-radius: 46rpx;
 		font-size: 34rpx;
