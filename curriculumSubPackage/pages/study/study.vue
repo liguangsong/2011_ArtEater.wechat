@@ -19,11 +19,11 @@
 				<view class="tabber">
 					<view style='padding: 0 20rpx;' @click='tabbar = false'>
 						<view :class='{text: !tabbar}'>详情</view>
-						<view v-if='!tabbar'></view>
+						<view v-if='!tabbar' class='br'></view>
 					</view>
 					<view style='padding: 0 20rpx;' @click='tabbar = true'>
 						<view :class='{text: tabbar}'>目录</view>
-						<view v-if='tabbar'></view>
+						<view v-if='tabbar' class='br'></view>
 					</view>
 				</view>
 			</view>
