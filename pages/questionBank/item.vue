@@ -7,7 +7,7 @@
 			<view class="title">{{item.subject_name}}</view>
 			<view class="info">
 				<view>
-					<view>已完成：{{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}}</view>
+					<view>已完成: {{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}}</view>
 				</view>
 				<view class="btn">
 					<!-- <text>学习</text> -->

@@ -26,7 +26,7 @@
 				<!-- </view> -->
 			</view>
 		</view>
-		<view class="vip" v-if='item.vip'>
+		<view class="vip" v-if='item.vip' @click='jumpDefault(item)'>
 			<image v-if='item.vip && vip' :src="unlock" />
 			<image v-else :src="lock" />
 		</view>

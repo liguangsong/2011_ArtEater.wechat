@@ -4,7 +4,7 @@
 			<template v-slot:img>
 				<image style='width: 100%; height: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
 			</template>
-			<view class="head radius" :style='{top: height ? "-20rpx": 0}'>
+			<view class="head radius" :style='{top: height ? "-24rpx": 0}'>
 				<view class="title">{{curriculumInfo.subjectName}}</view>
 				<view class="info">
 					<view>
@@ -18,12 +18,12 @@
 				</view>
 				<view class="tabber">
 					<view style='padding: 0 20rpx;' @click='tabbar = false'>
-						<view>详情</view>
-						<view style='height: 4rpx;' :class='{br: !tabbar}'></view>
+						<view :class='{text: !tabbar}'>详情</view>
+						<view v-if='!tabbar'></view>
 					</view>
 					<view style='padding: 0 20rpx;' @click='tabbar = true'>
-						<view>目录</view>
-						<view style='height: 4rpx;' :class='{br: tabbar}'></view>
+						<view :class='{text: tabbar}'>目录</view>
+						<view v-if='tabbar'></view>
 					</view>
 				</view>
 			</view>
@@ -171,6 +171,7 @@
 	}
 	.br {
 		width: 46rpx;
+		height: 4rpx;
 		background: #D81E1F;
 		border-radius: 2rpx;
 	}

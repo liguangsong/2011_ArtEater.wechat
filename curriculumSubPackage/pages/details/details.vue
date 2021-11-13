@@ -21,20 +21,20 @@
 						<text>{{curriculumInfo.lecturerName}}</text>
 					</view>
 					<view class="btn">
-						<view v-if="curriculumInfo.flag==1">
-							<view class="img" @click='timetablefn'>
+						<view class='btnitem' v-if="curriculumInfo.flag==1" @click='timetablefn'>
+							<view class="img">
 								<image src="../../static/icon_list.png"></image>
 							</view>
 							<text>课表</text>
 						</view>
-						<view @click="share">
+						<view class='btnitem button' @click="share">
 							<view class="img">
 								<image src="../../../static/icon/icon_share.png"></image>
 							</view>
 							<!-- <text>分享</text> -->
 							<button type="default" :data-objectId='objectId' open-type='share'>分享</button>
 						</view>
-						<view @click="operateCollection(false)">
+						<view class='btnitem' @click="operateCollection(false)">
 							<view class="img">
 								<image :src="collectionStatus?active:unactive"></image>
 							</view>
@@ -52,10 +52,10 @@
 			<view class="br"></view>
 		</view>
 		<!-- 图文 -->
-		<view class="html" :style='{paddingTop: htmlInfoTop + 4 + "px"}' v-if="curriculumInfo.explain">
+		<view class="html" :style='{paddingTop: htmlInfoTop + 10 + "px"}' v-if="curriculumInfo.explain">
 			<rich-text :nodes='curriculumInfo.explain|formatRichText'></rich-text>
 		</view>
-		<view v-else :style='{paddingTop: infoTop + 10 + "px"}'></view>
+		<view v-else :style='{paddingTop: infoTop + "px"}'></view>
 		<!-- 推荐学习 -->
 		<view class="recommend" v-show='recommendedList.length'>
 			<view class="recommend-title">
@@ -472,7 +472,12 @@
 						flex: 1 0 auto;
 						display: flex;
 						justify-content: flex-end;
-
+						
+						.btnitem {
+							display: flex;
+							justify-content: flex-end;
+						}
+						
 						.img {
 							width: 64rpx;
 							height: 64rpx;
@@ -482,7 +487,12 @@
 							width: 64rpx;
 							height: 64rpx;
 						}
-
+						.button {
+							image {
+								position: relative;
+								left: 46rpx;
+							}
+						}
 						button {
 							font-size: 20rpx;
 							height: 64rpx;
@@ -498,7 +508,7 @@
 							padding-right: 0;
 							position: relative;
 							text-align: right;
-							left: -42rpx;
+							left: -6rpx;
 							text-decoration: none;
 
 							&:after {
@@ -698,10 +708,10 @@
 						padding-top: 40rpx;
 						padding-left: 48rpx;
 						font-size: 28rpx;
-						font-weight: 600;
 						color: #D81E1F;
 						line-height: 40rpx;
-						
+						font-family: PingFangSC-Semibold;
+						font-weight: 700;
 					}
 				}
 

@@ -1002,7 +1002,7 @@
 								}
 
 								.oldprice {
-									margin-right: 44rpx;
+									margin-right: 40rpx;
 									font-size: 32rpx;
 									line-height: 44rpx;
 									text-decoration: line-through;

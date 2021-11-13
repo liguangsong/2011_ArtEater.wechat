@@ -4,7 +4,7 @@
 			{{item.subjectName}}
 		</view>
 		<view v-else class="item" @click.stop='changeItem'>
-			<view class="leave" :style='{paddingLeft: (item.level-1)*52 + "rpx", color:item.kind==4 && (!item.children || !item.children.length)?"rgba(0,0,0,0.3)":"rgba(0,0,0,0.7)"}'>
+			<view class="leave" :style='{paddingLeft: (item.level-1)*56 + "rpx", color:item.kind==4 && (!item.children || !item.children.length)?"rgba(0,0,0,0.3)":"rgba(0,0,0,0.7)"}'>
 				<view class="title">
 					<image class="icon" :src="item.kind == '1' ? video :item.kind == '2'? audio:''"></image>
 					{{item.subjectName}}
@@ -60,7 +60,7 @@
 	.leave0 {
 		background: #f7f7f7;
 		width: 100%;
-		padding-left: 48rpx;
+		padding-left: 62rpx;
 		font-size: 28rpx;
 		font-weight: 700;
 		transform: translateY(1px);
@@ -98,7 +98,7 @@
 	.leave .icon {
 		position: absolute;
 		top: 24rpx;
-		left: -42rpx;
+		left: -46rpx;
 		width: 36rpx;
 		height: 36rpx;
 	}

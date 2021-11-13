@@ -157,8 +157,8 @@
 					<view class="cont">
 						<view class="title">
 							<text>消息中心</text>
-							<view>3</view>
-<!-- 							<view v-if="msgCount > 0"></view>{{msgCount}} -->
+							<!-- <view>3</view> -->
+							<view v-if="msgCount > 0">{{msgCount}}</view>
 							<!-- <view style="position: relative;">消息中心
 								<u-badge  type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="msgCount"></u-badge>
 							</view> -->
@@ -484,7 +484,6 @@
 
 		.content {
 			height: 100%;
-			;
 			display: flex;
 			justify-content: space-around;
 			align-items: center;
@@ -598,7 +597,7 @@
 						border-radius: 13rpx;
 						line-height: 26rpx;
 						color: #fff;
-						margin-top: 2rpx;
+						// margin-top: 1rpx;
 						min-width: 26rpx;
 						text-align: center;
 						background: linear-gradient(rgba(218, 39, 39, 1), rgba(218, 39, 39, .3));
