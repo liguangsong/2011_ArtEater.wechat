@@ -420,12 +420,14 @@
 				<view class="openfixed-title">
 					食艺兽大会员
 				</view>
-				<view class="openbox">
-					<view class="list">
+				@touchmove='touchmove' @touchstart='touchstart' @touchend='touchend'
+				
+				<!-- <view class="openbox" @click='openboxClick'>
+					<view class="list" :style='{left: clientLeft + "rpx"}'>
 						<view class="item" v-for='(item,i) in list' :keys='item.id'
-							:class='{heijin: item.surfaceId == 1, bojin: item.surfaceId == 2, baiyin: item.surfaceId == 3}'
+							:class='{heijin: item.surfaceId == 0, bojin: item.surfaceId == 1, baiyin: item.surfaceId == 2}'
 							@click='active = i'>
-							<!-- :class='{active: active == i}' -->
+							:class='{active: active == i}'
 							<view class="img">
 								<image class='imgbg' :src="item.surface"></image>
 								<view v-if='isMember'>
@@ -489,6 +491,7 @@
 
 					</view>
 				</view>
+			 -->
 				<view class="buchajia" v-if='isChajia'>
 					<view class="icon"></view>
 					<text>您的剩余时长可以抵扣金额，只需支付{{cash}}元即可升级！ 升级后会员时长为：{{cashTime1}}至{{cashTime2}}</text>
@@ -515,7 +518,7 @@
 	export default {
 		data() {
 			return {
-				showFixed: false,
+				showFixed: true,
 				list: null,
 				active: 0,
 				user: null,
@@ -525,6 +528,8 @@
 				cash: 0, // 差价金额
 				cashTime1: '',
 				cashTime2: '',
+				clientLeft: 0,
+				clientX: 0,
 			}
 		},
 		components: {
@@ -625,6 +630,17 @@
 					this.showFixed = false;
 				}
 			},
+			// touchstart(e) {
+			// 	this.clientX = e.touches[0].clientX;
+			// },
+			// touchmove(e) {
+			// 	let x = e.touches[0].clientX;
+			// 	this.clientLeft = x - this.clientX;
+			// },
+			// touchend(e) {
+			// 	let x = e.touches[0].clientX;
+			// 	console.log(x);
+			// },
 			// 获取是否是会员
 			async getMember() {
 				var Member = new this.Parse.Query('MemberList')
@@ -646,7 +662,6 @@
 			// 不是会员第一次进行购买
 			firstBuy() {
 				this.showFixed = true;
-				console.log(this.active);
 				var cash = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
 				this.payment(cash * 100)
 			},
@@ -719,7 +734,7 @@
 
 			// 支付
 			payment(cash) {
-				cash = 0;
+				// cash = 0;
 				if (cash == 0) {
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5);
 					this.paymentSuccess(orderNo, cash);
@@ -761,7 +776,7 @@
 			},
 			// 获取积分与赠送积分
 			async getIntegral(cash) {
-				cash = 100;
+				cash = 1;
 				await this.Parse.Config.get().then(async config => {
 					// var n = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
 					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes
@@ -793,24 +808,25 @@
 				order.set("state", 1)
 				order.set("wechatPayOrderId", '') // 支付流水号
 				order.save().then(_order => {
-					uni.showModal({
-						content: '恭喜，购买成功',
-						showCancel: false,
-						success() {
-							_this.showFixed = false;
-						}
-					})
+					// uni.showModal({
+					// 	content: '恭喜，购买成功',
+					// 	showCancel: false,
+					// 	success() {
+					// 		_this.showFixed = false;
+					// 	}
+					// })
 				}, (error) => {
-					uni.showModal({
-						content: '购买失败',
-						showCancel: false
+					// uni.showModal({
+					// 	content: '购买失败',
+					// 	showCancel: false
+					// })
+					uni.showToast({
+						title:'购买失败'
 					})
 				})
 			},
 			// 创建会员
 			async createMember(tradeId) {
-
-				// console.log(this.member);
 				if (this.member) {
 					var arr = this.memberInfo.orderArr;
 					arr.push(tradeId);
@@ -841,7 +857,7 @@
 				} else {
 					// 初次创建
 					var item = this.list[this.active];
-					var memberType = item.surfaceId - 1 + '';
+					var memberType = item.surfaceId + '';
 					var Member = this.Parse.Object.extend("MemberList");
 					var member = new Member();
 					member.set("openId", this.userInfo.openid);
@@ -1232,18 +1248,20 @@
 				color: #995D05;
 				line-height: 44rpx;
 			}
-
+			
 			.openbox {
 				width: 100%;
 				height: 320rpx;
-				overflow: hidden;
-
+				// overflow: hidden;
+				position: relative;
+				left: 100rpx;
+				
 				.list {
 					width: 100%;
-					height: 340rpx;
-					overflow-x: auto;
+					height: 320rpx;
+					// overflow-x: auto;
 					white-space: nowrap;
-
+					position: absolute;
 					.item {
 						display: inline-block;
 						border-radius: 20rpx;
@@ -1253,9 +1271,9 @@
 						margin-right: 20rpx;
 						position: relative;
 
-						&:first-child {
-							margin-left: 100rpx;
-						}
+						// &:first-child {
+						// 	margin-left: 100rpx;
+						// }
 
 						&.heijin {
 							color: #FFCD83;
@@ -1349,7 +1367,7 @@
 				color: #995D05;
 				line-height: 26rpx;
 				margin: 20rpx auto 44rpx;
-				background: #f7efe1;
+				background: rgba(230, 203, 161, 0.32);
 				border: 2rpx solid rgba(153, 93, 5, 0.46);
 				border-radius: 10rpx;
 				padding: 10rpx 24rpx 0;
@@ -1359,7 +1377,7 @@
 					position: absolute;
 					width: 18rpx;
 					height: 18rpx;
-					background: #f7efe1;
+					background: #F6EEEF;
 					border-left: 2rpx solid rgba(153, 93, 5, 0.46);
 					border-top: 2rpx solid rgba(153, 93, 5, 0.46);
 					left: 242rpx;
