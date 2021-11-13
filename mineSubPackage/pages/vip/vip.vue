@@ -120,7 +120,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/heijin/vip5.png"></image>
+									<image src="../../static/heijin/vip6.png"></image>
 								</view>
 								<view class="item-title">
 									专属备考顾问
@@ -134,7 +134,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/heijin/vip6.png"></image>
+									<image src="../../static/heijin/vip5.png"></image>
 								</view>
 								<view class="item-title">
 									备考学习群
@@ -235,7 +235,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/bojin/vip5.png"></image>
+									<image src="../../static/bojin/vip4.png"></image>
 								</view>
 								<view class="item-title">
 									专属备考顾问
@@ -249,7 +249,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/bojin/vip4.png"></image>
+									<image src="../../static/bojin/vip5.png"></image>
 								</view>
 								<view class="item-title">
 									专属头像勋章
