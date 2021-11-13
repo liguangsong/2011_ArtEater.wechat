@@ -14,10 +14,12 @@
 						<view class="nickName">{{userInfo.nickName}}</view>
 						<view class="icon" v-if='memberType'>
 							{{memberType}}
-							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="20"></u-icon>
+							<!-- <u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="20"></u-icon> -->
+							<text>></text>
 						</view>
 						<view class="icon" v-else>
 							未开通会员
+							<text>></text>
 						</view>
 					</view>
 				</view>
@@ -44,9 +46,12 @@
 		</view>
 
 		<view class="scroll">
-			<view class="box vipView">
-				<view class='open' @click='jumpvip'>{{memberType ? '续费' : '立即开通'}}</view>
-				<image src="../../static/mine-card.png"></image>
+			<view class="vipView">
+				<view class='open' @click='jumpvip'>
+					<image v-if='memberType' src="../../static/mine/mine_xufei.png" mode=""></image>
+					<image v-else src="../../static/mine/mine_open.png" mode=""></image>
+				</view>
+				<image src="../../static/mine/mine_center.png"></image>
 			</view>
 			<view class="box actionView">
 				<view class="actionItem" @click="handleSignInClick">
@@ -152,7 +157,8 @@
 					<view class="cont">
 						<view class="title">
 							<text>消息中心</text>
-							<view v-if="msgCount > 0">{{msgCount}}</view>
+							<view>3</view>
+<!-- 							<view v-if="msgCount > 0"></view>{{msgCount}} -->
 							<!-- <view style="position: relative;">消息中心
 								<u-badge  type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="msgCount"></u-badge>
 							</view> -->
@@ -437,9 +443,17 @@
 				}
 
 				.icon {
+					font-family: PingFangSC-Regular;
 					font-size: 20rpx;
 					font-weight: 400;
 					line-height: 28rpx;
+					opacity: .8;
+					text {
+						display: inline-block;
+						transform: scale(1,1.8) translateY(-6%);
+						margin-left: 12rpx;
+						opacity: .6;
+					}
 				}
 			}
 
@@ -463,7 +477,7 @@
 
 	.scoreView {
 		position: absolute;
-		height: 132rpx;
+		height: 148rpx;
 		top: 400rpx;
 		left: 30rpx;
 		z-index: 210;
@@ -478,7 +492,7 @@
 			.scoreItem {
 				height: 100%;
 				padding-top: 20rpx;
-				flex: 1 1 auto;
+				flex: 0 1 33.3%;
 				position: relative;
 				text-align: center;
 
@@ -503,7 +517,7 @@
 				top: 36rpx;
 				width: 0;
 				height: 62rpx;
-				border-right: 1px solid rgba(0, 0, 0, .1);
+				border-right: 1px solid rgba(0, 0, 0, .05);
 			}
 		}
 	}
@@ -514,7 +528,10 @@
 	}
 
 	.vipView {
-		height: 108rpx;
+		height: 124rpx;
+		width: 690rpx;
+		margin: 0 auto;
+		margin-bottom: 14rpx;;
 		position: relative;
 
 		image {
@@ -522,6 +539,7 @@
 			top: 0;
 			left: 0;
 			bottom: 0;
+			right: 0;
 			width: 100%;
 			height: 100%;
 		}
@@ -535,8 +553,8 @@
 			margin: 38rpx 28rpx;
 			float: right;
 			line-height: 48rpx;
-			border: 1px solid rgba(153, 93, 5, 1);
-			color: rgba(153, 93, 5, 1);
+			// border: 1px solid rgba(153, 93, 5, 1);
+			// color: rgba(153, 93, 5, 1);
 			text-align: center;
 			border-radius: 24rpx;
 		}
@@ -576,11 +594,12 @@
 					margin-right: 50rpx;
 
 					view {
-						height: 30rpx;
-						border-radius: 15rpx;
-						line-height: 30rpx;
+						height: 26rpx;
+						border-radius: 13rpx;
+						line-height: 26rpx;
 						color: #fff;
-						min-width: 30rpx;
+						margin-top: 2rpx;
+						min-width: 26rpx;
 						text-align: center;
 						background: linear-gradient(rgba(218, 39, 39, 1), rgba(218, 39, 39, .3));
 					}

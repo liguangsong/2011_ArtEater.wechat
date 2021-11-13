@@ -168,6 +168,9 @@
 	.title {
 		flex: 1 1 auto;
 		padding-right: 50rpx;
+		font-family: PingFangSC-Medium;
+		font-weight: 600;
+		font-size: 34rpx;
 	}
 	.bg {
 		position: absolute;

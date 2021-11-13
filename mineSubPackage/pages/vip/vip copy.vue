@@ -989,9 +989,11 @@
 						.viewItem-vip-titel {
 							font-size: 40rpx;
 							font-weight: 600;
-							line-height: 56rpx;
+							height: 66rpx;
+							line-height: 66rpx;
 							display: flex;
 							justify-content: space-between;
+							padding-right: 4rpx;
 							.viewItem-vip-price {
 								font-weight: 600;
 								.price {

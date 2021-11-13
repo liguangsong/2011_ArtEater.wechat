@@ -21,7 +21,7 @@
 							</view>
 						</view>
 						<view class="vip-btn" @click='changeShowFixed'>
-							<text>{{isMember && memberInfo.memberType ? '续 &nbsp; 费' : '立即开通'}}</text>
+							<text>{{isMember && memberInfo.memberType ? '续费' : '立即开通'}}</text>
 						</view>
 					</view>
 				</view>
@@ -38,20 +38,34 @@
 					<view class="viewItem heijin">
 						<view class="viewItem-vip">
 							<view class="bg">
-								<image :src='list[0].surface'></image>
+								<image :src="list[0].surface"></image>
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
+									<text>黑金VIP</text>
 									<view class="viewItem-vip-price">
 										<text class='oldprice'
 											v-if='list[0].memberPrice && list[0].discount'>¥{{list[0].memberPrice}}</text>
 										<text class='price'>¥{{list[0].promotionPrice}}</text>
 									</view>
 								</view>
+								<view class="viewItem-vip-txt">
+									<image src="../../static/heijin/vip1.png"></image>
+									<image src="../../static/heijin/vip2.png"></image>
+									<image src="../../static/heijin/vip3.png"></image>
+									<image src="../../static/heijin/vip4.png"></image>
+									<image src="../../static/heijin/vip5.png"></image>
+									<image src="../../static/heijin/vip6.png"></image>
+									<image src="../../static/heijin/vip7.png"></image>
+									<!-- <text>黑金VIP共享7项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text> -->
+								</view>
 								<view class="viewItem-vip-bottom">
+									<view class="viewItem-vip-inderice">
+										此VIP会员服务有效期为365天 到期后系统将自动关闭所有会员权限 为不影响使用，请提前续费
+									</view>
 									<view class="vip-btn" @click='changeShowFixed'>
 										<view v-if='isMember'>
-											<text v-if='memberInfo.memberType == 0'>续 &nbsp; 费</text>
+											<text v-if='memberInfo.memberType == 0'>续费</text>
 											<text v-else>立即升级黑金会员</text>
 										</view>
 										<view v-else>
@@ -170,14 +184,27 @@
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
+									<text>铂金VIP</text>
 									<view class="viewItem-vip-price">
 										<text class='oldprice'
 											v-if='list[0].memberPrice && list[1].discount '>¥{{list[1].memberPrice}}</text>
 										<text class='price'>¥{{list[1].promotionPrice}}</text>
 									</view>
 								</view>
-			
+								<view class="viewItem-vip-txt">
+									<image src="../../static/bojin/vip1.png"></image>
+									<image src="../../static/bojin/vip2.png"></image>
+									<image src="../../static/bojin/vip3.png"></image>
+									<image src="../../static/bojin/vip4.png"></image>
+									<image src="../../static/bojin/vip5.png"></image>
+									<view></view>
+									<view></view>
+									<!-- <text>黑金VIP共享7项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text> -->
+								</view>
 								<view class="viewItem-vip-bottom">
+									<view class="viewItem-vip-inderice">
+										此VIP会员服务有效期为365天 到期后系统将自动关闭所有会员权限 为不影响使用，请提前续费
+									</view>
 									<view class="vip-btn" @click='changeShowFixed'>
 										<view v-if='isMember'>
 											<text v-if='memberInfo.memberType == 1'>续费</text>
@@ -235,7 +262,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/bojin/vip5.png"></image>
+									<image src="../../static/bojin/vip4.png"></image>
 								</view>
 								<view class="item-title">
 									专属备考顾问
@@ -249,7 +276,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/bojin/vip4.png"></image>
+									<image src="../../static/bojin/vip5.png"></image>
 								</view>
 								<view class="item-title">
 									专属头像勋章
@@ -271,13 +298,27 @@
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
+									<text>白银VIP</text>
 									<view class="viewItem-vip-price">
 										<text class='oldprice'
 											v-if='list[0].memberPrice && list[2].discount '>¥{{list[2].memberPrice}}</text>
 										<text class='price'>¥{{list[2].promotionPrice}}</text>
 									</view>
 								</view>
+								<view class="viewItem-vip-txt">
+									<image src="../../static/baiyin/vip1.png"></image>
+									<image src="../../static/baiyin/vip2.png"></image>
+									<image src="../../static/baiyin/vip3.png"></image>
+									<view></view>
+									<view></view>
+									<view></view>
+									<view></view>
+									<!-- <text>黑金VIP共享7项权益，术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。术查市资建务周二非称向给子走选。</text> -->
+								</view>
 								<view class="viewItem-vip-bottom">
+									<view class="viewItem-vip-inderice">
+										此VIP会员服务有效期为365天 到期后系统将自动关闭所有会员权限 为不影响使用，请提前续费
+									</view>
 									<view class="vip-btn" @click='changeShowFixed'>
 										<view v-if='isMember'>
 											<text v-if='memberInfo.memberType == 2'>续费</text>
@@ -293,7 +334,7 @@
 						<view class="list">
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/baiyin/vip1.png"></image>
+									<image src="../../static/baiyin/vip2.png"></image>
 								</view>
 								<view class="item-title">
 									题库一卡通
@@ -307,7 +348,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/baiyin/vip2.png"></image>
+									<image src="../../static/baiyin/vip3.png"></image>
 								</view>
 								<view class="item-title">
 									课堂福利
@@ -321,7 +362,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/baiyin/vip3.png"></image>
+									<image src="../../static/baiyin/vip7.png"></image>
 								</view>
 								<view class="item-title">
 									专属头像勋章
@@ -343,6 +384,7 @@
 		<view class="fixed" :class='{leval: showFixed}'>
 			<view class="bg" @click='changeShowFixed(1)'></view>
 			<view class="fixed-bottom">
+				<!-- <view @click='changeShowFixed'> -->
 				<view>
 					<view v-if='memberInfo'>
 						<view v-if='memberInfo.memberType == 0' @click='heijinRenew'>
@@ -378,14 +420,15 @@
 				<view class="openfixed-title">
 					食艺兽大会员
 				</view>
+				<!-- @touchmove='touchmove' -->
 				<view class="openbox"  @touchstart='touchstart' @touchend='touchend'>
 					<view class="list" :style='{left: -active*550 + 20 + "rpx"}'>
 						<view class="item" v-for='(item,i) in list' :keys='item.id'
-							:class='{heijin: item.surfaceId == 1, bojin: item.surfaceId == 2, baiyin: item.surfaceId == 3}'
+							:class='{heijin: item.surfaceId == 0, bojin: item.surfaceId == 1, baiyin: item.surfaceId == 2}'
 							@click='active = i'>
-							<!-- :class='{active: active == i}' -->
+							:class='{active: active == i}'
 							<view class="img">
-								<image class='imgbg' :src="imgArr[i]"></image>
+								<image class='imgbg' :src="item.surface"></image>
 								<view v-if='isMember'>
 									<view v-if='memberInfo.memberType == 0'>
 										<image class='righttop' src="../../static/time.png"></image>
@@ -407,6 +450,36 @@
 								</view>
 							</view>
 							<view class="info">
+								<view class="title">
+									<text>{{item.memberName}}</text>
+								</view>
+								<view class="img" v-if='i==0'>
+									<image src="../../static/heijin/vip1.png"></image>
+									<image src="../../static/heijin/vip2.png"></image>
+									<image src="../../static/heijin/vip3.png"></image>
+									<image src="../../static/heijin/vip4.png"></image>
+									<image src="../../static/heijin/vip5.png"></image>
+									<image src="../../static/heijin/vip6.png"></image>
+									<image src="../../static/heijin/vip7.png"></image>
+								</view>
+								<view class="img" v-if='i==1'>
+									<image src="../../static/bojin/vip1.png"></image>
+									<image src="../../static/bojin/vip2.png"></image>
+									<image src="../../static/bojin/vip3.png"></image>
+									<image src="../../static/bojin/vip4.png"></image>
+									<image src="../../static/bojin/vip5.png"></image>
+									<view></view>
+									<view></view>
+								</view>
+								<view class="img" v-if='i==2'>
+									<image src="../../static/baiyin/vip1.png"></image>
+									<image src="../../static/baiyin/vip2.png"></image>
+									<image src="../../static/baiyin/vip3.png"></image>
+									<view></view>
+									<view></view>
+									<view></view>
+									<view></view>
+								</view>
 								<view class="price">
 									<text class='discount'>¥{{item.promotionPrice}}</text>
 									<text class='old-price' style='text-decoration: line-through;'
@@ -445,7 +518,7 @@
 	export default {
 		data() {
 			return {
-				showFixed: false,
+				showFixed: true,
 				list: null,
 				active: 0,
 				user: null,
@@ -457,12 +530,7 @@
 				cashTime2: '',
 				clientLeft: 0,
 				clientX: 0,
-				touchSwitch: true,
-				imgArr: [
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/card%EF%BC%8F%E9%BB%91%E9%87%91vip-%E8%B4%AD%E4%B9%B0%E7%95%8C%E9%9D%A2%402x.png',
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/card%EF%BC%8F%E9%BB%91%E9%87%91vip%E5%A4%87%E4%BB%BD%402x.png',
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/card%EF%BC%8F%E7%99%BD%E9%93%B6vip%E5%A4%87%E4%BB%BD%402x.png'
-				]
+				touchSwitch: true
 			}
 		},
 		components: {
@@ -716,6 +784,7 @@
 			},
 			// 获取积分与赠送积分
 			async getIntegral(cash) {
+				cash = 1;
 				await this.Parse.Config.get().then(async config => {
 					// var n = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
 					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes
@@ -796,7 +865,7 @@
 				} else {
 					// 初次创建
 					var item = this.list[this.active];
-					var memberType = item.surfaceId - 1 + '';
+					var memberType = item.surfaceId + '';
 					var Member = this.Parse.Object.extend("MemberList");
 					var member = new Member();
 					member.set("openId", this.userInfo.openid);
@@ -826,18 +895,18 @@
 	.box {
 		width: 100%;
 		position: absolute;
-		top: 204rpx;
+		top: 174rpx;
 
 		.vip-btn {
-			padding: 0 42rpx;
+			min-width: 144rpx;
+			padding: 0 20rpx;
 			height: 48rpx;
 			line-height: 46rpx;
 			text-align: center;
 			border-radius: 24rpx;
 			border: 1px solid rgba(255, 205, 131, 1);
-			color: #FFCD83;
+			color: rgba(255, 205, 131, 1);
 			font-size: 20rpx;
-			font-weight: 600;
 		}
 
 		.head {
@@ -888,8 +957,6 @@
 						color: #FFFFFF;
 						line-height: 28rpx;
 						margin-top: 10rpx;
-						opacity: .8;
-						font-family: PingFangSC-Regular;
 					}
 				}
 			}
@@ -902,16 +969,17 @@
 			border-top-right-radius: 24rpx;
 
 			.viewHead {
+				height: 40rpx;
 				display: flex;
+				align-items: center;
 				justify-content: space-between;
-				padding: 28rpx 48rpx 0;
+				padding: 28rpx 48rpx 0 30rpx;
 				color: #995D05;
+				font-weight: 500;
 
 				.vipuser {
 					font-size: 28rpx;
 					line-height: 40rpx;
-					height: 40rpx;
-					font-weight: 600;
 
 					&::before {
 						content: '';
@@ -927,48 +995,51 @@
 				.tel {
 					font-size: 16rpx;
 					line-height: 22rpx;
-					opacity: .4;
 				}
 			}
 
 			.viewItem {
-				padding: 28rpx 40rpx;
+				padding: 48rpx 40rpx;
+
 				&.heijin {
+					color: rgba(196, 150, 108, 0.7);
+
 					.vip-btn {
-						color: #FFCD83;
-						border-color: #FFCD83;
+						color: rgba(196, 150, 108, 0.7);
+						border-color: rgba(196, 150, 108, 0.7);
 					}
-					.viewItem-vip-titel {
-						color: #FFCD83;
-					}
-					.item {
-						color: #C4966C;
+
+					.viewItem-vip-titel,
+					.item-title {
+						color: rgba(196, 150, 108, 1);
 					}
 				}
 
 				&.bojin {
+					color: rgba(188, 145, 76, 0.7);
+
 					.vip-btn {
-						color: #995D05;
-						border-color: #995D05;
+						color: rgba(188, 145, 76, 0.7);
+						border-color: rgba(188, 145, 76, 0.7);
 					}
-					.viewItem-vip-titel {
-						color: #995D05;
-					}
-					.item {
-						color: #BC914C;
+
+					.viewItem-vip-titel,
+					.item-title {
+						color: rgba(188, 145, 76, 1);
 					}
 				}
 
 				&.baiyin {
+					color: rgba(0, 0, 0, 0.6);
+
 					.vip-btn {
-						color: #000000 ;
-						border-color: #000000;
+						color: rgba(0, 0, 0, 0.6);
+						border-color: rgba(0, 0, 0, 0.6);
 					}
-					.viewItem-vip-titel {
-						color: #000000;
-					}
-					.item {
-						color: #555555;
+
+					.viewItem-vip-titel,
+					.item-title {
+						color: rgba(0, 0, 0, 1);
 					}
 				}
 
@@ -978,40 +1049,39 @@
 					height: 390rpx;
 
 					.viewItem-vip-info {
-						width: 100%;
-						height: 100%;
-						padding: 46rpx 52rpx 38rpx;
+						padding: 52rpx 52rpx 40rpx;
 						position: relative;
-						display: flex;
-						flex-direction: column;
-						justify-content: space-between;
 						z-index: 100;
 
 						.viewItem-vip-titel {
+							font-size: 40rpx;
 							font-weight: 600;
+							line-height: 56rpx;
 							display: flex;
-							justify-content: flex-end;
-							
+							justify-content: space-between;
+
 							.viewItem-vip-price {
 								font-weight: 600;
-								height: 66rpx;
-								line-height: 66rpx;
+
 								.price {
 									font-size: 48rpx;
 									line-height: 66rpx;
 								}
 
 								.oldprice {
-									margin-right: 44rpx;
+									margin-right: 48rpx;
 									font-size: 32rpx;
 									line-height: 44rpx;
 									text-decoration: line-through;
-									opacity: .6;
 								}
 							}
 						}
 
 						.viewItem-vip-txt {
+							// font-size: 20rpx;
+							// font-weight: 400;
+							// line-height: 28rpx;
+							// margin-top: 16rpx;
 							margin-top: 64rpx;
 							display: flex;
 							justify-content: space-between;
@@ -1027,13 +1097,14 @@
 							margin-top: 76rpx;
 							display: flex;
 							align-items: center;
-							justify-content: flex-end;
+							justify-content: space-between;
 
 							.viewItem-vip-inderice {
 								width: 256rpx;
 								font-size: 14rpx;
 								font-family: PingFangSC-Regular, PingFang SC;
 								font-weight: 400;
+								// color: #C4966C;
 								line-height: 18rpx;
 							}
 						}
@@ -1086,7 +1157,7 @@
 
 						.item-title {
 							font-size: 20rpx;
-							font-weight: 600;
+							font-weight: 500;
 							line-height: 28rpx;
 							margin: 16rpx 0;
 						}
@@ -1103,8 +1174,6 @@
 							font-weight: 400;
 							line-height: 18rpx;
 							width: 100%;
-							opacity: .7;;
-							font-family: PingFangSC-Regular;
 						}
 					}
 				}
@@ -1115,7 +1184,7 @@
 			width: 100%;
 			height: 12rpx;
 			background: rgba(0, 0, 0, 0.05);
-			box-shadow: 0 0 6rpx 0 rgba(0,0,0,0.08);
+			box-shadow: 0 0 6rpx 0 rgba(0, 0, 0, .1);
 		}
 	}
 
@@ -1151,16 +1220,16 @@
 			line-height: 44rpx;
 
 			view {
-				height: 90rpx;
+				height: 80rpx;
 				width: 690rpx;
-				border-radius: 45rpx;
+				border-radius: 40rpx;
 				margin: 10rpx auto 0;
 				background: linear-gradient(90deg, #efdec3, #e3c89a);
 				text-align: center;
-				line-height: 90rpx;
+				line-height: 80rpx;
 
 				text {
-					margin-right: 40rpx;
+					margin-right: 30rpx;
 				}
 			}
 		}
@@ -1198,6 +1267,7 @@
 				.list {
 					width: 100%;
 					height: 320rpx;
+					// overflow-x: auto;
 					white-space: nowrap;
 					position: absolute;
 					transition: .3s;
@@ -1206,9 +1276,14 @@
 						border-radius: 20rpx;
 						height: 320rpx;
 						width: 550rpx;
+						padding: 48rpx;
 						margin-right: 20rpx;
 						position: relative;
-						padding-left: 48rpx;
+
+						// &:first-child {
+						// 	margin-left: 100rpx;
+						// }
+
 						&.heijin {
 							color: #FFCD83;
 						}
@@ -1219,7 +1294,6 @@
 
 						&.baiyin {
 							color: #000000;
-							opacity: .6;
 						}
 
 						.img {
@@ -1274,8 +1348,8 @@
 							}
 
 							.price {
-								margin-top: 226rpx;
-								font-family: PingFangSC-Semibold;
+								margin-top: 102rpx;
+
 								.discount {
 									font-size: 48rpx;
 									font-weight: 600;
@@ -1327,20 +1401,21 @@
 				overflow-y: auto;
 				text-align: left;
 				font-size: 20rpx;
-				font-weight: 500;
+				font-weight: 400;
 				color: #995D05;
 				line-height: 30rpx;
 				padding: 0 100rpx;
 
 				.buy-title {
 					font-size: 24rpx;
-					font-weight: 600;
+					font-weight: 500;
 					line-height: 30rpx;
-					margin-bottom: 20rpx;
+					margin-bottom: 24rpx;
 				}
 
 				.buy-info-item {
-					font-family: PingFangSC-Regular;
+					margin-top: 30rpx;
+
 					text {
 						text-decoration: underline;
 					}

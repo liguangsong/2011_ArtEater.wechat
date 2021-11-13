@@ -1,7 +1,15 @@
 <style lang="scss">
 	/* 注意要写在第一行，同时给style标签加入lang="scss"属性 */
 	@import "uview-ui/index.scss";
-
+	text, view {
+		font-family: PingFangSC-Medium;
+	}
+	.semibold {
+		font-family: PingFangSC-Semibold !important;
+	}
+	.regular {
+		font-family: PingFangSC-Regular !important;
+	}
 </style>
 <script>
 	import config from 'static/config/index.js'
@@ -36,20 +44,26 @@
 	}
 	export default {
 		onLaunch: function() {
-			
+			uni.loadFontFace ({
+				global: true,
+				family: 'PingFangSC-Medium',
+				source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
+			})
+			uni.loadFontFace ({
+				global: true,
+				family: 'PingFangSC-Semibold',
+				source: 'url("https://art-eater.oss-cn-beijing.aliyuncs.com/word/PingFang-SC-Semibold.otf")',
+			})
+			uni.loadFontFace ({
+				global: true,
+				family: 'PingFangSc-Regular',
+				source: 'url("https://art-eater.oss-cn-beijing.aliyuncs.com/word/PingFang%20Regular.otf")',
+			})
 			uni.showShareMenu({
 				withShareTicket: true,
 				  menus: ['shareAppMessage', 'shareTimeline']
 			})
 			console.log('App onLaunch')
-			// uni.reLaunch({
-			// 	url:'/pages/index/lunch'
-			// })
-			// uni.checkSession({
-			// 	success(e) {
-			// 		// 已登录
-			// 	},
-			// 	fail(e) {
 				uni.getStorage({
 					key:'openid',
 					success:function(openidres){
@@ -72,12 +86,8 @@
 						})
 					}
 				})
-			// 	}
-			// })
 		},
-		onLoad() {
-			
-		},
+
 		onShow: function() {// 隐藏原生底部tab导航
 		   uni.getSystemInfo({
 			   success: res => {
@@ -93,11 +103,7 @@
 				
 			   }
 			})
-			// uni.getSystemInfo({
-			//     success: function (res) {
-			        
-			//     }
-			// });
+
 			uni.hideTabBar({
 				animation: false
 			});		
