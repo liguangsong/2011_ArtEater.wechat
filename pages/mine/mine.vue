@@ -597,7 +597,7 @@
 						border-radius: 13rpx;
 						line-height: 26rpx;
 						color: #fff;
-						margin-top: 2rpx;
+						margin-top: 4rpx;
 						min-width: 26rpx;
 						text-align: center;
 						background: linear-gradient(rgba(218, 39, 39, 1), rgba(218, 39, 39, .3));
@@ -606,6 +606,7 @@
 
 				.icon {
 					margin-right: 40rpx;
+					margin-top: -2rpx;
 				}
 			}
 
