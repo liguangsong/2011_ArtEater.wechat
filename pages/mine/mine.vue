@@ -157,8 +157,8 @@
 					<view class="cont">
 						<view class="title">
 							<text>消息中心</text>
-							<view>3</view>
-							<!-- <view v-if="msgCount > 0">{{msgCount}}</view> -->
+							<!-- <view>3</view> -->
+							<view v-if="msgCount > 0">{{msgCount}}</view>
 							<!-- <view style="position: relative;">消息中心
 								<u-badge  type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="msgCount"></u-badge>
 							</view> -->
