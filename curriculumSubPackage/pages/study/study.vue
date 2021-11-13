@@ -2,7 +2,7 @@
 	<view class='study' v-if="curriculumInfo">
 		<Navbar navbarBg='#fff' :height='height' fontColor="#000" iconColor='#000'>
 			<template v-slot:img>
-				<image style='width: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
+				<image style='width: 100%; height: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
 			</template>
 			<view class="head radius" :style='{top: height ? "-20rpx": 0}'>
 				<view class="title">{{curriculumInfo.subjectName}}</view>
@@ -18,10 +18,12 @@
 				</view>
 				<view class="tabber">
 					<view style='padding: 0 20rpx;' @click='tabbar = false'>
-						<view :class='{text: !tabbar}'>详情</view>
+						<view>详情</view>
+						<view style='height: 4rpx;' :class='{br: !tabbar}'></view>
 					</view>
 					<view style='padding: 0 20rpx;' @click='tabbar = true'>
-					<view :class='{text: tabbar}'>目录</view>
+						<view>目录</view>
+						<view style='height: 4rpx;' :class='{br: tabbar}'></view>
 					</view>
 				</view>
 			</view>
@@ -120,12 +122,12 @@
 		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.1);
 	}
 	.radius {
-		border-top-left-radius: 20rpx;
-		border-top-right-radius: 20rpx;
+		border-top-left-radius: 24rpx;
+		border-top-right-radius: 24rpx;
 		position: relative;
 	}
   .title {
-		padding: 28rpx 0;
+		padding: 20rpx 0;
 		font-size: 44rpx;
 		font-weight: 900;
 	}
@@ -135,6 +137,7 @@
 		justify-content: space-between;
 		align-items: center;
 		height: 48rpx;
+		color: rgba(23,23,23,.6)
 	}
 	.info .studynum {
 		margin-right: 30rpx;
@@ -154,17 +157,22 @@
 	.tabber {
 		display: flex;
 		justify-content: space-around;
-		margin-top: 30rpx;
+		margin-top: 44rpx;
+		font-size: 24rpx;
+		font-weight: 700;
 	}
 	.tabber view {
-		height: 48rpx;
-	}
-	.tab {
-		/* margin-top: 30rpx; */
+		height: 38rpx;
+		text-align: center;
 	}
 	.text {
 		color: #D81E1F;
 		border-bottom: 3px solid #D81E1F;
+	}
+	.br {
+		width: 46rpx;
+		background: #D81E1F;
+		border-radius: 2rpx;
 	}
 	
 </style>

@@ -2,10 +2,9 @@
 	<view class="tree-item">
 		<view class="leave0" v-if='item.level == 1&&item.kind==4'>
 			{{item.subjectName}}
-			<text class='free' v-if='!item.vip'>免费</text>
 		</view>
 		<view v-else class="item" @click.stop='changeItem'>
-			<view class="leave" :style='{paddingLeft: item.level*52 + "rpx", color:item.kind==4 && (!item.children || !item.children.length)?"rgba(0,0,0,0.3)":"rgba(0,0,0,0.7)"}'>
+			<view class="leave" :style='{paddingLeft: (item.level-1)*52 + "rpx", color:item.kind==4 && (!item.children || !item.children.length)?"rgba(0,0,0,0.3)":"rgba(0,0,0,0.7)"}'>
 				<view class="title">
 					<image class="icon" :src="item.kind == '1' ? video :item.kind == '2'? audio:''"></image>
 					{{item.subjectName}}
@@ -63,17 +62,9 @@
 		width: 100%;
 		padding-left: 48rpx;
 		font-size: 28rpx;
-		font-weight: 900;
+		font-weight: 700;
 		transform: translateY(1px);
-	}
-	.leave0::before {
-		display: inline-block;
-		content: '';
-		width: 6rpx;
-		height: 24rpx;
-		background: #D81E1F;
-		line-height: 84rpx;
-		margin-right: 8rpx;
+		font-family: PingFangSC-Semibold;
 	}
 	.item {
 		background: #fff;

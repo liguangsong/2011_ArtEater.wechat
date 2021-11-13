@@ -169,7 +169,7 @@
 		flex: 1 1 auto;
 		padding-right: 50rpx;
 		font-family: PingFangSC-Medium;
-		font-weight: 600;
+		font-weight: 700;
 		font-size: 34rpx;
 	}
 	.bg {

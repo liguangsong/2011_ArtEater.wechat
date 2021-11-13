@@ -1,7 +1,12 @@
 <template>
 	<view class="list">
-		<audition-learning :list="curriculumList" v-if="curriculumList.length&&moduleName=='正在学习'" @learnChangeUrl="changeUrl"></audition-learning>
-		<audition :list="curriculumList" v-else-if="curriculumList.length" @changeUrl="changeUrl"></audition>
+		<!-- <audition-learning :list="curriculumList" v-if="curriculumList.length&&moduleName=='正在学习'" @learnChangeUrl="changeUrl"></audition-learning>
+		<audition :list="curriculumList" v-else-if="curriculumList.length" @changeUrl="changeUrl"></audition> -->
+		<Navbar navbarBg='#F7F7F7' title='课程' align='center' fontColor="#000" iconColor='#000'>
+			<view style='height: 24rpx;'></view>
+			<audition-learning :list="curriculumList" v-if="curriculumList.length&&moduleName=='正在学习'" @learnChangeUrl="changeUrl"></audition-learning>
+			<audition :list="curriculumList" v-else-if="curriculumList.length" @changeUrl="changeUrl"></audition>
+		</Navbar>
 	</view>
 </template>
 
@@ -9,6 +14,7 @@
 	import Curriculum from '@/js/utils/curriculum.js'
 	import audition from '@/components/audition/audition.vue'
 	import auditionLearning from '@/components/audition/auditionLearning.vue'
+	import Navbar from '../../../components/navBar/navbar.vue';
 	export default {
 		data() {
 			return {
@@ -17,7 +23,7 @@
 				curriculumList:[]
 			}
 		},
-		components:{audition,auditionLearning},
+		components:{audition,auditionLearning,Navbar},
 		onLoad(options) {
 			this.moduleName=options.moduleName;
 			uni.setNavigationBarTitle({
@@ -83,6 +89,7 @@
 
 <style lang="scss" scoped>
   .list{
-	  padding-top: 30rpx;
+		background: #f7f7f7;
+		height: 100vh;
   }
 </style>

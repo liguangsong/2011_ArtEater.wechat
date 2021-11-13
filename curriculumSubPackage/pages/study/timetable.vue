@@ -69,6 +69,7 @@
 		height: 24rpx;
 		background: #D81E1F;
 		margin-right: 10rpx;
+		border-radius: 1px;
 	}
 	.content {
 		height: 600rpx;

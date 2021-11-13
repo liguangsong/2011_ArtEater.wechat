@@ -74,6 +74,7 @@
 		height: 24rpx;
 		background: #D81E1F;
 		margin-right: 10rpx;
+		border-radius: 1px;
 	}
 	.font {
 		margin: 16rpx 0;

@@ -221,7 +221,7 @@
 			align-items: center;
 			//要添加该属性，防止滑动报错
 			touch-action: none;
-
+			font-size: 20rpx;
 			.audio-time {
 				color: #9d9d9d;
 			}

@@ -1,17 +1,17 @@
 <template>
-	<view class='questionbank-item'>
+	<view class='questionbank-item' @click='jump(item)'>
 		<view class='img'>
 			<image :src="img"></image>
 		</view>
 		<view class="content">
-			<view class="title" @click='jump(item)'>{{item.subject_name}}</view>
+			<view class="title">{{item.subject_name}}</view>
 			<view class="info">
 				<view>
 					<view>已完成：{{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}}</view>
-					<!-- <view>正确率：{{subjectTree.progress?(100/subjectTree.progress):0}}%</view> -->
 				</view>
-				<view class="btn" @click='jump(item)'>
-					<text>学习</text>
+				<view class="btn">
+					<!-- <text>学习</text> -->
+					<image src="../../static/study.png" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -238,8 +238,8 @@
 <style scoped>
 	.questionbank-item {
 		width: 690rpx;
-		height: 220rpx;
-		margin: 24rpx auto 0;
+		height: 216rpx;
+		margin: 28rpx auto 0;
 		display: flex;
 		box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.1);
 		border-radius: 24rpx;
@@ -259,12 +259,13 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1 0 auto;
+		justify-content: space-between;
 	}
 	.questionbank-item .content .title {
 		font-size: 32rpx;
 		font-weight: 600;
 		line-height: 44rpx;
-		margin-bottom: 64rpx;
+		margin-top: 12rpx;
 	}
 	.questionbank-item .content .info {
 		display: flex;
@@ -274,8 +275,15 @@
 		font-size: 20rpx;
 		font-weight: 400;
 		line-height: 32rpx;
+		font-family: PingFangSC-Regular;
+		color: rgba(0,0,0,.5);
 	}
-	.questionbank-item .btn{
+	.questionbank-item image {
+		width: 108rpx;
+		height: 48rpx;
+		margin-bottom: -4rpx;
+	}
+	/* .questionbank-item .btn{
 		width: 100rpx;
 		height: 40rpx;
 		border-radius: 20rpx;
@@ -285,5 +293,5 @@
 		color: #FF6867;
 		border: 2rpx solid #FF6867;
 		margin-right: 12rpx;
-	} 
+	} */
 </style>

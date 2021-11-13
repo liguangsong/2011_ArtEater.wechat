@@ -1,8 +1,8 @@
 <template>
 	<view class='curriculum-item'>
-		<view class="content">
+		<view class="content" @click='jumpDefault(item)'>
 			<view class='font'>
-				<view class="title" @click='jumpDefault(item)'>{{item.subjectName}}</view>
+				<view class="title">{{item.subjectName}}</view>
 				<view class="info">
 					<text v-if='item.subTitle1'>{{item.subTitle1}}</text>
 					<text>{{item.subTitle2}}</text>
@@ -15,11 +15,13 @@
 				</view>
 				<!-- <view class="box"> -->
 					<view class="btn" v-if='item.vip' :class='{study: item.vip && vip }'>
-						<text v-if='vip' @click='jumpDefault(item)'>学习</text>
-						<text v-else @click='unlockFn'>解锁</text>
+						<!-- <text v-if='vip'>学习</text> -->
+						<!-- <text v-else @click.stop='unlockFn'>解锁</text> -->
+						<image v-if='vip' src="../../static/study.png" mode=""></image>
+						<image v-else @click.stop='unlockFn' src="../../static/lock.png" mode=""></image>
 					</view>
 					<view class="btn study" v-else>
-						<text @click='jumpDefault(item)'>学习</text>
+						<image src="../../static/study.png" mode=""></image>
 					</view>
 				<!-- </view> -->
 			</view>
@@ -118,6 +120,7 @@
 	.teacher .img {
 		display: flex;
 		align-items: center;
+		color: rgba(23,23,23,.6);
 	}
 	.teacher image {
 		width: 48rpx;
@@ -125,7 +128,12 @@
 		margin-right: 12rpx;
 		border-radius: 50%;
 	}
-	.btn {
+	.btn image{
+		width: 108rpx;
+		height: 48rpx;
+		border-radius: 0;
+	}
+/* 	.btn {
 		width: 100rpx;
 		height: 40rpx;
 		line-height: 40rpx;
@@ -133,7 +141,7 @@
 		border-radius: 20rpx;
 		overflow: hidden;
 		background: rgba(0,0,0,.1);
-	}
+	} */
 	.vip {
 		position: absolute;
 		top: -6rpx;
@@ -143,9 +151,9 @@
 		width: 116rpx;
 		height: 116rpx;
 	}
-	.study {
+	/* .study {
 		border: 2rpx solid #FF6867;
 		background: #fff;
 		color: #FF6867;
-	}
+	} */
 </style>

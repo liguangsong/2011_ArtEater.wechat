@@ -1,5 +1,5 @@
 <template>
-	<view class="details" :class='{"details-scroll": timetable}'>
+	<view class="details" :class='{"details-scroll": timetable}' :style='{height: timetable ? "100vh":"auto"}'>
 		<view class="header">
 			<view class="tabbar" :style='{height: tabbarheight+"rpx"}'>
 				<view class="navbar" :style='{height: navbarheight + "rpx", top: tabbarheight - navbarheight + "rpx"}'>
@@ -38,7 +38,7 @@
 							<view class="img">
 								<image :src="collectionStatus?active:unactive"></image>
 							</view>
-							<text>{{collectionStatus?'已收藏':'收藏'}}</text>
+							<text class='collection'>{{collectionStatus?'已收藏':'收藏'}}</text>
 						</view>
 					</view>
 				</view>
@@ -52,12 +52,12 @@
 			<view class="br"></view>
 		</view>
 		<!-- 图文 -->
-		<view class="html" :style='{paddingTop: infoTop + 4 + "px"}' v-if="curriculumInfo.explain">
+		<view class="html" :style='{paddingTop: htmlInfoTop + 4 + "px"}' v-if="curriculumInfo.explain">
 			<rich-text :nodes='curriculumInfo.explain|formatRichText'></rich-text>
 		</view>
-		<view v-else :style='{paddingTop: infoTop + 4 + "px"}'></view>
+		<view v-else :style='{paddingTop: infoTop + 10 + "px"}'></view>
 		<!-- 推荐学习 -->
-		<view class="recommend" v-if='recommendedList.length'>
+		<view class="recommend" v-show='recommendedList.length'>
 			<view class="recommend-title">
 				推荐学习
 			</view>
@@ -116,6 +116,7 @@
 				tabbarheight: 0,
 				navbarheight: 0,
 				infoTop: 0,
+				htmlInfoTop: 0,
 				collectionStatus: false,
 				active: "../../../static/icon/icon_collection_active.png",
 				unactive: "../../../static/icon/icon_collection.png",
@@ -155,13 +156,14 @@
 			this.objectId = options.objectId;
 			// 获取当前课程详情
 			this.getCurriculum();
+		
 		},
 
 		async created() {
-
 			let that = this;
 			uni.getSystemInfo({
 				success: (e) => {
+					console.log(e);
 					let statusBar = 0
 					let customBar = 0
 					statusBar = e.statusBarHeight
@@ -172,6 +174,7 @@
 					that.screenHeight = e.screenHeight;
 				}
 			})
+			
 			// 判断是不是会员
 			var app = getApp();
 			var member = app.globalData.member;
@@ -180,12 +183,6 @@
 					this.vip = true;
 				}
 			}
-			// var query = new this.Parse.Query('MemberList');
-			// var user1 = JSON.parse(JSON.stringify(user));
-			// query.equalTo("openId", user1.openid);
-			// var results = await query.first();
-			// results.set('memberType', '');
-			// results.save();
 		},
 		onPageScroll(res) {
 			if (this.curriculumInfo.kind == 3) {
@@ -287,7 +284,16 @@
 				}
 				const query = uni.createSelectorQuery().in(this);
 				query.select('.header').boundingClientRect(data => {
-					this.infoTop = data.height;
+					this.htmlInfoTop = data.height;
+					let q1 = uni.createSelectorQuery().in(this);
+					q1.select('.recommend').boundingClientRect(d => {
+						let h = uni.getSystemInfoSync().screenHeight - d.height;
+						if (h > data.height) {
+							this.infoTop = h;
+						} else {
+							this.infoTop = data.height;
+						}
+					}).exec();			
 				}).exec();
 				uni.hideLoading()
 			},
@@ -329,9 +335,19 @@
 					this.$nextTick(() => {
 						const query = uni.createSelectorQuery().in(this);
 						query.select('.header').boundingClientRect(data => {
-							this.infoTop = data.height;
+							this.htmlInfoTop = data.height;
+							let q1 = uni.createSelectorQuery().in(this);
+							q1.select('.recommend').boundingClientRect(d => {
+								let h = uni.getSystemInfoSync().screenHeight - d.height;
+								if (h > data.height) {
+									this.infoTop = h;
+								} else {
+									this.infoTop = data.height;
+								}
+							}).exec();			
 						}).exec();
 					})
+					
 					// 存储上次学习
 					await Curriculum.updatePreLearn(item['rootId'], item.objectId);
 				}
@@ -424,7 +440,8 @@
 					font-size: 20rpx;
 					height: 64rpx;
 					line-height: 64rpx;
-
+					color: rgba(23,23,23,.6);
+					
 					.teacher {
 						flex: 0 1 278rpx;
 						display: flex;
@@ -488,6 +505,10 @@
 								border: none;
 							}
 						}
+						.collection {
+							display: inline-block;
+							width: 60rpx;
+						}
 					}
 				}
 			}
@@ -501,7 +522,7 @@
 			}
 
 			.br {
-				border-bottom: 1px solid rgba(0, 0, 0, .1);
+				border-bottom: 1px solid rgba(0, 0, 0, .05);
 				margin: 0 24rpx;
 			}
 		}
@@ -523,12 +544,13 @@
 		.recommend {
 			padding: 48rpx 30rpx;
 			background: rgba(0, 0, 0, 0.05);
-
+			display: block;
 			.recommend-title {
 				font-size: 28rpx;
-				font-weight: 500;
+				font-weight: 600;
 				margin-bottom: 24rpx;
-
+				font-family: PingFangSC-Medium;
+				
 				&::before {
 					content: "";
 					display: inline-block;
@@ -536,6 +558,7 @@
 					height: 24rpx;
 					margin-right: 8rpx;
 					background: #D81E1F;
+					border-radius: 1px;
 				}
 			}
 
@@ -581,6 +604,7 @@
 					font-size: 20rpx;
 					line-height: 48rpx;
 					align-items: center;
+					color: rgba(23,23,23,.6);
 
 					.img {
 						display: flex;
@@ -677,6 +701,7 @@
 						font-weight: 600;
 						color: #D81E1F;
 						line-height: 40rpx;
+						
 					}
 				}
 
@@ -685,12 +710,13 @@
 					margin-top: 160rpx;
 					padding-left: 48rpx;
 					overflow-y: auto;
-
+					font-family: PingFangSC-Regular;
+					
 					.active {
 						font-size: 24rpx;
 						font-weight: 600;
-						color: #000000;
-
+						color:rgba(0,0,0,.9) !important;
+						
 						.item-type {
 							text {
 								font-size: 16rpx;
@@ -704,20 +730,20 @@
 						justify-content: space-between;
 						align-items: center;
 						height: 84rpx;
-						border-bottom: 1px solid rgba(0, 0, 0, .1);
+						border-bottom: 1px solid rgba(0, 0, 0, .05);
 						font-size: 24rpx;
-						color: rgba(0, 0, 0, .7);
+						color: rgba(0, 0, 0, .67);
 
 						.item-type {
-							margin-right: 20rpx;
+							margin-right: 48rpx;
 
 							text {
 								margin-right: 30rpx;
 							}
 
 							image {
-								width: 24rpx;
-								height: 24rpx;
+								width: 34rpx;
+								height: 34rpx;
 								vertical-align: middle;
 							}
 						}
