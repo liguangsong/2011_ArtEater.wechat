@@ -132,6 +132,7 @@
 				// line-height: 28rpx;
 				margin-top: -14rpx;
 				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 600;
 			}
 
 			.item-badge {

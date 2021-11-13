@@ -298,14 +298,14 @@
 				self.subjects = list
 			})
 
-             uni.loadFontFace ({
-				  family: 'PingFangSC-Medium',
-				  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-				  // source: 'url("https://www.arteater.cn/PingFang.ttc")',
-				  success: function(){
-					  console.log('load font success')
-				  }
-				})
+    //          uni.loadFontFace ({
+				//   family: 'PingFangSC-Medium',
+				//   source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
+				//   // source: 'url("https://www.arteater.cn/PingFang.ttc")',
+				//   success: function(){
+				// 	  console.log('load font success')
+				//   }
+				// })
 			var bannerQuery = new this.Parse.Query('Banner')
 			bannerQuery.equalTo('state', 1)
 			bannerQuery.ascending('sort')
@@ -855,7 +855,6 @@
 	}
 
 	.navSection .navItem .title {
-		width: 172rpx;
 		height: 32rpx;
 		line-height: 32rpx;
 		display: inline-block;

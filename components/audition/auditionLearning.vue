@@ -131,7 +131,8 @@
 		.title{
 			height: 40rpx;
 			font-size: 28rpx;
-			// font-family: PingFangSC-Medium, PingFang SC;
+			letter-spacing: 0rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #000000;
 			line-height: 40rpx;
@@ -141,7 +142,8 @@
 		.more{
 			// width: 80rpx;
 			font-size: 16rpx;
-			font-weight: 500;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 600;
 			color: #000000;
 			position: absolute;
 			top:10rpx;
@@ -203,18 +205,21 @@
 		padding-left: 18rpx;
 	}
 	.txt-info .txt-title {
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		height: 34rpx;
-		font-size: 24rpx;
-		font-weight: 600;
-		color: #171717;
-		line-height: 34rpx;
+	   white-space: nowrap;
+	   text-overflow: ellipsis;
+	   overflow: hidden;
+	   height: 34rpx;
+	   font-size: 24rpx;
+	   font-family: PingFangSC-Medium, PingFang SC;
+	   letter-spacing: 0rpx;
+	   font-weight: 600;
+	   color: #171717;
+	   line-height: 34rpx;
 	}
 	.txt-info .tag {
 		height: 22rpx;
 		font-size: 16rpx;
+		letter-spacing: 0rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
 		color: #989898;

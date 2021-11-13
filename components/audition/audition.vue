@@ -104,6 +104,7 @@
 		.title{
 			height: 40rpx;
 			font-size: 28rpx;
+			letter-spacing: 0rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #000000;
@@ -187,6 +188,7 @@
 		height: 34rpx;
 		font-size: 24rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
+		letter-spacing: 0rpx;
 		font-weight: 600;
 		color: #171717;
 		line-height: 34rpx;
@@ -194,8 +196,9 @@
 	.txt-info .tag {
 		height: 22rpx;
 		font-size: 16rpx;
+		letter-spacing: 0rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 500;
+		font-weight: 400;
 		color: #989898;
 		display: inherit;
 		line-height: 22rpx;
