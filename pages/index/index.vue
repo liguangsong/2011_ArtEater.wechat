@@ -70,7 +70,7 @@
 					:showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index"
 					@changeUrl="changeUrl" @checkMore="checkMore"></audition>
 				<!--精品推荐 start-->
-				<view class="groupView" style="margin-top: 24rpx;">
+				<!-- <view class="groupView" style="margin-top: 24rpx;">
 					<view class="headView">
 						<view class="title">推荐</view>
 					</view>
@@ -86,7 +86,7 @@
 							</view>
 						</view>
 					</view>
-				</view>
+				</view> -->
 				<!--精品推荐 end-->
 				<!--购买重点题库 start-->
 				<u-popup v-model="isShowImportBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
@@ -123,13 +123,12 @@
 					</view>
 				</u-popup>
 				<!--购买重点题库 end-->
-				<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl">
-				</login>
+				
 				
 			</template>
 
 		</Navbar>
-
+        <login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl"></login>
 		<!--轮播 end-->
 		<!-- <u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true"
 			:zoom="false" @click="handleStep"> -->
@@ -299,7 +298,14 @@
 				self.subjects = list
 			})
 
-
+             uni.loadFontFace ({
+				  family: 'PingFangSC-Medium',
+				  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
+				  // source: 'url("https://www.arteater.cn/PingFang.ttc")',
+				  success: function(){
+					  console.log('load font success')
+				  }
+				})
 			var bannerQuery = new this.Parse.Query('Banner')
 			bannerQuery.equalTo('state', 1)
 			bannerQuery.ascending('sort')
@@ -859,7 +865,7 @@
 		color: #352026;
 		display: block;
 		margin: auto;
-		// font-family: PingFang;
+		font-family: PingFangSC-Medium, PingFang SC;
 	}
 
 	.groupView {

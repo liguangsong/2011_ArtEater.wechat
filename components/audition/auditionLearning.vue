@@ -222,12 +222,12 @@
 		line-height: 22rpx;
 	}
 	.view{
-		height: 22rpx;
+		height: 24rpx;
 		font-size: 16rpx;
 		font-weight: 500;
 		color: #FFFFFF;
 		margin-left: 12rpx;
-		line-height: 22rpx;
+		line-height: 24rpx;
 		.play-image{
 			width: 24rpx;
 			height: 24rpx;

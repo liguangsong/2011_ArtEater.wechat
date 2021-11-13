@@ -118,7 +118,7 @@
 			// justify-content: center;
 			height: 116rpx;
 			position: relative;
-
+			padding-top: 2rpx;
 			.item-img {
 				width: 76rpx;
 				height: 76rpx;
@@ -130,7 +130,7 @@
 				text-align: center;
 				height: 28rpx;
 				// line-height: 28rpx;
-				margin-top: -11rpx;
+				margin-top: -14rpx;
 				font-family: PingFangSC-Medium, PingFang SC;
 			}
 
