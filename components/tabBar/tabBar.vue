@@ -122,7 +122,7 @@
 			.item-img {
 				width: 76rpx;
 				height: 76rpx;
-				padding-top: 5rpx;
+				padding-top: 3rpx;
 			}
 
 			.item-name {
