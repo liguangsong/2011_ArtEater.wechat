@@ -3,7 +3,7 @@
 		<view class="lunch-title" :style="{heigth:height+'px','line-height':height+'px',top:top+'px'}">食艺兽</view>
 		<view class="bg" :style="{'height':screenHeight+'rpx;text-align:center'}">
 			<!-- <image mode="heightFix" src="https://art-eater.oss-cn-beijing.aliyuncs.com/WechatIMG2460.png"></image> -->
-			<image mode="aspectFill" src="../../static/lunchbg_1.png"></image>
+			<image mode="aspectFill" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/lunchbg.png"></image>
 		</view>
 		<view class="contains" :style="{bottom:66+paddingBottom+'rpx'}" @click="handlejump"></view>
 	</view>

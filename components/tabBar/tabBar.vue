@@ -118,10 +118,11 @@
 			// justify-content: center;
 			height: 116rpx;
 			position: relative;
-			padding-top: 2rpx;
+			// padding-top: 2rpx;
 			.item-img {
 				width: 76rpx;
 				height: 76rpx;
+				padding-top: 5rpx;
 			}
 
 			.item-name {
@@ -130,7 +131,7 @@
 				text-align: center;
 				height: 28rpx;
 				// line-height: 28rpx;
-				margin-top: -14rpx;
+				margin-top: -16rpx;
 				font-family: PingFangSC-Medium, PingFang SC;
 				font-weight: 600;
 			}
