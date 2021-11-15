@@ -166,7 +166,7 @@
 		.icon-vip{
 			position: absolute;
 			right: 0;
-			top: -6rpx;
+			top: -5rpx;
 			width: 98rpx;
 			height: 28rpx;
 		}
