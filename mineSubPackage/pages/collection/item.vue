@@ -1,8 +1,8 @@
 <template>
-	<view class='curriculum-item'>
+	<view class='curriculum-item' @click='jumpDefault(item)'>
 		<view class="content">
 			<view class='font'>
-				<view class="title" @click='jumpDefault(item)'>{{item.subjectName}}</view>
+				<view class="title">{{item.subjectName}}</view>
 				<view class="info" v-if='!item.level'>
 					<text v-if='item.subTitle1'>{{item.subTitle1}}</text>
 					<text>{{item.subTitle2}}</text>

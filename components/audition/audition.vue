@@ -104,6 +104,7 @@
 		.title{
 			height: 40rpx;
 			font-size: 28rpx;
+			letter-spacing: 0rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #000000;
@@ -115,7 +116,7 @@
 			// width: 80rpx;
 			font-size: 16rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
+			font-weight: 600;
 			color: #000000;
 			position: absolute;
 			top:10rpx;
@@ -187,6 +188,7 @@
 		height: 34rpx;
 		font-size: 24rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
+		letter-spacing: 0rpx;
 		font-weight: 600;
 		color: #171717;
 		line-height: 34rpx;
@@ -194,8 +196,9 @@
 	.txt-info .tag {
 		height: 22rpx;
 		font-size: 16rpx;
+		letter-spacing: 0rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 500;
+		font-weight: 400;
 		color: #989898;
 		display: inherit;
 		line-height: 22rpx;
@@ -216,21 +219,22 @@
 		}
 		.play-num{
 			display: inline-block;
-			height: 24rpx;
+			height: 22rpx;
 			font-size: 16rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
+			vertical-align: middle;
 			font-weight: 600;
 			color: #FFFFFF;
 		}
 		
 	}
 	.time{
-		height: 22rpx;
+		height: 24rpx;
 		font-size: 16rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #FFFFFF;
-		line-height: 22rpx;
+		line-height: 24rpx;
 		margin-right: 12rpx;
 	}
 </style>

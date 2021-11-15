@@ -1,9 +1,11 @@
 <template>
 	<view>
+		<view class="lunch-title" :style="{heigth:height+'px','line-height':height+'px',top:top+'px'}">食艺兽</view>
 		<view class="bg" :style="{'height':screenHeight+'rpx;text-align:center'}">
-			<image mode="heightFix" src="https://art-eater.oss-cn-beijing.aliyuncs.com/WechatIMG2460.png"></image>
+			<!-- <image mode="heightFix" src="https://art-eater.oss-cn-beijing.aliyuncs.com/WechatIMG2460.png"></image> -->
+			<image mode="aspectFill" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/lunchbg.png"></image>
 		</view>
-		<view class="contains" @click="handlejump">跳过</view>
+		<view class="contains" :style="{bottom:66+paddingBottom+'rpx'}" @click="handlejump"></view>
 	</view>
 </template>
 <script>
@@ -11,8 +13,11 @@
 	export default {
 		data() {
 			return {
+				top:uni.getMenuButtonBoundingClientRect().top,
+				height:uni.getMenuButtonBoundingClientRect().height,
 				timer: null,
 				screenHeight: 0,
+				paddingBottom:getApp().globalData.paddingBottomHeight,
 			}
 		},
 		onLoad(options) {
@@ -56,6 +61,16 @@
 	page{
 		background-color: #ffffff;
 	}
+	.lunch-title{
+		font-size: 34rpx;
+		font-family: SFProDisplay-Medium, SFProDisplay;
+		font-weight: 600;
+		color: #000000;
+		text-align: center;
+		position: absolute;
+		width: 100%;
+		z-index: 1;
+	}
 	.bg{
 		position: relative;
 		width: 100%;
@@ -68,15 +83,11 @@
 	}
 	.contains{
 		position: absolute;
-		right: 40rpx;
-		top: 22rpx;
-		width: 106rpx;
-		height: 50rpx;
-		line-height: 50rpx;
-		border-radius: 50rpx;
-		color: #d6d6d6;
-		border: 2rpx solid #d6d6d6;
-		text-align: center;
-		font-size: 26rpx;
+		right: 66rpx;
+		/* bottom: 66rpx; */
+		width: 108rpx;
+		height: 48rpx;
+		background: url('../../static/jump.png') no-repeat;
+		background-size:cover;
 	}
 </style>

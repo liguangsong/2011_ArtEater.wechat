@@ -15,7 +15,8 @@
 			"path": "pages/index/lunch",
 			"style": {
 				"navigationBarTitleText": "食艺兽",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
 			}
 
 		}, {
