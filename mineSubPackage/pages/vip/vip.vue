@@ -67,7 +67,7 @@
 									<image src="../../static/heijin/vip1.png"></image>
 								</view>
 								<view class="item-title">
-									VIP课程畅听
+									VIP课程畅享
 								</view>
 								<view class="item-txt1">
 									食艺兽线上音视频VIP课程* 免费畅享
@@ -196,7 +196,7 @@
 									<image src="../../static/bojin/vip1.png"></image>
 								</view>
 								<view class="item-title">
-									VIP课程畅听
+									VIP课程畅享
 								</view>
 								<view class="item-txt1">
 									食艺兽线上音视频VIP课程* 免费畅享
