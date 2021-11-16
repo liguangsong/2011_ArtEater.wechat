@@ -158,13 +158,6 @@
 					self.form.nickname = res.data.nickName
 				}
 			})
-			uni.loadFontFace ({
-			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			  success: function(){
-				  console.log('load font success')
-			  }
-			})
 			this.$refs.uForm.setRules(this.rules);
 		},
 		methods: {

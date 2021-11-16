@@ -42,13 +42,7 @@
 		},
 		created() {
 			var self = this
-			uni.loadFontFace ({
-			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			  success: function(){
-				  console.log('load font success')
-			  }
-			})
+
 			this.subjectId = this.item.objectId
 			uni.getStorage({
 				key:'userInfo',
@@ -244,6 +238,7 @@
 		box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.1);
 		border-radius: 24rpx;
 		padding: 20rpx;
+		background: #fff;
 	}
 	.questionbank-item .img {
 		width: 180rpx;
@@ -263,9 +258,10 @@
 	}
 	.questionbank-item .content .title {
 		font-size: 32rpx;
-		font-weight: 600;
+		font-weight: 500;
 		line-height: 44rpx;
 		margin-top: 12rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
 	}
 	.questionbank-item .content .info {
 		display: flex;
@@ -281,7 +277,7 @@
 	.questionbank-item image {
 		width: 108rpx;
 		height: 48rpx;
-		margin-bottom: -4rpx;
+		margin-bottom: -10rpx;
 	}
 	/* .questionbank-item .btn{
 		width: 100rpx;

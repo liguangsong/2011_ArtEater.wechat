@@ -57,9 +57,9 @@
 <style scoped>
 	.catalogue {
 		margin-top: 4rpx;
-		font-size: 30rpx;
+		font-size: 28rpx;
 		margin-bottom: 14rpx;
-		font-weight: 900;
+		font-weight: 500;
 		padding-left: 48rpx;
 		color: #D81E1F;
 	}
@@ -70,6 +70,7 @@
 		height: 24rpx;
 		background: #D81E1F;
 		margin-right: 10rpx;
+		transform: translateY(2rpx);
 		border-radius: 1px;
 	}
 	.content {

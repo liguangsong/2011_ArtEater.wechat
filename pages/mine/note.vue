@@ -183,13 +183,6 @@
 			  }
 			})
 
-			uni.loadFontFace ({
-			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			  success: function(){
-				  console.log('load font success')
-			  }
-			})
 			self.Parse.Config.get().then(_config=>{
 				self.version = _config.get('version')
 				self.percentH = _config.get('percentH')

@@ -1,9 +1,12 @@
 <template>
 	<view class="myPage" :style="{'height':windowHeight + 'px','overflow': 'scroll','padding-bottom':pdbtm+'rpx'}">
+		
+			<!-- <keep-alive> -->
 		<Navbar navbarBg='#F7F7F7' :icon='false' title='题库' align='center' fontColor="#000" iconColor='#000'>
-			<Item v-for='(item, i) in subjects' :item='item' :img='arr[i]' :key='i'/>
-			<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
+				<Item v-for='(item, i) in subjects' :item='item' :img='arr[i]' :key='i'/>
+				<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
 		</Navbar>
+			<!-- </keep-alice> -->
 	</view>
 </template>
 
@@ -39,13 +42,13 @@
 					_this.userInfo = res.data;
 				},
 			})
-		},
-		async onShow() {
-			this.subjects=[]
-			await this.getSubject();
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
 			this.pdbtm=125+app.globalData.paddingBottomHeight;
+		},
+		async onShow() {
+			// this.subjects=[]
+			await this.getSubject();
 			uni.hideTabBar({
 				animation: false
 			});

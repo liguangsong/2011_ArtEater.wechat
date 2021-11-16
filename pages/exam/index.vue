@@ -92,14 +92,7 @@
 			query1.find().then(list => {
 				self.tests1 = list
 			})
-			
-			uni.loadFontFace ({
-			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			  success: function(){
-				  console.log('load font success')
-			  }
-			})
+
 		},
 		methods: {
 			handleTestClick(e){

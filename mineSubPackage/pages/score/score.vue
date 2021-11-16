@@ -73,13 +73,7 @@
 		},
 		onLoad() {
 			this.bindData()
-			uni.loadFontFace ({
-			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			  success: function(){
-				  console.log('load font success')
-			  }
-			})
+
 			var self = this
 			uni.getStorage({
 				key:'userInfo',
@@ -120,6 +114,7 @@
 					if(res.length > 0) {
 						self.status = 'loadmore'
 						self.scoreList = self.scoreList.concat(res)
+						// console.log(self.scoreList);
 					} else {
 						self.status = 'nomore'
 					}

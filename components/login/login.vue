@@ -6,7 +6,7 @@
 				<view class="action">
 					<view class="btn-box">
 						<view class="btn btnCancel" @click="handleCancle">
-						    取消
+						  取消
 						</view>
 						<view class="btn btnConfirm" @click="handleGetuserinfo">
 							微信授权
@@ -30,15 +30,6 @@
 				type: String,
 				default: ''
 			}
-		},
-		onLoad() {
-			uni.loadFontFace ({
-				family: 'PingFangSC-Medium',
-				source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-				success: function(){
-					console.log('load font success')
-				}
-			})
 		},
 		data() {
 			return {
@@ -287,8 +278,7 @@
 		text-align: center;
 		height: 40rpx;
 		font-size: 28rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 600;
+		font-weight: 500;
 		color: #000000;
 		line-height: 40rpx;
 	}
@@ -301,25 +291,25 @@
 	.content .action .btn-box{
 		justify-content: space-between;	
 		display: flex;
-        background: rgba(0,0,0,.1);
+    background: rgba(0,0,0,.1);
 	}
 	.content .action .btn{
 		height: 78rpx;
-		width: 288rpx;
+		/* width: 288rpx; */
+		flex: 0 1 50%;
 		line-height: 78rpx;
-		/* flex: 1; */
 		text-align: center;
 		background-color: #ffffff;
 		display: inline-block;
 		vertical-align: middle;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 600;
+		font-weight: 500;
 	}
 	.btnCancel{
 		color: #000000;
 	}
 	.btnConfirm{
+		border-left: 1rpx solid rgba(0,0,0,.1);
 		color: #ED3535;
 	}
 	.btnConfirm::after{

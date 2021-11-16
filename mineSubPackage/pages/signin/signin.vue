@@ -90,14 +90,7 @@
 				}
 			})
 			this.build()
-			uni.loadFontFace ({
-			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			  success: function(){
-				  console.log('load font success')
-			  }
-			})
-			
+
 			self.Parse.Config.get().then(config=>{
 				self.signUpScore = config.get('signUpScore') // 签到送积分
 			})

@@ -8,6 +8,7 @@
 				</view>
 				<view class="headCon" @click="handleInfoClick">
 					<view class="headIconView">
+						<image class='icon' v-if='memberType' src="../../static/mine/icon.png"></image>
 						<image v-if="userInfo&&userInfo.avatarUrl" :src="userInfo.avatarUrl"></image>
 					</view>
 					<view>
@@ -15,43 +16,44 @@
 						<view class="icon" v-if='memberType'>
 							{{memberType}}
 							<!-- <u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="20"></u-icon> -->
-							<text>></text>
+							<!-- <text>></text> -->
+							<image src="../../static/mine/icon-left.png"></image>
 						</view>
 						<view class="icon" v-else>
 							未开通会员
-							<text>></text>
+							<!-- <text>></text> -->
+							<image src="../../static/mine/icon-left.png"></image>
 						</view>
 					</view>
 				</view>
 				<image class='bg' src="../../static/mine-head.png" mode='aspectFill'></image>
 			</view>
 			<view class="box scoreView">
+				<image src="../../static/mine/mine-bg.png" mode=""></image>
 				<view class="content">
 					<view class="scoreItem">
-						<view class="score">{{rightCount}}</view>
-						<view class="contentTitle">答题量</view>
-						<view class="br"></view>
+						<view class="score">{{rightCount ? rightCount : 0}}</view>
+						<view class="contentTitle regular">答题量</view>
 					</view>
 					<view class="scoreItem" @click="handleNoteClick">
-						<view class="score">{{errorCount}}</view>
-						<view class="contentTitle">错题集</view>
-						<view class="br"></view>
+						<view class="score">{{errorCount ? errorCount : 0}}</view>
+						<view class="contentTitle regular">错题集</view>
 					</view>
 					<view class="scoreItem" @click="handleScoreRecord">
-						<view class="score">{{userInfo.score}}</view>
-						<view class="contentTitle">总积分</view>
+						<view class="score">{{userInfo.score ? userInfo.score : 0}}</view>
+						<view class="contentTitle regular">总积分</view>
 					</view>
 				</view>
 			</view>
 		</view>
 
 		<view class="scroll">
-			<view class="vipView">
-				<view class='open' @click='jumpvip'>
+			<view class="vipView" @click='jumpvip'>
+				<view class='open'>
 					<image v-if='memberType' src="../../static/mine/mine_xufei.png" mode=""></image>
 					<image v-else src="../../static/mine/mine_open.png" mode=""></image>
 				</view>
-				<image src="../../static/mine/mine_center.png"></image>
+				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/card%EF%BC%8F%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83%402x.png"></image>
 			</view>
 			<view class="box actionView">
 				<view class="actionItem" @click="handleSignInClick">
@@ -100,7 +102,7 @@
 					<view class="cont">
 						<view class="title">
 							<text>我的优惠券</text>
-							<view v-if="couponCount > 0">{{couponCount}}</view>
+							<view class='semibold' v-if="couponCount > 0">{{couponCount}}</view>
 							<!-- <u-badge v-if="couponCount > 0" type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="couponCount"></u-badge> -->
 						</view>
 						<view class="icon">
@@ -158,7 +160,7 @@
 						<view class="title">
 							<text>消息中心</text>
 							<!-- <view>3</view> -->
-							<view v-if="msgCount > 0">{{msgCount}}</view>
+							<view class='semibold' v-if="msgCount > 0">{{msgCount}}</view>
 							<!-- <view style="position: relative;">消息中心
 								<u-badge  type="error" bgColor="#ff7c7c" :offset="[39,0]" :count="msgCount"></u-badge>
 							</view> -->
@@ -224,9 +226,12 @@
 			})
 		},
 		async onShow() {
+			// if (!this.errorCount) {
+				
 			uni.showLoading({
 				title:'加载中……'
 			})
+			// }
 			uni.hideTabBar({
 				animation: false
 			});
@@ -252,16 +257,15 @@
 					}
 				})
 			})
+			uni.hideLoading()
 			let res = await Utils.getcount();
 			if (res) {
 				this.msgCount = res.msgCount;
 				this.couponCount = res.couponCount;
-				uni.hideLoading()
 			}
 			
 			var app = getApp();
 			var member = app.globalData.member;
-			console.log(member, '///');
 			// 判断是不是会员
 			if (member) {
 				if (member.endTime > Date.now()) {
@@ -282,11 +286,6 @@
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
 			this.pdbtm = 125 + app.globalData.paddingBottomHeight;
-
-			uni.loadFontFace({
-				family: 'PingFangSC-Medium',
-				source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			})
 		},
 		methods: {
 			jumpvip() {
@@ -404,6 +403,7 @@
 			font-size: 34rpx;
 			z-index: 1000;
 			display: flex;
+			font-weight: 500;
 			padding-left: 62rpx;
 			align-items: center;
 		}
@@ -426,18 +426,28 @@
 					width: 128rpx;
 					height: 128rpx;
 					border-radius: 50%;
-					overflow: hidden;
+					// overflow: hidden;
 					margin-right: 28rpx;
+					position: relative;
 
 					image {
 						width: 100%;
 						height: 100%;
+						border-radius: 50%;
+					}
+					.icon {
+						width: 68rpx;
+						height: 64rpx;
+						position: absolute;
+						top: -32rpx;
+						right: -8rpx;
+						z-index: 9999;
 					}
 				}
 
 				.nickName {
 					font-size: 36rpx;
-					font-weight: 600;
+					font-weight: 500;
 					line-height: 50rpx;
 					margin: 26rpx 0 16rpx;
 				}
@@ -446,13 +456,20 @@
 					font-family: PingFangSC-Regular;
 					font-size: 20rpx;
 					font-weight: 400;
-					line-height: 28rpx;
+					height: 28rpx;
 					opacity: .8;
-					text {
-						display: inline-block;
-						transform: scale(1,1.8) translateY(-6%);
-						margin-left: 12rpx;
-						opacity: .6;
+					display: flex;
+					align-items: center;
+					// text {
+					// 	display: inline-block;
+					// 	transform: scale(1,1.8) translateY(-6%);
+					// 	margin-left: 12rpx;
+					// 	opacity: .6;
+					// }
+					image {
+						width: 16rpx;
+						height: 26rpx;
+						margin-left: 10rpx;
 					}
 				}
 			}
@@ -481,12 +498,23 @@
 		top: 400rpx;
 		left: 30rpx;
 		z-index: 210;
-
+		background: none;
+		box-shadow: none;
+		
+		image {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			z-index: 10;
+		}
 		.content {
 			height: 100%;
 			display: flex;
 			justify-content: space-around;
 			align-items: center;
+			position: relative;
+			z-index: 20;
+			top: 20;
 
 			.scoreItem {
 				height: 100%;
@@ -497,7 +525,7 @@
 
 				.score {
 					font-size: 46rpx;
-					font-weight: 500;
+					// font-weight: 500;
 					color: #000;
 					line-height: 64rpx;
 				}
@@ -505,7 +533,7 @@
 				.contentTitle {
 					font-size: 22rpx;
 					font-weight: 400;
-					color: rgba(0, 0, 0, .6);
+					color: rgba(0, 0, 0, .4);
 					line-height: 32rpx;
 				}
 			}
@@ -597,10 +625,16 @@
 						border-radius: 13rpx;
 						line-height: 26rpx;
 						color: #fff;
+						padding: 0 4rpx;
 						margin-top: 4rpx;
+						font-size: 20rpx;
 						min-width: 26rpx;
 						text-align: center;
 						background: linear-gradient(rgba(218, 39, 39, 1), rgba(218, 39, 39, .3));
+					}
+					
+					text {
+						font-family: PingFangSC-Regular, PingFang SC;
 					}
 				}
 

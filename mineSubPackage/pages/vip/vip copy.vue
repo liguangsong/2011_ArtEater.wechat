@@ -901,7 +901,7 @@
 				.txt {
 					.txtname {
 						font-size: 36rpx;
-						font-weight: 600;
+						font-weight: 500;
 						color: #FFFFFF;
 						line-height: 50rpx;
 					}
@@ -988,14 +988,14 @@
 						z-index: 100;
 						.viewItem-vip-titel {
 							font-size: 40rpx;
-							font-weight: 600;
+							font-weight: 500;
 							height: 66rpx;
 							line-height: 66rpx;
 							display: flex;
 							justify-content: space-between;
 							padding-right: 4rpx;
 							.viewItem-vip-price {
-								font-weight: 600;
+								font-weight: 500;
 								.price {
 									font-size: 48rpx;
 									line-height: 66rpx;
@@ -1129,7 +1129,7 @@
 			background: #fff;
 			z-index: 2100;
 			font-size: 32rpx;
-			font-weight: 600;
+			font-weight: 500;
 			color: #995D05;
 			line-height: 44rpx;
 			view {
@@ -1159,7 +1159,7 @@
 				text-align: center;
 				margin: 48rpx auto;
 				font-size: 32rpx;
-				font-weight: 600;
+				font-weight: 500;
 				color: #995D05;
 				line-height: 44rpx;
 			}
@@ -1221,7 +1221,7 @@
 							z-index: 150;
 							.title {
 								font-size: 40rpx;
-								font-weight: 600;
+								font-weight: 500;
 								line-height: 56rpx;
 							}
 							.img {
@@ -1239,12 +1239,12 @@
 								margin-top: 102rpx;
 								.discount {
 									font-size: 48rpx;
-									font-weight: 600;
+									font-weight: 500;
 									line-height: 66rpx;
 								}
 								.old-price {
 									font-size: 32rpx;
-									font-weight: 600;
+									font-weight: 500;
 									line-height: 44rpx;
 									margin-left: 48rpx;
 								}

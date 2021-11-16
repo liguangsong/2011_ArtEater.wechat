@@ -1,5 +1,6 @@
 <template>
 	<view class="tabbar" :style="{'padding-bottom': paddingBottomHeight + 'rpx'}" style='z-index:10;'>
+		
 		<view class="tabbar-item" v-for="(item, index) in list" :key="index" @click="tabbarChange(item)">
 			<!-- <view v-if="item.midButton" class="midButton">
 				<image class="item-img" :src="item.icon_a" v-if="current == index"></image>
@@ -86,7 +87,7 @@
 
 <style lang="scss" scoped>
 	.tabbarActive {
-		color: #352026 !important;
+		// color: #352026 !important;
 	}
 
 	.midButton {
@@ -132,8 +133,8 @@
 				height: 28rpx;
 				// line-height: 28rpx;
 				margin-top: -16rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
-				font-weight: 600;
+				// font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
 			}
 
 			.item-badge {

@@ -116,14 +116,6 @@
 				self.screenWidth = res.screenWidth
 			  }
 			})
-
-			uni.loadFontFace ({
-			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			  success: function(){
-				  console.log('load font success')
-			  }
-			})
 			
 			uni.enableAlertBeforeUnload({
 				message:'当前还未完成考试，返回则默认提交考卷，是否继续退出？',

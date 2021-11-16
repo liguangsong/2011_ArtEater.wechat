@@ -1,6 +1,6 @@
 <template>
 	<view class="myPage"
-		:style="{'height':height+'px','overflow-y': isShowTips ? 'auto' : 'scroll','padding-bottom':pdbtm+'rpx'}">
+		:style="{'height':height+'px','overflow-y': isShowTips ? 'auto' : 'scroll','padding-bottom':pdbtm +'rpx'}">
 		<!--轮播 start-->
 		<Navbar :icon="false" title="食艺兽" height="514rpx" navbarBg="#fff" :fontColor="fontColor" :fontSize="34"
 			titleLeft="62rpx">
@@ -25,26 +25,26 @@
 							<view class="nav-box">
 							<view class="navItem" @click="handleAuditionClick">
 								<view class="img">
-									<image src="../../static/icon/icon_kcst.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon%EF%BC%8Fhome%EF%BC%8F%E8%AF%BE%E7%A8%8B%E8%AF%95%E5%90%AC%402x.png"></image>
 								</view>
 								<view class="title">免费试听</view>
 							</view>
 							<view class="navItem" @click="handleImportantClick">
 								<view class="img">
-									<image src="../../static/icon/icon_question.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon%EF%BC%8Fhome%EF%BC%8F%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93%402x.png"></image>
 								</view>
 								<view class="title">必考题库</view>
 							</view>
 							<view class="navItem" @click="handleExamClick">
 								<view class="img">
-									<image src="../../static/icon/icon_test.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon%EF%BC%8Fhome%EF%BC%8F%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7%402x.png"></image>
 									<!-- <text class="badge">12待添加数字</text> -->
 								</view>
 								<view class="title">模拟试卷</view>
 							</view>
 							<view class="navItem" @click="handleNoteClick">
 								<view class="img">
-									<image src="../../static/icon/icon_errorques.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon%EF%BC%8Fhome%EF%BC%8F%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93%402x.png"></image>
 								</view>
 								<view class="title">错题集</view>
 							</view>
@@ -89,6 +89,7 @@
 				</view> -->
 				<!--精品推荐 end-->
 				<!--购买重点题库 start-->
+				<view style='height:20rpx'></view>
 				<u-popup v-model="isShowImportBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
 					<view class="buylView" style="padding:74rpx 40rpx;">
 						<view class="title">{{zdtkConfig.action}}</view>
@@ -133,42 +134,42 @@
 		<!-- <u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true"
 			:zoom="false" @click="handleStep"> -->
 		<view class='mask'  @click="handleStep" v-if='isShowTips'>
-			<view v-if="step==1" class="step bottom">
+			<view v-if="step==8" class="step bottom">
 				<view class="navItem" style="right:4rpx">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask1.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
 				</view>
 			</view>
-			<view v-if="step==2" class="step bottom" style="left:4rpx">
+			<view v-if="step==7" class="step bottom" style="left:4rpx">
 				<view class="navItem">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask2.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
 				</view>
 			</view>
-			<view v-if="step==3" class="step top">
+			<view v-if="step==6" class="step top">
 				<view class="navItem">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask3.png"></image>
 				</view>
 			</view>
-			<view v-if="step==4" class="step top">
+			<view v-if="step==2" class="step top">
 				<view class="navItem">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask4.png"></image>
 				</view>
 			</view>
-			<view v-if="step==5" class="step top">
+			<view v-if="step==1" class="step top">
 				<view class="navItem">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask5.png"></image>
 				</view>
 			</view>
-			<view v-if="step==6" class="step top">
+			<view v-if="step==4" class="step top">
 				<view class="navItem">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask6.png"></image>
 				</view>
 			</view>
-			<view v-if="step==7" class="step top">
+			<view v-if="step==3" class="step top">
 				<view class="navItem">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask7.png"></image>
 				</view>
 			</view>
-			<view v-if="step==8" class="step top">
+			<view v-if="step==5" class="step top">
 				<view class="navItem">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask8.png"></image>
 				</view>
@@ -297,15 +298,6 @@
 			query.find().then(list => {
 				self.subjects = list
 			})
-
-    //          uni.loadFontFace ({
-				//   family: 'PingFangSC-Medium',
-				//   source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-				//   // source: 'url("https://www.arteater.cn/PingFang.ttc")',
-				//   success: function(){
-				// 	  console.log('load font success')
-				//   }
-				// })
 			var bannerQuery = new this.Parse.Query('Banner')
 			bannerQuery.equalTo('state', 1)
 			bannerQuery.ascending('sort')
@@ -762,7 +754,7 @@
 		line-height: 36rpx;
 		text-align: center;
 	}
-
+	
 	.swiperItem {
 		vertical-align: middle;
 	}
@@ -840,7 +832,7 @@
 		min-height: 20rpx;
 		font-size: 16rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
+		font-weight: 500;
 		color: #FFFFFF;
 		line-height: 22rpx;
 		position: absolute;
@@ -860,11 +852,10 @@
 		display: inline-block;
 		text-align: center;
 		font-size: 22rpx;
-		font-weight: 600;
+		font-weight: 500;
 		color: #352026;
 		display: block;
 		margin: auto;
-		font-family: PingFangSC-Medium, PingFang SC;
 	}
 
 	.groupView {

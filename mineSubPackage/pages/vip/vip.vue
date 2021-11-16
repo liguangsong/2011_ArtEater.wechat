@@ -1,5 +1,5 @@
 <template>
-	<view class="vip">
+	<view class="vip" :style='{overflow: showFixed ? "auto" : "hidden"}'>
 		<Navbar align='center' surplusHeight='70' navbarBg='#1A1512' height='450rpx' title='会员中心'>
 			<template v-slot:img>
 				<image style='width: 100%;' src="../../static/bg.png" mode='aspectFill'></image>
@@ -20,8 +20,10 @@
 								未开通会员
 							</view>
 						</view>
-						<view class="vip-btn" @click='changeShowFixed'>
-							<text>{{isMember && memberInfo.memberType ? '续 &nbsp; 费' : '立即开通'}}</text>
+						<view class="xufei" @click='changeShowFixed'>
+							<image v-if='isMember && memberInfo.memberType ' src="../../static/bjxf.png" mode='heightFix'></image>
+							<image v-else src="../../static/bjkt.png" mode='heightFix'></image>
+							<!-- <text>{{isMember && memberInfo.memberType ? '续 &nbsp; 费' : '立即开通'}}</text> -->
 						</view>
 					</view>
 				</view>
@@ -32,7 +34,7 @@
 							会员权益
 						</view>
 						<view class="tel">
-							联系我们:13811219735
+							客服电话/微信: 13811219735
 						</view>
 					</view>
 					<view class="viewItem heijin">
@@ -45,17 +47,21 @@
 									<view class="viewItem-vip-price">
 										<text class='oldprice'
 											v-if='list[0].memberPrice && list[0].discount'>¥{{list[0].memberPrice}}</text>
-										<text class='price'>¥{{list[0].promotionPrice}}</text>
+										<text class='price semibold'>¥{{list[0].promotionPrice}}</text>
 									</view>
 								</view>
 								<view class="viewItem-vip-bottom">
 									<view class="vip-btn" @click='changeShowFixed'>
 										<view v-if='isMember'>
-											<text v-if='memberInfo.memberType == 0'>续 &nbsp; 费</text>
-											<text v-else>立即升级黑金会员</text>
+											<!-- <text v-if='memberInfo.memberType == 0'>续 &nbsp; 费</text>
+											<text v-else>立即升级黑金会员</text> -->
+											<image v-if='memberInfo.memberType == 0' src="../../static/bjxf.png" mode="heightFix"></image>
+											<image v-else src="../../static/bjsj.png" mode="heightFix"></image>
+											
 										</view>
 										<view v-else>
-											<text>立即开通</text>
+											<!-- <text>立即开通</text> -->
+											<image src="../../static/bjkt.png" mode="heightFix"></image>
 										</view>
 									</view>
 								</view>
@@ -70,7 +76,7 @@
 									VIP课程畅享
 								</view>
 								<view class="item-txt1">
-									食艺兽线上音视频VIP课程* 免费畅享
+									食艺兽线上音视频VIP课程* 免费畅享，持续上新中
 								</view>
 								<view class="item-txt2">
 									*包含美术史基础课程和时下高考阶段所有史论类专业方向的独家应试课程。
@@ -173,18 +179,21 @@
 									<view class="viewItem-vip-price">
 										<text class='oldprice'
 											v-if='list[0].memberPrice && list[1].discount '>¥{{list[1].memberPrice}}</text>
-										<text class='price'>¥{{list[1].promotionPrice}}</text>
+										<text class='price semibold'>¥{{list[1].promotionPrice}}</text>
 									</view>
 								</view>
 			
 								<view class="viewItem-vip-bottom">
 									<view class="vip-btn" @click='changeShowFixed'>
 										<view v-if='isMember'>
-											<text v-if='memberInfo.memberType == 1'>续费</text>
-											<text v-else>立即升级黑金会员</text>
+											<!-- <text v-if='memberInfo.memberType == 1'>续费</text>
+											<text v-else>立即升级黑金会员</text> -->
+											<image v-if='memberInfo.memberType == 1' src="../../static/hjxf.png" mode="heightFix"></image>
+											<image v-else src="../../static/hjsj.png" mode="heightFix"></image>
 										</view>
 										<view v-else>
-											<text>立即开通</text>
+											<!-- <text>立即开通</text> -->
+											<image src="../../static/hjkt.png" mode="heightFix"></image>
 										</view>
 									</view>
 								</view>
@@ -199,7 +208,7 @@
 									VIP课程畅享
 								</view>
 								<view class="item-txt1">
-									食艺兽线上音视频VIP课程* 免费畅享
+									食艺兽线上音视频VIP课程* 免费畅享，持续上新中
 								</view>
 								<view class="item-txt2">
 									*包含美术史基础课程和时下高考阶段所有史论类专业方向的独家应试课程。
@@ -274,17 +283,19 @@
 									<view class="viewItem-vip-price">
 										<text class='oldprice'
 											v-if='list[0].memberPrice && list[2].discount '>¥{{list[2].memberPrice}}</text>
-										<text class='price'>¥{{list[2].promotionPrice}}</text>
+										<text class='price semibold'>¥{{list[2].promotionPrice}}</text>
 									</view>
 								</view>
 								<view class="viewItem-vip-bottom">
 									<view class="vip-btn" @click='changeShowFixed'>
 										<view v-if='isMember'>
-											<text v-if='memberInfo.memberType == 2'>续费</text>
-											<text v-else>立即升级黑金会员</text>
+										<!-- 	<text v-if='memberInfo.memberType == 2'>续费</text>
+											<text v-else>立即升级黑金会员</text> -->
+											<image v-if='memberInfo.memberType == 2' src="../../static/byxf.png" mode="heightFix"></image>
+											<image v-else src="../../static/bysj.png" mode="heightFix"></image>
 										</view>
 										<view v-else>
-											<text>立即开通</text>
+											<image src="../../static/bykt.png" mode="heightFix"></image>
 										</view>
 									</view>
 								</view>
@@ -343,7 +354,7 @@
 		<view class="fixed" :class='{leval: showFixed}'>
 			<view class="bg" @click='changeShowFixed(1)'></view>
 			<view class="fixed-bottom">
-				<view>
+				<view class='semibold'>
 					<view v-if='memberInfo'>
 						<view v-if='memberInfo.memberType == 0' @click='heijinRenew'>
 							<text>续费黑金VIP</text>
@@ -379,7 +390,8 @@
 					食艺兽大会员
 				</view>
 				<view class="openbox"  @touchstart='touchstart' @touchend='touchend'>
-					<view class="list" :style='{left: -active*550 + 20 + "rpx"}'>
+					<!-- <view class="list" :style='{left: -active*550 + 20 + "rpx"}'> -->
+					<view class="list" :style='{left: active==0 ? "20rpx" : active==1 ? "-550rpx":"-1120rpx"}'>
 						<view class="item" v-for='(item,i) in list' :keys='item.id'
 							:class='{heijin: item.surfaceId == 1, bojin: item.surfaceId == 2, baiyin: item.surfaceId == 3}'
 							@click='active = i'>
@@ -408,8 +420,8 @@
 							</view>
 							<view class="info">
 								<view class="price">
-									<text class='discount'>¥{{item.promotionPrice}}</text>
-									<text class='old-price' style='text-decoration: line-through;'
+									<text class='discount semibold'>¥{{item.promotionPrice}}</text>
+									<text class='old-price semibold' style='text-decoration: line-through;'
 										v-if='item.promotionPrice && item.discount'>¥{{item.memberPrice}}</text>
 								</view>
 							</view>
@@ -502,7 +514,9 @@
 			})
 			this.getMember();
 		},
-		
+		// created() {
+		// 	this.getIntegral(0/100)
+		// },
 		computed: {
 			isMember() {
 				if (this.memberInfo && Date.now() < this.memberInfo.endTime) {
@@ -674,7 +688,8 @@
 
 			// 支付
 			payment(cash) {
-				// cash = 0;
+				// cash = 1;
+				var _this = this;
 				if (cash == 0) {
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5);
 					this.paymentSuccess(orderNo, cash);
@@ -694,10 +709,10 @@
 							signType: payload.signType,
 							paySign: payload.paySign,
 							success(res) {
-								this.paymentFail(tradeId);
+								_this.paymentSuccess(tradeId, cash);
 							},
 							fail(res) {
-								this.paymentSuccess();
+								_this.paymentFail();
 							}
 						})
 					})
@@ -706,23 +721,40 @@
 			},
 			// 支付成功
 			async paymentSuccess(tradeId, cash) {
-				await this.getIntegral(cash / 100);
-				this.createOrder(tradeId);
-				this.createMember(tradeId);
+				var _this = this;
+				uni.showModal({
+					title: '购买成功',
+					confirmColor: '#ED3535',
+					confirmText: '确定',
+					success(res) {
+						if (res.confirm) {
+							_this.showFixed = false;
+						}
+					}
+				})
+				await _this.getIntegral(cash / 100);
+				_this.createOrder(tradeId);
+				_this.createMember(tradeId);
 			},
 			// 支付失败
 			paymentFail() {
-
+				uni.showModal({
+					title: '购买失败',
+					confirmColor: '#ED3535',
+					confirmText: '确定',
+				})
 			},
 			// 获取积分与赠送积分
 			async getIntegral(cash) {
+				// cash = 10000;
 				await this.Parse.Config.get().then(async config => {
-					// var n = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
-					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes
-						.shopScore);
+					console.log(this.userInfo);
+					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes.shopScore);
+					this.userInfo.score_all = (this.userInfo.score_all || 0) + parseInt(cash * config.attributes.shopScore);
 					this.user.set('score', this.userInfo.score);
-					this.user.set('score_all', this.userInfo.score);
-					this.user.save();
+					this.user.set('score_all', this.userInfo.score_all);
+					console.log(this.userInfo);
+					await this.user.save();
 					uni.setStorage({
 						key: 'userInfo',
 						data: this.userInfo
@@ -770,6 +802,7 @@
 					var arr = this.memberInfo.orderArr;
 					arr.push(tradeId);
 					this.member.set('orderArr', arr);
+					this.member.set('status', 1)
 					if (this.memberInfo.memberType == 0) {
 						this.member.set('memberType', '0');
 					}
@@ -803,6 +836,7 @@
 					member.set('orderArr', [tradeId]);
 					member.set('endTime', this.getTime(12))
 					member.set('memberType', memberType)
+					member.set('status', 1)
 					await member.save();
 				}
 				this.getMember();
@@ -810,6 +844,7 @@
 				var query = new this.Parse.Query('MemberList');
 				query.equalTo("openId", this.userInfo.openid);
 				var results = await query.first();
+				// console.log(12345,results);
 				if (results) {
 					app.globalData.member = JSON.parse(JSON.stringify(results));
 				}
@@ -829,15 +864,23 @@
 		top: 204rpx;
 
 		.vip-btn {
-			padding: 0 42rpx;
-			height: 48rpx;
-			line-height: 46rpx;
-			text-align: center;
-			border-radius: 24rpx;
-			border: 1px solid rgba(255, 205, 131, 1);
-			color: #FFCD83;
-			font-size: 20rpx;
-			font-weight: 600;
+			// padding: 0 42rpx;
+			// height: 48rpx;
+			// line-height: 46rpx;
+			// text-align: center;
+			// border-radius: 24rpx;
+			// border: 1px solid rgba(255, 205, 131, 1);
+			// color: #FFCD83;
+			// font-size: 20rpx;
+			// font-weight: 500;
+			view {
+				display: flex;
+				align-items: flex-end;
+				image {
+					height: 48rpx;
+					margin-top: 6rpx;
+				}
+			}
 		}
 
 		.head {
@@ -877,7 +920,7 @@
 				.txt {
 					.txtname {
 						font-size: 36rpx;
-						font-weight: 600;
+						font-weight: 500;
 						color: #FFFFFF;
 						line-height: 50rpx;
 					}
@@ -890,6 +933,14 @@
 						margin-top: 10rpx;
 						opacity: .8;
 						font-family: PingFangSC-Regular;
+					}
+				}
+				.xufei {
+					height: 48rpx;
+					width: 200rpx;
+					text-align: right;
+					image {
+						height: 48rpx;
 					}
 				}
 			}
@@ -911,15 +962,17 @@
 					font-size: 28rpx;
 					line-height: 40rpx;
 					height: 40rpx;
-					font-weight: 600;
-
+					font-weight: 500;
+					display: flex;
+					align-items: center;
+					
 					&::before {
 						content: '';
 						display: inline-block;
 						width: 10rpx;
 						height: 24rpx;
 						background: #995D05;
-						border-radius: 2px;
+						border-radius: 1px;
 						margin-right: 8rpx;
 					}
 				}
@@ -989,20 +1042,22 @@
 						z-index: 100;
 
 						.viewItem-vip-titel {
-							font-weight: 600;
+							font-weight: 500;
 							display: flex;
 							justify-content: flex-end;
 							
 							.viewItem-vip-price {
-								font-weight: 600;
+								font-weight: 500;
 								height: 66rpx;
 								line-height: 66rpx;
 								.price {
 									font-size: 48rpx;
 									line-height: 66rpx;
+									font-weight: 600;
 								}
 
 								.oldprice {
+									font-weight: 600;
 									margin-right: 40rpx;
 									font-size: 32rpx;
 									line-height: 44rpx;
@@ -1087,7 +1142,7 @@
 
 						.item-title {
 							font-size: 20rpx;
-							font-weight: 600;
+							font-weight: 500;
 							line-height: 28rpx;
 							margin: 16rpx 0;
 						}
@@ -1115,8 +1170,8 @@
 		.br {
 			width: 100%;
 			height: 12rpx;
-			background: rgba(0, 0, 0, 0.05);
-			box-shadow: 0 0 6rpx 0 rgba(0,0,0,0.08);
+			background: rgba(0, 0, 0, 0.08);
+			// box-shadow: 0 0 6rpx 0 rgba(0,0,0,0.08);
 		}
 	}
 
@@ -1220,7 +1275,6 @@
 
 						&.baiyin {
 							color: #000000;
-							opacity: .6;
 						}
 
 						.img {
@@ -1257,7 +1311,7 @@
 
 							.title {
 								font-size: 40rpx;
-								font-weight: 600;
+								font-weight: 500;
 								line-height: 56rpx;
 							}
 
@@ -1335,7 +1389,7 @@
 
 				.buy-title {
 					font-size: 24rpx;
-					font-weight: 600;
+					font-weight: 500;
 					line-height: 30rpx;
 					margin-bottom: 20rpx;
 				}

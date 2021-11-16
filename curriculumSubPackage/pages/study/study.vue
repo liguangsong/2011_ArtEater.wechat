@@ -5,7 +5,7 @@
 				<image style='width: 100%; height: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
 			</template>
 			<view class="head radius" :style='{top: height ? "-24rpx": 0}'>
-				<view class="title">{{curriculumInfo.subjectName}}</view>
+				<view class="title semibold">{{curriculumInfo.subjectName}}</view>
 				<view class="info">
 					<view>
 						<text v-if="curriculumInfo.subTitle1" class='studynum'>{{curriculumInfo.subTitle1}}</text>
@@ -116,7 +116,7 @@
 		height: 100vh;
 	}
 	.head {
-		height: 256rpx;
+		height: 286rpx;
 		background: #fff;
 		padding: 0 48rpx;
 		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.1);
@@ -127,7 +127,7 @@
 		position: relative;
 	}
   .title {
-		padding: 20rpx 0;
+		padding: 48rpx 0 20rpx;
 		font-size: 44rpx;
 		font-weight: 900;
 	}
@@ -171,7 +171,7 @@
 	}
 	.br {
 		width: 46rpx;
-		height: 4rpx !important;
+		height: 6rpx !important;
 		background: #D81E1F;
 		border-radius: 2rpx;
 	}

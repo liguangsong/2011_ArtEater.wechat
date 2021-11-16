@@ -4,8 +4,8 @@
 			<view class='font'>
 				<view class="title">{{item.subjectName}}</view>
 				<view class="info">
-					<text v-if='item.subTitle1'>{{item.subTitle1}}</text>
-					<text>{{item.subTitle2}}</text>
+					<text class='regular' v-if='item.subTitle1'>{{item.subTitle1}}</text>
+					<text class='regular'>{{item.subTitle2}}</text>
 				</view>
 			</view>
 			<view class="teacher">
@@ -88,7 +88,7 @@
 	.title {
 		width: 100%;
 		font-size: 32rpx;
-		font-weight: 900;
+		font-weight: 500;
 		line-height: 44rpx;
 		text-overflow: ellipsis;
 		overflow: hidden;
@@ -101,6 +101,7 @@
 		opacity: .5;
 	}
 	.info text:first-child {
+		/* font-family: PingFangSC-Regular, PingFang SC !important; */
 		margin-right: 24rpx;
 	}
 	.teacher {
@@ -132,6 +133,7 @@
 		width: 108rpx;
 		height: 48rpx;
 		border-radius: 0;
+		margin-top: 10rpx;
 	}
 /* 	.btn {
 		width: 100rpx;

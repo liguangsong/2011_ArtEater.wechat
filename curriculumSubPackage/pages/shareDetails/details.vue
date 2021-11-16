@@ -388,7 +388,7 @@
 					font-size: 36rpx;
 					line-height: 50rpx;
 					color: #D81E1F;
-					font-weight: 600;
+					font-weight: 500;
 					margin-bottom: 14rpx;
 				}
 				.bottom {
@@ -606,7 +606,7 @@
 						padding-top: 40rpx;
 						padding-left: 48rpx;
 						font-size: 28rpx;
-						font-weight: 600;
+						font-weight: 500;
 						color: #D81E1F;
 						line-height: 40rpx;
 					}
@@ -618,7 +618,7 @@
 					overflow-y: auto;
 					.active {
 						font-size: 24rpx;
-						font-weight: 600;
+						font-weight: 500;
 						color: #000000;
 						.item-type {
 							text{
@@ -659,7 +659,7 @@
 						height: 94rpx;
 						line-height: 94rpx;
 						font-size: 34rpx;
-						font-weight: 600;
+						font-weight: 500;
 						color: #D81E1F;
 						text-align: center;
 						border-radius: 46rpx;

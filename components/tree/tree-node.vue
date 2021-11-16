@@ -7,7 +7,7 @@
 			<view class="leave" :style='{paddingLeft: (item.level-1)*56 + "rpx", color:item.kind==4 && (!item.children || !item.children.length)?"rgba(0,0,0,0.3)":"rgba(0,0,0,0.7)"}'>
 				<view class="title">
 					<image class="icon" :src="item.kind == '1' ? video :item.kind == '2'? audio:''"></image>
-					{{item.subjectName}}
+					<text class='txt'>{{item.subjectName}}</text>
 					<text class='free' v-if='!item.vip'>免费</text>
 				</view>
 				<view class="acllow-left" v-if="item.preLearn">
@@ -94,6 +94,9 @@
 	}
 	.leave .title {
 		position: relative;
+	}
+	.leave .title .txt {
+		opacity: .7;
 	}
 	.leave .icon {
 		position: absolute;

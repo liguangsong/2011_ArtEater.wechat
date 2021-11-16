@@ -13,7 +13,7 @@
 				<k-video :src='curriculumInfo.link' @changeLearn="changeLearn"></k-video>
 			</view>
 			<view class="info">
-				<view class="info-title">{{curriculumInfo.subjectName}}</view>
+				<view class="info-title semibold">{{curriculumInfo.subjectName}}</view>
 				<view class="bottom">
 					<view class="teacher">
 						<image v-if="curriculumInfo.portrait&&curriculumInfo.portrait.length"
@@ -28,6 +28,7 @@
 							<text>课表</text>
 						</view>
 						<view class='btnitem button' @click="share">
+							<!-- :style="{left: curriculumInfo.flag==1 ? '26rpx':'46rpx'}" -->
 							<view class="img">
 								<image src="../../../static/icon/icon_share.png"></image>
 							</view>
@@ -52,7 +53,7 @@
 			<view class="br"></view>
 		</view>
 		<!-- 图文 -->
-		<view class="html" :style='{paddingTop: htmlInfoTop + 10 + "px"}' v-if="curriculumInfo.explain">
+		<view class="html regular" :style='{paddingTop: htmlInfoTop + 10 + "px"}' v-if="curriculumInfo.explain">
 			<rich-text :nodes='curriculumInfo.explain|formatRichText'></rich-text>
 		</view>
 		<view v-else :style='{paddingTop: infoTop + "px"}'></view>
@@ -82,7 +83,7 @@
 						</view>
 						<view class="item-type">
 							<text v-if='curriculumInfo.objectId==item.objectId'>当前课程</text>
-							<image :src="item.kind==1?'../../static/video.png':item.kind==2?'../../static/audio.png':''"
+							<image style='opacity:0.5;' :src="item.kind==1?'../../static/video.png':item.kind==2?'../../static/audio.png':''"
 								mode=""></image>
 						</view>
 					</view>
@@ -394,6 +395,7 @@
 	.details-scroll {
 		height: 100vh;
 		overflow: hidden;
+		background: #fff;
 	}
 
 	.details {
@@ -476,11 +478,14 @@
 						.btnitem {
 							display: flex;
 							justify-content: flex-end;
+							position: relative;
 						}
 						
 						.img {
 							width: 64rpx;
 							height: 64rpx;
+							position: absolute;
+							left: 26rpx;
 						}
 
 						image {
@@ -490,7 +495,7 @@
 						.button {
 							image {
 								position: relative;
-								left: 46rpx;
+								/* left: 46rpx; */
 							}
 						}
 						button {
@@ -557,7 +562,7 @@
 			display: block;
 			.recommend-title {
 				font-size: 28rpx;
-				font-weight: 600;
+				font-weight: 500;
 				margin-bottom: 24rpx;
 				font-family: PingFangSC-Medium;
 				
@@ -567,6 +572,7 @@
 					width: 10rpx;
 					height: 24rpx;
 					margin-right: 8rpx;
+					transform: translateY(2rpx);
 					background: #D81E1F;
 					border-radius: 1px;
 				}
@@ -724,7 +730,8 @@
 					
 					.active {
 						font-size: 24rpx;
-						font-weight: 600;
+						font-weight: 500;
+						font-family: PingFangSC-Semibold, PingFang SC;
 						color:rgba(0,0,0,.9) !important;
 						
 						.item-type {
@@ -772,7 +779,7 @@
 						height: 94rpx;
 						line-height: 94rpx;
 						font-size: 34rpx;
-						font-weight: 600;
+						font-weight: 500;
 						color: #D81E1F;
 						text-align: center;
 						border-radius: 46rpx;

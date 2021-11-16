@@ -32,13 +32,7 @@
 				self.title = res.title
 				self.content = res.data
 			})
-			uni.loadFontFace ({
-			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			  success: function(){
-				  console.log('load font success')
-			  }
-			})
+
 		},
 		methods: {
 			

@@ -2,8 +2,8 @@
 	<view class="list">
 		<!-- <audition-learning :list="curriculumList" v-if="curriculumList.length&&moduleName=='正在学习'" @learnChangeUrl="changeUrl"></audition-learning>
 		<audition :list="curriculumList" v-else-if="curriculumList.length" @changeUrl="changeUrl"></audition> -->
-		<Navbar navbarBg='#F7F7F7' title='课程' align='center' fontColor="#000" iconColor='#000'>
-			<view style='height: 24rpx;'></view>
+		<Navbar navbarBg='#F7F7F7' :title='moduleName' align='center' fontColor="#000" iconColor='#000'>
+			<!-- <view style='height: 24rpx;'></view> -->
 			<audition-learning :list="curriculumList" v-if="curriculumList.length&&moduleName=='正在学习'" @learnChangeUrl="changeUrl"></audition-learning>
 			<audition :list="curriculumList" v-else-if="curriculumList.length" @changeUrl="changeUrl"></audition>
 		</Navbar>

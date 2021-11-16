@@ -2,15 +2,15 @@
 	<scroll-view style='height:100%;' :scroll-y='true' @scroll='scroll'>
 		<view class="tabbar" :style='{height: height ? height: tabbarheight+"rpx"}'>
 			<slot name='img'></slot>
-			<view class="navbar" 
-				:style='{fontSize: fontSize + "rpx", height:tabbarheight + "rpx" }'
-			>
+			<view class="navbar" :style='{fontSize: fontSize + "rpx", height:tabbarheight + "rpx" }'>
 				<view class='bg' :style='{background: navbarBg, opacity: opacity}'></view>
 				<view class="nav" :style='{height:navbarheight + "rpx", top:tabbarheight - navbarheight + "rpx"}'>
 					<view class="icon" v-if='icon' @click='back'>
 						<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
 					</view>
-					<view class="title" :style='{color: fontColor, textAlign: align, paddingLeft: icon ? 0 : titleLeft}'>
+					<!-- :class='{shadow: opacity <= 1}' -->
+					<view class="title"
+						:style='{textShadow: textShadow, color: fontColor, textAlign: align, paddingLeft: icon ? 0 : titleLeft}'>
 						<text>{{title}}</text>
 					</view>
 				</view>
@@ -79,13 +79,14 @@
 		},
 		data() {
 			return {
-				scrollBegin: 0,      //颜色变化开始位置
-				topColor : 255,         //顶部颜色色值
-				bottomColor :50,      //底部颜色色值
-				settingColor:255,     		//计算出来用于设置的颜色色值
+				scrollBegin: 0, //颜色变化开始位置
+				topColor: 255, //顶部颜色色值
+				bottomColor: 50, //底部颜色色值
+				settingColor: 255, //计算出来用于设置的颜色色值
 				tabbarheight: 0,
 				navbarheight: 0,
-				opacity: 0
+				opacity: 0,
+				textShadow: '5rpx 4rpx 7rpx rgba(0,0,0,1)'
 			}
 		},
 		created() {
@@ -107,18 +108,25 @@
 					delta: 1
 				})
 			},
-			scroll(e) {var that=this;
-					const query = uni.createSelectorQuery().in(that);
-					query.select('.tabbar').boundingClientRect(data => {
-				var {scrollTop, deltaY} = e.detail;
-				//开始颜色变化
-				        	//计算色值
-				            let settingColor = that.topColor - ((that.topColor - that.bottomColor) * (scrollTop - that.scrollBegin) / (data.height - that.scrollBegin));
-				            //获得css样式赋值语句
-				            let colorValue = "rgb(" + settingColor + "," + settingColor + "," + settingColor + ")";
-							that.$parent.fontColor=colorValue;
-					that.opacity =(Math.abs((data.top)))/data.height;
-					
+			scroll(e) {
+				var that = this;
+				const query = uni.createSelectorQuery().in(that);
+				query.select('.tabbar').boundingClientRect(data => {
+					var {
+						scrollTop,
+						deltaY
+					} = e.detail;
+					//开始颜色变化
+					//计算色值
+					let settingColor = that.topColor - ((that.topColor - that.bottomColor) * (scrollTop - that
+						.scrollBegin) / (data.height - that.scrollBegin));
+					//获得css样式赋值语句
+					let colorValue = "rgb(" + settingColor + "," + settingColor + "," + settingColor + ")";
+					that.$parent.fontColor = colorValue;
+					var h = (Math.abs((data.top))) / data.height;
+					that.opacity = h;
+					let x = 1 - h < 0 ? 0 : 1 - h;
+					that.textShadow = '5rpx 4rpx 7rpx rgba(0,0,0,'+x+')';
 				}).exec();
 			}
 		}
@@ -132,6 +140,7 @@
 		background: #eee;
 		position: relative;
 	}
+
 	.navbar {
 		position: fixed;
 		width: 100%;
@@ -139,24 +148,32 @@
 		top: 0;
 		z-index: 10000;
 	}
+
 	.nav {
 		width: 100%;
 		display: flex;
 		align-items: center;
 		position: absolute;
 	}
+
 	.icon {
 		flex: 0 1 50rpx;
 		text-align: center;
 	}
+
 	.title {
 		flex: 1 1 auto;
 		padding-right: 50rpx;
-		text-shadow: 5rpx 4rpx 7rpx rgba(0,0,0,1);
 	}
+
+	.shadow {
+		text-shadow: 5rpx 4rpx 7rpx rgba(0, 0, 0, 1);
+	}
+
 	image {
 		width: 100%;
 	}
+
 	.bg {
 		position: absolute;
 		top: 0;

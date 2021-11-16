@@ -91,7 +91,7 @@
 		border-radius: 46rpx;
 		font-size: 34rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
+		font-weight: 500;
 		color: #FFFFFF;
 		line-height: 92rpx;
 		position: fixed;

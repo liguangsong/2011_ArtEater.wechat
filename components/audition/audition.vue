@@ -59,22 +59,7 @@
 			return {
 			}
 		},
-		created() {
-			uni.loadFontFace({
-				family: 'PingFangSC-Medium, PingFang SC',
-				source: 'url("https://www.arteater.cn/PingFang.ttc")',
-				success: function() {
-					console.log('load font success')
-				}
-			})
-			// uni.loadFontFace ({
-			// 			  family: 'PingFangSC-Medium',
-			// 			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			// 			  success: function(){
-			// 				  console.log('load font success')
-			// 			  }
-			// 			})
-		},
+
 		methods: {
 			gotolist() {
 				// uni.navigateTo({
@@ -95,28 +80,29 @@
 		// margin:20rpx 0;
 		.title-before{
 			display: inline-block;
-			margin-right: 8rpx;
 			width: 10rpx;
 			height: 24rpx;
 			background: #D81E1F;
-			border-radius: 4rpx;
+			border-radius: 2rpx;
+			margin-right: 8rpx;
 		}
 		.title{
 			height: 40rpx;
 			font-size: 28rpx;
 			letter-spacing: 0rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 600;
+			font-weight: 500;
 			color: #000000;
 			line-height: 40rpx;
 			padding-left: 30rpx;
 			margin: 24rpx 0 0rpx 0;
+			display: flex;
+			align-items: center;
 		}
 		.more{
 			// width: 80rpx;
 			font-size: 16rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 600;
+			font-weight: 500;
 			color: #000000;
 			position: absolute;
 			top:10rpx;
@@ -163,6 +149,7 @@
 		position: absolute;
 		bottom: 8rpx;
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
 		font-size: 22rpx;
 		z-index: 1;
@@ -187,9 +174,8 @@
 		overflow: hidden;
 		height: 34rpx;
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
 		letter-spacing: 0rpx;
-		font-weight: 600;
+		font-weight: 500;
 		color: #171717;
 		line-height: 34rpx;
 	}
@@ -206,35 +192,36 @@
 	.view{
 		height: 24rpx;
 		font-size: 16rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 600;
+		font-weight: 500;
 		color: #FFFFFF;
 		margin-left: 12rpx;
-		// line-height: 24rpx;
+		display: flex;
+		align-items: center;
 		.play-image{
 			width: 24rpx;
 			height: 24rpx;
-			line-height: 24rpx;
-			vertical-align: middle;
+			// line-height: 24rpx;
+			// vertical-align: middle;
 		}
 		.play-num{
 			display: inline-block;
-			height: 22rpx;
+			// height: 22rpx;
 			font-size: 16rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
 			vertical-align: middle;
-			font-weight: 600;
+			font-weight: 500;
 			color: #FFFFFF;
+		}
+		image {
+			margin-top: -2rpx;
 		}
 		
 	}
 	.time{
-		height: 24rpx;
+		// height: 24rpx;
 		font-size: 16rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 600;
+		font-weight: 500;
 		color: #FFFFFF;
-		line-height: 24rpx;
+		// line-height: 24rpx;
 		margin-right: 12rpx;
 	}
 </style>

@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="introduce">
-			<text class='title'>课程介绍</text>
-			<rich-text :nodes='detail | formatRichText' v-if="detail"></rich-text>
+			<text class='title'>课程详情</text>
+			<rich-text class='regular' :nodes='detail | formatRichText' v-if="detail"></rich-text>
 			
 			<!-- <view class="font">
 				<text>术查市资建务周二非称向给子走选。</text>
@@ -63,9 +63,9 @@
 	}
 	.introduce .title{
 		display: block;
-		font-size: 30rpx;
+		font-size: 28rpx;
 		margin-bottom: 36rpx;
-		font-weight: 900;
+		font-weight: 500;
 		color: #D81E1F;
 	}
 	.introduce .title:before {
@@ -76,6 +76,7 @@
 		background: #D81E1F;
 		margin-right: 10rpx;
 		border-radius: 1px;
+		transform: translateY(2rpx);
 	}
 	.font {
 		margin: 16rpx 0;
@@ -94,7 +95,7 @@
 		border-radius: 46rpx;
 		font-size: 34rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
+		font-weight: 500;
 		color: #FFFFFF;
 		line-height: 92rpx;
 		position: fixed;

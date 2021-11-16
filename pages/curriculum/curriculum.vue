@@ -33,9 +33,13 @@
 			this.pdbtm=125+app.globalData.paddingBottomHeight;
 		},
 		async onShow() {
+			if (!this.list.length) {
+				
 			uni.showLoading({
 				title:'加载中……'
 			})
+			}
+			
 			var query = new this.Parse.Query('CoursesModule')
 			// query.containedIn('level', [0, undefined])
 			query.equalTo("level", 0);

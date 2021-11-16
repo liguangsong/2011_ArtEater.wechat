@@ -50,13 +50,7 @@
 				let curr = addDays(now, -i)
 				self.dates.push({y:curr.getFullYear(),m: self.PrefixInteger((curr.getMonth()+1),2),d:self.PrefixInteger(curr.getDate(), 2)})
 			}
-			uni.loadFontFace ({
-			  family: 'PingFangSC-Medium',
-			  source: 'url("https://www.arteater.cn/PingFangSCMedium.ttf")',
-			  success: function(){
-				  console.log('load font success')
-			  }
-			})
+
 			uni.getStorage({
 				key:'userInfo',
 				success(res) {
