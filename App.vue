@@ -44,21 +44,21 @@
 	}
 	export default {
 		onLaunch: function() {
-			uni.loadFontFace ({
-				global: true,
-				family: 'PingFangSC-Regular',
-				source: 'url("https://art-eater.oss-cn-beijing.aliyuncs.com/word/%E8%8B%B9%E6%96%B9%E9%BB%91%E4%BD%93-%E5%87%86-%E7%AE%80.ttf")'
-			})
-			uni.loadFontFace ({
-				global: true,
-				family: 'PingFangSC-Medium',
-				source: 'url("https://art-eater.oss-cn-beijing.aliyuncs.com/word/%E8%8B%B9%E6%96%B9%E9%BB%91%E4%BD%93-%E4%B8%AD%E9%BB%91-%E7%AE%80.ttf")'
-			})
-			uni.loadFontFace ({
-				global: true,
-				family: 'PingFangSC-Semibold',
-				source: 'url("https://art-eater.oss-cn-beijing.aliyuncs.com/word/%E8%8B%B9%E6%96%B9%E9%BB%91%E4%BD%93-%E4%B8%AD%E7%B2%97-%E7%AE%80.ttf")',
-			})
+			// uni.loadFontFace ({
+			// 	global: true,
+			// 	family: 'PingFangSC-Regular',
+			// 	source: 'url("https://art-eater.oss-cn-beijing.aliyuncs.com/word/%E8%8B%B9%E6%96%B9%E9%BB%91%E4%BD%93-%E5%87%86-%E7%AE%80.ttf")'
+			// })
+			// uni.loadFontFace ({
+			// 	global: true,
+			// 	family: 'PingFangSC-Medium',
+			// 	source: 'url("https://art-eater.oss-cn-beijing.aliyuncs.com/word/%E8%8B%B9%E6%96%B9%E9%BB%91%E4%BD%93-%E4%B8%AD%E9%BB%91-%E7%AE%80.ttf")'
+			// })
+			// uni.loadFontFace ({
+			// 	global: true,
+			// 	family: 'PingFangSC-Semibold',
+			// 	source: 'url("https://art-eater.oss-cn-beijing.aliyuncs.com/word/%E8%8B%B9%E6%96%B9%E9%BB%91%E4%BD%93-%E4%B8%AD%E7%B2%97-%E7%AE%80.ttf")',
+			// })
 			// uni.loadFontFace ({
 			// 	global: true,
 			// 	family: 'PingFangSc-Regular',
@@ -173,9 +173,9 @@
 			// 	})
 			// })
 		},
-		onHide: function() {
-			console.log('App Hide')
-		}
+		// onHide: function() {
+		// 	console.log('App Hide')
+		// }
 	}
 </script>
 

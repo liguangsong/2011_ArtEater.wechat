@@ -15,13 +15,14 @@
 				</view>
 				<!-- <view class="box"> -->
 					<view class="btn" v-if='item.vip' :class='{study: item.vip && vip }'>
-						<!-- <text v-if='vip'>学习</text> -->
-						<!-- <text v-else @click.stop='unlockFn'>解锁</text> -->
-						<image v-if='vip' src="../../static/study.png" mode=""></image>
-						<image v-else @click.stop='unlockFn' src="../../static/lock.png" mode=""></image>
+						<text v-if='vip' style='transform: translateY(-1px); display: inline-block;'>学习</text>
+						<text v-else @click.stop='unlockFn'>解锁</text>
+						<!-- <image v-if='vip' src="../../static/study.png" mode=""></image>
+						<image v-else @click.stop='unlockFn' src="../../static/lock.png" mode=""></image> -->
 					</view>
 					<view class="btn study" v-else>
-						<image src="../../static/study.png" mode=""></image>
+						<text style='transform: translateY(-1px); display: inline-block;'>学习</text>
+						<!-- <image src="../../static/study.png" mode=""></image> -->
 					</view>
 				<!-- </view> -->
 			</view>
@@ -129,13 +130,13 @@
 		margin-right: 12rpx;
 		border-radius: 50%;
 	}
-	.btn image{
+	/* .btn image{
 		width: 108rpx;
 		height: 48rpx;
 		border-radius: 0;
 		margin-top: 10rpx;
-	}
-/* 	.btn {
+	} */
+	.btn {
 		width: 100rpx;
 		height: 40rpx;
 		line-height: 40rpx;
@@ -143,7 +144,9 @@
 		border-radius: 20rpx;
 		overflow: hidden;
 		background: rgba(0,0,0,.1);
-	} */
+		transform: translate(4rpx, 6rpx);
+		color: rgba(0,0,0,.5);
+	}
 	.vip {
 		position: absolute;
 		top: -6rpx;
@@ -153,9 +156,9 @@
 		width: 116rpx;
 		height: 116rpx;
 	}
-	/* .study {
+	.study {
 		border: 2rpx solid #FF6867;
 		background: #fff;
 		color: #FF6867;
-	} */
+	}
 </style>

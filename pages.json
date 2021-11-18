@@ -292,7 +292,7 @@
 			},{
 				"path": "pages/details/details",
 				"style": {
-					"navigationBarTitleText": "课程1",
+					"navigationBarTitleText": "课程",
 					"enablePullDownRefresh": false,
 					"navigationStyle": "custom"
 				}
@@ -328,7 +328,6 @@
 						"navigationBarTitleText": "开通会员",
 						"enablePullDownRefresh": false,
 						"navigationStyle": "custom"
-						
 					}
 				},
 				{

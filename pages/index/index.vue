@@ -25,26 +25,27 @@
 							<view class="nav-box">
 							<view class="navItem" @click="handleAuditionClick">
 								<view class="img">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon%EF%BC%8Fhome%EF%BC%8F%E8%AF%BE%E7%A8%8B%E8%AF%95%E5%90%AC%402x.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E8%AF%BE%E7%A8%8B%E8%AF%95%E5%90%AC.png"></image>
 								</view>
 								<view class="title">免费试听</view>
 							</view>
 							<view class="navItem" @click="handleImportantClick">
 								<view class="img">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon%EF%BC%8Fhome%EF%BC%8F%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93%402x.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93.png"></image>
+									<!-- <image src="../../static/svg/tiku.svg"></image> -->
 								</view>
 								<view class="title">必考题库</view>
 							</view>
 							<view class="navItem" @click="handleExamClick">
 								<view class="img">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon%EF%BC%8Fhome%EF%BC%8F%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7%402x.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7.png"></image>
 									<!-- <text class="badge">12待添加数字</text> -->
 								</view>
 								<view class="title">模拟试卷</view>
 							</view>
 							<view class="navItem" @click="handleNoteClick">
 								<view class="img">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon%EF%BC%8Fhome%EF%BC%8F%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93%402x.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E9%94%99%E9%A2%98%E9%9B%86.png"></image>
 								</view>
 								<view class="title">错题集</view>
 							</view>
@@ -136,42 +137,42 @@
 		<view class='mask'  @click="handleStep" v-if='isShowTips'>
 			<view v-if="step==8" class="step bottom">
 				<view class="navItem" style="right:4rpx">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask1.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%A2%98%E5%BA%93.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
 				</view>
 			</view>
 			<view v-if="step==7" class="step bottom" style="left:4rpx">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask2.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E8%AF%BE%E7%A8%8B.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
 				</view>
 			</view>
 			<view v-if="step==6" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask3.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E7%A7%91%E6%8A%80%E6%96%87%E8%89%BA%E5%B8%B8%E8%AF%86.png"></image>
 				</view>
 			</view>
 			<view v-if="step==2" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask4.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93.png"></image>
 				</view>
 			</view>
 			<view v-if="step==1" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask5.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%85%8D%E8%B4%B9%E8%AF%95%E5%90%AC.png"></image>
 				</view>
 			</view>
 			<view v-if="step==4" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask6.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%94%99%E9%A2%98%E9%9B%86.png"></image>
 				</view>
 			</view>
 			<view v-if="step==3" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask7.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7.png"></image>
 				</view>
 			</view>
 			<view v-if="step==5" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/mask8.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E4%B8%89%E5%90%88%E4%B8%80.png"></image>
 				</view>
 			</view>
 		<!-- </u-mask> -->

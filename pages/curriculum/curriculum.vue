@@ -1,6 +1,9 @@
 <template>
 	<view class="myPage" :style="{'overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<Navbar navbarBg='#F7F7F7' title='课程' :icon='false' align='center' fontColor="#000" iconColor='#000'>
+		<view v-if='!list.length' class='collection'>
+			暂无课程
+		</view>
+		<Navbar v-else navbarBg='#F7F7F7' title='课程' :icon='false' align='center' fontColor="#000" iconColor='#000'>
 			<view style='height:20rpx;'></view>
 			<Item v-for='(item,i) in list' v-if='!item.hide' :key='i' :item='item' :vip='vip'/>
 			<view style='height:33rpx'></view>
@@ -76,6 +79,14 @@
 	.myPage {
 		height: 100vh;
 		background: #F7F7F7;
+	}
+	.collection {
+		height: 600rpx;
+		font-family: PingFangSC-Medium;
+		font-size: 20px;
+		color: rgba(53, 32, 38, 0.4);
+		line-height: 600rpx;
+		text-align: center;
 	}
 </style>
 

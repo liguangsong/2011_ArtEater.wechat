@@ -1,5 +1,6 @@
 <template>
 	<scroll-view class='scroll' style='height:100%;' :scroll-y='true' @scroll='scroll'>
+	<!-- <view> -->
 		<view class="tabbar" :style='{background: height != 0 ? "" : "#fff", height: height != 0 ? height: tabbarheight+"rpx"}'>	
 			<slot name='img'></slot>
 			<view class="navbar"
@@ -17,6 +18,11 @@
 			</view>
 		</view>
 		<slot></slot>
+		<!-- <slot name='content'></slot> -->
+		<!-- <scroll-view>
+			<slot name='scroll'></slot>
+		</scroll-view> -->
+	<!-- </view> -->
 	</scroll-view>
 </template>
 

@@ -27,6 +27,7 @@
 							</view>
 							<text>课表</text>
 						</view>
+						<view class="btnitem" v-else></view>
 						<view class='btnitem button' @click="share">
 							<!-- :style="{left: curriculumInfo.flag==1 ? '26rpx':'46rpx'}" -->
 							<view class="img">
@@ -58,13 +59,14 @@
 		</view>
 		<view v-else :style='{paddingTop: infoTop + "px"}'></view>
 		<!-- 推荐学习 -->
-		<view class="recommend" v-show='recommendedList.length'>
+		<view class="recommend"  v-show='recommendedList.length'>
 			<view class="recommend-title">
 				推荐学习
 			</view>
 			<Item v-for='(item,i) in recommendedList' v-if='!item.hide' :key='i' :item='item' :vip='vip' />
 		</view>
-		<view class="bg" v-if='timetable' @click='timetable = false'></view>
+		<!-- @touchmove.stop.prevent=""  -->
+		<view class="bg" @touchmove.stop.prevent="" v-if='timetable' @click='timetable = false'></view>
 		<view class="timetable" :class='{"show-timetable": timetable}'>
 			<view class="content">
 				<view class="content-header">
@@ -457,7 +459,7 @@
 						}
 					}
 
-					.btn>view {
+			/* 		.btn>view {
 						display: flex;
 						width: 33.33%;
 						align-content: center;
@@ -468,14 +470,19 @@
 							font-weight: 400;
 							color: rgba(23, 23, 23, 0.6);
 						}
-					}
+					} */
 
 					.btn {
+						width: 392rpx;
 						flex: 1 0 auto;
 						display: flex;
-						justify-content: flex-end;
+						justify-content: space-around;
+						font-size: 20rpx;
+						font-weight: 400;
+						color: rgba(23, 23, 23, 0.6);
 						
 						.btnitem {
+							flex: 0 1 124rpx;
 							display: flex;
 							justify-content: flex-end;
 							position: relative;
@@ -484,24 +491,26 @@
 						.img {
 							width: 64rpx;
 							height: 64rpx;
-							position: absolute;
-							left: 26rpx;
 						}
 
 						image {
 							width: 64rpx;
 							height: 64rpx;
 						}
+						text {
+							display: inline-block;
+							width: 60rpx;
+						}
 						.button {
-							image {
-								position: relative;
-								/* left: 46rpx; */
+							.img {
+								position: absolute;
+								left: 0;
 							}
 						}
 						button {
 							font-size: 20rpx;
 							height: 64rpx;
-							width: 170rpx;
+							width: 124rpx;
 							line-height: 64rpx;
 							background: none;
 							border: none;
@@ -511,18 +520,14 @@
 							margin-left: 0;
 							margin-right: 0;
 							padding-right: 0;
-							position: relative;
-							text-align: right;
-							left: -6rpx;
+							padding-left: 64rpx !important;
+							text-align: left;
 							text-decoration: none;
-
+							position: absolute;
+							
 							&:after {
 								border: none;
 							}
-						}
-						.collection {
-							display: inline-block;
-							width: 60rpx;
 						}
 					}
 				}
@@ -730,7 +735,7 @@
 					
 					.active {
 						font-size: 24rpx;
-						font-weight: 500;
+						font-weight: 600;
 						font-family: PingFangSC-Semibold, PingFang SC;
 						color:rgba(0,0,0,.9) !important;
 						
@@ -750,7 +755,9 @@
 						border-bottom: 1px solid rgba(0, 0, 0, .05);
 						font-size: 24rpx;
 						color: rgba(0, 0, 0, .67);
-
+						text {
+							font-family: PingFangSC-Regular, PingFang SC;
+						}
 						.item-type {
 							margin-right: 48rpx;
 

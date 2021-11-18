@@ -77,14 +77,14 @@
 <style lang="scss" scoped>
 	.list{
 		position: relative;
-		// margin:20rpx 0;
 		.title-before{
 			display: inline-block;
 			width: 10rpx;
-			height: 24rpx;
+			height: 22rpx;
 			background: #D81E1F;
 			border-radius: 2rpx;
 			margin-right: 8rpx;
+			// margin-top: -1px;
 		}
 		.title{
 			height: 40rpx;
@@ -92,7 +92,7 @@
 			letter-spacing: 0rpx;
 			font-weight: 500;
 			color: #000000;
-			line-height: 40rpx;
+			// line-height: 40rpx;
 			padding-left: 30rpx;
 			margin: 24rpx 0 0rpx 0;
 			display: flex;
@@ -144,12 +144,24 @@
 		margin-bottom: 8rpx;
 	}
 	.image-bottom-info {
+		// width: 100%;
+		// box-sizing: border-box;
+		// position: absolute;
+		// bottom: 8rpx;
+		// display: flex;
+		// align-items: center;
+		// justify-content: space-between;
+		// font-size: 22rpx;
+		// z-index: 1;
+		
 		width: 100%;
-		box-sizing: border-box;
+		height: 24rpx;
+		// box-sizing: border-box;
 		position: absolute;
 		bottom: 8rpx;
 		display: flex;
 		align-items: center;
+		align-content: center;
 		justify-content: space-between;
 		font-size: 22rpx;
 		z-index: 1;
@@ -197,17 +209,16 @@
 		margin-left: 12rpx;
 		display: flex;
 		align-items: center;
+		align-content: center;
 		.play-image{
 			width: 24rpx;
 			height: 24rpx;
-			// line-height: 24rpx;
-			// vertical-align: middle;
 		}
 		.play-num{
-			display: inline-block;
+			// display: inline-block;
 			// height: 22rpx;
 			font-size: 16rpx;
-			vertical-align: middle;
+			// vertical-align: middle;
 			font-weight: 500;
 			color: #FFFFFF;
 		}

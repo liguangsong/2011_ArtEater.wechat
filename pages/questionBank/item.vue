@@ -7,11 +7,11 @@
 			<view class="title">{{item.subject_name}}</view>
 			<view class="info">
 				<view>
-					<view>已完成: {{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}}</view>
+					<view class='regular'>已完成: {{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}}</view>
 				</view>
 				<view class="btn">
-					<!-- <text>学习</text> -->
-					<image src="../../static/study.png" mode=""></image>
+					<text style='transform: translateY(-1px); display: inline-block;'>学习</text>
+					<!-- <image src="../../static/study.png" mode=""></image> -->
 				</view>
 			</view>
 		</view>
@@ -232,8 +232,8 @@
 <style scoped>
 	.questionbank-item {
 		width: 690rpx;
-		height: 216rpx;
-		margin: 28rpx auto 0;
+		height: 220rpx;
+		margin: 0 auto 28rpx;
 		display: flex;
 		box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.1);
 		border-radius: 24rpx;
@@ -257,11 +257,14 @@
 		justify-content: space-between;
 	}
 	.questionbank-item .content .title {
+		margin-top: 12rpx;
+		width: 100%;
 		font-size: 32rpx;
 		font-weight: 500;
 		line-height: 44rpx;
-		margin-top: 12rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 	.questionbank-item .content .info {
 		display: flex;
@@ -270,17 +273,22 @@
 		align-items: flex-end;
 		font-size: 20rpx;
 		font-weight: 400;
-		line-height: 32rpx;
-		font-family: PingFangSC-Regular;
+		/* line-height: 32rpx; */
+		/* font-family: PingFangSC-Regular; */
 		color: rgba(0,0,0,.5);
+		
+		/* margin-top: 8rpx; */
+		    /* font-size: 20rpx; */
+		    /* line-height: 28rpx; */
+		    /* opacity: .5; */
 	}
 	.questionbank-item image {
 		width: 108rpx;
 		height: 48rpx;
 		margin-bottom: -10rpx;
 	}
-	/* .questionbank-item .btn{
-		width: 100rpx;
+	.questionbank-item .btn{
+		/* width: 100rpx;
 		height: 40rpx;
 		border-radius: 20rpx;
 		font-size: 24rpx;
@@ -288,6 +296,17 @@
 		line-height: 40rpx;
 		color: #FF6867;
 		border: 2rpx solid #FF6867;
-		margin-right: 12rpx;
-	} */
+		margin-right: 12rpx; */
+		width: 100rpx;
+		height: 40rpx;
+		line-height: 40rpx;
+		text-align: center;
+		border-radius: 20rpx;
+		overflow: hidden;
+		/* transform: translateY(-2rpx); */
+		margin-right: 24rpx;
+		border: 2rpx solid #FF6867;
+		background: #fff;
+		color: #FF6867;
+	}
 </style>

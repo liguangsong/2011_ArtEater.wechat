@@ -86,7 +86,7 @@
 				tabbarheight: 0,
 				navbarheight: 0,
 				opacity: 0,
-				textShadow: '5rpx 4rpx 7rpx rgba(0,0,0,1)'
+				textShadow: '0 2rpx 4rpx rgba(0,0,0,.5)'
 			}
 		},
 		created() {
@@ -116,6 +116,7 @@
 						scrollTop,
 						deltaY
 					} = e.detail;
+					console.log(data.height);
 					//开始颜色变化
 					//计算色值
 					let settingColor = that.topColor - ((that.topColor - that.bottomColor) * (scrollTop - that
@@ -123,10 +124,10 @@
 					//获得css样式赋值语句
 					let colorValue = "rgb(" + settingColor + "," + settingColor + "," + settingColor + ")";
 					that.$parent.fontColor = colorValue;
-					var h = (Math.abs((data.top))) / data.height;
+					var h = Math.abs(data.top) / (data.height-20);
 					that.opacity = h;
-					let x = 1 - h < 0 ? 0 : 1 - h;
-					that.textShadow = '5rpx 4rpx 7rpx rgba(0,0,0,'+x+')';
+					let x = 1 - h < 0 ? 0 : 1 - h > 0.5 ? 0.5 : 1 - h;
+					that.textShadow = '0 2rpx 4rpx rgba(0,0,0,'+x+')';
 				}).exec();
 			}
 		}
@@ -167,7 +168,7 @@
 	}
 
 	.shadow {
-		text-shadow: 5rpx 4rpx 7rpx rgba(0, 0, 0, 1);
+		text-shadow: 5rpx 4rpx 6rpx rgba(50, 50, 50, 1);
 	}
 
 	image {

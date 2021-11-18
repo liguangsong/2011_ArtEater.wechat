@@ -102,16 +102,17 @@
 
 <style lang="scss" scoped>
 	.list{
-		font-family: PingFang;
+		// font-family: PingFang;
 		position: relative;
 		// margin:20rpx 0;
 		.title-before{
-			display: inline-block;
+			// display: inline-block;
 			margin-right: 8rpx;
 			width: 10rpx;
-			height: 24rpx;
+			height: 22rpx;
 			background: #D81E1F;
 			border-radius: 2rpx;
+			// margin-top: -1px;
 		}
 		.title{
 			height: 40rpx;
@@ -119,7 +120,7 @@
 			letter-spacing: 0rpx;
 			font-weight: 500;
 			color: #000000;
-			line-height: 40rpx;
+			// line-height: 40rpx;
 			padding-left: 30rpx;
 			margin: 12rpx 0 18rpx 0;
 			display: flex;

@@ -1,37 +1,45 @@
 <template>
-	<view class='study' v-if="curriculumInfo">
-		<Navbar navbarBg='#fff' :height='height' fontColor="#000" iconColor='#000'>
-			<template v-slot:img>
-				<image style='width: 100%; height: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
-			</template>
-			<view class="head radius" :style='{top: height ? "-24rpx": 0}'>
-				<view class="title semibold">{{curriculumInfo.subjectName}}</view>
-				<view class="info">
-					<view>
-						<text v-if="curriculumInfo.subTitle1" class='studynum'>{{curriculumInfo.subTitle1}}</text>
-						<text v-if="curriculumInfo.subTitle2">{{curriculumInfo.subTitle2}}</text>
-					</view>
-					<view class="teacher">
-						<image v-if="curriculumInfo.portrait&&curriculumInfo.portrait.length" :src="curriculumInfo.portrait[0]"></image>
-						<text>{{curriculumInfo.lecturerName}}</text>
-					</view>
+	<view class='study'>
+		<view class="navbar" :style='{height:tabbarheight + "rpx" }'>
+			<view class="nav" :style='{height:navbarheight + "rpx", top:tabbarheight - navbarheight + "rpx"}'>
+				<view  @click='back' class="icon">
+					<u-icon name="arrow-left" color="#000" size="28"></u-icon>
 				</view>
-				<view class="tabber">
-					<view style='padding: 0 20rpx;' @click='tabbar = false'>
-						<view :style='{color: !tabbar ? "#D81E1F":""}'>详情</view>
-						<view v-if='!tabbar' class='br'></view>
-					</view>
-					<view style='padding: 0 20rpx;' @click='tabbar = true'>
-						<view :style='{color: tabbar ? "#D81E1F":""}'>目录</view>
-						<view v-if='tabbar' class='br'></view>
-					</view>
+				<view class="title" :style='{color: fontColor, textAlign: align, paddingLeft: icon ? 0 : titleLeft}'>
+					<text>{{title}}</text>
 				</view>
 			</view>
-			<view class="tab">
-				<Timetable v-if='tabbar ' :list="timetableList"/>
-				<Details v-else :detail="curriculumInfo.introduce" :isVip="vip"/>
+		</view>
+		<view class="img" style='height: 478rpx;'>
+			<image style='width: 100%; height: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
+		</view>
+		<view class="head radius">
+			<view class="title semibold">{{curriculumInfo.subjectName}}</view>
+			<view class="info">
+				<view>
+					<text v-if="curriculumInfo.subTitle1" class='studynum'>{{curriculumInfo.subTitle1}}</text>
+					<text v-if="curriculumInfo.subTitle2">{{curriculumInfo.subTitle2}}</text>
+				</view>
+				<view class="teacher">
+					<image v-if="curriculumInfo.portrait&&curriculumInfo.portrait.length" :src="curriculumInfo.portrait[0]"></image>
+					<text>{{curriculumInfo.lecturerName}}</text>
+				</view>
 			</view>
-		</Navbar>
+			<view class="tabber">
+				<view style='padding: 0 20rpx;' @click='tabbar = false'>
+					<view :style='{color: !tabbar ? "#D81E1F":""}'>详情</view>
+					<view v-if='!tabbar' class='br'></view>
+				</view>
+				<view style='padding: 0 20rpx;' @click='tabbar = true'>
+					<view :style='{color: tabbar ? "#D81E1F":""}'>目录</view>
+					<view v-if='tabbar' class='br'></view>
+				</view>
+			</view>
+		</view>
+		<view class="tab">
+			<Timetable v-if='tabbar ' :list="timetableList"/>
+			<Details v-else :detail="curriculumInfo.introduce" :isVip="vip"/>
+		</view>
 	</view>
 </template>
 
@@ -39,23 +47,39 @@
 	import Curriculum from '../../js/curriculum.js'
 	import Timetable from './timetable.vue';
 	import Details from './details.vue';
-	import Navbar from '../../components/navbar/navbar.vue';
 	export default {
 		data() {
 			return {
-				curriculumInfo:{},//详情root节点的
-				timetableList:[],//课表页面
+				tabbarheight: 0,
+				navbarheight: 0,
+				opacity: 0,
+				screenHeight: 0,
 				height: '0',
 				tabbar: false,
 				isVip: false,
 				vip: false,
-				item: null
+				item: null,
+				curriculumInfo:{},//详情root节点的
+				timetableList:[],//课表页面
 			}
+		},
+		created() {
+			uni.getSystemInfo({
+				success: (e) => {
+					this.screenHeight = e.screenHeight;
+					let statusBar = 0
+					let customBar = 0
+					statusBar = e.statusBarHeight
+					let custom = wx.getMenuButtonBoundingClientRect()
+					customBar = custom.bottom + custom.top - e.statusBarHeight
+					this.tabbarheight = customBar * 2;
+					this.navbarheight = customBar * 2 - e.statusBarHeight * 2;
+				}
+			})
 		},
 		components: {
 			Timetable,
-			Details,
-			Navbar
+			Details
 		},
 		onLoad(options) {
 			this.item = options;
@@ -72,6 +96,16 @@
 			this.getCurriculum();
 		},
 		methods: {
+			back() {
+				if(!this.customEvent){
+					uni.navigateBack({
+						delta: 1
+					})
+				}else{
+					this.$emit('navEvent')
+				}
+				
+			},
 			// 获取详情
 			async getCurriculum() {
 				let res = await Curriculum.getCurriculum(this.item.objectId);
@@ -112,11 +146,44 @@
 
 <style scoped>
 	.study {
-		background: #f7f7f7;
 		height: 100vh;
+		overflow: hidden;
+		background: #f7f7f7;
 	}
+	.navbar {
+		position: fixed;
+		width: 100%;
+		color: #fff;
+		top: 0;
+		z-index: 10000;
+	}
+	.nav {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		position: absolute;
+	}
+	.icon {
+		flex: 0 1 50rpx;
+		height: 50rpx;
+		text-align: center;
+	}
+	.title {
+		flex: 1 1 auto;
+		padding-right: 50rpx;
+	}
+	.bg {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.img {
+		width: 100%;
+	}
+	
 	.head {
-		height: 286rpx;
+		height: 276rpx;
 		background: #fff;
 		padding: 0 48rpx;
 		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.1);
@@ -125,11 +192,12 @@
 		border-top-left-radius: 24rpx;
 		border-top-right-radius: 24rpx;
 		position: relative;
+		top: -24rpx;
 	}
-  .title {
-		padding: 48rpx 0 20rpx;
+	.title {
+		padding: 48rpx 0 18rpx;
 		font-size: 44rpx;
-		font-weight: 900;
+		font-weight: 600;
 	}
 	.info {
 		font-size: 24rpx;
@@ -137,7 +205,7 @@
 		justify-content: space-between;
 		align-items: center;
 		height: 48rpx;
-		color: rgba(23,23,23,.6)
+		color: rgba(23,23,23,.5)
 	}
 	.info .studynum {
 		margin-right: 30rpx;
@@ -159,10 +227,10 @@
 		justify-content: space-around;
 		margin-top: 44rpx;
 		font-size: 24rpx;
-		font-weight: 700;
+		font-weight: 500;
 	}
 	.tabber view {
-		height: 38rpx;
+		height: 36rpx;
 		text-align: center;
 	}
 	.text {
@@ -171,9 +239,16 @@
 	}
 	.br {
 		width: 46rpx;
-		height: 6rpx !important;
+		height: 5rpx !important;
 		background: #D81E1F;
 		border-radius: 2rpx;
 	}
-	
+	.tab {
+		/* height: calc(100vh - 764rpx);
+		overflow-y: auto; */
+		height: calc(100vh - 740rpx);
+		overflow-y: auto;
+		transform: translateY(-24rpx);
+		padding-top: 24rpx;
+	}
 </style>

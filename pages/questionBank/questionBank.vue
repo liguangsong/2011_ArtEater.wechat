@@ -3,6 +3,7 @@
 		
 			<!-- <keep-alive> -->
 		<Navbar navbarBg='#F7F7F7' :icon='false' title='题库' align='center' fontColor="#000" iconColor='#000'>
+				<view style='height:20rpx;'></view>
 				<Item v-for='(item, i) in subjects' :item='item' :img='arr[i]' :key='i'/>
 				<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
 		</Navbar>
@@ -22,10 +23,10 @@
 				pdbtm:0,//兼容iphonexr+
 				windowHeight:0,
 				arr: [
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/c1.png',
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/c2.png',
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/c3.png',
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/C4.png'
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E4%B8%AD%E5%9B%BD%E7%BE%8E%E6%9C%AF%E5%8F%B2%E5%9B%BE%E6%A0%87.png',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%A4%96%E5%9B%BD%E7%BE%8E%E6%9C%AF%E5%8F%B2%E5%9B%BE%E6%A0%87.png',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E8%89%BA%E6%9C%AF%E6%A6%82%E8%AE%BA%E5%9B%BE%E6%A0%87.png',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E7%A7%91%E6%8A%80%E5%9B%BE%E6%A0%87.png'
 				]
 			}
 		},

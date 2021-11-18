@@ -20,10 +20,10 @@
 								未开通会员
 							</view>
 						</view>
-						<view class="xufei" @click='changeShowFixed'>
-							<image v-if='isMember && memberInfo.memberType ' src="../../static/bjxf.png" mode='heightFix'></image>
-							<image v-else src="../../static/bjkt.png" mode='heightFix'></image>
-							<!-- <text>{{isMember && memberInfo.memberType ? '续 &nbsp; 费' : '立即开通'}}</text> -->
+						<view class="xufei vip-btn" @click='changeShowFixed("bool")'>
+							<!-- <image v-if='isMember && memberInfo.memberType ' src="../../static/bjxf.png" mode='heightFix'></image>
+							<image v-else src="../../static/bjkt.png" mode='heightFix'></image> -->
+							<text>{{isMember && memberInfo.memberType ? '续 &nbsp; 费' : '立即开通'}}</text>
 						</view>
 					</view>
 				</view>
@@ -40,7 +40,8 @@
 					<view class="viewItem heijin">
 						<view class="viewItem-vip">
 							<view class="bg">
-								<image :src='list[0].surface'></image>
+								<image :src='detailImgArr[0]'></image>
+<!-- 								<image :src='list[0].surface'></image> -->
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
@@ -51,17 +52,17 @@
 									</view>
 								</view>
 								<view class="viewItem-vip-bottom">
-									<view class="vip-btn" @click='changeShowFixed'>
+									<view class="vip-btn" @click='changeShowFixed(0)'>
 										<view v-if='isMember'>
-											<!-- <text v-if='memberInfo.memberType == 0'>续 &nbsp; 费</text>
-											<text v-else>立即升级黑金会员</text> -->
-											<image v-if='memberInfo.memberType == 0' src="../../static/bjxf.png" mode="heightFix"></image>
-											<image v-else src="../../static/bjsj.png" mode="heightFix"></image>
+											<text v-if='memberInfo.memberType == 0'>续 &nbsp; 费</text>
+											<text v-else>立即升级黑金会员</text>
+											<!-- <image v-if='memberInfo.memberType == 0' src="../../static/bjxf.png" mode="heightFix"></image>
+											<image v-else src="../../static/bjsj.png" mode="heightFix"></image> -->
 											
 										</view>
 										<view v-else>
-											<!-- <text>立即开通</text> -->
-											<image src="../../static/bjkt.png" mode="heightFix"></image>
+											<text>立即开通</text>
+											<!-- <image src="../../static/bjkt.png" mode="heightFix"></image> -->
 										</view>
 									</view>
 								</view>
@@ -70,7 +71,7 @@
 						<view class="list">
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/heijin/vip1.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/VIP%E8%AF%BE%E7%A8%8B%E7%95%85%E4%BA%AB-%E9%BB%91%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									VIP课程畅享
@@ -84,7 +85,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/heijin/vip2.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E9%A2%98%E5%BA%93%E4%B8%80%E5%8D%A1%E9%80%9A-%E9%BB%91%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									题库一卡通
@@ -98,7 +99,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/heijin/vip3.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E8%AF%BE%E5%A0%82%E7%A6%8F%E5%88%A9-%E9%BB%91%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									课堂福利
@@ -112,7 +113,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/heijin/vip4.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E5%B7%A5%E5%85%B7%E4%B9%A6-%E9%BB%91%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									独家工具书
@@ -126,7 +127,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/heijin/vip6.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E4%B8%93%E5%B1%9E%E9%A1%BE%E9%97%AE-%E9%BB%91%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									专属备考顾问
@@ -140,7 +141,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/heijin/vip5.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E5%A4%87%E8%80%83%E5%AD%A6%E4%B9%A0%E7%BE%A4-%E9%BB%91%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									备考学习群
@@ -154,16 +155,16 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/heijin/vip7.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E4%B8%93%E5%B1%9E%E5%A4%B4%E5%83%8F-%E9%BB%91%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									专属头像勋章
 								</view>
 								<view class="item-txt1">
-									食艺兽VIP会员专属头像勋章*，让您以尊贵的身份出现在排行 榜中
+									食艺兽VIP会员专属头像勋章*，让您以尊贵的身份出现在排行榜中
 								</view>
 								<view class="item-txt2">
-									*此勋章仅在会员期内生效
+									*此勋章仅在会员期内生效。
 								</view>
 							</view>
 						</view>
@@ -172,7 +173,8 @@
 					<view class="viewItem bojin">
 						<view class="viewItem-vip">
 							<view class="bg">
-								<image :src="list[1].surface"></image>
+								<image :src='detailImgArr[1]'></image>
+								<!-- <image :src="list[1].surface"></image> -->
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
@@ -184,16 +186,16 @@
 								</view>
 			
 								<view class="viewItem-vip-bottom">
-									<view class="vip-btn" @click='changeShowFixed'>
+									<view class="vip-btn" @click='changeShowFixed(1)'>
 										<view v-if='isMember'>
-											<!-- <text v-if='memberInfo.memberType == 1'>续费</text>
-											<text v-else>立即升级黑金会员</text> -->
-											<image v-if='memberInfo.memberType == 1' src="../../static/hjxf.png" mode="heightFix"></image>
-											<image v-else src="../../static/hjsj.png" mode="heightFix"></image>
+											<text v-if='memberInfo.memberType == 1'>续 &nbsp; 费</text>
+											<text v-else>立即升级黑金会员</text>
+											<!-- <image v-if='memberInfo.memberType == 1' src="../../static/hjxf.png" mode="heightFix"></image>
+											<image v-else src="../../static/hjsj.png" mode="heightFix"></image> -->
 										</view>
 										<view v-else>
-											<!-- <text>立即开通</text> -->
-											<image src="../../static/hjkt.png" mode="heightFix"></image>
+											<text>立即开通</text>
+											<!-- <image src="../../static/hjkt.png" mode="heightFix"></image> -->
 										</view>
 									</view>
 								</view>
@@ -202,7 +204,7 @@
 						<view class="list">
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/bojin/vip1.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/VIP%E8%AF%BE%E7%A8%8B%E7%95%85%E5%90%AC-%E9%93%82%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									VIP课程畅享
@@ -216,7 +218,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/bojin/vip2.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E8%AF%BE%E5%A0%82%E7%A6%8F%E5%88%A9-%E9%93%82%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									课堂福利
@@ -230,7 +232,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/bojin/vip3.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E7%8B%AC%E5%AE%B6%E5%B7%A5%E5%85%B7%E4%B9%A6-%E9%93%82%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									独家工具书
@@ -244,7 +246,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/bojin/vip4.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E4%B8%93%E5%B1%9E%E9%A1%BE%E9%97%AE-%E9%93%82%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									专属备考顾问
@@ -258,16 +260,16 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/bojin/vip5.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E4%B8%93%E5%B1%9E%E5%A4%B4%E5%83%8F-%E9%93%82%E9%87%91.png"></image>
 								</view>
 								<view class="item-title">
 									专属头像勋章
 								</view>
 								<view class="item-txt1">
-									食艺兽VIP会员专属头像勋章*，让您以尊贵的身份出现在排行 榜中
+									食艺兽VIP会员专属头像勋章*，让您以尊贵的身份出现在排行榜中
 								</view>
 								<view class="item-txt2">
-									*此勋章仅在会员期内生效
+									*此勋章仅在会员期内生效。
 								</view>
 							</view>
 						</view>
@@ -276,7 +278,8 @@
 					<view class="viewItem baiyin">
 						<view class="viewItem-vip">
 							<view class="bg">
-								<image :src="list[2].surface"></image>
+								<image :src='detailImgArr[2]'></image>
+								<!-- <image :src="list[2].surface"></image> -->
 							</view>
 							<view class="viewItem-vip-info">
 								<view class="viewItem-vip-titel">
@@ -287,15 +290,16 @@
 									</view>
 								</view>
 								<view class="viewItem-vip-bottom">
-									<view class="vip-btn" @click='changeShowFixed'>
+									<view class="vip-btn" @click='changeShowFixed(2)'>
 										<view v-if='isMember'>
-										<!-- 	<text v-if='memberInfo.memberType == 2'>续费</text>
-											<text v-else>立即升级黑金会员</text> -->
-											<image v-if='memberInfo.memberType == 2' src="../../static/byxf.png" mode="heightFix"></image>
-											<image v-else src="../../static/bysj.png" mode="heightFix"></image>
+											<text v-if='memberInfo.memberType == 2'>续 &nbsp; 费</text>
+											<text v-else>立即升级黑金会员</text>
+											<!-- <image v-if='memberInfo.memberType == 2' src="../../static/byxf.png" mode="heightFix"></image>
+											<image v-else src="../../static/bysj.png" mode="heightFix"></image> -->
 										</view>
 										<view v-else>
-											<image src="../../static/bykt.png" mode="heightFix"></image>
+											<text>立即开通</text>
+											<!-- <image src="../../static/bykt.png" mode="heightFix"></image> -->
 										</view>
 									</view>
 								</view>
@@ -304,7 +308,7 @@
 						<view class="list">
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/baiyin/vip1.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E9%A2%98%E5%BA%93%E4%B8%80%E5%8D%A1%E9%80%9A-%E7%99%BD%E9%93%B6.png"></image>
 								</view>
 								<view class="item-title">
 									题库一卡通
@@ -318,7 +322,7 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/baiyin/vip2.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E8%AF%BE%E5%A0%82%E7%A6%8F%E5%88%A9-%E7%99%BD%E9%93%B6.png"></image>
 								</view>
 								<view class="item-title">
 									课堂福利
@@ -332,16 +336,16 @@
 							</view>
 							<view class="item">
 								<view class="item-img">
-									<image src="../../static/baiyin/vip3.png"></image>
+									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E4%B8%93%E5%B1%9E%E5%A4%B4%E5%83%8F-%E7%99%BD%E9%93%B6.png"></image>
 								</view>
 								<view class="item-title">
 									专属头像勋章
 								</view>
 								<view class="item-txt1">
-									食艺兽VIP会员专属头像勋章*，让您以尊贵的身份出现在排行 榜中
+									食艺兽VIP会员专属头像勋章*，让您以尊贵的身份出现在排行榜中
 								</view>
 								<view class="item-txt2">
-									*此勋章仅在会员期内生效
+									*此勋章仅在会员期内生效。
 								</view>
 							</view>
 						</view>
@@ -351,36 +355,37 @@
 				<view style='height: 100rpx'></view>
 			</view>
 		</Navbar>
+		<!--  @touchmove.stop.prevent="" -->
 		<view class="fixed" :class='{leval: showFixed}'>
-			<view class="bg" @click='changeShowFixed(1)'></view>
+			<view class="bg" @touchmove.stop.prevent="" @click='changeShowFixed'></view>
 			<view class="fixed-bottom">
-				<view class='semibold'>
+				<view>
 					<view v-if='memberInfo'>
 						<view v-if='memberInfo.memberType == 0' @click='heijinRenew'>
 							<text>续费黑金VIP</text>
-							即刻畅享
+							<text>即刻畅享</text>
 						</view>
 						<view v-if='memberInfo.memberType == 1' @click='bojinRenew'>
 							<text v-if='active == 1'>续费铂金VIP</text>
 							<text v-else>升级黑金VIP</text>
-							即刻畅享
+							<text>即刻畅享</text>
 						</view>
 						<view v-if='memberInfo.memberType == 2' @click='baiyinRenew'>
 							<text v-if='active == 2'>续费白银VIP</text>
 							<text v-else>升级黑金VIP</text>
-							即刻畅享
+							<text>即刻畅享</text>
 						</view>
 					</view>
 					<view v-else>
-						<view v-if='!showFixed' @click='changeShowFixed'>
+						<view v-if='!showFixed' @click='changeShowFixed(-1)'>
 							<text>开通会员VIP</text>
-							即刻畅享
+							<text>即刻畅享</text>
 						</view>
 						<view v-else @click='firstBuy'>
 							<text v-if='active == 0'>购买黑金VIP</text>
 							<text v-if='active == 1'>购买铂金VIP</text>
 							<text v-if='active == 2'>购买白银VIP</text>
-							即刻畅享
+							<text>即刻畅享</text>
 						</view>
 					</view>
 				</view>
@@ -391,7 +396,7 @@
 				</view>
 				<view class="openbox"  @touchstart='touchstart' @touchend='touchend'>
 					<!-- <view class="list" :style='{left: -active*550 + 20 + "rpx"}'> -->
-					<view class="list" :style='{left: active==0 ? "20rpx" : active==1 ? "-550rpx":"-1120rpx"}'>
+					<view class="list" :style='{left: active==0 ? "20rpx" : active==1 ? "-552rpx":"-1120rpx"}'>
 						<view class="item" v-for='(item,i) in list' :keys='item.id'
 							:class='{heijin: item.surfaceId == 1, bojin: item.surfaceId == 2, baiyin: item.surfaceId == 3}'
 							@click='active = i'>
@@ -429,18 +434,18 @@
 
 					</view>
 				</view>
-			
-	
+			 <!-- v-if='isChajia' -->
 				<view class="buchajia" v-if='isChajia'>
 					<view class="icon"></view>
-					<text>您的剩余时长可以抵扣金额，只需支付{{cash}}元即可升级！ 升级后会员时长为：{{cashTime1}}至{{cashTime2}}</text>
+					<text>您原会员服务的剩余时⻓可⽤于抵扣，\n只需要⽀付{{cash}}元即可升级为⿊⾦VIP！\n升级后会员服务周期为{{cashTime1}}至{{cashTime2}}</text>
 				</view>
-				<view class="buy-info" :style='{height: isChajia ? "240rpx" : "360rpx"}'>
+				<view class="buy-info" :style='{height: isChajia ? "250rpx" : "360rpx"}'>
 					<view class="buy-title">购买说明</view>
 					<view class="buy-info-item">
 						<view v-for='(item,i) in list[active].explain' :key='i'>
 							{{item}}
 						</view>
+						<view style='height: 20rpx;'></view>
 					</view>
 				</view>
 			</view>
@@ -460,6 +465,7 @@
 				showFixed: false,
 				list: null,
 				active: 0,
+				active1: this.active,
 				user: null,
 				userInfo: null,
 				member: null,
@@ -471,9 +477,14 @@
 				clientX: 0,
 				touchSwitch: true,
 				imgArr: [
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/card%EF%BC%8F%E9%BB%91%E9%87%91vip-%E8%B4%AD%E4%B9%B0%E7%95%8C%E9%9D%A2%402x.png',
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/card%EF%BC%8F%E9%BB%91%E9%87%91vip%E5%A4%87%E4%BB%BD%402x.png',
-					'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/card%EF%BC%8F%E7%99%BD%E9%93%B6vip%E5%A4%87%E4%BB%BD%402x.png'
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/%E9%BB%91%E9%87%91vip-%E8%B4%AD%E4%B9%B0%E7%95%8C%E9%9D%A2.png',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/%E9%93%82%E9%87%91vip-%E8%B4%AD%E4%B9%B0%E7%95%8C%E9%9D%A2.png',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/%E7%99%BD%E9%93%B6vip-%E8%B4%AD%E4%B9%B0%E7%95%8C%E9%9D%A2.png'
+				],
+				detailImgArr: [
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/%E9%BB%91%E9%87%91vip-%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2.png',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/%E9%93%82%E9%87%91vip-%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2.png',
+					'https://art-eater.oss-cn-beijing.aliyuncs.com/%E7%99%BD%E9%93%B6vip-%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2.png'
 				]
 			}
 		},
@@ -569,8 +580,18 @@
 				return year + '-' + month + '-' + day;
 			},
 			changeShowFixed(f) {
-				if (f != 1) {
-					this.showFixed = true;
+				if (f == 'bool') {
+					this.active = this.active1;
+					setTimeout(()=>{
+						this.showFixed = true;
+					},300)
+					return
+				}
+				if (typeof(f) == 'number') {
+					this.active = f != -1 ? f : 0;
+					setTimeout(()=>{
+						this.showFixed = true;
+					},300)
 				} else {
 					this.showFixed = false;
 				}
@@ -615,9 +636,20 @@
 			},
 			// 不是会员第一次进行购买
 			firstBuy() {
-				this.showFixed = true;
-				var cash = this.list[this.active].promotionPrice || this.list[this.active].memberPrice;
-				this.payment(cash * 100)
+				let _this = this;
+				let str = `购买${this.active==0?'黑金VIP':this.active==1?'铂金VIP':'白银VIP'}`;
+				uni.showModal({
+					title: str,
+					confirmColor: '#ED3535',
+					confirmText: '确定',
+					success(res) {
+						if (res.confirm) {
+							_this.showFixed = true;
+							var cash = _this.list[_this.active].promotionPrice || _this.list[_this.active].memberPrice;
+							_this.payment(cash * 100)
+						}
+					}
+				})
 			},
 			// 白银续费
 			baiyinRenew() {
@@ -628,11 +660,12 @@
 				let cash = 0;
 				// 现在白银的价格
 				var baiyinPrice = this.list[2].promotionPrice || this.list[2].memberPrice;
+				var _this = this;
 				if (this.isChajia) {
-					var _this = this;
 					uni.showModal({
-						title: '购买完成将自动升级为黑金VIP会员',
+						title: '升级为黑金VIP会员',
 						confirmColor: '#ED3535',
+						confirmText: '继续购买',
 						success(res) {
 							// 升级为黑金
 							if (res.confirm) {
@@ -644,7 +677,16 @@
 						}
 					})
 				} else {
-					this.payment(baiyinPrice * 100)
+					uni.showModal({
+						title: '续费黑金VIP',
+						confirmColor: '#ED3535',
+						confirmText: '确定',
+						success(res) {
+							if (res.confirm) {
+								_this.payment(baiyinPrice * 100)
+							}
+						}
+					})
 				}
 			},
 			// 铂金续费
@@ -656,10 +698,10 @@
 				let cash = 0;
 				// 现在铂金的价格
 				var bojinPrice = this.list[1].promotionPrice || this.list[1].memberPrice;
+				var _this = this;
 				if (this.isChajia) {
-					var _this = this;
 					uni.showModal({
-						title: '购买完成将自动升级为黑金VIP会员',
+						title: '升级为黑金VIP会员',
 						confirmColor: '#ED3535',
 						confirmText: '继续购买',
 						success(res) {
@@ -673,22 +715,41 @@
 						}
 					})
 				} else {
-					this.payment(bojinPrice * 100)
+					uni.showModal({
+						title: '续费铂金VIP',
+						confirmColor: '#ED3535',
+						confirmText: '确定',
+						success(res) {
+							if (res.confirm) {
+								_this.payment(bojinPrice * 100)
+							}
+						}
+					})
 				}
 			},
 			// 黑金续费
 			heijinRenew() {
+				let _this = this;
 				if (!this.showFixed) {
 					this.showFixed = true;
 					return;
 				}
-				var heijinPrice = this.list[0].promotionPrice || this.list[0].memberPrice;
-				this.payment(heijinPrice * 100)
+				uni.showModal({
+					title: '续费黑金VIP',
+					confirmColor: '#ED3535',
+					confirmText: '确定',
+					success(res) {
+						if (res.confirm) {
+							var heijinPrice = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+							_this.payment(heijinPrice * 100)
+						}
+					}
+				})
 			},
 
 			// 支付
 			payment(cash) {
-				// cash = 1;
+				// cash = 0;
 				var _this = this;
 				if (cash == 0) {
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5);
@@ -748,7 +809,7 @@
 			async getIntegral(cash) {
 				// cash = 10000;
 				await this.Parse.Config.get().then(async config => {
-					console.log(this.userInfo);
+					// console.log(this.userInfo);
 					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes.shopScore);
 					this.userInfo.score_all = (this.userInfo.score_all || 0) + parseInt(cash * config.attributes.shopScore);
 					this.user.set('score', this.userInfo.score);
@@ -864,23 +925,25 @@
 		top: 204rpx;
 
 		.vip-btn {
-			// padding: 0 42rpx;
-			// height: 48rpx;
-			// line-height: 46rpx;
-			// text-align: center;
-			// border-radius: 24rpx;
-			// border: 1px solid rgba(255, 205, 131, 1);
-			// color: #FFCD83;
-			// font-size: 20rpx;
-			// font-weight: 500;
-			view {
-				display: flex;
-				align-items: flex-end;
-				image {
-					height: 48rpx;
-					margin-top: 6rpx;
-				}
-			}
+			padding: 0 38rpx;
+			height: 40rpx;
+			// line-height: 38rpx;
+			display: flex;
+			align-items: center;
+			text-align: center;
+			border-radius: 20rpx;
+			border: 1px solid #FFCD83;
+			color: #FFCD83;
+			font-size: 20rpx;
+			font-weight: 500;
+			// view {
+			// 	display: flex;
+			// 	align-items: flex-end;
+			// 	image {
+			// 		height: 48rpx;
+			// 		margin-top: 6rpx;
+			// 	}
+			// }
 		}
 
 		.head {
@@ -919,10 +982,14 @@
 
 				.txt {
 					.txtname {
+						width: 250rpx;
 						font-size: 36rpx;
 						font-weight: 500;
 						color: #FFFFFF;
 						line-height: 50rpx;
+						white-space:nowrap;
+						overflow:hidden;
+						text-overflow:ellipsis;
 					}
 
 					.txttype {
@@ -935,14 +1002,14 @@
 						font-family: PingFangSC-Regular;
 					}
 				}
-				.xufei {
-					height: 48rpx;
-					width: 200rpx;
-					text-align: right;
-					image {
-						height: 48rpx;
-					}
-				}
+				// .xufei {
+				// 	height: 48rpx;
+				// 	width: 200rpx;
+				// 	text-align: right;
+				// 	image {
+				// 		height: 48rpx;
+				// 	}
+				// }
 			}
 		}
 
@@ -997,6 +1064,14 @@
 					}
 					.item {
 						color: #C4966C;
+						// opacity: .7;
+						// .item-txt1 {
+						// 	opacity: .7;
+						// }
+						
+						// .item-txt2 {
+							
+						// }
 					}
 				}
 
@@ -1010,19 +1085,21 @@
 					}
 					.item {
 						color: #BC914C;
+						// opacity: .7;
 					}
 				}
 
 				&.baiyin {
 					.vip-btn {
-						color: #000000 ;
-						border-color: #000000;
+						color: rgba(0,0,0,0.6);
+						border-color: rgba(0,0,0,0.6);
 					}
 					.viewItem-vip-titel {
-						color: #000000;
+						color: rgba(0,0,0,.6);
 					}
 					.item {
 						color: #555555;
+						// opacity: .7;
 					}
 				}
 
@@ -1152,14 +1229,15 @@
 							font-weight: 500;
 							line-height: 22rpx;
 							margin-bottom: 20rpx;
+							opacity: .7;
 						}
 
 						.item-txt2 {
-							font-size: 14rpx;
+							font-size: 7pt;
 							font-weight: 400;
-							line-height: 18rpx;
+							line-height: 9pt;
 							width: 100%;
-							opacity: .7;;
+							opacity: .7;
 							font-family: PingFangSC-Regular;
 						}
 					}
@@ -1168,9 +1246,10 @@
 		}
 
 		.br {
-			width: 100%;
+			width: 750rpx;
 			height: 12rpx;
-			background: rgba(0, 0, 0, 0.08);
+			background: rgba(0, 0, 0, 0.05);
+			box-shadow: 0rpx 0rpx 6rpx 0rpx rgba(0, 0, 0, 0.08) inset;
 			// box-shadow: 0 0 6rpx 0 rgba(0,0,0,0.08);
 		}
 	}
@@ -1216,6 +1295,7 @@
 				line-height: 90rpx;
 
 				text {
+					font-family: PingFangSC-Semibold, PingFang SC;
 					margin-right: 40rpx;
 				}
 			}
@@ -1242,6 +1322,8 @@
 				font-weight: 600;
 				color: #995D05;
 				line-height: 44rpx;
+				letter-spacing: -1px;
+				font-family: PingFangSC-Semibold, PingFang SC;
 			}
 			
 			.openbox {
@@ -1274,7 +1356,8 @@
 						}
 
 						&.baiyin {
-							color: #000000;
+							// color: #000000;
+							color: rgba(0,0,0,.6);
 						}
 
 						.img {
@@ -1335,6 +1418,7 @@
 									font-size: 48rpx;
 									font-weight: 600;
 									line-height: 66rpx;
+									letter-spacing: -1px;
 								}
 
 								.old-price {
@@ -1351,23 +1435,27 @@
 
 			.buchajia {
 				width: 486rpx;
-				height: 74rpx;
+				// height: 74rpx;
 				font-size: 18rpx;
 				font-weight: 500;
+				text-align: center;
 				color: #995D05;
 				line-height: 26rpx;
-				margin: 20rpx auto 44rpx;
-				background: rgba(230, 203, 161, 0.32);
+				margin: 20rpx auto 24rpx;
+				// background: rgba(230, 203, 161, 0.32);
+				background: #f7efe1;
 				border: 2rpx solid rgba(153, 93, 5, 0.46);
 				border-radius: 10rpx;
-				padding: 10rpx 24rpx 0;
+				padding: 10rpx 24rpx 10rpx;
 				position: relative;
-
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				view {
 					position: absolute;
 					width: 18rpx;
 					height: 18rpx;
-					background: #F6EEEF;
+					background: #f7efe1;
 					border-left: 2rpx solid rgba(153, 93, 5, 0.46);
 					border-top: 2rpx solid rgba(153, 93, 5, 0.46);
 					left: 242rpx;
@@ -1392,6 +1480,7 @@
 					font-weight: 500;
 					line-height: 30rpx;
 					margin-bottom: 20rpx;
+					font-family: PingFangSC-Medium, PingFang SC;
 				}
 
 				.buy-info-item {
@@ -1399,6 +1488,10 @@
 					text {
 						text-decoration: underline;
 					}
+				}
+				view {
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
 				}
 			}
 		}

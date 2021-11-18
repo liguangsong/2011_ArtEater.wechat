@@ -8,7 +8,7 @@
 				</view>
 				<view class="headCon" @click="handleInfoClick">
 					<view class="headIconView">
-						<image class='icon' v-if='memberType' src="../../static/mine/icon.png"></image>
+						<image class='icon' style='opacity:1;' v-if='memberType' src="../../static/mine/icon.png"></image>
 						<image v-if="userInfo&&userInfo.avatarUrl" :src="userInfo.avatarUrl"></image>
 					</view>
 					<view>
@@ -50,10 +50,16 @@
 		<view class="scroll">
 			<view class="vipView" @click='jumpvip'>
 				<view class='open'>
-					<image v-if='memberType' src="../../static/mine/mine_xufei.png" mode=""></image>
-					<image v-else src="../../static/mine/mine_open.png" mode=""></image>
+					<view class="" v-if='memberType'>
+						续 &nbsp; 费
+					</view>
+					<view class="" v-else>
+						立即开通
+					</view>
+					<!-- <image  src="../../static/mine/mine_xufei.png" mode=""></image> -->
+					<!-- <image src="../../static/mine/mine_open.png" mode=""></image> -->
 				</view>
-				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/card%EF%BC%8F%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83%402x.png"></image>
+				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83.png"></image>
 			</view>
 			<view class="box actionView">
 				<view class="actionItem" @click="handleSignInClick">
@@ -490,6 +496,7 @@
 		background: #fff;
 		box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.06);
 		border-radius: 24rpx;
+		overflow: hidden;
 	}
 
 	.scoreView {
@@ -498,6 +505,7 @@
 		top: 400rpx;
 		left: 30rpx;
 		z-index: 210;
+		width: 692rpx;
 		background: none;
 		box-shadow: none;
 		
@@ -518,7 +526,7 @@
 
 			.scoreItem {
 				height: 100%;
-				padding-top: 20rpx;
+				padding-top: 30rpx;
 				flex: 0 1 33.3%;
 				position: relative;
 				text-align: center;
@@ -534,7 +542,7 @@
 					font-size: 22rpx;
 					font-weight: 400;
 					color: rgba(0, 0, 0, .4);
-					line-height: 32rpx;
+					line-height: 30rpx;
 				}
 			}
 
@@ -556,11 +564,15 @@
 
 	.vipView {
 		height: 124rpx;
-		width: 690rpx;
+		width: 688rpx;
 		margin: 0 auto;
 		margin-bottom: 14rpx;;
 		position: relative;
-
+		overflow: hidden;
+		margin-top: -7rpx;
+		display: flex;
+		align-items: center;
+		
 		image {
 			position: absolute;
 			top: 0;
@@ -572,18 +584,21 @@
 		}
 
 		.open {
-			position: relative;
+			position: absolute;
 			z-index: 200;
-			width: 144rpx;
 			font-size: 20rpx;
-			height: 48rpx;
-			margin: 38rpx 28rpx;
+			right: 0;
+			margin-right: 28rpx;
+			width: 136rpx;
 			float: right;
-			line-height: 48rpx;
-			// border: 1px solid rgba(153, 93, 5, 1);
-			// color: rgba(153, 93, 5, 1);
-			text-align: center;
-			border-radius: 24rpx;
+			height: 40rpx;
+			// text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 20rpx;
+			border: 2rpx solid #995D05;
+			color: #995D05;
 		}
 	}
 
@@ -619,17 +634,19 @@
 					font-weight: 400;
 					color: #352026;
 					margin-right: 50rpx;
-
+					
 					view {
 						height: 26rpx;
 						border-radius: 13rpx;
 						line-height: 26rpx;
 						color: #fff;
+						letter-spacing: 0;
 						padding: 0 4rpx;
 						margin-top: 4rpx;
-						font-size: 20rpx;
+						font-size: 16rpx;
 						min-width: 26rpx;
 						text-align: center;
+						font-family: PingFangSC-Semibold, PingFang SC;
 						background: linear-gradient(rgba(218, 39, 39, 1), rgba(218, 39, 39, .3));
 					}
 					
