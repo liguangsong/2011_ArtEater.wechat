@@ -1,10 +1,18 @@
 <template>
 	<view class="list" v-if="list.length">
-			<view class="title" v-if="title">
-				<text class="title-before"></text>
+	<!-- 		<view class="title" v-if="title">
+				<view class="red-block"></view>
 			   {{title}}
 			</view>
-			<text class="more" v-if="showMore" @click="gotolist">查看更多 ></text>
+			<text class="more" v-if="showMore" @click="gotolist">查看更多 ></text> -->
+			
+			<view class="title-info title">
+				<view class="left" v-if="title">
+					<view class="red-block"></view>
+				   {{title}}
+				</view>
+				<view class="more right" v-if="showMore" @click="gotolist">查看更多 ></view>
+			</view>
 			
 		<view class="auditon">
 			<view class="item" v-for='(item,i) in list' :key='i' @click='jump(item)'>
@@ -104,27 +112,16 @@
 	.list{
 		// font-family: PingFang;
 		position: relative;
-		// margin:20rpx 0;
-		.title-before{
-			// display: inline-block;
-			margin-right: 8rpx;
-			width: 10rpx;
-			height: 22rpx;
-			background: #D81E1F;
-			border-radius: 2rpx;
-			// margin-top: -1px;
-		}
 		.title{
-			height: 40rpx;
-			font-size: 28rpx;
-			letter-spacing: 0rpx;
-			font-weight: 500;
-			color: #000000;
-			// line-height: 40rpx;
-			padding-left: 30rpx;
+			// height: 40rpx;
+			// font-size: 28rpx;
+			// letter-spacing: 0rpx;
+			// font-weight: 500;
+			// color: #000000;
+			// padding-left: 30rpx;
 			margin: 12rpx 0 18rpx 0;
-			display: flex;
-			align-items: center;
+			// display: flex;
+			// align-items: center;
 		}
 		.more{
 			// width: 80rpx;

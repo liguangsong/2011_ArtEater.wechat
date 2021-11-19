@@ -10,6 +10,44 @@
 	.regular {
 		font-family: PingFangSC-Regular !important;
 	}
+	
+	.title-info {
+		letter-spacing: 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 30rpx;
+		height: 40rpx;
+		.left {
+			display: flex;
+			align-items: center;
+			.red-block {
+				width: 10rpx;
+				height: 40rpx;
+				position: relative;
+				margin-right: 8rpx;
+			}
+			.red-block:before {
+				display: inline-block;
+				content: "";
+				width: 100%;
+				height: 24rpx;
+				background: #D81E1F;
+				margin-right: 10rpx;
+				border-radius: 1px;
+				position: absolute;
+				top: 8rpx;
+			}
+		}
+		.right {
+			font-size: 20rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: rgba(0,0,0,.5);
+		}
+	}
+	
 </style>
 <script>
 	import config from 'static/config/index.js'

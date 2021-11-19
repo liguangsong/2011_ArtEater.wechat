@@ -100,6 +100,7 @@
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfb",
 				"navigationBarTitleText": "模拟考试",
+				"navigationStyle":"custom",
 				"enablePullDownRefresh": false
 			}
 		}, {
@@ -244,7 +245,8 @@
                     "style": {
                         "navigationBarBackgroundColor": "#fbfbfa",
                         "navigationBarTitleText": "错题集",
-                        "enablePullDownRefresh": false
+                        "enablePullDownRefresh": false,
+												"navigationStyle":"custom"
                     }
               },
               {
