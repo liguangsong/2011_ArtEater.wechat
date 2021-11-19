@@ -1225,17 +1225,19 @@
 						}
 
 						.item-txt1 {
-							font-size: 16rpx;
+							// font-size: 16rpx;
+							font-size: .6em;
 							font-weight: 500;
-							line-height: 22rpx;
+							// line-height: 22rpx;
+							line-height: 1.5em;
 							margin-bottom: 20rpx;
 							opacity: .7;
 						}
 
 						.item-txt2 {
-							font-size: 7pt;
+							font-size: .5em;
 							font-weight: 400;
-							line-height: 9pt;
+							line-height: 1.4em;
 							width: 100%;
 							opacity: .7;
 							font-family: PingFangSC-Regular;

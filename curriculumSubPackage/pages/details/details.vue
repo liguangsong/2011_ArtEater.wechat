@@ -735,7 +735,7 @@
 					
 					.active {
 						font-size: 24rpx;
-						font-weight: 600;
+						font-weight: 800;
 						font-family: PingFangSC-Semibold, PingFang SC;
 						color:rgba(0,0,0,.9) !important;
 						
