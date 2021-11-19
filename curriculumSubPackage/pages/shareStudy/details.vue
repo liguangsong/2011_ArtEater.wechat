@@ -54,17 +54,17 @@
 
 <style>
 	.introduce {
-		margin-bottom: 20rpx;
+		margin-top: 4rpx;
+		margin-bottom:14rpx;
 		font-weight: 900;
 		padding: 0 48rpx;
 	}
 	.introduce .title{
-		height: 40rpx;
+		display: block;
 		font-size: 28rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		margin-bottom: 36rpx;
 		font-weight: 500;
 		color: #D81E1F;
-		line-height: 40rpx;
 	}
 	.introduce .title:before {
 		display: inline-block;
@@ -73,6 +73,8 @@
 		height: 24rpx;
 		background: #D81E1F;
 		margin-right: 10rpx;
+		border-radius: 1px;
+		transform: translateY(2rpx);
 	}
 	.font {
 		margin: 16rpx 0;
@@ -86,7 +88,7 @@
 	.unlock {
 		width: 690rpx;
 		height: 92rpx;
-		background: #ED3535;
+		background: #ed3635;
 		box-shadow: 0rpx 4rpx 8rpx 0rpx rgba(0,0,0,0.2);
 		border-radius: 46rpx;
 		font-size: 34rpx;

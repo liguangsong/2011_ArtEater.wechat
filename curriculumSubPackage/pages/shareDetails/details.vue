@@ -1,5 +1,5 @@
 <template>
-	<view class="details" :class='{"details-scroll": timetable}'>
+	<view class="details" :style='{height: timetable ? "100vh":"auto"}' :class='{"details-scroll": timetable}'>
 		<view class="header">
 			<view class="tabbar" :style='{height: tabbarheight+"rpx"}'>
 				<view class="navbar" :style='{height: navbarheight + "rpx", top: tabbarheight - navbarheight + "rpx"}'>
@@ -23,27 +23,29 @@
 						<text>{{curriculumInfo.lecturerName}}</text>
 					</view>
 					<view class="btn">
-						<view v-if="curriculumInfo.flag==1">
-							<view class="img" @click='timetablefn'>
-								<image src="../../static/icon_list.png"></image>
+							<view class='btnitem' v-if="curriculumInfo.flag==1" @click='timetablefn'>
+								<view class="img">
+									<image src="../../static/icon_list.png"></image>
+								</view>
+								<text>课表</text>
 							</view>
-							<text>课表</text>
-						</view>
-						<view @click="share">
-							<view class="img">
-								<image src="../../../static/icon/icon_share.png"></image>
+							<view class="btnitem" v-else></view>
+							<view class='btnitem button' @click="share">
+								<!-- :style="{left: curriculumInfo.flag==1 ? '26rpx':'46rpx'}" -->
+								<view class="img">
+									<image src="../../../static/icon/icon_share.png"></image>
+								</view>
+								<!-- <text>分享</text> -->
+								<button type="default" :data-objectId='objectId' open-type='share'>分享</button>
 							</view>
-							<!-- <text>分享</text> -->
-							<button type="default" open-type='share'>分享</button>
-						</view>
-						<view @click="operateCollection(false)">
-							<view class="img">
-								<image :src="collectionStatus?active:unactive"></image>
+							<view class='btnitem' @click="operateCollection(false)">
+								<view class="img">
+									<image :src="collectionStatus?active:unactive"></image>
+								</view>
+								<text class='collection'>{{collectionStatus?'已收藏':'收藏'}}</text>
 							</view>
-							<text>{{collectionStatus?'已收藏':'收藏'}}</text>
 						</view>
 					</view>
-				</view>
 			</view>
 			<!-- 音频 -->
 			<view class="mp3" v-if="curriculumInfo.kind&&curriculumInfo.kind==2">
@@ -62,7 +64,7 @@
 			</view>
 			<Item v-for='(item,i) in recommendedList' v-if='!item.hide' :key='i' :item='item' :vip='vip'/>
 		</view>
-		<view class="bg" v-if='timetable'  @click='timetable = false'></view>
+		<view class="bg" @touchmove.stop.prevent="" v-if='timetable'  @click='timetable = false'></view>
 		<view class="timetable" :class='{"show-timetable": timetable}'>
 			<view class="content">
 				<view class="content-header">
@@ -131,6 +133,7 @@
 			}
 		},
 		onLoad(options) {
+			// console.log(options);
 			this.curriculumInfo={};
 			this.objectId=options.objectId;
 			if(options.shareType){
@@ -242,9 +245,18 @@
 			// 获取详情
 			async getCurriculum() {
 				let res = await Curriculum.getHideCurriculum(this.objectId);
-				console.log(res,88899)
+				// console.log(res,88899)
 				let info = res[0];
+				// console.log(info, '[[[[[[[[]]]]]]]]');
 				this.curriculumInfo=info;
+				if (info.rootId) {
+					var q = new this.Parse.Query('CoursesModule')
+					q.equalTo('objectId', info.rootId)
+					q.find().then(data => {
+						this.curriculumInfo.portrait = data[0].attributes.portrait;
+						this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
+					})
+				}
 				if(info.flag==1){
 					// 存储上次学习
 				    await Curriculum.updatePreLearn(info['rootId'],info.objectId);
@@ -356,41 +368,51 @@
 	}
 </script>
 
+
 <style scoped lang='scss'>
 	.details-scroll {
 		height: 100vh;
 		overflow: hidden;
+		background: #fff;
 	}
+
 	.details {
 		position: relative;
 		background: #fff;
+
 		.header {
 			position: fixed;
 			width: 100%;
 			background: #fff;
+
 			.tabbar {
 				width: 100%;
 				overflow: hidden;
+
 				.navbar {
 					position: absolute;
 					width: 100%;
 					z-index: 1000;
 					display: flex;
 					align-items: center;
+
 					.icon {
 						padding-left: 34rpx;
 					}
 				}
 			}
+
 			.info {
 				padding: 48rpx 24rpx 28rpx 48rpx;
+
 				.info-title {
 					font-size: 36rpx;
 					line-height: 50rpx;
-					color: #D81E1F;
-					font-weight: 500;
+					color: rgba(216, 30, 31, 1);
+					font-weight: 600;
 					margin-bottom: 14rpx;
 				}
+
 				.bottom {
 					display: flex;
 					justify-content: space-between;
@@ -398,10 +420,13 @@
 					font-size: 20rpx;
 					height: 64rpx;
 					line-height: 64rpx;
+					color: rgba(23,23,23,.6);
+					
 					.teacher {
 						flex: 0 1 278rpx;
 						display: flex;
-						align-content: center;
+						align-items: center;
+
 						image {
 							width: 48rpx;
 							height: 48rpx;
@@ -409,39 +434,73 @@
 							margin-right: 10rpx;
 						}
 					}
-					.btn > view {
+
+			/* 		.btn>view {
 						display: flex;
-						width:33.33%;
+						width: 33.33%;
 						align-content: center;
-					}
+
+						text {
+							font-size: 20rpx;
+							font-family: PingFangSC-Regular, PingFang SC;
+							font-weight: 400;
+							color: rgba(23, 23, 23, 0.6);
+						}
+					} */
+
 					.btn {
+						width: 392rpx;
 						flex: 1 0 auto;
 						display: flex;
-						justify-content: flex-end;
+						justify-content: space-around;
+						font-size: 20rpx;
+						font-weight: 400;
+						color: rgba(23, 23, 23, 0.6);
+						
+						.btnitem {
+							flex: 0 1 124rpx;
+							display: flex;
+							justify-content: flex-end;
+							position: relative;
+						}
+						
 						.img {
 							width: 64rpx;
 							height: 64rpx;
 						}
+
 						image {
 							width: 64rpx;
 							height: 64rpx;
 						}
+						text {
+							display: inline-block;
+							width: 60rpx;
+						}
+						.button {
+							.img {
+								position: absolute;
+								left: 0;
+							}
+						}
 						button {
 							font-size: 20rpx;
 							height: 64rpx;
-							width: 170rpx;
+							width: 124rpx;
 							line-height: 64rpx;
 							background: none;
 							border: none;
 							border-radius: 0;
+							color: rgba(23, 23, 23, 0.6);
 							box-sizing: border-box;
 							margin-left: 0;
 							margin-right: 0;
 							padding-right: 0;
-							position: relative;
-							text-align: right;
-							left: -30rpx;
+							padding-left: 64rpx !important;
+							text-align: left;
 							text-decoration: none;
+							position: absolute;
+							
 							&:after {
 								border: none;
 							}
@@ -449,68 +508,84 @@
 					}
 				}
 			}
+
 			.mp3 {
 				margin: 0 16rpx 28rpx;
 				height: 148rpx;
 				border-radius: 24rpx;
 				padding: 28rpx;
-				box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.05), 0 -4rpx 8rpx 0 rgba(0,0,0,0.05);
+				box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.05), 0 -4rpx 8rpx 0 rgba(0, 0, 0, 0.05);
 			}
+
 			.br {
-				border-bottom: 1px solid #ccc;
+				border-bottom: 1px solid rgba(0, 0, 0, .05);
 				margin: 0 24rpx;
 			}
 		}
+
 		.html {
 			width: 100%;
 			padding: 28rpx 40rpx;
 			line-height: 40rpx;
 			font-size: 24rpx;
 			overflow: hidden;
-			box-shadow: 0 0 8rpx 2rpx rgba(0,0,0,0.08);
+			box-shadow: 0 0 8rpx 2rpx rgba(0, 0, 0, 0.08);
 		}
-		.html image, .html img {
+
+		.html image,
+		.html img {
 			width: 100%;
 		}
+
 		.recommend {
 			padding: 48rpx 30rpx;
 			background: rgba(0, 0, 0, 0.05);
+			display: block;
 			.recommend-title {
 				font-size: 28rpx;
 				font-weight: 500;
 				margin-bottom: 24rpx;
+				font-family: PingFangSC-Medium;
+				
 				&::before {
 					content: "";
 					display: inline-block;
 					width: 10rpx;
 					height: 24rpx;
 					margin-right: 8rpx;
+					transform: translateY(2rpx);
 					background: #D81E1F;
+					border-radius: 1px;
 				}
 			}
+
 			.recommend-item {
 				position: relative;
 				z-index: 0;
 				width: 690rpx;
 				height: 220rpx;
 				background: #fff;
-				box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.06);
+				box-shadow: 0 4rpx 10rpx 0 rgba(0, 0, 0, 0.06);
 				border-radius: 24rpx;
 				padding: 32rpx 48rpx 20rpx 40rpx;
 				margin-bottom: 24rpx;
+
 				.font {
 					margin-bottom: 40rpx;
+
 					.title {
 						font-size: 32rpx;
 						font-weight: 500;
 						line-height: 44rpx;
 					}
+
 					.info {
 						font-size: 20rpx;
 						font-weight: 400;
 						color: #555;
 						line-height: 28rpx;
 						margin-top: 8rpx;
+
 						text {
 							&:first-child {
 								margin-right: 10rpx;
@@ -518,6 +593,7 @@
 						}
 					}
 				}
+
 				.teacher {
 					display: flex;
 					justify-content: space-between;
@@ -525,16 +601,20 @@
 					font-size: 20rpx;
 					line-height: 48rpx;
 					align-items: center;
+					color: rgba(23,23,23,.6);
+
 					.img {
 						display: flex;
 						align-content: center;
 					}
+
 					image {
 						width: 48rpx;
 						height: 48rpx;
 						border-radius: 50%;
 						margin-right: 12rpx;
 					}
+
 					.btn {
 						color: #FF6867;
 						width: 100rpx;
@@ -545,17 +625,20 @@
 						line-height: 40rpx;
 					}
 				}
+
 				.vip {
 					position: absolute;
 					top: -6rpx;
 					right: -6rpx;
 				}
+
 				.vip image {
 					width: 116rpx;
 					height: 116rpx;
 				}
 			}
 		}
+
 		.show-timetable {
 			view {
 				&.content {
@@ -564,6 +647,7 @@
 				}
 			}
 		}
+
 		.bg {
 			position: absolute;
 			top: 0;
@@ -572,12 +656,14 @@
 			bottom: 0;
 			width: 100%;
 			height: 100vh;
-			background: rgba(0,0,0,.5);
+			background: rgba(0, 0, 0, .5);
 		}
+
 		.timetable {
 			position: fixed;
 			width: 100%;
 			bottom: 0;
+
 			.content {
 				position: absolute;
 				width: 100%;
@@ -589,6 +675,7 @@
 				overflow: hidden;
 				transform: translateY(100%);
 				transition: .3s;
+
 				.content-header {
 					position: absolute;
 					top: 0;
@@ -596,65 +683,81 @@
 					height: 160rpx;
 					width: 100%;
 					background: #fff;
+
 					.icon {
 						width: 100%;
 						text-align: center;
 						font-size: 20rpx;
 						opacity: .2;
 					}
+
 					.timetable-title {
 						padding-top: 40rpx;
 						padding-left: 48rpx;
 						font-size: 28rpx;
-						font-weight: 500;
 						color: #D81E1F;
 						line-height: 40rpx;
+						font-family: PingFangSC-Semibold;
+						font-weight: 700;
 					}
 				}
+
 				.list {
 					height: 512rpx;
 					margin-top: 160rpx;
 					padding-left: 48rpx;
 					overflow-y: auto;
+					font-family: PingFangSC-Regular;
+					
 					.active {
 						font-size: 24rpx;
-						font-weight: 500;
-						color: #000000;
+						font-weight: 800;
+						font-family: PingFangSC-Semibold, PingFang SC;
+						color:rgba(0,0,0,.9) !important;
+						
 						.item-type {
-							text{
+							text {
 								font-size: 16rpx;
 								opacity: .3;
 							}
 						}
 					}
+
 					.item {
 						display: flex;
 						justify-content: space-between;
 						align-items: center;
 						height: 84rpx;
-						border-bottom: 1px solid rgba(0,0,0,.1);
+						border-bottom: 1px solid rgba(0, 0, 0, .05);
 						font-size: 24rpx;
-						color: rgba(0,0,0,.7);
+						color: rgba(0, 0, 0, .67);
+						text {
+							font-family: PingFangSC-Regular, PingFang SC;
+						}
 						.item-type {
-							margin-right: 20rpx;
+							margin-right: 48rpx;
+
 							text {
 								margin-right: 30rpx;
 							}
+
 							image {
-								width: 24rpx;
-								height: 24rpx;
+								width: 34rpx;
+								height: 34rpx;
 								vertical-align: middle;
 							}
 						}
 					}
 				}
+
 				.close {
 					height: 164rpx;
 					width: 100%;
 					display: flex;
 					justify-content: center;
 					align-items: center;
-					view{
+
+					view {
 						width: 690rpx;
 						height: 94rpx;
 						line-height: 94rpx;

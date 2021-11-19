@@ -262,7 +262,6 @@
 					var q = new this.Parse.Query('CoursesModule')
 					q.equalTo('objectId', info.rootId)
 					q.find().then(data => {
-						console.log(data, 11121)
 						this.curriculumInfo.portrait = data[0].attributes.portrait;
 						this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
 					})

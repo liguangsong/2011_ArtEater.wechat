@@ -1,19 +1,9 @@
 <template>
 	<view class='study' v-if="curriculumInfo">
-			<view class="navbar" :style='{height:tabbarheight + "rpx" }'>
-				<view class="nav" :style='{height:navbarheight + "rpx", top:tabbarheight - navbarheight + "rpx"}'>
-					<view  @click='back' class="icon">
-						<u-icon name="arrow-left" color="#000" size="28"></u-icon>
-					</view>
-					<view class="title" :style='{color: fontColor, textAlign: align, paddingLeft: icon ? 0 : titleLeft}'>
-						<text>{{title}}</text>
-					</view>
-				</view>
-			</view>
-			<view class="img" style='height: 478rpx;'>
-				<image style='width: 100%; height: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
-			</view>
-			
+		<Navbar navbarBg='#fff' iconName="home" :height='height' fontColor="#000" iconColor='#000' :customEvent="true" @navEvent="navEvent">
+			<template v-slot:img>
+				<image style='width: 100%;' :src="curriculumInfo.headImg[0]" mode='aspectFill'></image>
+			</template>
 			<view class="head radius" :style='{top: height ? "-20rpx": 0}'>
 				<view class="title">{{curriculumInfo.subjectName}}</view>
 				<view class="info">
@@ -27,14 +17,8 @@
 					</view>
 				</view>
 				<view class="tabber">
-					<view style='padding: 0 20rpx;' @click='tabbar = false'>
-						<view :style='{color: !tabbar ? "#D81E1F":""}'>详情</view>
-						<view v-if='!tabbar' class='br'></view>
-					</view>
-					<view style='padding: 0 20rpx;' @click='tabbar = true'>
-						<view :style='{color: tabbar ? "#D81E1F":""}'>目录</view>
-						<view v-if='tabbar' class='br'></view>
-					</view>
+					<view :class='{text: !tabbar}' @click='tabbar = false'>详情</view>
+					<view :class='{text: tabbar}' @click='tabbar = true'>目录</view>
 				</view>
 			</view>
 			<view class="tab">
@@ -42,6 +26,7 @@
 				<!-- :isVip="tabbar" -->
 				<Details v-else :detail="curriculumInfo.introduce" />
 			</view>
+		</Navbar>
 	</view>
 </template>
 
@@ -49,7 +34,7 @@
 	import Curriculum from '../../js/curriculum.js'
 	import Timetable from './timetable.vue';
 	import Details from './details.vue';
-	// import Navbar from '../../components/navbar/navbar.vue';
+	import Navbar from '../../components/navbar/navbar.vue';
 	export default {
 		data() {
 			return {
@@ -57,21 +42,15 @@
 				timetableList:[],//课表页面
 				height: '0',
 				tabbar: false,
-				isVip: false,
-				item: null,
-				vip: false,
-				tabbarheight: 0,
-				navbarheight: 0,
-				opacity: 0,
-				screenHeight: 0,
+				// isVip: false,
+				item: null
 			}
 		},
 		components: {
 			Timetable,
 			Details,
-			// Navbar
+			Navbar
 		},
-		
 		onLoad(options) {
 			this.item = options;
 		},
@@ -86,18 +65,6 @@
 					this.tabbar = true;
 				}
 			}
-			uni.getSystemInfo({
-				success: (e) => {
-					this.screenHeight = e.screenHeight;
-					let statusBar = 0
-					let customBar = 0
-					statusBar = e.statusBarHeight
-					let custom = wx.getMenuButtonBoundingClientRect()
-					customBar = custom.bottom + custom.top - e.statusBarHeight
-					this.tabbarheight = customBar * 2;
-					this.navbarheight = customBar * 2 - e.statusBarHeight * 2;
-				}
-			})
 		},
 		methods: {
 			// 获取详情
@@ -143,61 +110,26 @@
 	}
 </script>
 
-
 <style scoped>
 	.study {
-		height: 100vh;
-		overflow: hidden;
 		background: #f7f7f7;
+		height: 100vh;
 	}
-	.navbar {
-		position: fixed;
-		width: 100%;
-		color: #fff;
-		top: 0;
-		z-index: 10000;
-	}
-	.nav {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		position: absolute;
-	}
-	.icon {
-		flex: 0 1 50rpx;
-		height: 50rpx;
-		text-align: center;
-	}
-	.title {
-		flex: 1 1 auto;
-		padding-right: 50rpx;
-	}
-	.bg {
-		position: absolute;
-		top: 0;
-		width: 100%;
-		height: 100%;
-	}
-	.img {
-		width: 100%;
-	}
-	
 	.head {
-		height: 276rpx;
+		height: 256rpx;
 		background: #fff;
 		padding: 0 48rpx;
 		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.1);
 	}
 	.radius {
-		border-top-left-radius: 24rpx;
-		border-top-right-radius: 24rpx;
+		border-top-left-radius: 20rpx;
+		border-top-right-radius: 20rpx;
 		position: relative;
-		top: -24rpx;
 	}
-	.title {
-		padding: 48rpx 0 18rpx;
+  .title {
+		padding: 28rpx 0;
 		font-size: 44rpx;
-		font-weight: 600;
+		font-weight: 900;
 	}
 	.info {
 		font-size: 24rpx;
@@ -205,7 +137,6 @@
 		justify-content: space-between;
 		align-items: center;
 		height: 48rpx;
-		color: rgba(23,23,23,.5)
 	}
 	.info .studynum {
 		margin-right: 30rpx;
@@ -225,30 +156,17 @@
 	.tabber {
 		display: flex;
 		justify-content: space-around;
-		margin-top: 44rpx;
-		font-size: 24rpx;
-		font-weight: 500;
+		margin-top: 30rpx;
 	}
 	.tabber view {
-		height: 36rpx;
-		text-align: center;
+		height: 48rpx;
+	}
+	.tab {
+		/* margin-top: 30rpx; */
 	}
 	.text {
 		color: #D81E1F;
 		border-bottom: 3px solid #D81E1F;
 	}
-	.br {
-		width: 46rpx;
-		height: 5rpx !important;
-		background: #D81E1F;
-		border-radius: 2rpx;
-	}
-	.tab {
-		/* height: calc(100vh - 764rpx);
-		overflow-y: auto; */
-		height: calc(100vh - 740rpx);
-		overflow-y: auto;
-		transform: translateY(-24rpx);
-		padding-top: 24rpx;
-	}
+	
 </style>
