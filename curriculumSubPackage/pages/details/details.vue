@@ -262,7 +262,6 @@
 					var q = new this.Parse.Query('CoursesModule')
 					q.equalTo('objectId', info.rootId)
 					q.find().then(data => {
-						console.log(data, 11121)
 						this.curriculumInfo.portrait = data[0].attributes.portrait;
 						this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
 					})
@@ -333,9 +332,9 @@
 						url: '../../../mineSubPackage/pages/vip/vip'
 					})
 				} else {
-					this.curriculumInfo = item;
 					this.timetable = false;
 					this.$nextTick(() => {
+					this.curriculumInfo = item;
 						const query = uni.createSelectorQuery().in(this);
 						query.select('.header').boundingClientRect(data => {
 							this.htmlInfoTop = data.height;
@@ -353,6 +352,14 @@
 					
 					// 存储上次学习
 					await Curriculum.updatePreLearn(item['rootId'], item.objectId);
+					if (this.curriculumInfo.rootId) {
+						var q = new this.Parse.Query('CoursesModule')
+						q.equalTo('objectId', this.curriculumInfo.rootId)
+						q.find().then(data => {
+							this.curriculumInfo.portrait = data[0].attributes.portrait;
+							this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
+						})
+					}
 				}
 
 			},

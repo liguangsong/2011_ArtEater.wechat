@@ -22,7 +22,7 @@ export default {
 	async getHideCurriculum(id) {
 		console.log(id,'ppppp')
 		let curriculum = new Parse.Query('CoursesModule');
-		    curriculum.equalTo('hide', true);
+		    // curriculum.equalTo('hide', true);
 		if (id) {
 			curriculum.equalTo('objectId', id);
 		}

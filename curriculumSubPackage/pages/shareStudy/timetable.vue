@@ -165,7 +165,7 @@
 						});
 					}else{
 						uni.navigateTo({
-						  url: '/curriculumSubPackage/pages/details/details?objectId='+item.objectId+'&shareType=1'
+						  url: '/curriculumSubPackage/pages/shareDetails/details?objectId='+item.objectId+'&shareType=1'
 						});
 						
 					}
@@ -177,12 +177,12 @@
 		}
 	}
 </script>
-
 <style scoped>
 	.catalogue {
-		font-size: 30rpx;
-		margin-bottom: 20rpx;
-		font-weight: 900;
+		margin-top: 4rpx;
+		font-size: 28rpx;
+		margin-bottom: 14rpx;
+		font-weight: 500;
 		padding-left: 48rpx;
 		color: #D81E1F;
 	}
@@ -193,6 +193,8 @@
 		height: 24rpx;
 		background: #D81E1F;
 		margin-right: 10rpx;
+		transform: translateY(2rpx);
+		border-radius: 1px;
 	}
 	.content {
 		height: 600rpx;

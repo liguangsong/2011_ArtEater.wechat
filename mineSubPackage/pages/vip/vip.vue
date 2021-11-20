@@ -382,9 +382,9 @@
 							<text>即刻畅享</text>
 						</view>
 						<view v-else @click='firstBuy'>
-							<text v-if='active == 0'>购买黑金VIP</text>
-							<text v-if='active == 1'>购买铂金VIP</text>
-							<text v-if='active == 2'>购买白银VIP</text>
+							<text v-if='active == 0'>开通黑金VIP</text>
+							<text v-if='active == 1'>开通铂金VIP</text>
+							<text v-if='active == 2'>开通白银VIP</text>
 							<text>即刻畅享</text>
 						</view>
 					</view>
@@ -637,7 +637,7 @@
 			// 不是会员第一次进行购买
 			firstBuy() {
 				let _this = this;
-				let str = `购买${this.active==0?'黑金VIP':this.active==1?'铂金VIP':'白银VIP'}`;
+				let str = `开通${this.active==0?'黑金VIP':this.active==1?'铂金VIP':'白银VIP'}`;
 				uni.showModal({
 					title: str,
 					confirmColor: '#ED3535',
@@ -665,7 +665,7 @@
 					uni.showModal({
 						title: '升级为黑金VIP会员',
 						confirmColor: '#ED3535',
-						confirmText: '继续购买',
+						confirmText: '继续开通',
 						success(res) {
 							// 升级为黑金
 							if (res.confirm) {
@@ -703,7 +703,7 @@
 					uni.showModal({
 						title: '升级为黑金VIP会员',
 						confirmColor: '#ED3535',
-						confirmText: '继续购买',
+						confirmText: '继续开通',
 						success(res) {
 							// 升级为黑金
 							if (res.confirm) {
@@ -784,7 +784,7 @@
 			async paymentSuccess(tradeId, cash) {
 				var _this = this;
 				uni.showModal({
-					title: '购买成功',
+					title: '开通成功',
 					confirmColor: '#ED3535',
 					confirmText: '确定',
 					success(res) {
@@ -800,7 +800,7 @@
 			// 支付失败
 			paymentFail() {
 				uni.showModal({
-					title: '购买失败',
+					title: '开通失败',
 					confirmColor: '#ED3535',
 					confirmText: '确定',
 				})
@@ -809,7 +809,6 @@
 			async getIntegral(cash) {
 				// cash = 10000;
 				await this.Parse.Config.get().then(async config => {
-					// console.log(this.userInfo);
 					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes.shopScore);
 					this.userInfo.score_all = (this.userInfo.score_all || 0) + parseInt(cash * config.attributes.shopScore);
 					this.user.set('score', this.userInfo.score);
@@ -853,7 +852,7 @@
 					// 	showCancel: false
 					// })
 					uni.showToast({
-						title:'购买失败'
+						title:'开通失败'
 					})
 				})
 			},
