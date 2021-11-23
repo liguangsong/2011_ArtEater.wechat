@@ -1,8 +1,19 @@
 <template>
-	<TopNavbar title='错题集' paddingTop="224">
+	<TopNavbar title='错题集'>
 		<view>
 			<view class="mydatepicker">
-					
+				<view class="head">
+					<view class="title">
+						{{dateStr}}
+					</view>
+					<view class="prev" @click="handlePrev">
+						<u-icon name="arrow-left" color="#ff6867" size="30"></u-icon>
+					</view>
+					<view class="next" @click="handleNext">
+						<u-icon name="arrow-right" color="#ff6867" size="30"></u-icon>
+					</view>
+				</view>
+				<!-- 	
 			<view class="title-info title-margin">
 				<view class="left">
 					<view class="red-block"></view>
@@ -16,47 +27,52 @@
 						<u-icon name="arrow-right" color="#ff6867" size="30"></u-icon>
 					</view>
 				</view>
-			</view>
+			</view> -->
 
 				<view class="body">
-					<image src="../../static/signin.png"></image>
+					<!-- <view class="titleView">
+						<view class="title">
+							<view>日</view>
+							<view>一</view>
+							<view>二</view>
+							<view>三</view>
+							<view>四</view>
+							<view>五</view>
+							<view>六</view>
+						</view>
+					</view> -->
 					<view class="content">
 						<view v-for="item in prevDays" class="item prev">
 							<view @click="handleClickItem" :data-item="item"
 								:class="(item.dateStr == today?'today':'') + (item.isContain?' contain':'') + (item.isChecked?' checked':'')">
-								<text>{{item.text}}</text>
+								{{item.text}}
 							</view>
 						</view>
 						<view v-for="item in currDays" class="item">
 							<view @click="handleClickItem" :data-item="item"
 								:class="(item.dateStr == today?'today':'') + (item.isContain?' contain':'') + (item.isChecked?' checked':'')">
-								<text>{{item.text}}</text>
+								{{item.text}}
 							</view>
 						</view>
 						<view v-for="item in nextDays" class="item next">
 							<view @click="handleClickItem" :data-item="item"
 								:class="(item.dateStr == today?'today':'') + (item.isContain?' contain':'') + (item.isChecked?' checked':'')">
-								<text>{{item.text}}</text>
+								{{item.text}}
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view class="title-info title-margin">
-				<view class="left">
-					<view class="red-block"></view>
-					当前积分：{{userInfo.score}}
-				</view>
-			</view> 
 			<view class="actionView">
 				<view v-if="isNeedSign" @click="handleSign" class="action">立即签到</view>
 				<view v-else class="action disabled">已签到</view>
 				<view v-if="isNeedSign" class="tips">
-					<image src="../../static/bubble.png"></image>
-					<view class="tipicon">
-						签到成功获得{{signUpScore}}积分
-					</view>
+					签到成功获得{{signUpScore}}积分
+					<view class="tipicon"></view>
 				</view>
+			</view>
+			<view class="scoreView" @click="handleScoreRecordClick">
+				当前积分：{{userInfo.score}}
 			</view>
 		</view>
 	</TopNavbar>
@@ -316,39 +332,37 @@
 	}
 </script>
 
-<style scoped>
-	.right {
-		display: flex;
-	}
+<style>
 	.actionView {
 		/* padding: 50rpx; */
 		width: 100%;
 		text-align: center;
-		margin-top: 62rpx;
+		margin-top: 90rpx;
 		position: relative;
 	}
+
 	.actionView .tips {
+		background-color: #fcbfbe;
+		color: #ffffff;
+		font-size: 26rpx;
+		font-family: PingFangSC-Medium;
+		border-radius: 20rpx;
+		padding: 20rpx;
 		position: absolute;
-		top: -132rpx;
-		right: 0;
-		width: 438rpx;
-		height: 100rpx;
+		top: -100rpx;
+		left: 390rpx;
+		/* width: 300rpx; */
 	}
+
 	.actionView .tips .tipicon {
-		margin-top: 34rpx;
-		font-weight: 500;
-		color: #D81E1F;
-		line-height: 34rpx;
-		font-size: 24rpx;
-	}
-	.actionView .tips image {
 		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
+		top: 73rpx;
+		left: 40rpx;
+		border-width: 14rpx;
+		border-style: solid dashed dashed dashed;
+		border-color: #fcbfbe transparent transparent transparent;
 	}
-	
+
 	.scoreView {
 		margin-top: 26rpx;
 		height: 48rpx;
@@ -371,8 +385,13 @@
 		font-family: PingFangSC-Medium;
 		font-size: 42rpx;
 
-		background: #D81E1F;
-		box-shadow: 0 6rpx 12rpx 0 rgba(0,0,0,0.11);
+		background-image: linear-gradient(180deg,
+				#ffa48d 0%,
+				#ff8e6f 8%,
+				#ff6666 74%,
+				#fc4c4c 93%,
+				#f93131 100%);
+		box-shadow: 0px 4px 8px 0px rgba(255, 126, 108, 0.27);
 	}
 
 	.actionView .action.disabled {
@@ -413,18 +432,7 @@
 
 
 	.mydatepicker .body {
-		/* width: 100%; */
-		width: 722rpx;
-		height: 674rpx;
-		margin: 0 auto;
-		position: relative;
-	}
-	.mydatepicker .body image {
-		position: absolute;
-		top: 0;
-		left: 0;
 		width: 100%;
-		height: 100%;
 	}
 
 	.mydatepicker .body .titleView {
@@ -454,48 +462,46 @@
 	.mydatepicker .body .content {
 		padding: 0 20rpx;
 		min-height: 564rpx;
-		position: relative;
-		z-index: 100;
-		padding-top: 152rpx;
 	}
 
 	.mydatepicker .body .content .item {
 		display: inline-block;
-		width: 14.1%;
+		width: 14.2%;
+		height: 94rpx;
+		line-height: 94rpx;
 		text-align: center;
-		margin-bottom: 48rpx;
-		font-size: 20rpx;
-		font-weight: 500;
-		color: rgba(0,0,0,.2);
-	}
-	.mydatepicker .body .content .item view {
-		width: 40rpx;
-		height: 40rpx;
-		line-height: 40rpx;
-		text-align: center;
-		background: rgba(0,0,0,.05);
-		margin: 0 auto;
-		border-radius: 50%;
+		/* font-weight: bold; */
+		font-size: 30rpx;
+		font-family: PingFangSC-Medium;
+		color: #352026;
 	}
 
-	/* .mydatepicker .body .content .item.prev {
+	.mydatepicker .body .content .item .today {
+		border: 1rpx solid #FF6867;
+		border-radius: 50%;
+		width: 64rpx;
+		height: 64rpx;
+		line-height: 64rpx;
+		display: inline-block;
+	}
+
+	.mydatepicker .body .content .item.prev {
 		color: #80848f;
 	}
 
 	.mydatepicker .body .content .item.next {
 		color: #80848f;
-	} */
+	}
 
 	.checked {
 		color: #ffffff;
+		background-color: #ff6867 !important;
+		border-radius: 50%;
+		width: 64rpx;
+		height: 64rpx;
+		line-height: 64rpx;
 		display: inline-block;
-		line-height: 36rpx !important;
 		text-align: center;
-		color: #D81E1F;
-		background: rgba(237, 53, 53, 0.1) !important;
-		border: 2rpx solid rgba(237, 53, 53, 0.6);
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
 	}
 
 	/** 包含 */

@@ -1,29 +1,37 @@
 <template>
+	<TopNavbar title='消息中心' paddingTop="208">
 	<view class="myPage u-demo-area">
 		<view class="readAllView">
 			<button v-if="notReadCount > 0" @click="handleReadAll">全部已读</button>
 			<button v-else class="read">全部已读</button>
 		</view>
 		<view class="msgItem u-badge-wrap" v-for="msg in msgList" @click="handleMsgClick" :data-item="msg">
-			<view class="conView">
-				<view class="head">
-					<view class="title">{{msg.title}}</view>
-					<view class="date">{{msg.CreateTime}}</view>
-				</view>
-				<view class="content">{{msg.content}}</view>
+			<view class="conImg">
+				<image src="../../static/bojin.png"></image>
 			</view>
-			<view class="icon">
-				<image  v-if="msg.isRead==0" src="../../../static/icon/icon_dot.png"></image>
+			<view style='display: flex; flex: 1;border-bottom: 2rpx solid rgba(0,0,0,.1);'>
+				<view class="conView">
+					<view class="head">
+						<view class="title">{{msg.title}}</view>
+						<!-- <view class="date">{{msg.CreateTime}}</view> -->
+					</view>
+					<view class="content">{{msg.content}}</view>
+				</view>
+				<view class="icon">
+					<image  v-if="msg.isRead==0" src="../../static/icon-dot.png"></image>
+				</view>
 			</view>
 		</view>
 		<view class="loadmore" v-if="msgList.length >= pageSize">
 			<u-loadmore @loadmore="handleLoadMore" :status="status" :load-text="loadText" />
 		</view>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
 	import {dateFormat} from '../../../js/common.js'
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -40,6 +48,9 @@
 				msgList:[],
 				readHistory:[]
 			}
+		},
+		components: {
+			TopNavbar
 		},
 		onLoad() {
 			var self = this
@@ -161,35 +172,32 @@
 </script>
 
 <style>
-	page{
-		background-color: #fbfbfb;
-	}
 	.myPage{
-		padding: 40rpx;
+		padding-left: 30rpx;
 	}
 	.myPage .readAllView{
 		width: 100%;
-		padding: 20rpx 0;
-		text-align: right;
 	}
 	.myPage .readAllView button{
-		width: 154rpx;
-		height: 50rpx;
-		line-height: 48rpx;
-		border-radius: 50rpx;
-		text-align: center;
-		font-size: 26rpx;
-		font-family: PingFangSC-Medium;
-		color: #ff9d83;
-		border: 2rpx solid #ff9d83;
-		background-color: #ffffff;
-		display: inline-block;
 		padding: 0;
+		margin: 0;
+		width: 136rpx;
+		height: 40rpx;
+		line-height: 36rpx;
+		border-radius: 20rpx;
+		border: 2rpx solid #ED3535;
+		font-size: 20rpx;
+		font-weight: 500;
+		color: #ED3535;
 	}
 	.myPage .readAllView button::after{
 		border: 0;
 	}
 	.myPage .readAllView button.read{
+		/* background: rgba(0,0,0,.1);
+		color: rgba(0,0,0,.5);
+		border: none;
+		line-height: 40rpx; */
 		width: 154rpx;
 		height: 50rpx;
 		line-height: 50rpx;
@@ -207,24 +215,28 @@
 	.myPage .msgItem{
 		position: relative;
 		display: flex;
+		align-items: center;
 		border-radius: 20rpx;
-		/* background-color: #ffffff; */
-		/* padding: 20rpx 0; */
-		/* margin: 22rpx 0; */
-		border-bottom: 1rpx solid #f4f4f4;
-		height: 170rpx;
+		height: 164rpx;
+	}
+	.myPage .msgItem .conImg{
+		flex: 0 1 172rpx;
+		height: 110rpx;
+	}
+	.myPage .msgItem .conImg image{
+		width: 140rpx;
+		height: 110rpx;
 	}
 	.myPage .msgItem .conView{
 		flex: 1;
-		padding-top: 32rpx;
-		padding-bottom: 34rpx;
+		padding-top: 34rpx;
 	}
 	.myPage .msgItem .conView .head{
 		display: inline-flex;
 		width: 100%;
 	}
 	.myPage .msgItem .conView .head .title{
-		flex: 1;
+		/* flex: 1;
 		font-size: 34rpx;
 		height: 48rpx;
 		line-height: 48rpx;
@@ -235,41 +247,26 @@
 		text-overflow: ellipsis;
 		display: -webkit-box;
 		-webkit-line-clamp: 1;
-		-webkit-box-orient: vertical;
-	}
-	.myPage .msgItem .conView .head .date{
-		width: 160rpx;
-		text-align: right;
-		height: 42rpx;
-		line-height: 42rpx;
-		font-size: 26rpx;
-		color: #143a44;
-		font-family: PingFangSC-Medium;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp: 1;
-		-webkit-box-orient: vertical;
+		-webkit-box-orient: vertical; */
+		font-size: 32rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+		line-height: 44rpx;
 	}
 	.myPage .msgItem .conView .content{
-		margin-top: 14rpx;
-		font-size: 30rpx;
-		height: 42rpx;
-		line-height: 42rpx;
-		color: #352026;
-		font-family: PingFangSC-Medium;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp: 1;
-		-webkit-box-orient: vertical;
+		font-size: 20rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: rgba(0,0,0,.29);
+		line-height: 28rpx;
 	}
 	
 	.myPage .msgItem .icon{
-		width: 50rpx;
-		height: 170rpx;
-		line-height: 170rpx;
-		text-align: right;
+		width: 112rpx;
+		height: 164rpx;
+		line-height: 164rpx;
+		text-align: center;
 	}
 	.myPage .msgItem .icon image{
 		width: 32rpx;

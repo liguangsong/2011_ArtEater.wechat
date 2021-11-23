@@ -316,13 +316,15 @@
 					"path": "pages/info/info",
 					"style": {
 						"navigationBarTitleText": "个人信息",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
 					}
 				}, {
 					"path": "pages/signin/signin",
 					"style": {
 						"navigationBarTitleText": "签到",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
 					}
 				}, {
 					"path": "pages/vip/vip",
@@ -337,14 +339,16 @@
 					"style": {
 						"navigationBarBackgroundColor": "#fbfbfa",
 						"navigationBarTitleText": "积分排行榜",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
 					}
 				},
 				{
 					"path": "pages/scorerecord/scorerecord",
 					"style": {
 						"navigationBarTitleText": "积分记录",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
 					}
 
 				},
@@ -353,7 +357,8 @@
 					"style": {
 						"navigationBarBackgroundColor": "#fbfbfa",
 						"navigationBarTitleText": "我的优惠券",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
 					}
 
 				},
@@ -361,7 +366,8 @@
 					"path": "pages/testhistory/testhistory",
 					"style": {
 						"navigationBarTitleText": "考试记录",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
 					}
 				},
 				{
@@ -386,14 +392,16 @@
 					"style": {
 						"navigationBarBackgroundColor": "#fbfbfb",
 						"navigationBarTitleText": "消息",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
 					}
 				}, {
 					"path": "pages/message/msgdetail",
 					"style": {
 						"navigationBarBackgroundColor": "#fbfbfb",
 						"navigationBarTitleText": "消息详情",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
 					}
 				},
 				{
@@ -401,7 +409,8 @@
 					"style": {
 						"navigationBarBackgroundColor": "#fbfbfb",
 						"navigationBarTitleText": "意见反馈",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
 					}
 				}
 			]

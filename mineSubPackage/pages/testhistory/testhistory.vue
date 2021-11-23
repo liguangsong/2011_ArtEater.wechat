@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<TopNavbar title='考试记录' bg='#fff' paddingTop='162'>
 		<view class="myView">
 			<view class="hisItem" v-for="(item, index) in testHistory" @click="handleItemClick" :data-item="item">
 				<view class="contView">
@@ -12,16 +12,14 @@
 						<view class="seconds">用时：{{item.minutes}}</view>
 					</view>
 				</view>
-				<view class="icon">
-					<u-icon name="arrow-right" color="#e7e7e7" size="30"></u-icon>
-				</view>
 			</view>
 		</view>
-	</view>
+	</TopNavbar>
 </template>
 
 <script>
 	import {dateFormat} from '../../../js/common.js'
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -39,6 +37,9 @@
 					self.bindData()
 				}
 			})
+		},
+		components: {
+			TopNavbar
 		},
 		methods: {
 			bindData(){
@@ -69,28 +70,19 @@
 </script>
 
 <style>
-	page{
-		background-color: #fbfbfb;
-	}
-	.myView{
-	}
 	.myView .hisItem{
 		display: flex;
-		height: 132rpx;
-		line-height: 132rpx;
-		margin: 0 30rpx;
-		border-bottom: 2rpx solid #f1f1f1;
+		height: 142rpx;
+		line-height: 142rpx;
+		margin-left: 48rpx;
+		border-bottom: 2rpx solid rgba(0,0,0,.1);
 	}
 	.myView .hisItem .contView{
 		flex: 1;
-		padding: 26rpx 0;
+		padding-top: 32rpx;
+		padding-right: 76rpx;
 	}
-	.myView .hisItem .icon{
-		height: 132rpx;
-		line-height: 132rpx;
-		width: 50rpx;
-		text-align: right;
-	}
+
 	.mView{
 		display: flex;
 		width: 100%;
@@ -100,16 +92,14 @@
 	.tView{
 		display: flex;
 		width: 100%;
-		height: 36rpx;
-		line-height: 36rpx;
+		margin-top: 6rpx;
 	}
 	.mView .name{
 		flex: 1;
 		text-align: left;
-		font-size: 30rpx;
+		font-size: 32rpx;
 		font-weight: bold;
-		color: #352026;
-		font-family: PingFangSC-Medium;
+		color: rgba(0,0,0,.9);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
@@ -117,27 +107,29 @@
 		-webkit-box-orient: vertical!important;
 	}
 	.mView .score{
-		/* flex: 1; */
-		width: 150rpx;
 		text-align: right;
-		font-size: 30rpx;
-		font-weight: bold;
-		color: #143a44;
-		font-family: PingFangSC-Medium;
+		font-size: 34rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #D81E1F;
+		line-height: 48rpx;
 	}
 	.tView .time{
 		flex: 1;
 		text-align: left;
-		font-size: 26rpx;
-		color: rgba(53,32,38, 0.7);
-		font-family: PingFangSC-Medium;
+		font-size: 20rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: rgba(0,0,0,.29);
+		line-height: 28rpx;
 	}
 	.tView .seconds{
 		flex: 1;
 		text-align: right;
-		font-size: 26rpx;
-		color: rgba(53,32,38, 0.7);
-		font-family: PingFangSC-Medium;
-		
+		font-size: 20rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: rgba(0,0,0,.29);
+		line-height: 28rpx;
 	}
 </style>

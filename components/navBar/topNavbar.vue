@@ -1,8 +1,11 @@
 <template>
-	<view class='top-navbar' :style='{background: bg, paddingTop: tabbarheight + "rpx"}'>
+	<view class='top-navbar' :style='{background: tabbarBg ? bg : "none", paddingTop: paddingTop ? paddingTop + "rpx" : tabbarheight + "rpx"}'>
 		<view class="tabbar" :style='{background: tabbarBg ? bg : "none", height: tabbarheight+"rpx"}'>	
 			<view class="nav" :style='{height:navbarheight + "rpx", top:tabbarheight - navbarheight + "rpx"}'>
-				<view  @click='back' class="icon">
+				<view  @click='back' class="icon" v-if='!iconFn'>
+					<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
+				</view>
+				<view class="icon" v-else @click='$emit("closeNavbar")'>
 					<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
 				</view>
 				<view class="title" :style='{fontSize: fontSize + "rpx", color: fontColor, textAlign: align}'>
@@ -24,7 +27,7 @@
 			},
 			tabbarBg: {
 				type: Boolean,
-				default: false
+				default: true
 			},
 			// 导航栏的标题
 			title: {
@@ -45,6 +48,10 @@
 				type: Boolean,
 				default: true
 			},
+			iconFn: {
+				type: Boolean,
+				default: false
+			},
 			// 图标的样式
 			iconName: {
 				type: String,
@@ -64,6 +71,10 @@
 			align: {
 				type: String,
 				default: 'center'
+			},
+			paddingTop: {
+				type: Number,
+				default: 0
 			}
 		},
 		data() {

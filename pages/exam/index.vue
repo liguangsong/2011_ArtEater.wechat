@@ -81,16 +81,13 @@
 		},
 		methods: {
 			handleTestClick(e){
-				var item = e.currentTarget.dataset.item;
-				// console.log(e);
 				uni.navigateTo({
-					url:'./exam?tid=' + item.objectId
+					url:'./exam?tid=' + e.id
 				})
 			},
 			handleTestClick1(e){
-				var item = e.currentTarget.dataset.item
 				uni.navigateTo({
-					url:'./oldexams?tid=' + item.objectId
+					url:'./oldexams?tid=' + e.id
 				})
 			}
 		}

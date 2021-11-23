@@ -1,14 +1,17 @@
 <template>
-	<view>
+	<TopNavbar title='消息中心' paddingTop="208" bg='#f7f7f7'>
 		<view class="scoreView">
 			<view class="title">当前积分：</view>
 			<view class="score">{{userInfo.score}}</view>
 			<view class="intro">累计积分：{{userInfo.score_all?userInfo.score_all:userInfo.score}}</view>
 		</view>
 		<view class="recordView">
-			<view class="headView">
-				<view class="title">积分记录</view>
-				<view class="ruleView" @click="isShowBuyTips=true">查看积分规则</view>
+			<view class="title-info">
+				<view class="left">
+					<view class="red-block"></view>
+					积分记录
+				</view>
+				<view class="right" @click="isShowBuyTips=true">查看积分规则</view>
 			</view>
 			<view class="recordItem" v-for="record in scoreRecord">
 				<view class="left">
@@ -28,7 +31,7 @@
 			</view>
 		</view>
 		<!--购买须知-->
-		<u-popup v-model="isShowBuyTips" height="960rpx" width="670rpx" :closeable="true" mode="center" border-radius="40">
+		<u-popup v-model="isShowBuyTips" height="960rpx" width="670rpx" :closeable="false" mode="center" border-radius="40">
 			<view class="buylView">
 				<view class="title">
 					<text>
@@ -45,16 +48,18 @@
 						声明：小程序的积分获取规则会根据运营状况不定期进行修改，以维护社区良性健康发展为原则，并以站内消息的方式向每一个用户发布通知，最终解释权归运营方所有。
 					</text>
 				</view>
-				<!-- <view class="btnActions">
-					<button @click="isShowBuyTips=false">确定</button>
-				</view> -->
+				
+			</view>
+			<view class="btnActions">
+				<button @click="isShowBuyTips=false">确定</button>
 			</view>
 		</u-popup>
-	</view>
+	</TopNavbar>
 </template>
 
 <script>
 	import {dateFormat} from '../../../js/common.js'
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -66,7 +71,7 @@
 					loading:'正在拼命加载中',
 					nomore:'没有更多了'
 				},
-				isShowBuyTips: false,
+				isShowBuyTips: true,
 				userInfo: {},
 				scoreRecord: [],
 				signUpScore: 0,
@@ -75,6 +80,9 @@
 				shareScore: 0,
 				shopScore: 0,
 			}
+		},
+		components: {
+			TopNavbar
 		},
 		onLoad() {
 			var self = this
@@ -125,56 +133,49 @@
 </script>
 
 <style>
-	page{
-		background-color: #fbfbfa;
+	.title-info .right {
+		font-size: 20rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: rgba(0,0,0,.4);
+		line-height: 28rpx;
+		text-decoration: underline;
 	}
 	.scoreView{
-		margin: 18rpx auto;
-		padding-top: 40rpx;
-		margin-bottom: 36rpx;
+		margin: 0 auto;
+		margin-bottom: 42rpx;
 		width: 690rpx;
-		height: 292rpx;
+		height: 298rpx;
 		background-color: #ffffff;
-		box-shadow: 0rpx 8rpx 16rpx 0rpx 
-			rgba(238, 160, 160, 0.05);
-		border-radius: 40rpx;
+		box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.06);
+		border-radius: 24rpx;
 	}
 	.scoreView .title{
-		height: 48rpx;
 		line-height: 48rpx;
 		margin-left: 36rpx;
-		/* padding-top: 40rpx; */
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-		font-weight: normal;
+		margin-top: 36rpx;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: #352026;
-		font-weight: bold;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: rgba(0,0,0,.9);
+		line-height: 44px;
 	}
 	.scoreView .score{
 		width: 100%;
-		height: 108rpx;
-		line-height: 108rpx;
 		text-align: center;
-		font-family: PingFangSC-Medium;
-		font-size: 78rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: #ff6867;
-		font-weight: bold;
+		font-size: 80rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #ED3535;
+		line-height: 112rpx;
 	}
 	.scoreView .intro{
-		height: 36rpx;
-		line-height: 36rpx;
 		text-align: center;
-		font-family: PingFangSC-Medium;
-		font-size: 26rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.7);
+		font-size: 24rpx;
+		font-weight: 500;
+		color: rgba(0,0,0,.5);
+		line-height: 34rpx;
 	}
 	.recordView{
 		width: 100%;
@@ -217,32 +218,28 @@
 		flex: 1;
 	}
 	.recordView .recordItem .left .title{
-		font-family: PingFangSC-Medium;
-		font-size: 30rpx;
-		/* font-weight: bold; */
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: #352026;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: rgba(0,0,0,.9);
+		line-height: 44rpx;
 	}
 	.recordView .recordItem .left .time{
-		font-family: PingFangSC-Medium;
-		font-size: 26rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.4);
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,.5);
+		line-height: 28rpx;
+		margin-top: 12rpx;
 	}
 	.recordView .recordItem .right{
 		text-align: right;
 		width: 200rpx;
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: #143a44;
-		padding-right: 46rpx;
+		padding-right: 70rpx;
 		line-height: 80rpx;
+		font-size: 34rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #ED3535;
 	}
 	
 	.buylView {

@@ -1,16 +1,19 @@
 <template>
+	<TopNavbar title='消息详情' paddingTop="224">
 	<view class="myView">
 		<view class="head">{{title}}</view>
-		<view class="date">发布日期：{{CreateTime}}</view>
+		<!-- <view class="date">发布日期：{{CreateTime}}</view> -->
 		<view class="body">
 			<text>{{content}}</text>
 			<!-- <u-parse :html="content?content:''"></u-parse> -->
 		</view>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
 	// import {dateFormat} from '../../../js/common.js'
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -19,6 +22,9 @@
 				title:'',
 				content:''
 			}
+		},
+		components: {
+			TopNavbar
 		},
 		onLoad(options) {
 			if(options.mid){
@@ -41,20 +47,16 @@
 </script>
 
 <style>
-	page{
-		background-color: #fbfbfb;
-	}
+
 	.myView{
-		padding: 46rpx;
+		padding: 0 40rpx;
 	}
-	.head {
-		height: 52rpx;
-		line-height: 52rpx;
-		margin:12rpx 0;
-		font-size: 38rpx;
-		font-weight: bold;
-		font-family: PingFangSC-Medium;
-		color: #352026;
+	.head {		
+		font-size: 36rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #000000;
+		line-height: 50rpx;
 	}
 	.date{
 		height: 50rpx;
@@ -69,8 +71,10 @@
 		-webkit-box-orient: vertical;
 	}
 	.body{
-		font-size: 30rpx;
-		font-family: PingFangSC-Medium;
-		color: #352026;
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,.8);
+		line-height: 40rpx;
 	}
 </style>
