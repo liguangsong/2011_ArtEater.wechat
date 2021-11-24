@@ -34,6 +34,28 @@
 						<view v-if="index>2" class="score">{{user.score}}</view>
 					</view>
 				</view>
+				<view class="scoreItem" v-for="(user,index) in scoreList">
+					<view v-if="index==0" class="index first">
+						<image src="../../static/first.png" mode=""></image>
+					</view>
+					<view v-if="index==1" class="index second">
+						<image src="../../static/second.png" mode=""></image>
+					</view>
+					<view v-if="index==2" class="index third">
+						<image src="../../static/third.png" mode=""></image>
+					</view>
+					<view v-if="index>2" class="index">{{index + 1}}</view>
+					<view class="cont">
+						<view class="headIcon">
+							<image :src="user.avatarUrl"></image>
+						</view>
+						<view class="nickName">{{user.nickName}}</view>
+						<view v-if="index==0" class="score first">{{user.score}}</view>
+						<view v-if="index==1" class="score second">{{user.score}}</view>
+						<view v-if="index==2" class="score third">{{user.score}}</view>
+						<view v-if="index>2" class="score">{{user.score}}</view>
+					</view>
+				</view>
 				<view class="loadmore">
 					荣誉只属于最勤奋的50位选手
 				</view>
@@ -177,6 +199,7 @@
 		border-top-right-radius: 24rpx;
 		border-top-left-radius: 24rpx;
 		background: #fff;
+		overflow-y: auto;
 	}
 
 	.myPage .scoreItem {

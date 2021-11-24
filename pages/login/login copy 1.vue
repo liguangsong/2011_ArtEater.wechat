@@ -1,69 +1,96 @@
 <template>
-	<TopNavbar title='积分兑换' paddingTop='298'>
+	<TopNavbar title='积分兑换' paddingTop='298' bg='#f7f7f7'>
 		<view class="myPage">
 			<view class="boxView">
-				<view class="editForm" >
+				<view class="editForm">
 					<view class="headIcon">
 						<image v-if="form.avatarUrl" :src="form.avatarUrl"></image>
 					</view>
+					<view class="input">
+						<view class="inputItem">
+							<u-input border='none' placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)"
+								v-model="form.nickname" maxlength='20' placeholder="请输入昵称" />
+						</view>
+						<view class="inputItem">
+							<button class="btngetphonenumber" open-type="getPhoneNumber"
+								@getphonenumber="handleGetPhoneNumber"
+								:style="{'color':(form.phone=='点击获取手机号'?'#ff7767':'#352026')}">{{form.phone}}</button>
+						</view>
+						<view class="inputItem">
+							<u-input border='none' placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)"
+								v-model="form.realname" maxlength='10' placeholder="请输入真实姓名" />
+						</view>
+						<view class="inputItem">
+							<u-select v-model="isShowArea" mode="mutil-column-auto" confirm-color="#352026"
+								value-name="code" label-name="name" :list="provices" @confirm="confirm"></u-select>
+							<u-input border='none' placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)" v-model="form.areaTxt"
+							 :disabled="true" maxlength='30' placeholder="请选择所在地区"
+								@click="bindOpenArea" />
+						</view>
+						<view class="inputItem">
+							<u-select v-model="isShowSpeciality" mode="single-column" confirm-color="#352026"
+								value-name="code" label-name="name" :list="specialitys" @confirm="spConfirm"></u-select>
+							<u-input border='none' placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)"
+								v-model="form.speciality" :disabled="true" maxlength='20'
+								placeholder="请选择报考专业" @click="isShowSpeciality=true" />
+						</view>
+						<view class="inputItem">
+							<checkunivercity :visiable="isShowUniversity" @cancle="handleCancel"
+								@complate="handleComplate" :value="form.university"></checkunivercity>
+							<u-input border='none' placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)"
+								v-model="form.university" :disabled="true" maxlength='30'
+								placeholder="请选择目标院校" @click="isShowUniversity=true" />
+						</view>
+					</view>
 
-				<u-form :model="form" ref="uForm" :border-bottom="false" label-position="top" :rules="rules">
-						<u-form-item :border-bottom="false">
-							<view class="inputItem">
-								<u-input border='none' placeholder-style="font-size:24rpx;color:rgba(0,0,0,0.4)"
-									v-model="form.nickname" maxlength='20' placeholder="请输入昵称" />
-							</view>
+				<!-- 	<u-form :model="form" ref="uForm" :border-bottom="false" label-position="top" :rules="rules">
+						<u-form-item label="昵称" :label-width="150" :border-bottom="false" :label-style="labelStyle">
+							<u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)"
+								v-model="form.nickname" :border="true" maxlength='20' placeholder="请输入昵称" />
 						</u-form-item>
-						<u-form-item prop="phone">
-							<view class="inputItem">
-								<button class="btngetphonenumber" open-type="getPhoneNumber"
-									@getphonenumber="handleGetPhoneNumber"
-									:style="{'color':(form.phone=='点击获取手机号'?'#ff7767':'#352026')}">{{form.phone}}</button>
-							</view>
+						<u-form-item label="手机号码" :label-width="150" prop="phone" :border-bottom="false"
+							:label-style="labelStyle">
+							<button class="btngetphonenumber" open-type="getPhoneNumber"
+								@getphonenumber="handleGetPhoneNumber"
+								:style="{'color':(form.phone=='点击获取手机号'?'#ff7767':'#352026')}">{{form.phone}}</button>
 						</u-form-item>
-						<u-form-item prop="realname" >
-							<view class="inputItem">
-								<u-input border='none' placeholder-style="font-size:24rpx;color:rgba(0,0,0,0.4)"
-									v-model="form.realname" maxlength='10' placeholder="请输入真实姓名" />
-							</view>
+						<u-form-item label="真实姓名" :label-width="150" prop="realname" :border-bottom="false"
+							:label-style="labelStyle">
+							<u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)"
+								v-model="form.realname" :border="true" maxlength='10' placeholder="请输入真实姓名" />
 						</u-form-item>
-						<u-form-item prop="areaTxt">
-							<view class="inputItem">
-								
-								<u-input border='none' placeholder-style="font-size:24rpx;color:rgba(0,0,0,0.4)" v-model="form.areaTxt"
-								 :disabled="true" maxlength='30' placeholder="请选择所在地区"
-									@click="bindOpenArea" />
-							</view>
+						<u-form-item label="所在地区" :label-width="150" prop="areaTxt" :border-bottom="false"
+							:label-style="labelStyle">
+							<u-select v-model="isShowArea" mode="mutil-column-auto" confirm-color="#352026"
+								value-name="code" label-name="name" :list="provices" @confirm="confirm"></u-select>
+							<u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)" v-model="form.areaTxt"
+								:border="true" :disabled="true" maxlength='30' placeholder="请选择所在地区"
+								@click="bindOpenArea" />
 						</u-form-item>
-						<u-form-item prop="speciality">
-							<view class="inputItem">
-								
-								<u-input border='none' placeholder-style="font-size:24rpx;color:rgba(0,0,0,0.4)"
-									v-model="form.speciality" :disabled="true" maxlength='20'
-									placeholder="请选择报考专业" @click="isShowSpeciality=true" />
-							</view>
+						<u-form-item label="报考专业" :label-width="150" prop="speciality" :border-bottom="false"
+							:label-style="labelStyle">
+							<u-select v-model="isShowSpeciality" mode="single-column" confirm-color="#352026"
+								value-name="code" label-name="name" :list="specialitys" @confirm="spConfirm"></u-select>
+							<u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)"
+								v-model="form.speciality" :border="true" :disabled="true" maxlength='20'
+								placeholder="请选择报考专业" @click="isShowSpeciality=true" />
 						</u-form-item>
-						<u-form-item :label-width="150" prop="university">
-							<view class="inputItem">
-								
-								<u-input border='none' placeholder-style="font-size:24rpx;color:rgba(0,0,0,0.4)"
-									v-model="form.university" :disabled="true" maxlength='30'
-									placeholder="请选择目标院校" @click="isShowUniversity=true" />
-							</view>
+						<u-form-item label="目标院校" :label-width="150" prop="university" :border-bottom="false"
+							:label-style="labelStyle">
+							<checkunivercity :visiable="isShowUniversity" @cancle="handleCancel"
+								@complate="handleComplate" :value="form.university"></checkunivercity>
+							<u-input placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4)"
+								v-model="form.university" :border="true" :disabled="true" maxlength='30'
+								placeholder="请选择目标院校" @click="isShowUniversity=true" />
 						</u-form-item>
-					</u-form>
-					<view style='height: 500rpx;'></view>
+					</u-form> -->
+
 				</view>
 				<image class='writebg' src="../../static/writeinfo.png" mode=""></image>
 			</view>
 		</view>
-		<u-select v-model="isShowArea" mode="mutil-column-auto" confirm-color="#352026"
-			value-name="code" label-name="name" :list="provices" @confirm="confirm"></u-select>
-		<checkspecialitys @changeSpecialitys='changeSpecialitys' :visiable="isShowSpeciality" :list="specialitys" :val='form.speciality' />
-		<checkunivercity :visiable="isShowUniversity" @cancle="handleCancel"
-			@complate="handleComplate" :value="form.university" @changeVisiable='isShowUniversity = false'></checkunivercity>
 		<view class="btnView">
-			<image class="btnSubmit" @click="submit" src="../../static/journey.png" mode=""></image>
+			<button class="btnSubmit" @click="submit">登录学习</button>
 		</view>
 	</TopNavbar>
 </template>
@@ -74,14 +101,10 @@
 	import provice from '../../js/provinces.js'
 	import cities from '../../js/cities.js'
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
-	import checkunivercity from '@/components/checkunivercity/checkunivercity.vue'
-	import checkspecialitys from '@/components/checkunivercity/checkspecialitys.vue'
 	export default {
 		data() {
 			return {
 				q: '',
-				isShowUniversity: false,
-				isShowSpeciality: false,
 				customStyle: {
 					'border-radius': '40rpx',
 					'min-height': '10rpx',
@@ -125,6 +148,23 @@
 						code: '艺术品保护与修复',
 						name: '艺术品保护与修复'
 					}
+				],
+				universities: [{
+						code: '中央美术学院',
+						name: '中央美术学院'
+					},
+					// {code:'中国美术学院',name:'中国美术学院'},
+					{
+						code: '清华大学美术学院',
+						name: '清华大学美术学院'
+					},
+					// {code:'西安美术学院',name:'西安美术学院'},
+					// {code:'四川美术学院',name:'四川美术学院'},
+					// {code:'鲁迅美术学院',name:'鲁迅美术学院'},
+					// {code:'湖北美术学院',name:'湖北美术学院'},
+					// {code:'天津美术学院',name:'天津美术学院'},
+					// {code:'广州美术学院',name:'广州美术学院'},
+					// {code:'其它',name:'其它'}
 				],
 				provices: provice,
 				cities: cities,
@@ -196,7 +236,7 @@
 			}
 		},
 		components: {
-			TopNavbar, checkunivercity, checkspecialitys
+			TopNavbar
 		},
 		onLoad(options) {
 			if (options.q) {
@@ -226,22 +266,6 @@
 			this.$refs.uForm.setRules(this.rules);
 		},
 		methods: {
-			changeSpecialitys(e) {
-				if (e) {
-					this.form.speciality = e;
-					var user = this.Parse.User.current()
-					user.set("speciality", this.form.speciality);
-					user.save().then(res=>{
-						uni.setStorage({
-							key:'userInfo',
-							data: res
-						})
-					})
-					this.isShowSpeciality = false;
-				} else {
-					this.isShowSpeciality = false;
-				}
-			},
 			handleCancel() {
 				this.isShowUniversity = false
 			},
@@ -388,7 +412,7 @@
 
 	.boxView .editForm {
 		position: relative;
-		z-index: 8;
+		z-index: 100;
 		padding-top: 180rpx;
 	}
 	.headIcon {
@@ -409,6 +433,7 @@
 		height: 84rpx;
 		width: 100%;
 		padding-right: 114rpx;
+		margin-bottom: 38rpx;
 		overflow: hidden;
 		display: flex;
 		align-items: center;
@@ -418,29 +443,12 @@
 		border: none !important;
 		height: 100% !important;
 		text-align: right !important;
-		
-	}
-	.u-input__input {
 		font-size: 24rpx !important;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
-		color: rgba(0,0,0,.8) !important;
+		color: rgba(0,0,0,.4) !important;
 	}
-	.u-form-item__message {
-		display: none !important;
-	}
-	.u-input {
-		padding: 0 !important;
-	}
-	.u-form-item {
-		padding: 0 !important;
-		display: block !important;
-		margin-bottom: 38rpx;
-	}
-	.u-form-item--left {
-		margin-bottom: 0 !important;
-	}
-	.btngetphonenumber {
+	.btngetphonenumber{
 		color: #ff776f;
 		background-color: #ffffff;
 		border: none;
@@ -453,24 +461,95 @@
 		color: #D81E1F;
 		text-decoration: underline;
 	}
-	.u-border-bottom:after, .u-border:after {
-		border: none !important;
+	.btngetphonenumber::after{
+		border: 0;
+	} 
+
+
+	/* page{
+		background-color: #fbfbfb;
+	}
+	.myPage{
+		position: relative;
+		width: 100%;
+	}
+	.myPage .boxView{
+		width: 100%;
+		height: 200%;
+		position: absolute;
+		top: 0;
+	}
+	.loginView{
+		height: 100%;
+		line-height: 500rpx;
+	}
+	.headIcon{
+		padding-top: 20rpx;
+		padding-bottom: 30rpx;
+		width: 128rpx;
+		height: 178rpx;
+		text-align: center;
+		margin: auto;
+	}
+	.headIcon image{
+		width: 128rpx;
+		height: 128rpx;
+		border-radius: 50%;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.btnLogin{
+		margin: auto;
+	}
+	
+	.editForm{
+		padding: 40rpx;
+	}
+	.editForm .btnView{
+		text-align: center;
+		margin-top: 30rpx;
+	}
+	.btnSubmit{
+		width: 100%;
+		height: 94rpx;
+		line-height: 94rpx;
+		background-color: #ff776f;
+		border-radius: 94rpx;
+		color: #ffffff;
+	}
+	.u-input{
+		border-radius: 20rpx!important;
+		background-color: #ffffff;
+		border: 2rpx solid #efefef;
+		height: 74rpx;
+		line-height: 74rpx;
+		font-size: 30rpx;
+		color: #352026;
+		font-family: PingFangSC-Medium;
+	}
+	.u-input input{
+		line-height: 74rpx;
+		font-family: PingFangSC-Medium;
+		font-size: 30rpx!important;
+		color: #352026!important;
+	}
+	.u-form-item{
+		padding: 0!important;
+	}
+	.u-drawer-content{
+		border-top-left-radius: 46rpx;
+		border-top-right-radius: 46rpx;
+	}
+	.btngetphonenumber{
+		color: #ff776f;
+		font-size: 30rpx;
+		background-color: #ffffff;
+		border-radius: 20rpx;
+		border: 2rpx solid #efefef;
+		text-align: left;
+		font-family: PingFangSC-Medium;
 	}
 	.btngetphonenumber::after{
 		border: 0;
-	}
-	
-	.btnView {
-		width: 100%;
-		height: 236rpx;
-		position: fixed;
-		left: 0;
-		bottom: 0;
-		z-index: 20;
-		background: #fff;
-	}
-	.btnView image {
-		width: 100%;
-		height: 100%;
-	}
+	} */
 </style>

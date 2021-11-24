@@ -1,10 +1,11 @@
 <template>
+	<TopNavbar title='选择优惠券' paddingTop="204" bg='#f7f7f7'>
 	<view style="text-align: center;padding-bottom: 200rpx;">
 		<view class="noChooseItem" @click="handleCheckCoupon(null)">
 			<view class="title">暂不使用优惠券</view>
 			<view class="radio">
-				<image v-if="checkCoupon==null" src="../../static/icon/icon_answer_errpr.png"></image>
-				<image v-else src="../../static/icon/icon_answer_errorn.png"></image>
+				<image v-if="checkCoupon==null" src="../../static/icon/icon_answer_nocheck.png"></image>
+				<image v-else src="../../static/icon/icon_answer_checked.png"></image>
 			</view>
 		</view>
 		<view class="couponItem" v-for="coupon in coupons"  @click="handleCheckCoupon(coupon)">
@@ -28,10 +29,12 @@
 			<button @click="handleChooseCoupon">确认选择</button>
 		</view>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
 	import {dateFormat} from '../../js/common.js'
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -41,6 +44,9 @@
 				selectedProductType: [],
 				selectedCouponId:''
 			}
+		},
+		components: {
+			TopNavbar
 		},
 		onLoad(options) {
 			var self = this
@@ -123,7 +129,7 @@
 		background-color: #fbfbfa;
 	}
 	.noChooseItem{
-		width: 680rpx;
+		width: 690rpx;
 		height: 106rpx;
 		line-height: 106rpx;
 		background-color: #ffffff;
@@ -144,10 +150,11 @@
 	}
 	
 	.noChooseItem .radio{
-		width: 104rpx;
-		text-align: center;
-		height: 106rpx;
-		line-height: 106rpx;
+		/* width: 104rpx; */
+		/* text-align: center; */
+		margin-right: 48rpx;
+		height: 104rpx;
+		line-height: 104rpx;
 	}
 	.noChooseItem .radio image{
 		width: 32rpx;
@@ -157,31 +164,30 @@
 	}
 	.couponItem{
 		position: relative;
-		width: 710rpx;
-		height: 160rpx;
-		line-height: 160rpx;
-		/* background-color: #ffffff; */
+		width: 750rpx;
+		height: 156rpx;
 		display: inline-block;
-		border-radius: 20rpx;
-		
-		/* margin-top: 6rpx; */
 	}
 	.couponItem .bg{
 		position: absolute;
+		width: 100%;
+		height: 100%;
+		z-index: 10;
 	}
 	.couponItem .bg image{
-		width: 710rpx;
-		height: 168rpx;
+		width: 100%;
+		height: 100%;
 	}
 	.couponItem .content{
 		position: relative;
-		display: inline-flex;
+		display: flex;
+		z-index: 100;
 		width: 100%;
 	}
 	.couponItem .price{
-		width: 174rpx;
-		text-align: center;
-		padding-left: 14rpx;
+		width: 210rpx;
+		padding-left: 42rpx;
+		padding-top: 52rpx;
 		font-size: 38rpx;
 		font-weight: normal;
 		font-stretch: normal;
@@ -190,7 +196,6 @@
 	}
 	.couponItem .title{
 		flex: 1;
-		padding-left: 28rpx;
 		font-size: 30rpx;
 		font-weight: normal;
 		font-stretch: normal;
@@ -200,37 +205,31 @@
 		padding-top: 28rpx;
 	}
 	.couponItem .title .name{
-		height: 42rpx;
-		line-height: 42rpx;
-		font-family: PingFangSC-Regular;
-		font-size: 30rpx;
-		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: #1c1c1c;
+		font-size: 28rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+		line-height: 40rpx;
 	}
 	.couponItem .title .date{
-		height: 32rpx;
-		line-height: 32rpx;
-		font-family: PingFangSC-Regular;
-		font-size: 22rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.4);
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,.5);
+		line-height: 28rpx;
 	}
 	.couponItem .radio{
-		width: 104rpx;
-		text-align: right;
-		height: 168rpx;
-		line-height: 160rpx;
+		height: 156rpx;
+		line-height: 156rpx;
 	}
 	.couponItem .radio image{
 		width: 32rpx;
 		height: 32rpx;
 		display: inline-block;
 		vertical-align: middle;
-		margin-right: 52rpx;
+		margin-right: 78rpx;
 	}
 	.confirmView{
 		position: fixed;
@@ -244,12 +243,11 @@
 		line-height: 92rpx;
 		background-color: #ed3535;
 		border-radius: 46rpx;
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-		font-weight: normal;
-		font-stretch: normal;
 		letter-spacing: 0rpx;
 		color: #ffffff;
 		font-weight: bold;
+		font-size: 34rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
 	}
 </style>
