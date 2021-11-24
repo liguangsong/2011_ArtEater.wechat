@@ -1,5 +1,6 @@
 <template>
 	<TopNavbar title='消息中心' paddingTop="208" bg='#f7f7f7'>
+		<view>
 		<view class="scoreView">
 			<view class="title">当前积分：</view>
 			<view class="score">{{userInfo.score}}</view>
@@ -31,7 +32,7 @@
 			</view>
 		</view>
 		<!--购买须知-->
-		<u-popup v-model="isShowBuyTips" height="960rpx" width="670rpx" :closeable="false" mode="center" border-radius="40">
+		<u-popup v-model="isShowBuyTips" height="774rpx" width="670rpx" :closeable="false" mode="center" border-radius="40">
 			<view class="buylView">
 				<view class="title">
 					<text>
@@ -39,21 +40,48 @@
 					</text>
 				</view>
 				<view class="tips">
-					<text>
-						1、签到积分：每次签到可获得{{signUpScore}}积分，每天只能签到一次。
-						2、刷题积分：首次完成一道题可获得{{firstExamScore}}积分，重复刷题时每道题可获得{{secondExamScore}}积分，不限制刷题的重复次数。
-						3、分享拉新积分：分享小程序内置的分享页面，会生成个人专属的拉新二维码，每成功引入一名新用户，可获得{{shareScore}}积分。
-						4、消费积分：每消费1元，可获得{{shopScore}}积分。
-						
-						声明：小程序的积分获取规则会根据运营状况不定期进行修改，以维护社区良性健康发展为原则，并以站内消息的方式向每一个用户发布通知，最终解释权归运营方所有。
-					</text>
+					<view class="tips-item">
+						<view class="tips-item-title">
+							1、签到积分：
+						</view>
+						<text>每次签到可获得{{signUpScore}}积分，\n</text>
+						<text>每天只能签到一次。</text>
+					</view>
+					<view class="tips-item">
+						<view class="tips-item-title">
+							2、刷题积分：
+						</view>
+						<text>首次完成一道题可获得{{firstExamScore}}积分，\n</text>
+						<text>积分，不限制刷题的重复次数。</text>
+					</view>
+					<view class="tips-item">
+						<view class="tips-item-title">
+							3、分享拉新积分：
+						</view>
+						<text>每成功引入一名新用户，可获得{{shareScore}}积分</text>
+					</view>
+					<view class="tips-item">
+						<view class="tips-item-title">
+							4、消费积分：
+						</view>
+						<text>每消费1元，可获得{{shopScore}}积分</text>
+					</view>
 				</view>
-				
+				<view class="power">
+					<view>注：</view>
+					<view>
+						积分获取规则会不定期进行修改
+					</view>
+					<view>
+						最终解释权归食艺兽@所有。
+					</view>
+				</view>
 			</view>
-			<view class="btnActions">
-				<button @click="isShowBuyTips=false">确定</button>
+			<view @click="isShowBuyTips=false" class="btnActions" style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.1);line-height:78rpx;'>
+				<text>确定</text>
 			</view>
 		</u-popup>
+		</view>
 	</TopNavbar>
 </template>
 
@@ -71,7 +99,7 @@
 					loading:'正在拼命加载中',
 					nomore:'没有更多了'
 				},
-				isShowBuyTips: true,
+				isShowBuyTips: false,
 				userInfo: {},
 				scoreRecord: [],
 				signUpScore: 0,
@@ -243,34 +271,36 @@
 	}
 	
 	.buylView {
-		width: 100%;
-		padding: 64rpx 50rpx;
+		padding: 42rpx 48rpx;
 	}
 	.buylView .title{
-		width: 570rpx;
-		height: 54rpx;
-		font-family: PingFangSC-Medium;
-		font-size: 30rpx;
+		width: 100%;
 		font-weight: normal;
 		font-stretch: normal;
-		line-height: 54rpx;
 		letter-spacing: 0rpx;
-		color: #352026;
+		font-size: 28rpx;
+		font-weight: 500;
+		color: #000000;
+		line-height: 40rpx;
 	}
 	.buylView .tips{
-		margin-top: 36rpx;
-		width: 570rpx;
-		height: 590rpx;
-		font-family: PingFangSC-Regular;
-		font-size: 30rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		line-height: 54rpx;
-		letter-spacing: 0rpx;
-		color: #352026;
+		margin-top: 32rpx;
+		font-size: 24rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: rgba(0,0,0,.8);
+		line-height: 38rpx;
+	}
+	.buylView .power{
+		margin-top: 16rpx;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,0.5);
+		line-height: 28rpx;
 	}
 	.buylView .btnActions{
-		margin-top: 70rpx;
+		height: 78rpx;
 	}
 	.buylView .btnActions button{
 		width: 100%;

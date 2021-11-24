@@ -1,124 +1,165 @@
 <template>
-	<view class="myPage">
-		<view class="tabView">
-			<view :class="'tabItem ' + (tab=='tab1'? 'curr':'')"  @click="tab = 'tab1'">
-				<view class="title">未购项目</view>
-				<view class="icon" v-if="tab=='tab1'">
-					<image src="../../static/icon/icon_tab_bg.png"></image>
+	<TopNavbar title='积分兑换' paddingTop='188' bg='#f7f7f7'>
+		<view class="myPage">
+			<view class="tabView">
+				<view :class="'tabItem ' + (tab=='tab1'? 'curr':'')" @click="tab = 'tab1'">
+					<view class="title">未购项目</view>
+					<view class="icon" v-if="tab=='tab1'">
+						<!-- <image src="../../static/icon/icon_tab_bg.png"></image> -->
+					</view>
+				</view>
+				<view :class="'tabItem ' + (tab=='tab2'? 'curr':'')" @click="tab = 'tab2'">
+					<view class="title">已购项目</view>
+					<view class="icon" v-if="tab=='tab2'">
+						<!-- <image src="../../static/icon/icon_tab_bg.png"></image> -->
+					</view>
 				</view>
 			</view>
-			<view :class="'tabItem ' + (tab=='tab2'? 'curr':'')"  @click="tab = 'tab2'">
-				<view class="title">已购项目</view>
-				<view class="icon" v-if="tab=='tab2'">
-					<image src="../../static/icon/icon_tab_bg.png"></image>
-				</view>
-			</view>
-		</view>
-		<view class="buyView" v-if="tab=='tab1'">
-			<view class="myView" :style="{height:(windowHeight - 510)+'rpx',paddingBottom:'30rpx'}">
-				<view class="buyView">
-					<view class="productItem" v-for="product in buySubjects" :key="product.id">
-						<view class="iconView" @click="handleProductCheckedChange(product)">
-							<image v-if="product.checked==true" src="../../static/icon/icon_check_checked.png"></image>
-							<image v-else src="../../static/icon/icon_check_normal.png"></image>
-						</view>
-						<view class="contentView">
-							<view class="titleView">
-								<view class="title" @click="handleProductCheckedChange(product)">{{product.productName}}</view>
-								<view class="comments" @click="showComments(product.comments)">查看介绍</view>
-							</view>
-							<view class="titleView">
-								<view class="price" @click="handleProductCheckedChange(product)">¥{{product.price}}</view>
-								<view v-if="product.price < product.originalPrice" class="oPrice" @click="handleProductCheckedChange(product)">¥{{product.originalPrice}}</view>
-								<view class="intro">
-									<text v-if="product.maxScoreMoney>0">最多抵现{{product.maxScoreMoney}}元</text><text v-if="product.minScore>0">，积分限制:{{product.minScore}}</text>
+			<view style='height: calc(100vh - 226rpx); overflow-y: auto;'>
+				<view class="buyView" v-if="tab=='tab1'">
+					<view class="myView" :style="{height:(windowHeight - 510)+'rpx',paddingBottom:'30rpx'}">
+						<view class="buyView">
+							<view class="productItem" v-for="product in buySubjects" :key="product.id">
+								<view class="iconView" @click="handleProductCheckedChange(product)">
+									<image v-if="product.checked==true" src="../../static/icon/icon_check_checked.png">
+									</image>
+									<image v-else src="../../static/icon/icon_check_normal.png"></image>
+								</view>
+								<view class="contentView">
+									<view class="titleView">
+										<view class="title" @click="handleProductCheckedChange(product)">
+											{{product.productName}}
+										</view>
+
+										<view class="price" @click="handleProductCheckedChange(product)">
+											¥{{product.price}}
+										</view>
+									</view>
+									<view class="titleView">
+										<view class="comments" @click="showComments(product.comments)">查看介绍</view>
+										<view v-if="product.price < product.originalPrice" class="oPrice"
+											@click="handleProductCheckedChange(product)">¥{{product.originalPrice}}
+										</view>
+										<view class="intro">
+											<text
+												v-if="product.maxScoreMoney>0">最多抵现{{product.maxScoreMoney}}元</text><text
+												v-if="product.minScore>0">，积分限制:{{product.minScore}}</text>
+										</view>
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-				</view>
-			</view>
-			<view class="buyConfirmView">
-				<view class="couponItem">
-					<view class="left">优惠券</view>
-					<view class="right" @click="handleChooseCoupon">
-						<text v-if="couponAmount>0">-{{couponAmount}}</text>
-						<text v-else-if="couponCount > 0">去选择优惠券</text>
-						<text v-else>暂无优惠券</text>
+					<view class="buyConfirmView">
+						<view class="couponItem">
+							<view class="left">优惠券</view>
+							<view class="right" @click="handleChooseCoupon">
+								<text v-if="couponAmount>0">-{{couponAmount}}</text>
+								<text v-else-if="couponCount > 0">去选择优惠券</text>
+								<text v-else>暂无优惠券</text>
+							</view>
+							<view class="icon">
+								<u-icon name="arrow-right" color="#ccc" style="opacity:0.4" size="26"></u-icon>
+							</view>
+						</view>
+						<view style='border:none' class="couponItem">
+							<view class="left">可花费{{canScore}}积分抵现¥{{scoreCanAmount?scoreCanAmount:0}}元</view>
+							<view style='margin-right: 78rpx;' class="right" @click="handleChangeRadio">
+								<image v-if="!isUseScore" src="../../static/icon/icon_answer_nocheck.png"></image>
+								<image v-else src="../../static/icon/icon_answer_checked.png"></image>
+							</view>
+						</view>
+						<view class="payment">
+							<view class='payment-info'>
+								<view>
+									<view class="youhui" v-if="discountPrice > 0">已优惠：¥{{discountPrice}}</view>
+									<text class="youhui">已优惠：¥{{discountPrice}}</text>
+									<text class="heji">
+										合计：
+									</text>
+									<text class='fuhao'>¥</text>
+									<text class="price">{{cash}}</text>
+								</view>
+								
+								<view class="shuoming" @click="isShowBuyTips = true">查看支付说明</view>
+							
+							
+							</view>
+							<view class="btnView">
+								<button class="btnPay" @click="handleSubmit">确认支付</button>
+						</view>
+						</view>
 					</view>
-					<view class="icon">
-						<u-icon name="arrow-right" color="#352026" style="opacity:0.65" size="32"></u-icon>
+				</view>
+				<view class="orderView" v-if="tab=='tab2'">
+					<view class="orderItem" v-for="order in orderList">
+						<view class="icon">
+							<u-icon name="checkmark-circle" color="#143a44" size="28"></u-icon>
+						</view>
+						<view style='padding-top: 30rpx; flex:1;'>
+							<view class="conView">
+								<view class="subject">{{order.subjectName}}</view>
+								<view class="price">实付：¥{{order.cash!=undefined?order.cash:order.price}}</view>
+							</view>
+							<view class="headView">
+								<view class="state">购买成功</view>
+								<view class="date">{{order.createDate}}</view>
+							</view>
+						</view>
 					</view>
 				</view>
-				<view class="couponItem">
-					<view class="left">可花费{{canScore}}积分抵现¥{{scoreCanAmount?scoreCanAmount:0}}元</view>
-					<view class="right" @click="handleChangeRadio">
-						<image v-if="!isUseScore" src="../../static/icon/icon_answer_nocheck.png"></image>
-						<image v-else src="../../static/icon/icon_answer_checked.png"></image>
+
+				<!--购买须知-->
+				<u-popup v-model="isShowBuyTips" width="578rpx" :closeable="false" mode="center" border-radius="40">
+					<view class="buylView">
+						<view style='padding: 48rpx 48rpx 128rpx;'>
+							<view class="title">
+								您将购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
+							</view>
+							<view class="tips">
+								购买后可在【个人中心-会员中心-已购项目】中查看
+							</view>
+						</view>
+						<view @click="isShowBuyTips=false" class="btnActions"
+							style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.1);line-height:78rpx;'>
+							<text>关闭</text>
+						</view>
 					</view>
-				</view>
-				<view class="couponItem">
-					<view class="heji">合计：<view class="price">¥{{cash}}</view></view>
-					<view class="shuoming" @click="isShowBuyTips = true">查看支付说明</view>
-				</view>
-				<view class="youhui" v-if="discountPrice > 0">已优惠：¥{{discountPrice}}</view>
-				<view class="btnView">
-					<button class="btnPay" @click="handleSubmit">确认支付</button>
-				</view>
+				</u-popup>
+				<!--产品说明-->
+				<u-popup v-model="isShowProductDetail" width="578rpx" mode="center" border-radius="24">
+					<view class="detailView">
+						<scroll-view scroll-y="true" :style="'max-height:'+(windowHeight - 600)+'rpx;'">
+							<view style='padding: 48rpx 48rpx 128rpx;'>
+								<u-parse :html="comments"></u-parse>
+							</view>
+						</scroll-view>
+						<view @click="isShowProductDetail=false" class="btnActions"
+							style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.1);line-height:78rpx;'>
+							<text>关闭</text>
+						</view>
+					</view>
+				</u-popup>
 			</view>
 		</view>
-		<view class="orderView" v-if="tab=='tab2'">
-			<view class="orderItem" v-for="order in orderList">
-				<view class="headView">
-					<view class="icon">
-						<u-icon name="checkmark-circle" color="#143a44" size="28"></u-icon>
-					</view>
-					<view class="state">购买成功</view>
-					<view class="date">{{order.createDate}}</view>
-				</view>
-				<view class="conView">
-					<view class="subject">{{order.subjectName}}</view>
-					<view class="price">实付：¥{{order.cash!=undefined?order.cash:order.price}}</view>
-				</view>
-			</view>
-		</view>
-		
-		<!--购买须知-->
-		<u-popup v-model="isShowBuyTips" height="365rpx" width="640rpx" :closeable="false" mode="center" border-radius="40">
-			<view class="buylView" style="padding:54rpx 48rpx;">
-				<view class="title">
-					您将购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
-				</view>
-				<view class="tips">
-					购买后可在【个人中心-会员中心-已购项目】中查看
-				</view>
-				<view class="btnActions">
-					<button @click="isShowBuyTips=false">确定</button>
-				</view>
-			</view>
-		</u-popup>
-		<!--产品说明-->
-		<u-popup v-model="isShowProductDetail" width="674rpx" mode="center" border-radius="40">
-			<view class="detailView" style="padding:74rpx 30rpx;">
-				<scroll-view scroll-y="true" :style="'max-height:'+(windowHeight - 600)+'rpx;'">
-					<view style="margin: 0 20rpx;">
-						<u-parse :html="comments"></u-parse>
-					</view>
-				</scroll-view>
-			</view>
-		</u-popup>
-	</view>
+	</TopNavbar>
 </template>
 
 <script>
-	import { formatDate, dateFormat, GetRandomNum, toDateFromString} from '../../js/common.js'
+	import {
+		formatDate,
+		dateFormat,
+		GetRandomNum,
+		toDateFromString
+	} from '../../js/common.js'
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
 				tab: 'tab1',
-				userInfo:{},
+				userInfo: {},
 				subjectId: '', // 购买项目Id
-				orderList:[],
+				orderList: [],
 				products: [],
 				subjectType: 0, // 1:科目，2：视频课程，3：收费项目，4：活动
 				buySubjects: [], // 跳转过来需要购买的项目
@@ -130,40 +171,43 @@
 				comments: '',
 				price: 0, // 所选商品总价
 				couponId: '', // 所选优惠券Id
-				couponAmount:0, // 优惠券抵用价格
-				scoreAmount:0, // 积分已抵用价格
-				scoreCanAmount:0, // 积分可抵用价格
+				couponAmount: 0, // 优惠券抵用价格
+				scoreAmount: 0, // 积分已抵用价格
+				scoreCanAmount: 0, // 积分可抵用价格
 				canScore: 0, // 可使用的积分
 				discountPrice: 0, // 优惠金额
 				cash: 0, // 需要支付的总价格
-				chooseProducts:[], // 选中的商品
+				chooseProducts: [], // 选中的商品
 				couponCount: 0, // 可用优惠券数量
 				loading: false,
-				selectedProductType: ['','all'], // 已选项目类型
+				selectedProductType: ['', 'all'], // 已选项目类型
 				couponProductType: '',
 				ptype: '',
 			}
+		},
+		components: {
+			TopNavbar
 		},
 		onLoad(options) {
 			var self = this
 			uni.getSystemInfo({
 				success: res => {
-					let factor = 750/res.screenWidth
+					let factor = 750 / res.screenWidth
 					self.windowHeight = res.windowHeight * factor
 				}
 			})
 			uni.getStorage({
-				key:'userInfo',
+				key: 'userInfo',
 				success(u) {
 					self.userInfo = u.data
-					if(options.ptype&&options.cid){
+					if (options.ptype && options.cid) {
 						self.ptype = options.ptype
 						self.couponId = options.cid
 						self.couponAmount = parseFloat(options.amount)
 						self.selectedProductType.push(options.ptype)
 						self.couponProductType = options.ptype
 					}
-					if(options.subjectId){
+					if (options.subjectId) {
 						self.subjectId = options.subjectId
 					}
 					self.bindOrders()
@@ -171,14 +215,14 @@
 					var query = new self.Parse.Query('Order')
 					query.equalTo('openId', self.userInfo.openid)
 					query.equalTo('state', 1)
-					query.find().then(orders=>{
+					query.find().then(orders => {
 						var _productIds = [] // 已购项目Id
-						orders.forEach(t=> {
-							t.get('subjectId').split(',').forEach(subjectId=>{
+						orders.forEach(t => {
+							t.get('subjectId').split(',').forEach(subjectId => {
 								_productIds.push(subjectId)
 							})
 						})
-						self.Parse.Config.get().then(async config=>{
+						self.Parse.Config.get().then(async config => {
 							self.config = config
 							await self.bindSubjects(_productIds)
 							await self.bindActionConfigs(_productIds)
@@ -190,21 +234,22 @@
 			})
 		},
 		methods: {
-			bindOrders(){
+			bindOrders() {
 				var self = this
 				var query = new this.Parse.Query("Order")
 				query.equalTo('openId', self.userInfo.openid)
 				query.equalTo('state', 1)
 				query.descending('createdAt')
-				query.find().then(list=>{
+				query.find().then(list => {
 					let _orders = []
-					list.forEach(item=>{
+					list.forEach(item => {
 						var subject = JSON.parse(JSON.stringify(item))
-						subject.createDate = dateFormat(item.get('createdAt'), 'yyyy.MM.dd HH:mm:ss') //, 'yyyy.MM.dd HH:mm:ss')
+						subject.createDate = dateFormat(item.get('createdAt'),
+							'yyyy.MM.dd HH:mm:ss') //, 'yyyy.MM.dd HH:mm:ss')
 						_orders.push(subject)
 					})
 					self.orderList = _orders
-					
+
 				})
 			},
 			/* 加载科目 */
@@ -215,16 +260,26 @@
 				query.ascending('createdAt')
 				await query.find().then(subjects => {
 					var _products = []
-					subjects.forEach(t=>{
+					subjects.forEach(t => {
 						let _checked = false
-						if(self.ptype=='subjectAll' || t.id == self.subjectId){
+						if (self.ptype == 'subjectAll' || t.id == self.subjectId) {
 							_checked = true
 						}
-						_products.push({id:t.id, type:'subject', price:t.get('price'), originalPrice: t.get('price'), checked: _checked, productName: t.get('subject_name'), maxScoreMoney: t.get('maxScoreMoney'), minScore: t.get('minScore'), comments:t.get('comments')})
+						_products.push({
+							id: t.id,
+							type: 'subject',
+							price: t.get('price'),
+							originalPrice: t.get('price'),
+							checked: _checked,
+							productName: t.get('subject_name'),
+							maxScoreMoney: t.get('maxScoreMoney'),
+							minScore: t.get('minScore'),
+							comments: t.get('comments')
+						})
 					})
 					self.products = JSON.parse(JSON.stringify(self.products)).concat(_products)
-					_products.forEach(t=>{
-						if(buyedSubjectIds.indexOf(t.id)==-1 && t.price > 0){
+					_products.forEach(t => {
+						if (buyedSubjectIds.indexOf(t.id) == -1 && t.price > 0) {
 							self.buySubjects.push(t)
 						}
 					})
@@ -238,16 +293,26 @@
 				query.ascending('createdAt')
 				await query.find().then(actionConfigs => {
 					var _products = []
-					actionConfigs.forEach(t=>{
+					actionConfigs.forEach(t => {
 						let _checked = false
-						if(self.ptype == t.id || t.id == self.subjectId){
+						if (self.ptype == t.id || t.id == self.subjectId) {
 							_checked = true
 						}
-						_products.push({id:t.id, type:'actionConfig', price:t.get('price'), originalPrice: t.get('price'), checked: _checked, productName: t.get('action'), maxScoreMoney: t.get('maxScoreMoney'), minScore: t.get('minScore'), comments:t.get('comments')})
+						_products.push({
+							id: t.id,
+							type: 'actionConfig',
+							price: t.get('price'),
+							originalPrice: t.get('price'),
+							checked: _checked,
+							productName: t.get('action'),
+							maxScoreMoney: t.get('maxScoreMoney'),
+							minScore: t.get('minScore'),
+							comments: t.get('comments')
+						})
 					})
 					self.products = JSON.parse(JSON.stringify(self.products)).concat(_products)
-					_products.forEach(t=>{
-						if(buyedSubjectIds.indexOf(t.id)==-1 && t.price > 0){
+					_products.forEach(t => {
+						if (buyedSubjectIds.indexOf(t.id) == -1 && t.price > 0) {
 							self.buySubjects.push(t)
 						}
 					})
@@ -255,23 +320,33 @@
 				})
 			},
 			/* 加载套课 */
-			async bindCourses(buyedSubjectIds){
+			async bindCourses(buyedSubjectIds) {
 				var self = this
 				var query = new self.Parse.Query('Courses')
 				query.equalTo('parent_ID', '0')
 				query.ascending('createdAt')
 				await query.find().then(courses => {
 					var _products = []
-					courses.forEach(t=>{
+					courses.forEach(t => {
 						let _checked = false
-						if(self.ptype == 'courseAll' || t.id == self.subjectId){
+						if (self.ptype == 'courseAll' || t.id == self.subjectId) {
 							_checked = true
 						}
-						_products.push({id:t.id, type:'course', price:t.get('price'), originalPrice: t.get('price'), checked: _checked, productName: t.get('courseName'), maxScoreMoney: t.get('maxScoreMoney'), minScore: t.get('minScore'), comments:t.get('comments')})
+						_products.push({
+							id: t.id,
+							type: 'course',
+							price: t.get('price'),
+							originalPrice: t.get('price'),
+							checked: _checked,
+							productName: t.get('courseName'),
+							maxScoreMoney: t.get('maxScoreMoney'),
+							minScore: t.get('minScore'),
+							comments: t.get('comments')
+						})
 					})
 					self.products = JSON.parse(JSON.stringify(self.products)).concat(_products)
-					_products.forEach(t=>{
-						if(buyedSubjectIds.indexOf(t.id)==-1 && t.price > 0){
+					_products.forEach(t => {
+						if (buyedSubjectIds.indexOf(t.id) == -1 && t.price > 0) {
 							self.buySubjects.push(t)
 						}
 					})
@@ -279,40 +354,52 @@
 				})
 			},
 			/* 加载活动 */
-			async bindActivitys(buyedSubjectIds){
+			async bindActivitys(buyedSubjectIds) {
 				var self = this
 				var query = new self.Parse.Query('Activity')
 				query.ascending('createdAt')
 				await query.find().then(activitys => {
 					var _products = []
-					activitys.forEach(t=>{
+					activitys.forEach(t => {
 						let _pName = ''
 						let _oPrice = 0
-						if(t.get('products') && t.get('products').length > 1){
-							t.get('products').forEach(product=>{
-								var _product = self.products.find(function(t){
+						if (t.get('products') && t.get('products').length > 1) {
+							t.get('products').forEach(product => {
+								var _product = self.products.find(function(t) {
 									return t.id == product
 								})
-								if(_product){
+								if (_product) {
 									_pName += _product.productName + ','
 									_oPrice += _product.price
 								}
 							})
-							if(_pName && _pName.length > 0) {
+							if (_pName && _pName.length > 0) {
 								_pName = _pName.substring(0, _pName.length - 1)
 							}
 							let _checked = false
-							if(self.ptype == t.id || t.id == self.subjectId){
+							if (self.ptype == t.id || t.id == self.subjectId) {
 								_checked = true
 							}
-							_products.push({id:t.id, type:'activity', price:t.get('price'), originalPrice: _oPrice, products: t.get('products'), checked: _checked, productName: t.get('title') + '('+_pName+')', maxScoreMoney: t.get('maxScoreMoney'), minScore: t.get('minScore'), comments:t.get('comments')})
+							_products.push({
+								id: t.id,
+								type: 'activity',
+								price: t.get('price'),
+								originalPrice: _oPrice,
+								products: t.get('products'),
+								checked: _checked,
+								productName: t.get('title') + '(' + _pName + ')',
+								maxScoreMoney: t.get('maxScoreMoney'),
+								minScore: t.get('minScore'),
+								comments: t.get('comments')
+							})
 						}
-						if(t.get('products') && t.get('products').length == 1){ // 如果活动中只有一个项目，则改变这个项目的活动价格
+						if (t.get('products') && t.get('products').length ==
+							1) { // 如果活动中只有一个项目，则改变这个项目的活动价格
 							let _itemId = t.get('products')[0]
-							if(self.buySubjects && self.buySubjects.length > 0){
-								self.buySubjects.forEach(bt=>{
-									if(bt.id == _itemId){
-										if(self.ptype == bt.id || bt.id == self.subjectId){
+							if (self.buySubjects && self.buySubjects.length > 0) {
+								self.buySubjects.forEach(bt => {
+									if (bt.id == _itemId) {
+										if (self.ptype == bt.id || bt.id == self.subjectId) {
 											bt.checked = true
 										}
 										bt.price = t.get('price')
@@ -322,32 +409,32 @@
 						}
 					})
 					self.products = JSON.parse(JSON.stringify(self.products)).concat(_products)
-					_products.forEach(t=>{
-						if(buyedSubjectIds.indexOf(t.id)==-1){
+					_products.forEach(t => {
+						if (buyedSubjectIds.indexOf(t.id) == -1) {
 							self.buySubjects.unshift(t)
 						}
 					})
 					self.calc()
 				})
 			},
-			
+
 			/*加载优惠券*/
-			bindCoupons(){
+			bindCoupons() {
 				var self = this
 				var couponRecord = new self.Parse.Query('CouponRecord')
 				couponRecord.equalTo('openid', self.userInfo.openid)
 				couponRecord.containedIn('productType', self.selectedProductType)
 				couponRecord.equalTo('state', 0)
 				couponRecord.greaterThan('useEndTime', new Date())
-				couponRecord.count().then(count=>{
+				couponRecord.count().then(count => {
 					self.couponCount = count
 				})
 			},
 			/* 去选择优惠券 */
-			handleChooseCoupon(){
+			handleChooseCoupon() {
 				var self = this
 				uni.navigateTo({
-					url:'/pages/buy/choosecoupon',
+					url: '/pages/buy/choosecoupon',
 					success: function(res) {
 						// 通过eventChannel向被打开页面传送数据
 						res.eventChannel.emit('selectedProductType', self.selectedProductType)
@@ -355,7 +442,7 @@
 					},
 					events: {
 						choosed: function(data) {
-							if(data){
+							if (data) {
 								self.couponAmount = parseFloat(data.amount)
 								self.couponId = data.objectId
 								self.couponProductType = data.productType
@@ -371,7 +458,7 @@
 				})
 			},
 			/* 计算价格 */
-			calc(){
+			calc() {
 				var self = this
 				var _products = []
 				var _oprice = 0
@@ -379,13 +466,13 @@
 				var _maxScoreMoney = 0
 				var _maxScore = 0
 				var bili = self.config.get('scoreMoneyPercent') // 积分兑换人民币的比例
-				var selectedProductType =  ['', 'all']
-				if(self.ptype){
+				var selectedProductType = ['', 'all']
+				if (self.ptype) {
 					selectedProductType = self.selectedProductType
 				}
-				self.buySubjects.forEach(t=>{
-					if(t.checked){
-						if(t.type == 'subject'){
+				self.buySubjects.forEach(t => {
+					if (t.checked) {
+						if (t.type == 'subject') {
 							selectedProductType.push('subjectAll')
 						} else {
 							selectedProductType.push(t.id)
@@ -393,18 +480,18 @@
 						_price += t.price
 						_oprice += t.originalPrice
 						_maxScoreMoney += t.maxScoreMoney
-						if(self.userInfo.score >= t.minScore) {
+						if (self.userInfo.score >= t.minScore) {
 							_maxScore += t.maxScoreMoney * bili
 						}
 						_products.push(t)
 					}
 				})
 				self.selectedProductType = selectedProductType
-				let coupon = self.selectedProductType.find(function(t){ // 查询当前优惠券是否可用
+				let coupon = self.selectedProductType.find(function(t) { // 查询当前优惠券是否可用
 					return t == self.couponProductType
 				})
-				if(!coupon){ // 不可用
-					self.couponProductType=''
+				if (!coupon) { // 不可用
+					self.couponProductType = ''
 					self.couponAmount = 0
 					self.couponId = ''
 				}
@@ -413,7 +500,7 @@
 				let canScore = _maxScore <= self.userInfo.score ? _maxScore : self.userInfo.score
 				self.canScore = canScore
 				self.scoreCanAmount = parseFloat((canScore / bili).toFixed(2))
-				if(self.isUseScore) {
+				if (self.isUseScore) {
 					self.scoreAmount = self.scoreCanAmount
 				} else {
 					self.scoreAmount = 0
@@ -424,18 +511,18 @@
 				self.bindCoupons()
 			},
 			/* 选中/取消选中商品 */
-			handleProductCheckedChange(pro){
+			handleProductCheckedChange(pro) {
 				var self = this
 				let _checked = JSON.parse(JSON.stringify(pro)).checked
-				if(self.config.get('isSubjectAllBuy') && pro.type == 'subject') { // 如果购买的是科目，且设置了科目必须全部购买
-					self.buySubjects.forEach(t=>{
-						if(t.type=='subject'){
+				if (self.config.get('isSubjectAllBuy') && pro.type == 'subject') { // 如果购买的是科目，且设置了科目必须全部购买
+					self.buySubjects.forEach(t => {
+						if (t.type == 'subject') {
 							t.checked = !_checked
 						}
 					})
-				} else if(self.config.get('isCoursesAllBuy') && pro.type == 'course') {
-					self.buySubjects.forEach(t=>{
-						if(t.type=='course'){
+				} else if (self.config.get('isCoursesAllBuy') && pro.type == 'course') {
+					self.buySubjects.forEach(t => {
+						if (t.type == 'course') {
 							t.checked = !_checked
 						}
 					})
@@ -446,33 +533,36 @@
 				self.calc()
 			},
 			/* 选中/取消选中积分 */
-			handleChangeRadio(){
+			handleChangeRadio() {
 				this.isUseScore = !this.isUseScore
 				this.calc()
 			},
 			/* 查看详情 */
-			showComments(comments){
-				if(comments){
+			showComments(comments) {
+				this.comments = '11111111111'
+				this.isShowProductDetail = true
+				return
+				if (comments) {
 					this.comments = comments
-					this.isShowProductDetail= true
+					this.isShowProductDetail = true
 				} else {
 					uni.showToast({
-						title:'暂无内容',
-						icon:'none'
+						title: '暂无内容',
+						icon: 'none'
 					})
 				}
 			},
 			/* 确认支付 */
 			handleSubmit() {
 				var self = this
-				if(!self.loading) {
+				if (!self.loading) {
 					self.loading = true
 					uni.showLoading()
 					var _subjectId = '';
 					var _subjectName = ''
 					var _items = []
-					self.chooseProducts.forEach(t=> {
-						if(t.products && t.products.length > 0) {
+					self.chooseProducts.forEach(t => {
+						if (t.products && t.products.length > 0) {
 							t.products.forEach(p => {
 								_subjectId += p + ','
 								_items.push(p)
@@ -484,12 +574,12 @@
 					})
 					_items.sort()
 					let _doubleItem = null
-					for(var i = 0; i < _items.length - 1; i++) {
-					  if(_items[i] == _items[i + 1]) {
-						_doubleItem = _items[i]
-					  }
+					for (var i = 0; i < _items.length - 1; i++) {
+						if (_items[i] == _items[i + 1]) {
+							_doubleItem = _items[i]
+						}
 					}
-					if(_doubleItem) {
+					if (_doubleItem) {
 						uni.showToast({
 							title: '选择了重复的项目，请检查',
 							icon: 'none'
@@ -497,7 +587,7 @@
 						self.loading = false
 						return false
 					}
-					if(_subjectId){
+					if (_subjectId) {
 						_subjectId = _subjectId.substring(0, _subjectId.length - 1)
 						_subjectName = _subjectName.substring(0, _subjectName.length - 1)
 					} else {
@@ -510,45 +600,47 @@
 					}
 					var user = self.Parse.User.current()
 					var cash = self.cash * 100
-					if(cash == 0){
-						var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss')+GetRandomNum(5)
+					if (cash == 0) {
+						var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5)
 						self.PayCallBack(orderNo, _subjectId, _subjectName)
 					} else {
-						this.Parse.Cloud.run('initiatePayment',
-							{price: cash,},
-							{sessionToken: user.get('sessToken'),}).then(res=>{
+						this.Parse.Cloud.run('initiatePayment', {
+							price: cash,
+						}, {
+							sessionToken: user.get('sessToken'),
+						}).then(res => {
 							var payload = res.payload
 							var tradeId = res.tradeId
 							uni.requestPayment({
-							  appId: payload.appId,
-							  timeStamp: payload.timeStamp,
-							  nonceStr: payload.nonceStr,
-							  package: payload.package,
-							  signType: payload.signType,
-							  paySign: payload.paySign,
-							  success (res) {
-								  self.PayCallBack(tradeId,_subjectId,_subjectName)
-							  },
-							  fail (res) {
-								uni.hideLoading()
-								self.loading = false
-								console.log("支付失败"+ JSON.stringify(res))
-							  }
+								appId: payload.appId,
+								timeStamp: payload.timeStamp,
+								nonceStr: payload.nonceStr,
+								package: payload.package,
+								signType: payload.signType,
+								paySign: payload.paySign,
+								success(res) {
+									self.PayCallBack(tradeId, _subjectId, _subjectName)
+								},
+								fail(res) {
+									uni.hideLoading()
+									self.loading = false
+									console.log("支付失败" + JSON.stringify(res))
+								}
 							})
 						})
 					}
 				}
 			},
 			/* 支付成功 */
-			PayCallBack(tradeId,_subjectId,_subjectName){
+			PayCallBack(tradeId, _subjectId, _subjectName) {
 				var self = this
 				var dbOrder = self.Parse.Object.extend("Order")
 				var order = new dbOrder()
 				order.set('orderNo', tradeId)
-				order.set("subjectId",  _subjectId)
-				order.set("subjectName",  _subjectName)
-				order.set("price",  self.price)
-				order.set("cash",  self.cash)
+				order.set("subjectId", _subjectId)
+				order.set("subjectName", _subjectName)
+				order.set("price", self.price)
+				order.set("cash", self.cash)
 				order.set('couponAmount', self.couponAmount)
 				order.set('scoreAmount', self.scoreAmount)
 				order.set('couponId', self.couponId)
@@ -558,19 +650,20 @@
 				order.save().then(_order => {
 					uni.hideLoading()
 					uni.showModal({
-						content:'恭喜，购买成功',
+						content: '恭喜，购买成功',
 						showCancel: false
 					})
-					setTimeout(function(){
+					setTimeout(function() {
 						uni.navigateBack()
 					}, 500)
-				},(error)=>{
+				}, (error) => {
 					uni.hideLoading()
 					console.log(error)
 				})
-				let _score_remove = parseFloat((self.scoreAmount * self.config.get('scoreMoneyPercent')).toFixed(1)) // 需要扣除的积分
+				let _score_remove = parseFloat((self.scoreAmount * self.config.get('scoreMoneyPercent')).toFixed(
+					1)) // 需要扣除的积分
 				/* 积分使用记录 */
-				if(self.scoreAmount>0) { // 使用积分记录
+				if (self.scoreAmount > 0) { // 使用积分记录
 					var ScoreRecords = self.Parse.Object.extend('ScoreRecord')
 					var scoreRecord = new ScoreRecords()
 					scoreRecord.set('openid', self.userInfo.openid)
@@ -580,18 +673,18 @@
 					scoreRecord.save()
 				}
 				var userQuery = new self.Parse.Query(self.Parse.User)
-				userQuery.get(self.Parse.User.current().id).then(user=>{
+				userQuery.get(self.Parse.User.current().id).then(user => {
 					user.set('amount', user.get('amount') + self.cash)
-					if(self.config.get('shopScore')&&self.config.get('shopScore')>0){
+					if (self.config.get('shopScore') && self.config.get('shopScore') > 0) {
 						var _score = parseFloat((self.cash * parseInt(self.config.get('shopScore'))).toFixed(1))
 						user.set('score', (user.get('score') + _score - _score_remove))
-						if(user.score > 0 && (!user.get('score_all') || user.get('score_all') == 0)) {
+						if (user.score > 0 && (!user.get('score_all') || user.get('score_all') == 0)) {
 							user.set('score_all', user.get('score') + _score)
 						} else {
 							user.set('score_all', user.get('score_all') + _score)
 						}
 						/* 积分赠送记录 */
-						if(_score > 0) { // 使用积分记录
+						if (_score > 0) { // 使用积分记录
 							var _ScoreRecords = self.Parse.Object.extend('ScoreRecord')
 							var _scoreRecord = new _ScoreRecords()
 							_scoreRecord.set('openid', self.userInfo.openid)
@@ -601,7 +694,7 @@
 							_scoreRecord.save()
 						}
 					}
-					user.save().then(ruser=>{
+					user.save().then(ruser => {
 						uni.setStorage({
 							key: 'userInfo',
 							data: ruser
@@ -609,9 +702,9 @@
 					})
 				})
 				/* 使用优惠券 */
-				if(self.couponId){
+				if (self.couponId) {
 					var crquery = new self.Parse.Query('CouponRecord')
-					crquery.get(self.couponId).then(record=>{
+					crquery.get(self.couponId).then(record => {
 						record.set('state', 1)
 						record.set('orderNo', tradeId)
 						record.set('useTime', new Date())
@@ -625,185 +718,162 @@
 </script>
 
 <style>
-	page{
-		background-color: #fbfbfa;
-	}
-	.tabView{
-		padding: 20rpx 48rpx 10rpx 48rpx;
+	.tabView {
+		margin: 0 24rpx;
 		display: flex;
-		border-bottom: 4rpx solid #f4f4f4;
+		border-bottom: 2rpx solid rgba(0, 0, 0, .1);
 	}
-	.tabView .tabItem{
+
+	.tabView .tabItem {
 		flex: 1;
 		text-align: center;
-		height: 50rpx;
+		height: 40rpx;
 	}
-	.tabView .tabItem .title{
-		height: 36rpx;
-		font-family: PingFangSC-Medium;
-		font-size: 26rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.7);
+
+	.tabView .tabItem .title {
+		font-size: 24rpx;
+		font-weight: 500;
+		color: #000000;
+		line-height: 34rpx;
+		margin-bottom: 4rpx;
 	}
-	.tabView .tabItem.curr .title{
-		color: #352026;
+
+	.tabView .tabItem.curr .title {
+		color: #D81E1F;
 	}
-	.tabView .tabItem .icon{
-		width: 52rpx;
-		height: 8rpx;
+
+	.tabView .tabItem .icon {
+		width: 48rpx;
+		height: 4rpx;
 		text-align: center;
 		display: inline-block;
 		position: relative;
-		top: -16rpx;
+		top: -24rpx;
+		background: rgba(216, 30, 31, 1);
 	}
-	.tabView .tabItem .icon image{
-		width: 52rpx;
-		height: 8rpx;
-		display: inline-block;
-		vertical-align: middle;
-		position: absolute;
-		left: 0;
+
+	.orderView {
+		padding-left: 48rpx;
 	}
-	.orderView{
-		padding: 20rpx;
+
+	.orderView .orderItem {
+		height: 142rpx;
 		width: 100%;
-	}
-	.orderView .orderItem{
-		padding: 0 40rpx;
-	}
-	.headView{
+		border-bottom: 2rpx solid rgba(0, 0, 0, .1);
 		display: flex;
-		width: 100%;
-		margin-top: 36rpx;
+		flex-direction: row;
 	}
-	.headView .icon{
-		width: 50rpx;
+
+	.orderItem .icon {
+		width: 72rpx;
+		padding-top: 36rpx;
 		text-align: left;
 	}
-	.headView .state{
-		flex: 1;
-		font-size: 26rpx;
-		font-weight: bold;
-		color: #143a44;
-		font-family: PingFangSC-Medium;
+
+	.orderItem .conView,
+	.orderItem .headView {
+		display: flex;
+		justify-content: space-between;
+		padding-right: 76rpx;
 	}
-	.headView .date{
-		width: 270rpx;
-		text-align: right;
-		font-size: 26rpx;
-		color: #143a44;
-		font-family: PingFangSC-Medium;
+
+	.orderItem .conView {
+		font-size: 32rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+		line-height: 44rpx;
+		margin-bottom: 6rpx;
 	}
-	.conView{
-		margin-left: 50rpx;
-		margin-top: 30rpx;
-		border-bottom: 1rpx solid #f6f6f6;
+
+	.orderItem .headView {
+		font-size: 20rpx;
+		font-family: PingFangSC-Semibold, PingFang SC !important;
+		font-weight: 600;
+		color: rgba(0, 0, 0, .29);
+		line-height: 28rpx;
+
 	}
-	.conView .subject{
-		font-size: 34rpx;
-		/* height: 48rpx; */
-		line-height: 48rpx;
-		font-weight: bold;
-		color: #352026;
-		font-family: PingFangSC-Medium;
-	}
-	.conView .price{
-		height: 42rpx;
-		line-height: 42rpx;
-		font-size: 30rpx;
-		color: #352026;
-		font-family: PingFangSC-Medium;
-		margin-bottom: 36rpx;
-	}
-	
-	.myView{
-		padding: 0 30rpx;
+
+	.myView {
 		overflow-y: auto;
 	}
-	.buyView,.recommendView{
-		/* padding: 20rpx 0; */
+
+	.myView .buyView {
+		padding-left: 30rpx;
 	}
-	.recommendView{
-		background-color: #ffffff;
-		box-shadow: 0rpx 8rpx 16rpx 0rpx 
-				rgba(238, 160, 160, 0.05);
-		border-radius: 40rpx;
-	}
-	.recommendView .headView{
-		height: 84rpx;
-		padding-top: 12rpx;
-		margin-left: 10rpx;
-		margin-right: 10rpx;
-		border-bottom: 2rpx solid #f4f4f4;
-	}
-	.recommendView .headView .head{
-		height: 72rpx;
-		line-height: 72rpx;
-		color: #ff9d83;
-		font-size: 26rpx;
-		padding-left: 8rpx;
-		font-family: PingFangSC-Medium;
-	}
-	.productItem{
+
+	.myView .productItem {
 		display: flex;
-		padding: 24rpx 0;
-		border-bottom: 2rpx solid #f4f4f4;
-		margin: 0 10rpx;
+		height: 148rpx;
+		border-bottom: 2rpx solid rgba(0, 0, 0, .1);
 	}
-	.buyView .productItem:last-child,.recommendView .productItem:last-child{
-		border: 0;
+
+	.myView .iconView {
+		flex: 0 1 70rpx;
 	}
-	.productItem .iconView{
-		width: 62rpx;
-		text-align: center;
-		height: 48rpx;
-		line-height: 48rpx;
-	}
-	.productItem .iconView image{
+
+	.myView .iconView image {
 		width: 32rpx;
-		height: 32rpx;
-		display: inline-block;
-		vertical-align: middle;
+		height: 34rpx;
+		margin-top: 56rpx;
 	}
-	.productItem .contentView{
+
+	.myView .contentView {
+		padding-top: 32rpx;
+		padding-right: 78rpx;
 		flex: 1;
 	}
-	.productItem .contentView .titleView{
+
+	.myView .contentView .titleView {
 		display: flex;
-		min-height: 48rpx;
+		justify-content: space-between;
+	}
+
+	.myView .contentView .titleView .title {
+		font-size: 32rpx;
+		font-weight: 500;
+		color: rgba(0, 0, 0, .9);
+		line-height: 44rpx;
+	}
+
+	.myView .contentView .titleView .price {
+		font-size: 34rrpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #ED3535;
 		line-height: 48rpx;
-		padding-right: 18rpx;
 	}
-	.productItem .contentView .titleView .title{
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: #1c1c1c;
-		flex: 1;
+
+	.myView .contentView .titleView .comments {
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		line-height: 28rpx;
+		color: rgba(0, 0, 0, .8);
+		text-decoration: underline;
 	}
-	.productItem .contentView .titleView .comments{
-		width: 104rpx;
-		font-size: 26rpx;
-		font-family: PingFangSC-Medium;
-		color: #1c1c1c;
+
+	.myView .contentView .titleView .intro {
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0, 0, 0, .5);
+		line-height: 28rpx;
 	}
-	.productItem .contentView .titleView .price{
+
+	.productItem .contentView .titleView .price {
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
 		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
 		color: #ed3535;
-		/* width: 100rpx; */
 	}
-	
-	.productItem .contentView .titleView .oPrice{
+
+	.productItem .contentView .titleView .oPrice {
 		font-family: PingFangSC-Medium;
-			/* height: 36rpx; */
+		/* height: 36rpx; */
 		font-family: PingFangSC-Regular;
 		font-size: 26rpx;
 		font-weight: normal;
@@ -813,81 +883,189 @@
 		text-decoration: line-through;
 		padding-left: 5rpx;
 	}
-	.productItem .contentView .titleView .intro{
+
+	.productItem .contentView .titleView .intro {
 		width: 104rpx;
 		font-size: 22rpx;
 		font-family: PingFangSC-Medium;
-		color: rgba(53,32,38,0.4);
+		color: rgba(53, 32, 38, 0.4);
 		flex: 1;
 		text-align: right;
 	}
-	
-	.buyConfirmView{
+
+	.buyConfirmView {
 		position: fixed;
 		bottom: 0;
 		width: 100%;
-		padding: 0 30rpx;
-		background-color: #fbfbfa;
+		height: 345rpx;
+		background-color: #fff;
+		border-top-left-radius: 24rpx;
+		border-top-right-radius: 24rpx;
+		box-shadow: 0 -4rpx 8rpx 0 rgba(0, 0, 0, 0.04);
 	}
-	.buyConfirmView .couponItem{
+
+	.buyConfirmView .couponItem {
+		width: 100%;
+		height: 84rpx;
+		margin-left: 48rpx;
+		border-bottom: 2rpx solid rgba(0, 0, 0, .1);
+		display: flex;
+		align-items: center;
+	}
+
+	.buyConfirmView .couponItem .left {
+		font-size: 24rpx;
+		font-weight: 500;
+		color: rgba(0, 0, 0, 0.9);
+		line-height: 34rpx;
+		flex: 1;
+	}
+
+	.buyConfirmView .couponItem .right {
+		margin-right: 24rpx;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0, 0, 0, .39);
+		line-height: 28rpx;
+	}
+
+	.buyConfirmView .couponItem .right image {
+		width: 32rpx;
+		height: 32rpx;
+	}
+
+	.buyConfirmView .couponItem .icon {
+		margin-right: 78rpx;
+	}
+
+	.buyConfirmView .payment {
+		height: auto;
+		border-top: 2rpx solid rgba(0, 0, 0, .1);
+		display: flex;
+	}
+	
+	.payment .payment-info {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		padding-left: 30rpx;
+		padding-top: 14rpx;
+	}
+	.payment .payment-info .youhui {
+		font-size: 20rpx;
+		font-weight: 500;
+		color: rgba(0,0,0,.4);
+		line-height: 28rpx;
+	}
+	.payment .payment-info .heji {
+		font-size: 20rpx;
+		font-weight: 500;
+		color: rgba(0,0,0,.8);
+		line-height: 28rpx;
+		margin-left: 6rpx;
+	}
+	.payment .payment-info .price {
+		font-size: 44rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #ED3535;
+		line-height: 60rpx;
+	}
+	.payment .payment-info .fuhao {
+		color: rgba(237, 53, 53, 1);
+	}
+	.payment .payment-info .shuoming {
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,.8);
+		line-height: 28rpx;
+	}
+	.btnView {
+		padding: 24rpx 26rpx 0 30rpx;
+	}
+	
+	.btnPay {
+		width: 332rpx;
+		height: 86rpx;
+		line-height: 86rpx;
+		text-align: center;
+		background-color: #ed3535;
+		border-radius: 46rpx;
+		color: #ffffff;
+		font-size: 34rpx;
+		font-family: PingFangSC-Medium;
+	}
+
+	/* .buyConfirmView .couponItem {
 		display: flex;
 		height: 70rpx;
 		line-height: 70rpx;
 		border-top: 2rpx solid #f4f4f4;
 	}
-	.buyConfirmView .couponItem .left{
-		/* flex: 1; */
+
+	.buyConfirmView .couponItem .left {
 		text-align: left;
 		font-size: 30rpx;
 		color: #212121;
 		font-family: PingFangSC-Medium;
 		width: 500rpx;
 	}
-	.buyConfirmView .couponItem .right{
+
+	.buyConfirmView .couponItem .right {
 		flex: 1;
 		text-align: right;
 		font-size: 22rpx;
-		color: rgba(53,32,38,0.4);
+		color: rgba(53, 32, 38, 0.4);
 		font-family: PingFangSC-Medium;
 	}
-	.buyConfirmView .couponItem .right image{
+
+	.buyConfirmView .couponItem .right image {
 		text-align: right;
 		width: 32rpx;
 		height: 32rpx;
 		display: inline-block;
 		vertical-align: middle;
 	}
-	.buyConfirmView .couponItem .icon{
+
+	.buyConfirmView .couponItem .icon {
 		width: 50rpx;
 		text-align: right;
 	}
-	.buyConfirmView .couponItem .heji{
+
+	.buyConfirmView .couponItem .heji {
 		flex: 1;
 		font-size: 38rpx;
 		color: #212121;
 		font-family: PingFangSC-Medium;
 	}
-	.buyConfirmView .couponItem .heji .price{
+
+	.buyConfirmView .couponItem .heji .price {
 		color: #ed3535;
 		display: inline;
 	}
-	.buyConfirmView .couponItem .shuoming{
+
+	.buyConfirmView .couponItem .shuoming {
 		font-size: #26rpx;
 		color: #1c1c1c;
 		font-family: PingFangSC-Medium;
 	}
-	.buyConfirmView .youhui{
-		color: rgba(33,33,33,0.4);
+
+	.buyConfirmView .youhui {
+		color: rgba(33, 33, 33, 0.4);
 		font-size: 26rpx;
 		font-family: PingFangSC-Medium;
 		position: relative;
 		top: -10rpx;
 	}
-	.btnView{
+
+	.btnView {
 		padding-top: 22rpx;
 		padding-bottom: 104rpx;
 	}
-	.btnPay{
+
+	.btnPay {
 		width: 690rpx;
 		height: 92rpx;
 		line-height: 92rpx;
@@ -898,42 +1076,46 @@
 		font-size: 34rpx;
 		font-family: PingFangSC-Medium;
 	}
-	
+
 	.buylView {
 		width: 100%;
 	}
-	.buylView .title{
+
+	.buylView .title {
 		font-size: 30rpx;
-		/* font-weight: bold; */
 		font-family: PingFangSC-Medium;
 		color: #352026;
 	}
-	.buylView .price{
+
+	.buylView .price {
 		font-size: 34rpx;
 		margin-top: 12rpx;
 		font-family: PingFangSC-Medium;
 		color: #ed3535;
 	}
-	.buylView .tips{		
+
+	.buylView .tips {
 		font-size: 26rpx;
 		margin-top: 26rpx;
 		font-family: PingFangSC-Medium;
-		color: rgba(53,32,38,0.4);
+		color: rgba(53, 32, 38, 0.4);
 	}
-	.buylView .btnActions{
+
+	.buylView .btnActions {
 		margin-top: 34rpx;
 	}
-	.buylView .btnActions button{
+
+	.buylView .btnActions button {
 		width: 100%;
 		height: 48rpx;
 		line-height: 48rpx;
-		/* border-radius: 46rpx; */
 		background-color: #ffffff;
 		color: #352026;
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
 	}
-	.buylView .btnActions button::after{
+
+	.buylView .btnActions button::after {
 		border: 0;
-	}
+	} */
 </style>

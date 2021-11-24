@@ -92,7 +92,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.checkGroup{
 		padding-left: 48rpx;
 		text-align: center;
@@ -161,5 +161,8 @@
 		margin-top: 8rpx;
 		font-size: 34rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
+	}
+	.tabbar {
+		z-index: 100000 !important;
 	}
 </style>

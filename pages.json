@@ -31,7 +31,8 @@
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfb",
 				"navigationBarTitleText": "食艺兽",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
 			}
 
 		}, {
@@ -46,7 +47,8 @@
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
 				"navigationBarTitleText": "积分兑换",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
 			}
 
 		}, {
@@ -145,14 +147,16 @@
 			"path": "pages/buy/buy",
 			"style": {
 				"navigationBarTitleText": "购买",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
 			}
 
 		}, {
 			"path": "pages/buy/choosecoupon",
 			"style": {
 				"navigationBarTitleText": "选择优惠券",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
 			}
 
 		}, {
@@ -383,7 +387,8 @@
 					"style": {
 						"navigationBarBackgroundColor": "#fbfbfa",
 						"navigationBarTitleText": "分享给好友",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
 					}
 
 				},

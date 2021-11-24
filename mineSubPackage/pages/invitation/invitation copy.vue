@@ -1,24 +1,18 @@
 <template>
-	<TopNavbar title='分享给好友' paddingTop="-1" bg='#f7f7f7'>
-		<view>
-			<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
-			<view class="rect">
-				<image @tap.stop v-if="sharePicImg" :src="sharePicImg" mode="aspectFill" class="bgImg"></image>
-				<!-- <button class="download" @click="handleSaveImg">保存并分享</button> -->
-				<view @click="handleSaveImg" class="download">
-					<image src="../../../static/icon_sharebg.png"></image>
-					<view class="title">保存并分享</view>
-				</view>
-			</view>
-			<view class="bg">
-				
+	<view>
+		<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
+		<view class="rect">
+			<image @tap.stop v-if="sharePicImg" :src="sharePicImg" mode="aspectFill" class="bgImg"></image>
+			<!-- <button class="download" @click="handleSaveImg">保存并分享</button> -->
+			<view @click="handleSaveImg" class="download">
+				<image src="../../../static/icon_sharebg.png"></image>
+				<view class="title">保存并分享</view>
 			</view>
 		</view>
-	</TopNavbar>
+	</view>
 </template>
 
 <script>
-	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	import config from '../../../static/config/index.js'
 	export default {
 		data() {
@@ -32,9 +26,6 @@
 				complateCount: 0,
 				
 			}
-		},
-		components: {
-			TopNavbar
 		},
 		onLoad() {
 			var self = this
@@ -144,17 +135,7 @@
 				ctx.beginPath(); //开始绘制
 				//先画个圆   前两个参数确定了圆心 （x,y） 坐标  第三个参数是圆的半径  四参数是绘图方向  默认是false，即顺时针
 				ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_width / 2 + avatarurl_y, avatarurl_width / 2, 0, Math.PI * 2, false);
-				// ctx.fill()
 				ctx.clip();//画好了圆 剪切  原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内 这也是我们要save上下文的原因
-			},
-			/* 绘制头像圆型范围 */
-			headFill(ctx, url, avatarurl_width, avatarurl_x, avatarurl_y,factor){
-				ctx.save()
-				ctx.beginPath(); //开始绘制
-				//先画个圆   前两个参数确定了圆心 （x,y） 坐标  第三个参数是圆的半径  四参数是绘图方向  默认是false，即顺时针
-				ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_width / 2 + avatarurl_y, 94, 0, Math.PI * 2, false);
-				ctx.setFillStyle('#fff')
-				ctx.fill()
 			},
 			/* 生成图片 */
 			async handleBuild(){
@@ -164,7 +145,6 @@
 					url: self.userInfo.avatarUrl,
 					success (headRes) {
 						uni.downloadFile({url: self.qrcode, success (qrcodeRes) {
-							uni.downloadFile({url: 'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/bg.png', success (bg) {
 							uni.downloadFile({url: self.sharePicImg, success (bgRes) {	
 								const sysInfo = uni.getSystemInfoSync();
 								const screenWidth = sysInfo.screenWidth*3; // 提高画质
@@ -176,89 +156,85 @@
 								context.draw() // 先清空画布
 								context.fillRect(0, 0, 750 * factor, picHeight * factor)
 								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, picHeight*factor);
-								context.drawImage(bg.tempFilePath, 0, 0, 400, 400, 0 , picHeight*factor-400, picWidth*factor, 338*factor);
-								// console.log(uni.upx2px(338),'///')
-								context.setFillStyle('black')
-								self.roundRect(context, 462 * factor, 24 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
+								// context.setFillStyle('black')
+								// self.roundRect(context, 462 * factor, 24 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
 								
-								// 绘制二维码
-								context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 28 * factor, 98 * factor,98 * factor);
-								// 绘制头像外层圆形框
-								// console.log(factor, 'factor[[[[]]]]');
-								self.headFill(context, '',  112 * factor, 250 * factor, 770 * factor) // 绘制头像外层框
-								self.headPic(context, '',  112 * factor, 250 * factor, 770 * factor, factor) // 绘制头像外层框
+								// // 绘制二维码
+								// context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 28 * factor, 98 * factor,98 * factor);
+								// // 绘制头像外层圆形框
+								// self.headPic(context, '',  50 * factor, 36 * factor, 848 * factor, factor) // 绘制头像外层框
 								
 								
-								// 将头像装进头像框
-								context.drawImage(headRes.tempFilePath, 230 * factor, 780 * factor,160 * factor,160 * factor);
-								context.restore()
+								// // 将头像装进头像框
+								// context.drawImage(headRes.tempFilePath, 16 * factor, 848 * factor,50 * factor,50 * factor);
+								// context.restore()
 								
-								// 用户名
-								context.setFontSize(26*factor)
-								context.font = 'normal normal ' + parseInt(26 * factor) + 'px Arial, Helvetica, sans-serif'
-								context.setFillStyle('#000')
-								let user = self.userInfo.nickName
-								const m3 = context.measureText(user)
-								context.fillText(user, 270 * factor, 910 * factor )
-								
-								
-								// 已学习时间
-								context.setFontSize(20 * factor)
-								context.setFillStyle('rgba(0, 0, 0, .69)')
-								context.font = 'normal normal ' + parseInt(20 * factor) + 'px Arial, Helvetica, sans-serif'
-								const ma = context.measureText('已学习时间')
-								context.fillText('已学习时间', (190 - ma.width / factor) / 2 * factor, 1022 * factor )
-								
-								// 已消灭题目
-								context.setFontSize(20 * factor)
-								context.setFillStyle('rgba(0, 0, 0, .69)')
-								context.font = 'normal normal ' + parseInt(20 * factor) + 'px Arial, Helvetica, sans-serif'
-								const mb = context.measureText('已消灭题目')
-								context.fillText('已消灭题目', 200 *factor + ((200 - mb.width / factor) / 2 * factor), 1022 * factor )
+								// // 用户名
+								// context.setFontSize(26*factor)
+								// context.font = 'normal normal ' + parseInt(26 * factor) + 'px Arial, Helvetica, sans-serif'
+								// context.setFillStyle('#ffffff')
+								// let user = self.userInfo.nickName
+								// const m3 = context.measureText(user)
+								// context.fillText(user, 98 * factor, 882 * factor )
 								
 								
-								// 答题正确率
-								context.setFontSize(20 * factor)
-								context.setFillStyle('rgba(0, 0, 0, .69)')
-								context.font = 'normal normal ' + parseInt(20 * factor) + 'px Arial, Helvetica, sans-serif'
-								const mc = context.measureText('答题正确率')
-								context.fillText('答题正确率', 400 * factor + ((200 - mc.width / factor) / 2 * factor), 1022 * factor )
+								// // 已学习时间
+								// context.setFontSize(20 * factor)
+								// context.setFillStyle('rgba(255, 255, 255, 0.7)')
+								// context.font = 'normal normal ' + parseInt(20 * factor) + 'px Arial, Helvetica, sans-serif'
+								// const ma = context.measureText('已学习时间')
+								// context.fillText('已学习时间', (190 - ma.width / factor) / 2 * factor, 1022 * factor )
 								
-								// 时间
-								context.setFontSize(54*factor)
-								context.setFillStyle('rgba(237, 53, 53, 1)')
-								context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
-								let days = self.days + ''
-								const m4 = context.measureText(days)
-								context.fillText(days, (190 - m4.width / factor) / 2 * factor, 988 * factor )
-								// 天
-								context.setFontSize(22*factor)
-								context.setFillStyle('rgba(255, 255, 255, 0.7)')
-								context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
-								const m5 = context.measureText('天')
-								context.fillText('天', ((190 - (m4.width / factor)) / 2 * factor) + (m4.width), 988*factor )
+								// // 已消灭题目
+								// context.setFontSize(20 * factor)
+								// context.setFillStyle('rgba(255, 255, 255, 0.7)')
+								// context.font = 'normal normal ' + parseInt(20 * factor) + 'px Arial, Helvetica, sans-serif'
+								// const mb = context.measureText('已消灭题目')
+								// context.fillText('已消灭题目', 200 *factor + ((200 - mb.width / factor) / 2 * factor), 1022 * factor )
 								
-								// 以消灭题目数
-								context.setFontSize(54*factor)
-								context.setFillStyle('rgba(237, 53, 53, 1)')
-								context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
-								let complateCount = self.complateCount + ''
-								const m6 = context.measureText(complateCount)
-								context.fillText(complateCount, 200 * factor + (200 - m6.width / factor) / 2 * factor, 988 * factor )
 								
-								// 答题正确率百分比
-								context.setFontSize(54*factor)
-								context.setFillStyle('rgba(237, 53, 53, 1)')
-								context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
-								let percent = self.percent + ''
-								const m7 = context.measureText(percent)
-								context.fillText(percent, 400* factor + (200 - m7.width / factor) / 2 * factor, 988 * factor )
-								// %
-								context.setFontSize(22*factor)
-								context.setFillStyle('rgba(255, 255, 255, 0.7)')
-								context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
-								const m8 = context.measureText('%')
-								context.fillText('%', 400 * factor + ((200 - (m7.width / factor)) / 2 * factor) + (m7.width), 988*factor )
+								// // 答题正确率
+								// context.setFontSize(20 * factor)
+								// context.setFillStyle('rgba(255, 255, 255, 0.7)')
+								// context.font = 'normal normal ' + parseInt(20 * factor) + 'px Arial, Helvetica, sans-serif'
+								// const mc = context.measureText('答题正确率')
+								// context.fillText('答题正确率', 400 * factor + ((200 - mc.width / factor) / 2 * factor), 1022 * factor )
+								
+								// // 时间
+								// context.setFontSize(54*factor)
+								// context.setFillStyle('#ffffff')
+								// context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
+								// let days = self.days + ''
+								// const m4 = context.measureText(days)
+								// context.fillText(days, (190 - m4.width / factor) / 2 * factor, 988 * factor )
+								// // 天
+								// context.setFontSize(22*factor)
+								// context.setFillStyle('rgba(255, 255, 255, 0.7)')
+								// context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
+								// const m5 = context.measureText('天')
+								// context.fillText('天', ((190 - (m4.width / factor)) / 2 * factor) + (m4.width), 988*factor )
+								
+								// // 以消灭题目数
+								// context.setFontSize(54*factor)
+								// context.setFillStyle('#ffffff')
+								// context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
+								// let complateCount = self.complateCount + ''
+								// const m6 = context.measureText(complateCount)
+								// context.fillText(complateCount, 200 * factor + (200 - m6.width / factor) / 2 * factor, 988 * factor )
+								
+								// // 答题正确率百分比
+								// context.setFontSize(54*factor)
+								// context.setFillStyle('#ffffff')
+								// context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
+								// let percent = self.percent + ''
+								// const m7 = context.measureText(percent)
+								// context.fillText(percent, 400* factor + (200 - m7.width / factor) / 2 * factor, 988 * factor )
+								// // %
+								// context.setFontSize(22*factor)
+								// context.setFillStyle('rgba(255, 255, 255, 0.7)')
+								// context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
+								// const m8 = context.measureText('%')
+								// context.fillText('%', 400 * factor + ((200 - (m7.width / factor)) / 2 * factor) + (m7.width), 988*factor )
 								
 								// context.draw(true)
 								context.draw(true,function(){
@@ -280,7 +256,6 @@
 										})
 									}, 500)
 								})
-							}})
 							}})
 						}})
 					}
@@ -318,18 +293,14 @@
 		background-color: #fbfbfa;
 	}
 	.canvas{
-		width:1806rpx;
-		margin:0 auto;
+		width:1806rpx;margin:0 auto;
 		position:fixed;
-		z-index: 999999;
 		left:10000px;
 		height: 3198rpx;
 	}
 	.rect {
-		margin: 198rpx auto 0;
+		margin: 92rpx auto;
 		width: 602rpx;
-		position: relative;
-		z-index: 99999;
 	}
 	.bgImg{
 		width: 602rpx;
@@ -357,7 +328,7 @@
 		font-weight: bold;
 		font-size: 34rpx;
 		font-family: PingFangSC-Medium;
-		margin-top: 92rpx;
+		margin-top: 38rpx;
 	}
 	.download image{
 		position: absolute;
@@ -371,21 +342,6 @@
 		position: absolute;
 		z-index: 1;
 		width: 100%;
-		text-align: center; 
-		background: #ED3535;
-		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
-		border-radius: 46rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #FFFFFF;
-	}
-	.bg {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background: rgba(0, 0, 0, 0.45);
-		z-index: 10000;
+		text-align: center;
 	}
 </style>
