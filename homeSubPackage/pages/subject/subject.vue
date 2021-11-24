@@ -1,227 +1,236 @@
 <template>
-	<view class="myPage" :style="{'overflow-x':'hidden', 'height':windowHeight + 'px','overflow-y': isShowTips ? 'auto' : 'scroll'}">
+	<TopNavbar bg='#fff' paddingTop='-1' :tabbarBg='false' iconColor="#fff">
+	<view class="myPage" :style="{'overflow-x':'hidden','overflow-y': isShowTips ? 'auto' : 'scroll'}">
 		<view class="headView">
-			<image :src="subjectDetail.headImg" style="width: 750rpx;height: 396rpx;"></image>
+			<image :src="subjectDetail.headImg" style="width: 750rpx;height: 478rpx;"></image>
 		</view>
-		<view class="baseProgress">
-			<u-line-progress :percent="subjectTree.progress*100/subjectTree.childrenCount" :show-percent="false" height="10" active-color="#ff6867"></u-line-progress>
-			<view class="tips">{{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}} 题目已完成</view>
-		</view>
-		<view class="treeView">
-			<!--二级-->
-			<view v-for="(subject,index) in subjectTree.children">
-				<view class="treeItem">
-					<view class="listIcon" style="padding-left: 0;">
-						<template v-if="subject.has_down_level">
-							<view class="actionExtend" style="text-align: center;height: 50rpx;line-height: 50rpx;position: relative;left: 10rpx;" @click="handleExtend(subject)">
-								<image v-if="!subject.extend" src="../../../static/icon/icon_add.png"></image>
-								<image v-else src="../../../static/icon/icon_remove.png"></image>
-							</view>
-						</template>
-					</view>
-					<view class="content" style="padding-left: 0;">
-					<view class="conView">
-						<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}
-						<!-- ({{subject.progress}}/{{subject.childrenCount}}) -->
-							<view v-if="subject.price==0" class="free">免费</view>
+		<view class="scoreView">
+			<view class="baseProgress">
+				<view class="subjectName">
+					{{subjectDetail.subject_name}}
+				</view>
+				<u-line-progress :percent="subjectTree.progress*100/subjectTree.childrenCount" :show-percent="false" height="10" style="display:flex"></u-line-progress>
+				<view class="tips">{{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}} 题目已完成</view>
+			</view>
+			<view class="treeView">
+				<!--二级-->
+				<view v-for="(subject,index) in subjectTree.children">
+					<view class="treeItem">
+						<view class="listIcon" style="padding-left: 0;">
+							<template v-if="subject.has_down_level">
+								<view class="actionExtend" style="text-align: center;height: 40rpx;line-height: 40rpx;position: relative;left: 10rpx;" @click="handleExtend(subject)">
+									<image v-if="!subject.extend" src="../../../static/icon/icon_add.png"></image>
+									<image v-else src="../../../static/icon/icon_remove.png"></image>
+								</view>
+							</template>
 						</view>
-						<view class="listAction">
-							<view class="action" @click="handleNameClick" :data-item="subject">
-								<image v-if="subject.content" src="../../../static/icon/icon_order.png"></image>
+						<view class="content" style="padding-left: 0;">
+						<view class="conView">
+							<view class="listTxt" @click="handleNameClick" :data-item="subject">{{subject.subject_name}}
+							<!-- ({{subject.progress}}/{{subject.childrenCount}}) -->
+								<!-- <view > -->
+									<image v-if="subject.price==0" class="free" src="../../../static/icon/icon_free.png"></image>
+									<!-- 免费 -->
+									<!-- </view> -->
 							</view>
-							<!-- <view v-if="subject.quesCount > 0" class="action" @click="handleTestClick" :data-item="subject"> -->
-							<view class="action" @click="handleTestClick" :data-item="subject">
-								<image src="../../../static/icon/icon_pencle.png"></image>
-								<view class="progress">
-									<u-line-progress :percent="subject.progress*100/subject.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+							<view class="listAction">
+								<view class="action" @click="handleNameClick" :data-item="subject">
+									<image v-if="subject.content" src="../../../static/icon/icon_order.png"></image>
+								</view>
+								<!-- <view v-if="subject.quesCount > 0" class="action" @click="handleTestClick" :data-item="subject"> -->
+								<view class="action" @click="handleTestClick" :data-item="subject">
+									<image src="../../../static/icon/icon_pencle.png"></image>
+									<view class="progress">
+										<u-line-progress :percent="subject.progress*100/subject.childrenCount" :show-percent="false" height="4" active-color="#ED3535"></u-line-progress>
+									</view>
 								</view>
 							</view>
 						</view>
-					</view>
-					<!--三级-->
-					<view class="children" v-if="subject.extend">
-						<view v-for="(sub,idx) in subject.children" class="treeItem">
-							<view class="listIcon">
-								<template v-if="sub.has_down_level">
-									<view class="actionExtend"  @click="handleExtend(sub)">
-										<image v-if="!sub.extend" src="../../../static/icon/icon_add_child.png"></image>
-										<image v-else src="../../../static/icon/icon_remove_children.png"></image>
-									</view>
-								</template>
-								<template v-else>
-									<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
-										<image src="../../../static/icon/icon_nochild.png"></image>
-									</view>
-								</template>
-							</view>
-							<view class="content">
-								<view class="conView">
-									<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
-									<view class="listAction">
-										<view class="action" @click="handleNameClick" :data-item="sub">
-											<image v-if="sub.content" src="../../../static/icon/icon_order.png"></image>
+						<!--三级-->
+						<view class="children" v-if="subject.extend">
+							<view v-for="(sub,idx) in subject.children" class="treeItem">
+								<view class="listIcon">
+									<template v-if="sub.has_down_level">
+										<view class="actionExtend"  @click="handleExtend(sub)">
+											<image v-if="!sub.extend" src="../../../static/icon/icon_add_child.png"></image>
+											<image v-else src="../../../static/icon/icon_remove_children.png"></image>
 										</view>
-										<view class="action" @click="handleTestClick" :data-item="sub">
-											<image src="../../../static/icon/icon_pencle.png"></image>
-											<view class="progress">
-												<u-line-progress :percent="sub.progress*100/sub.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+									</template>
+									<template v-else>
+										<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+											<image src="../../../static/icon/icon_nochild.png"></image>
+										</view>
+									</template>
+								</view>
+								<view class="content">
+									<view class="conView">
+										<view class="listTxt" @click="handleNameClick" :data-item="sub">{{sub.subject_name}}</view>
+										<view class="listAction">
+											<view class="action" @click="handleNameClick" :data-item="sub">
+												<image v-if="sub.content" src="../../../static/icon/icon_order.png"></image>
+											</view>
+											<view class="action" @click="handleTestClick" :data-item="sub">
+												<image src="../../../static/icon/icon_pencle.png"></image>
+												<view class="progress">
+													<u-line-progress :percent="sub.progress*100/sub.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+												</view>
 											</view>
 										</view>
 									</view>
-								</view>
-								<!--四级-->
-								<view class="children" v-if="sub.extend">
-									<view v-for="sub1 in sub.children" class="treeItem">
-										<view class="listIcon">
-											<template v-if="sub1.has_down_level">
-												<view class="actionExtend" @click="handleExtend(sub1)">
-													<image v-if="!sub1.extend" src="../../../static/icon/icon_add_child.png"></image>
-													<image v-else src="../../../static/icon/icon_remove_children.png"></image>
-												</view>
-											</template>
-											<template v-else>
-												<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
-													<image src="../../../static/icon/icon_nochild.png"></image>
-												</view>
-											</template>
-										</view>
-										<view class="content">
-											<view class="conView">
-												<view class="listTxt" @click="handleNameClick" :data-item="sub1">{{sub1.subject_name}}</view>
-												<view class="listAction">
-													<view class="action" @click="handleNameClick" :data-item="sub1">
-														<image v-if="sub1.content" src="../../../static/icon/icon_order.png"></image>
+									<!--四级-->
+									<view class="children" v-if="sub.extend" style="margin-top:28rpx;">
+										<view v-for="sub1 in sub.children" class="treeItem">
+											<view class="listIcon">
+												<template v-if="sub1.has_down_level">
+													<view class="actionExtend" @click="handleExtend(sub1)">
+														<image v-if="!sub1.extend" src="../../../static/icon/icon_add_child.png"></image>
+														<image v-else src="../../../static/icon/icon_remove_children.png"></image>
 													</view>
-													<view class="action" @click="handleTestClick" :data-item="sub1">
-														<image src="../../../static/icon/icon_pencle.png"></image>
-														<view class="progress">
-															<u-line-progress :percent="sub1.progress*100/sub1.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+												</template>
+												<template v-else>
+													<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+														<image src="../../../static/icon/icon_nochild.png"></image>
+													</view>
+												</template>
+											</view>
+											<view class="content">
+												<view class="conView">
+													<view class="listTxt" style="font-weight: 400;font-family: PingFangSC-Regular, PingFang SC;" @click="handleNameClick" :data-item="sub1">{{sub1.subject_name}}</view>
+													<view class="listAction">
+														<view class="action" @click="handleNameClick" :data-item="sub1">
+															<image v-if="sub1.content" src="../../../static/icon/icon_order.png"></image>
+														</view>
+														<view class="action" @click="handleTestClick" :data-item="sub1">
+															<image src="../../../static/icon/icon_pencle.png"></image>
+															<view class="progress">
+																<u-line-progress :percent="sub1.progress*100/sub1.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+															</view>
 														</view>
 													</view>
 												</view>
-											</view>
-											
-											<!--5级-->
-											<view class="children" v-if="sub1.extend">
-												<view v-for="sub2 in sub1.children" class="treeItem">
-													<view class="listIcon">
-														<template v-if="sub2.has_down_level">
-															<view class="actionExtend" @click="handleExtend(sub2)">
-																<image v-if="!sub2.extend" src="../../../static/icon/icon_add_child.png"></image>
-																<image v-else src="../../../static/icon/icon_remove_children.png"></image>
-															</view>
-														</template>
-														<template v-else>
-															<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
-																<image src="../../../static/icon/icon_nochild.png"></image>
-															</view>
-														</template>
-													</view>
-													<view class="content">
-														<view class="conView">
-															<view class="listTxt" @click="handleNameClick" :data-item="sub2">{{sub2.subject_name}}</view>
-															<view class="listAction">
-																<view class="action" @click="handleNameClick" :data-item="sub2">
-																	<image v-if="sub2.content" src="../../../static/icon/icon_order.png"></image>
+												
+												<!--5级-->
+												<view class="children" v-if="sub1.extend">
+													<view v-for="sub2 in sub1.children" class="treeItem">
+														<view class="listIcon">
+															<template v-if="sub2.has_down_level">
+																<view class="actionExtend" @click="handleExtend(sub2)">
+																	<image v-if="!sub2.extend" src="../../../static/icon/icon_add_child.png"></image>
+																	<image v-else src="../../../static/icon/icon_remove_children.png"></image>
 																</view>
-																<view class="action" @click="handleTestClick" :data-item="sub2">
-																	<image src="../../../static/icon/icon_pencle.png"></image>
-																	<view class="progress">
-																		<u-line-progress :percent="sub2.progress*100/sub2.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+															</template>
+															<template v-else>
+																<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																	<image src="../../../static/icon/icon_nochild.png"></image>
+																</view>
+															</template>
+														</view>
+														<view class="content">
+															<view class="conView">
+																<view class="listTxt" @click="handleNameClick" :data-item="sub2">{{sub2.subject_name}}</view>
+																<view class="listAction">
+																	<view class="action" @click="handleNameClick" :data-item="sub2">
+																		<image v-if="sub2.content" src="../../../static/icon/icon_order.png"></image>
+																	</view>
+																	<view class="action" @click="handleTestClick" :data-item="sub2">
+																		<image src="../../../static/icon/icon_pencle.png"></image>
+																		<view class="progress">
+																			<u-line-progress :percent="sub2.progress*100/sub2.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																		</view>
 																	</view>
 																</view>
 															</view>
-														</view>
-														<!--6级-->
-														<view class="children" v-if="sub2.extend">
-															<view v-for="sub3 in sub2.children" class="treeItem">
-																<view class="listIcon">
-																	<template v-if="sub3.has_down_level">
-																		<view class="actionExtend" @click="handleExtend(sub3)">
-																			<image v-if="!sub3.extend" src="../../../static/icon/icon_add_child.png"></image>
-																			<image v-else src="../../../static/icon/icon_remove_children.png"></image>
-																		</view>
-																	</template>
-																	<template v-else>
-																		<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
-																			<image src="../../../static/icon/icon_nochild.png"></image>
-																		</view>
-																	</template>
-																</view>
-																<view class="content">
-																	<view class="conView">
-																		<view class="listTxt" @click="handleNameClick" :data-item="sub3">{{sub3.subject_name}}</view>
-																		<view class="listAction">
-																			<view class="action" @click="handleNameClick" :data-item="sub3">
-																				<image v-if="sub3.content" src="../../../static/icon/icon_order.png"></image>
+															<!--6级-->
+															<view class="children" v-if="sub2.extend">
+																<view v-for="sub3 in sub2.children" class="treeItem">
+																	<view class="listIcon">
+																		<template v-if="sub3.has_down_level">
+																			<view class="actionExtend" @click="handleExtend(sub3)">
+																				<image v-if="!sub3.extend" src="../../../static/icon/icon_add_child.png"></image>
+																				<image v-else src="../../../static/icon/icon_remove_children.png"></image>
 																			</view>
-																			<view class="action" @click="handleTestClick" :data-item="sub3">
-																				<image src="../../../static/icon/icon_pencle.png"></image>
-																				<view class="progress">
-																					<u-line-progress :percent="sub3.progress*100/sub3.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																		</template>
+																		<template v-else>
+																			<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																				<image src="../../../static/icon/icon_nochild.png"></image>
+																			</view>
+																		</template>
+																	</view>
+																	<view class="content">
+																		<view class="conView">
+																			<view class="listTxt" @click="handleNameClick" :data-item="sub3">{{sub3.subject_name}}</view>
+																			<view class="listAction">
+																				<view class="action" @click="handleNameClick" :data-item="sub3">
+																					<image v-if="sub3.content" src="../../../static/icon/icon_order.png"></image>
+																				</view>
+																				<view class="action" @click="handleTestClick" :data-item="sub3">
+																					<image src="../../../static/icon/icon_pencle.png"></image>
+																					<view class="progress">
+																						<u-line-progress :percent="sub3.progress*100/sub3.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																					</view>
 																				</view>
 																			</view>
 																		</view>
-																	</view>
-																	<!--7级-->
-																	<view class="children" v-if="sub3.extend">
-																		<view v-for="sub4 in sub3.children" class="treeItem">
-																			<view class="listIcon">
-																				<template v-if="sub4.has_down_level">
-																					<view class="actionExtend" @click="handleExtend(sub4)">
-																						<image v-if="!sub4.extend" src="../../../static/icon/icon_add_child.png"></image>
-																						<image v-else src="../../../static/icon/icon_remove_children.png"></image>
-																					</view>
-																				</template>
-																				<template v-else>
-																					<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
-																						<image src="../../../static/icon/icon_nochild.png"></image>
-																					</view>
-																				</template>
-																			</view>
-																			<view class="content">
-																				<view class="conView">
-																					<view class="listTxt" @click="handleNameClick" :data-item="sub4">{{sub4.subject_name}}</view>
-																					<view class="listAction">
-																						<view class="action" @click="handleNameClick" :data-item="sub4">
-																							<image v-if="sub4.content" src="../../../static/icon/icon_order.png"></image>
+																		<!--7级-->
+																		<view class="children" v-if="sub3.extend">
+																			<view v-for="sub4 in sub3.children" class="treeItem">
+																				<view class="listIcon">
+																					<template v-if="sub4.has_down_level">
+																						<view class="actionExtend" @click="handleExtend(sub4)">
+																							<image v-if="!sub4.extend" src="../../../static/icon/icon_add_child.png"></image>
+																							<image v-else src="../../../static/icon/icon_remove_children.png"></image>
 																						</view>
-																						<view class="action" @click="handleTestClick" :data-item="sub4">
-																							<image src="../../../static/icon/icon_pencle.png"></image>
-																							<view class="progress">
-																								<u-line-progress :percent="sub4.progress*100/sub4.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																					</template>
+																					<template v-else>
+																						<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																							<image src="../../../static/icon/icon_nochild.png"></image>
+																						</view>
+																					</template>
+																				</view>
+																				<view class="content">
+																					<view class="conView">
+																						<view class="listTxt" @click="handleNameClick" :data-item="sub4">{{sub4.subject_name}}</view>
+																						<view class="listAction">
+																							<view class="action" @click="handleNameClick" :data-item="sub4">
+																								<image v-if="sub4.content" src="../../../static/icon/icon_order.png"></image>
+																							</view>
+																							<view class="action" @click="handleTestClick" :data-item="sub4">
+																								<image src="../../../static/icon/icon_pencle.png"></image>
+																								<view class="progress">
+																									<u-line-progress :percent="sub4.progress*100/sub4.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																								</view>
 																							</view>
 																						</view>
 																					</view>
-																				</view>
-																				
-																				<!--8级-->
-																				<view class="children" v-if="sub4.extend">
-																					<view v-for="sub5 in sub4.children" class="treeItem">
-																						<view class="listIcon">
-																							<template v-if="sub5.has_down_level">
-																								 <view class="actionExtend" @click="handleExtend(sub5)">
-																									<image v-if="!sub5.extend" src="../../../static/icon/icon_add_child.png"></image>
-																									<image v-else src="../../../static/icon/icon_remove_children.png"></image>
-																								</view>
-																							</template>
-																							<template v-else>
-																								<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
-																									<image src="../../../static/icon/icon_nochild.png"></image>
-																								</view>
-																							</template>
-																						</view>
-																						<view class="content">
-																							<view class="conView">
-																								<view class="listTxt" @click="handleNameClick" :data-item="sub5">{{sub5.subject_name}}</view>
-																								<view class="listAction">
-																									<view class="action" @click="handleNameClick" :data-item="sub5">
-																										<image v-if="sub5.content" src="../../../static/icon/icon_order.png"></image>
+																					
+																					<!--8级-->
+																					<view class="children" v-if="sub4.extend">
+																						<view v-for="sub5 in sub4.children" class="treeItem">
+																							<view class="listIcon">
+																								<template v-if="sub5.has_down_level">
+																									 <view class="actionExtend" @click="handleExtend(sub5)">
+																										<image v-if="!sub5.extend" src="../../../static/icon/icon_add_child.png"></image>
+																										<image v-else src="../../../static/icon/icon_remove_children.png"></image>
 																									</view>
-																									<view class="action" @click="handleTestClick" :data-item="sub5">
-																										<image src="../../../static/icon/icon_pencle.png"></image>
-																										<view class="progress">
-																											<u-line-progress :percent="sub5.progress*100/sub5.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																								</template>
+																								<template v-else>
+																									<view class="actionExtend" style="text-align: center;height: 50rpx;position: relative;">
+																										<image src="../../../static/icon/icon_nochild.png"></image>
+																									</view>
+																								</template>
+																							</view>
+																							<view class="content">
+																								<view class="conView">
+																									<view class="listTxt" @click="handleNameClick" :data-item="sub5">{{sub5.subject_name}}</view>
+																									<view class="listAction">
+																										<view class="action" @click="handleNameClick" :data-item="sub5">
+																											<image v-if="sub5.content" src="../../../static/icon/icon_order.png"></image>
+																										</view>
+																										<view class="action" @click="handleTestClick" :data-item="sub5">
+																											<image src="../../../static/icon/icon_pencle.png"></image>
+																											<view class="progress">
+																												<u-line-progress :percent="sub5.progress*100/sub5.childrenCount" :show-percent="false" height="4" active-color="#ff6867"></u-line-progress>
+																											</view>
 																										</view>
 																									</view>
 																								</view>
@@ -244,9 +253,9 @@
 							</view>
 						</view>
 					</view>
+					</view>
+					<u-line style="position: relative;top: -32rpx;left: 70rpx;" :hair-line="false" class="u-line" color="rgba(0,0,0,.1)"></u-line>
 				</view>
-				</view>
-				<u-line style="position: relative;top: -32rpx;left: 70rpx;" :hair-line="false" class="u-line" color="#f6f6f6"></u-line>
 			</view>
 		</view>
 		<u-popup v-model="isShowSubjectDetail" width="674rpx" mode="center" border-radius="40">
@@ -273,14 +282,14 @@
 				</view>
 			</view>
 		</u-popup>
-		<u-mask :custom-style="{'background': 'rgba(255, 255, 255, 0.7)'}" :show="isShowTips" :mask-click-able="true" :zoom="false" @click="handleStep">
+		<u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true" :zoom="false" @click="handleStep">
 			<view v-show="step==1" class="step step1">
 				<view class="action">
-					<image src="../../../static/icon/icon_order.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon_question_tip_1.png"></image>
 				</view>
 			</view>
-			<view v-show="step==1" class="tooltip tip1">
-				<view class="timg" style="left: 150rpx;">
+			<!-- <view v-show="step==1" class="tooltip tip1">
+				<view class="timg">
 					<image src="../../../static/icon/icon_tips_right.png"></image>
 				</view>
 				<view class="tooltiptext">
@@ -289,13 +298,13 @@
 					</view>
 					<view class="action">我知道了</view>
 				</view>
-			</view>
+			</view> -->
 			<view v-show="step==2" class="step step2">
 				<view class="action">
-					<image src="../../../static/icon/icon_pencle.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon_question_tip_2.png"></image>
 				</view>
 			</view>
-			<view v-show="step==2" class="tooltip tip2">
+			<!-- <view v-show="step==2" class="tooltip tip2">
 				<view class="timg" style="left: 124rpx;">
 					<image src="../../../static/icon/icon_tips_right.png"></image>
 				</view>
@@ -305,12 +314,14 @@
 					</view>
 					<view class="action">我知道了</view>
 				</view>
-			</view>
+			</view> -->
 		</u-mask>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	// import config from '../../../../static/config/index.js'
 	// import { dateFormat, GetRandomNum, createWechatPay } from '../../../../js/common.js'
 	export default {
@@ -334,6 +345,7 @@
 				isMember: false
 			}
 		},
+		components:{TopNavbar},
 		onShow() {
 			var app = getApp();
 			var member = app.globalData.member;
@@ -662,50 +674,85 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	page{
 		background-color: #fbfbfb;
 		overflow: hidden;
 	}
 	.headView{
-		display: inline-flex;
+		// display: inline-flex;
+		height: 478rpx;
+	}
+	.scoreView {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		height: calc(100vh - 418rpx);
+		position: relative;
+		top: -30rpx;
+		z-index: 200;
+		border-top-right-radius: 24rpx;
+		border-top-left-radius: 24rpx;
+		background: #fff;
 	}
 	.baseProgress{
-		padding: 0 40rpx;
+		border-bottom: 1rpx solid rgba(0,0,0,0.1);
+		padding: 0 48rpx;
 		position: relative;
-		top: -17rpx;
-		height: 46rpx;
+		display: inline-table;
+		/* top: -17rpx; */
+		height: 226rpx;
+		.subjectName{
+			margin-top:48rpx;
+			margin-bottom:24rpx;
+			height: 60rpx;
+			line-height: 60rpx;
+			font-size: 44rpx;
+			font-family: PingFangSC-Semibold, PingFang SC;
+			font-weight: 600;
+			color: rgba(0,0,0,0.8);
+		}
+	}
+	.baseProgress .u-active {
+		background: linear-gradient(270deg, #ED3535 0%, #F7CCCC 100%);
 	}
 	.baseProgress .tips{
-		font-family: PingFangSC-Regular;
-		font-size: 18rpx;
-		font-weight: normal;
-		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.7);
+		// color: rgba(53, 32, 38, 0.7);
+		height: 26rpx;
+		font-size: 18rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #352026;
+		opacity: 0.7;
+		line-height: 26rpx;
+		margin-top: 12rpx;
 	}
 	.treeView{
-		padding: 30rpx;
+		overflow: hidden;
+		padding: 48rpx 0rpx 48rpx 30rpx;
 		padding-left: 20rpx;
 		line-height: 66rpx;
-		padding-bottom: 100rpx;
+		overflow-y: auto;
+		/* padding-bottom: 100rpx; */
 	}
 	.treeView .treeItem {
 		display: flex;
-		margin-bottom: 66rpx;
+		margin-bottom: 62rpx;
+		position: relative;
 	}
 	.treeView .treeItem:last-child {
 		margin-bottom: 0;
 	}
 	.treeView .treeItem .listIcon {
 		width: 70rpx;
-		height: 50rpx;
+		height: 40rpx;
 		line-height: 40rpx;
 		text-align: right;
 		padding-left: 14rpx;
 	}
 	.treeView .treeItem .listIcon .actionExtend{
-		width: 50rpx;
+		width: 40rpx;
 		position: relative;
 		left: -30rpx;
 		text-align: center;
@@ -714,8 +761,8 @@
 	.treeView .treeItem .listIcon .actionExtend image{
 		display: inline-block;
 		vertical-align: middle;
-		width: 32rpx;
-		height: 32rpx;
+		width: 28rpx;
+		height: 28rpx;
 		justify-items: legacy;
 	}
 	.treeView .treeItem .content{
@@ -727,82 +774,77 @@
 	}
 	.treeView .treeItem .content .conView .listTxt{
 		flex: 1;
-		font-size: 34rpx;
-		color: #352026;
-		font-weight: bold;
-		/* height: 50rpx; */
-		line-height: 50rpx;
-		/* overflow: hidden; */
 		text-overflow: ellipsis;
-		/* display: -webkit-box; */
 		-webkit-line-clamp: 1!important;
 		-webkit-box-orient: vertical!important;
-		font-family: PingFangSC-Medium;
-		/*进度？*/
-		/* background-color: #007AFF;
-		border-radius: 20rpx;
-		position: relative;
-		left:-10rpx;
-		text-indent: 10rpx; */
+		font-size: 28rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #000000;
+		height: 40rpx;
+		line-height: 40rpx;
 	}
 	.treeView .treeItem .content .conView .listTxt .free{
 		width: 44rpx;
-		height: 22rpx;
-		line-height: 22rpx;
-		text-align: center;
-		background-color: #ffe8e8;
-		border-radius: 4rpx;
-		font-family: PingFangSC-Medium;
-		font-size: 14rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: #ff6867;
+		height: 24rpx;
 		display: inline-block;
 		position: relative;
-		top: -20rpx;
-		left: 15rpx;
+		bottom: -1rpx;
+		left: 12rpx;
 	}
 	.treeView .treeItem .content .conView .listAction{
-		width: 164rpx;
-		height: 50rpx;
-		line-height: 50rpx;
+		// width: 164rpx;
+		height: 40rpx;
+		line-height: 40rpx;
 		text-align: right;
 		display: flex;
 	}
 	.children{
-		margin-top: 20rpx;
+		margin-top: 44rpx;
 	}
 	.children .treeItem{
-		margin-bottom: 32rpx;
+		margin-bottom: 28rpx;
 	}
 	.children .treeItem .listIcon{
 		font-weight: bold;
 		width: 20rpx;
-		line-height: 50rpx;
+		line-height: 40rpx;
 		text-align: center;
 	}
 	.children .treeItem .content .conView .listTxt{
-		font-size: 30rpx;
-		font-weight: normal;
 		-webkit-line-clamp: 2;
-		font-family: PingFangSC-Medium;
+		font-size: 24rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #352026;
+		// line-height: 34rpx;
 	}
 	.treeItem .listAction .action image{
 		/* margin-left: 40rpx; */
 		display: inline-block;
 		width: 32rpx;
 		height: 32rpx;
-		vertical-align: middle;
-		/* position: absolute; */
+		// vertical-align: middle;
+		position: absolute;
+		top: 7rpx;
+	}
+	.treeItem .listAction .action:nth-of-type(1) image{
+       height: 36rpx;
+	   right: 132rpx;
+	}
+	.treeItem .listAction .action:nth-of-type(2) image{
+	   right: 48rpx;
 	}
 	.treeItem .listAction .action .progress{
-		width: 32rpx;
-		height: 4rpx;
-		position: relative;
+		width: 26rpx;
+		height: 3rpx;
+		position: absolute;
 		text-align: center;
-		left: 25rpx;
-		top: -35rpx;
+		top: 11rpx;
+		right: 50rpx;
+		.u-active{
+			background: linear-gradient(270deg, #ED3535 0%, #F7CCCC 100%);
+		}
 	}
 	/* .treeItem .listAction image:last-child{
 		margin-right: 20rpx;
@@ -841,12 +883,13 @@
 		font-size: 34rpx;
 	}
 	.listAction .action{
-		width: 80rpx;
-		height: 50rpx;
-		line-height: 50rpx;
+		// width: 80rpx;
+		height: 40rpx;
+		line-height: 40rpx;
 		text-align: center;
 		display: inline-block;
-		position: relative;
+		// position: absolute;
+		// padding-top: 6rpx;
 	}
 	.tooltip {
 	    position: absolute;
@@ -883,19 +926,19 @@
 	}
 	.step .action image{
 		display: inline-block;
-		width: 32rpx;
-		height: 32rpx;
+		width: 320rpx;
+		height: 226rpx;
 		vertical-align: middle;
 	}
 	.step1{
 		position: absolute;
-		left: 582rpx;
-		top: 484rpx;
+		right: 0rpx;
+		top: 688rpx;
 	}
 	.step2{
 		position: absolute;
-		left: 662rpx;
-		top: 484rpx;
+		right: 0rpx;
+		top: 688rpx;
 	}
 	.tip1{
 		position: absolute;

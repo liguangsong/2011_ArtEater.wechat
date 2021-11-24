@@ -93,7 +93,8 @@
 		width: 100%;
 		border: 2rpx solid #fbfbfb;
 		border-radius: 0rpx;
-		margin-top: 10rpx;
+		/* margin-top: 10rpx; */
+		min-height: 96rpx;
 	}
 	.myCom .item:last-child,.myCom .item.state1:last-child,.myCom .item.state3:last-child,.myCom .item.state5:last-child{
 		border-bottom-color: #fbfbfb;

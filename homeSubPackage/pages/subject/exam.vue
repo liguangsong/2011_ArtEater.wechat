@@ -13,38 +13,42 @@
 		<view class="tabView" v-if="isShowTab">
 			<view :class="'tabItem ' + (tab=='tab1'? 'curr':'')"  @click="tab = 'tab1'">
 				<view class="title">答题</view>
-				<view class="icon" v-if="tab=='tab1'">
-					<image src="../../../static/icon/icon_tab_bg.png"></image>
+				<view class="line" v-if="tab=='tab1'">
+					<!-- <image src="../../../static/icon/icon_tab_bg.png"></image> -->
 				</view>
 			</view>
 			<view :class="'tabItem ' + (tab=='tab2'? 'curr':'')"  @click="tab = 'tab2'">
 				<view class="title">复习</view>
-				<view class="icon" v-if="tab=='tab2'">
-					<image src="../../../static/icon/icon_tab_bg.png"></image>
+				<view class="line" v-if="tab=='tab2'">
+					<!-- <image src="../../../static/icon/icon_tab_bg.png"></image> -->
 				</view>
 			</view>
+			<view class="clip-line"></view>
 		</view>
+		
 		<view style="padding-bottom: 200rpx;">
 			<view v-if="count==0" style="text-align: center;">
 				<u-empty text="网络不理想，请耐心等待" mode="data"></u-empty>
 			</view>
 			<view v-else class="questionView">
 				<view class="headView">
+					<image class="red-block" src="../../../static/icon/icon_red_block.png"></image>
 					<view v-if="questionDetail.type==1" class="queType">单选题</view>
 					<view v-if="questionDetail.type==2" class="queType">多选题</view>
 					<view v-if="questionDetail.type==3" class="queType">填空题</view>
 					<view v-if="questionDetail.type==4" class="queType">多项选择题</view>
 					<view class="countView">
 						<view class="prev">
-							<image src="../../../static/icon/icon_prev.png"></image>
+							<image v-if="subjectIndex==1" src="../../../static/icon/icon_one.png"></image>
+							<image v-else src="../../../static/icon/icon_prev.png"></image>
 						</view>
-						<view>{{subjectIndex}}/{{count}}</view>
+						<view class="process">{{subjectIndex}}/{{count}}</view>
 						<view class="next">
 							<image src="../../../static/icon/icon_next.png"></image>
 						</view>
 					</view>
 				</view>
-				<view class="imgView">
+				<view class="imgView" v-if="questionDetail.images.length">
 					<view class="imgItem" v-for="img in questionDetail.images">
 						<image v-if="img"  mode="widthFix" :src="img"></image>
 						<view class="vtips">{{version}}</view>
@@ -1116,26 +1120,42 @@
 	}
 	
 	.tabView{
-		padding: 20rpx 48rpx 10rpx 48rpx;
+		padding: 20rpx 24rpx 0rpx 24rpx;
 		display: flex;
-		border-bottom: 4rpx solid #f4f4f4;
+		position: relative;
 	}
 	.tabView .tabItem{
 		flex: 1;
 		text-align: center;
-		height: 50rpx;
 	}
 	.tabView .tabItem .title{
-		height: 36rpx;
-		font-family: PingFangSC-Medium;
-		font-size: 26rpx;
-		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.7);
+		height: 34rpx;
+		font-size: 24rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+		line-height: 34rpx;
+		margin-bottom: 2rpx;
 	}
 	.tabView .tabItem.curr .title{
-		color: #352026;
+		color: #D81E1F;
+	}
+	.tabView .tabItem.curr .line{
+		width: 48rpx;
+		height: 4rpx;
+		background: #D81E1F;
+		border-radius: 2rpx;
+		margin: auto;
+	}
+	.tabView .clip-line{
+		position: absolute;
+		width: 702rpx;
+		height: 1rpx;
+		background: #000000;
+		opacity: 0.1;
+		bottom: 2rpx;
 	}
 	.tabView .tabItem .icon{
 		width: 52rpx;
@@ -1181,29 +1201,37 @@
 		padding-left:36rpx;
 		padding-right:30rpx;
 	}
+	.questionView .headView .red-block{
+        width: 10rpx;
+		height: 24rpx;
+		position: relative;
+		margin-right: 8rpx;
+		margin-top: 10rpx;
+	}
 	.questionView .headView .queType{
 		flex: 1;
-		font-size: 38rpx;
-		font-weight: bold;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		line-height: 50rpx;
-		height: 50rpx;
+		height: 40rpx;
+		font-size: 28rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+		line-height: 40rpx;
 	}
 	.questionView .headView .countView{
 		/* width: 150rpx; */
 		text-align: right;
-		font-size: 26rpx;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		line-height: 50rpx;
-		height: 50rpx;
 		display: inline-flex;
+		height: 30rpx;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,0.5);
+		line-height: 40rpx;
 	}
 	.questionView .headView .countView .prev{
-		width: 36rpx;
-		height: 50rpx;
-		line-height: 50rpx;
+		width: 30rpx;
+		height: 30rpx;
+		line-height: 40rpx;
 		font-size: 0;
 		text-align: left;
 	}
@@ -1213,10 +1241,13 @@
 		display: inline-block;
 		vertical-align: middle;
 	}
+	.questionView .headView .countView .process{
+       margin:0 12rpx;
+	}
 	.questionView .headView .countView .next{
-		width: 32rpx;
-		height: 50rpx;
-		line-height: 50rpx;
+		width: 30rpx;
+		height: 30rpx;
+		line-height: 40rpx;
 		font-size: 0;
 		text-align: right;
 	}
@@ -1227,19 +1258,20 @@
 		vertical-align: middle;
 	}
 	.questionView .imgView{
-		margin-top: 60rpx;
-		padding: 0 36rpx;
+		margin-top: 32rpx;
+		padding: 0 48rpx;
 	}
 	.questionView .imgView image{
 		width: 100%;
 	}
 	.questionView .title{
-		padding: 0 36rpx;
+		padding: 0 48rpx;
 		margin-top: 24rpx;
-		font-size: 34rpx;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		line-height: 80rpx;
+		font-size: 32rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+		line-height: 70rpx;
 	}
 	.questionView .title .tips{
 		display: inline;
@@ -1299,11 +1331,11 @@
 	.actionView{
 		/* margin-top: 50rpx; */
 		width: 100%;
-		padding: 36rpx;
-		height: 196rpx;
+		padding: 30rpx;
+		height: 140rpx;
 		position: fixed;
 		bottom: 0;
-		padding-top: 12rpx;
+		padding-top: 8rpx;
 		background-color: #fbfbfa;
 	}
 	.actionView button{
@@ -1320,7 +1352,8 @@
 		border: 0;
 	}
 	.actionView button.noAnswer{
-		background-color: #ffe8e8;
+		opacity: 0.4;
+		background-color: #ED3535;
 	}
 	.actionView button.hasAnswer{
 		background-color: #ED3535;
@@ -1423,8 +1456,9 @@
 	}
 	.actionView button.next{
 		background-color: #FFFFFF;
-		border: 2rpx solid #ffb9b8;
-		color: #f16564;
+		border: 2px solid #D81E1F;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		color: #D81E1F;
 	}
 	.actionView .btnGroup{
 		background-color: #FFFFFF;
@@ -1512,11 +1546,13 @@
 	}
 	.vtips{
 		text-align: right;
-		font-size: 18rpx;
-		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.7);
+		color: rgba(0,0,0, 0.7);
+		font-size: 18rpx;
+		font-family: PingFangSC-Light, PingFang SC;
+		font-weight: 300;
+		line-height: 26rpx;
 	}
 	.imgView .imgItem{
 		margin-bottom: 20rpx;

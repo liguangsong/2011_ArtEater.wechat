@@ -58,7 +58,7 @@
 		display: flex;
 		min-height: 48rpx;
 		line-height: 48rpx;
-		padding: 10rpx 0 22rpx 0;
+		padding: 15rpx 0 22rpx 0;
 	}
 	
 	.optionItem .icon{
@@ -78,24 +78,33 @@
 	}
 	.optionItem .txt{
 		flex: 1;
-		/* height: 48rpx; */
-		line-height: 48rpx;
-		color: #352026;
-		font-size: 34rpx;
-		padding-top: 10rpx;
-		font-family: PingFangSC-Medium;
+		padding-top: 14rpx;
+		min-height: 40rpx;
+		font-size: 28rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #000000;
+		line-height: 40rpx;
 	}
 	.optionItem .txt.color3{
-		color: #fa5151;
+		color: #ED3535;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
 	}
 	.optionItem .txt.color4{
-		color: #fa5151;
+		color: #ED3535;
+		font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
 	}
 	.optionItem .txt.color5{
-		color: #3cc0da;
+		color: #32CD72;
+		font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
 	}
 	.optionItem .txt.color6{
-		color: #3cc0da;
+		color: #32CD72;
+		font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
 	}
 /* 	.optionItem.color2,.optionItem.color3,.optionItem.color4,.optionItem.color5,.optionItem.color6{
 		padding: 0;
