@@ -91,36 +91,36 @@
 	.myCom .item{
 		display: inline-block;
 		width: 100%;
-		border: 2rpx solid #fbfbfb;
+		/* border: 2rpx solid #fbfbfb; */
 		border-radius: 0rpx;
 		/* margin-top: 10rpx; */
-		min-height: 96rpx;
+		/* min-height: 99rpx; */
 	}
 	.myCom .item:last-child,.myCom .item.state1:last-child,.myCom .item.state3:last-child,.myCom .item.state5:last-child{
-		border-bottom-color: #fbfbfb;
+		/* border-bottom-color: #fbfbfb; */
 	}
 	.myCom .item.state1{
 		/* border: 0; */
-		border-bottom: 2rpx solid #f2f2f2;
+		/* border-bottom: 2rpx solid #f2f2f2; */
 	}
 	.myCom .item.state2{
-		border: 2rpx solid rgba(53, 32, 38 , 0.1);
-		background-color: #ffffff;
+		/* border: 2rpx solid rgba(53, 32, 38 , 0.1); */
+		background-color: rgba(232,232,232,0.39);
 	}
 	.myCom .item.state3{
 		border-color: #fbfbfb;
-		border-bottom: 2rpx solid #f2f2f2;
+		/* border-bottom: 2rpx solid #f2f2f2; */
 	}
 	.myCom .item.state4{
-		border: 2rpx solid #ffdfdf;
-		background-color: #ffe8e8;
+		/* border: 2rpx solid #ffdfdf; */
+		background-color: rgba(237,53,53,0.09);
 	}
 	.myCom .item.state5{
 		border-color: #fbfbfb;
 		border-bottom: 2rpx solid #f2f2f2;
 	}
 	.myCom .item.state6{
-		border: 2rpx solid #d9e6e7;
-		background-color: #eaf1f4;
+		/* border: 2rpx solid #d9e6e7; */
+		background-color: rgba(50,205,114,0.09);
 	}
 </style>
