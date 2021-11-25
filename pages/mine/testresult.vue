@@ -207,11 +207,11 @@
 					url:'/pages/subject/share',
 					success(res) {
 						let rightCount = 0
-						self.history.get('answers').forEach(item=>{
-							if(item.result==true){
-								rightCount++
-							}
-						})
+						// self.history.get('answers').forEach(item=>{
+						// 	if(item.result==true){
+						// 		rightCount++
+						// 	}
+						// })
 						res.eventChannel.emit('data', {
 							title: self.history.get('examName'),
 							time: self.history.get('minutes'),

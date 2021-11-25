@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='选择优惠券' paddingTop="204" bg='#f7f7f7'>
+	<TopNavbar title='选择优惠券' paddingTop="124" bg='#f7f7f7'>
 	<view style="text-align: center;padding-bottom: 200rpx;">
 		<view class="noChooseItem" @click="handleCheckCoupon(null)">
 			<view class="title">暂不使用优惠券</view>
@@ -141,7 +141,7 @@
 	.noChooseItem .title {
 		flex: 1;
 		padding-left: 30rpx;
-		font-size: 34rpx;
+		font-size: 28rpx;
 		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
@@ -235,7 +235,7 @@
 		position: fixed;
 		bottom: 0;
 		width: 100%;
-		height: 196rpx;
+		height: 140rpx;
 	}
 	.confirmView button{
 		width: 690rpx;

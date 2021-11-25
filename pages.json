@@ -181,7 +181,8 @@
 			"path": "pages/subject/share",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
 			}
 
 		}, {
@@ -383,7 +384,8 @@
 					"style": {
 						"navigationBarTitleText": "课程收藏",
 						"enablePullDownRefresh": false,
-						"navigationBarBackgroundColor":"#F7F7F7"
+						"navigationBarBackgroundColor":"#F7F7F7",
+						"navigationStyle":"custom"
 					}
 				},
 				{

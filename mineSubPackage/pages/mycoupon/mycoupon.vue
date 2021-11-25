@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='我的优惠券' paddingTop="196" bg='#fafafa'>
+	<TopNavbar title='我的优惠券' paddingTop="116" bg='#fafafa'>
 	<view style="text-align: center;padding-bottom: 100rpx;">
 		<view class="testView" v-if="!coupons||coupons.length==0">
 			<view style="text-align: center;padding-top: 200rpx;">

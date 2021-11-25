@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='积分兑换' paddingTop='188' bg='#f7f7f7'>
+	<TopNavbar title='积分兑换' paddingTop='138'>
 		<view class="myPage">
 			<view class="tabView">
 				<view :class="'tabItem ' + (tab=='tab1'? 'curr':'')" @click="tab = 'tab1'">
@@ -110,9 +110,9 @@
 				</view>
 
 				<!--购买须知-->
-				<u-popup v-model="isShowBuyTips" width="578rpx" :closeable="false" mode="center" border-radius="40">
+				<u-popup v-model="isShowBuyTips" width="578rpx" :closeable="false" mode="center" border-radius="24">
 					<view class="buylView">
-						<view style='padding: 48rpx 48rpx 128rpx;'>
+						<view style='padding: 48rpx 48rpx 128rpx;font-size: 24rpx;font-family: PingFangSC-Regular, PingFang SC;line-height: 34rpx;'>
 							<view class="title">
 								您将购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
 							</view>
@@ -130,7 +130,7 @@
 				<u-popup v-model="isShowProductDetail" width="578rpx" mode="center" border-radius="24">
 					<view class="detailView">
 						<scroll-view scroll-y="true" :style="'max-height:'+(windowHeight - 600)+'rpx;'">
-							<view style='padding: 48rpx 48rpx 128rpx;'>
+							<view style='padding: 48rpx 48rpx 128rpx;font-size: 24rpx;font-family: PingFangSC-Regular, PingFang SC;line-height: 34rpx;'>
 								<u-parse :html="comments"></u-parse>
 							</view>
 						</scroll-view>
@@ -539,7 +539,7 @@
 			},
 			/* 查看详情 */
 			showComments(comments) {
-				this.comments = '11111111111'
+				this.comments = comments
 				this.isShowProductDetail = true
 				return
 				if (comments) {
@@ -801,6 +801,9 @@
 
 	.myView .buyView {
 		padding-left: 30rpx;
+	}
+	.myView .buyView view:last-child {
+		border: none;
 	}
 
 	.myView .productItem {

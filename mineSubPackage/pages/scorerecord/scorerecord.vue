@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='消息中心' paddingTop="208" bg='#f7f7f7'>
+	<TopNavbar title='积分记录' paddingTop="128">
 		<view>
 		<view class="scoreView">
 			<view class="title">当前积分：</view>
@@ -32,11 +32,11 @@
 			</view>
 		</view>
 		<!--购买须知-->
-		<u-popup v-model="isShowBuyTips" height="774rpx" width="670rpx" :closeable="false" mode="center" border-radius="40">
+		<u-popup v-model="isShowBuyTips" height="774rpx" width="578rpx" :closeable="false" mode="center" border-radius="24">
 			<view class="buylView">
 				<view class="title">
 					<text>
-						在小程序中存在四种积分获取方式：
+						在小程序中存在多种积分的获取方式，以下介绍获取积分的四种方式：
 					</text>
 				</view>
 				<view class="tips">
@@ -197,6 +197,7 @@
 		font-weight: 600;
 		color: #ED3535;
 		line-height: 112rpx;
+		margin0top: 18rpx;
 	}
 	.scoreView .intro{
 		text-align: center;
@@ -283,13 +284,19 @@
 		color: #000000;
 		line-height: 40rpx;
 	}
+	
 	.buylView .tips{
 		margin-top: 32rpx;
+	}
+	.buylView .tips .tips-item {
 		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
-		color: rgba(0,0,0,.8);
-		line-height: 38rpx;
+		color: #000000;
+		line-height: 40rpx;
+	}
+	.buylView .tips .tips-item text{
+		font-family: PingFangSC-Regular, PingFang SC;
+		color: rgba(0,0,0,.7);
 	}
 	.buylView .power{
 		margin-top: 16rpx;

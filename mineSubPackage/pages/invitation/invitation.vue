@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='分享给好友' paddingTop="-1" bg='#f7f7f7'>
+	<TopNavbar title='分享给好友' paddingTop="-1">
 		<view>
 			<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
 			<view class="rect">
@@ -10,9 +10,7 @@
 					<view class="title">保存并分享</view>
 				</view>
 			</view>
-			<view class="bg">
-				
-			</view>
+			<view class="bg"></view>
 		</view>
 	</TopNavbar>
 </template>
@@ -190,7 +188,7 @@
 								
 								
 								// 将头像装进头像框
-								context.drawImage(headRes.tempFilePath, 230 * factor, 780 * factor,160 * factor,160 * factor);
+								context.drawImage(headRes.tempFilePath, 220 * factor, 730 * factor,160 * factor,160 * factor);
 								context.restore()
 								
 								// 用户名
@@ -358,6 +356,7 @@
 		font-size: 34rpx;
 		font-family: PingFangSC-Medium;
 		margin-top: 92rpx;
+		margin-bottom: 40rpx;
 	}
 	.download image{
 		position: absolute;

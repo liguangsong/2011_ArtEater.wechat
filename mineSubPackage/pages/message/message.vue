@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='消息中心' paddingTop="208">
+	<TopNavbar title='消息中心' paddingTop="150">
 	<view class="myPage u-demo-area">
 		<view class="readAllView">
 			<button v-if="notReadCount > 0" @click="handleReadAll">全部已读</button>
@@ -194,23 +194,10 @@
 		border: 0;
 	}
 	.myPage .readAllView button.read{
-		/* background: rgba(0,0,0,.1);
+		background: rgba(0,0,0,.1);
 		color: rgba(0,0,0,.5);
 		border: none;
-		line-height: 40rpx; */
-		width: 154rpx;
-		height: 50rpx;
-		line-height: 50rpx;
-		border-radius: 50rpx;
-		text-align: center;
-		font-size: 26rpx;
-		font-family: PingFangSC-Medium;
-		color: #d6d6d6;
-		border: solid 2rpx #d6d6d6;
-		background-color: #ffffff;
-		display: inline-block;
-		padding: 0;
-		
+		line-height: 40rpx;
 	}
 	.myPage .msgItem{
 		position: relative;
@@ -253,6 +240,9 @@
 		font-weight: 500;
 		color: #000000;
 		line-height: 44rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.myPage .msgItem .conView .content{
 		font-size: 20rpx;
@@ -260,6 +250,12 @@
 		font-weight: 600;
 		color: rgba(0,0,0,.29);
 		line-height: 28rpx;
+		
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		overflow: hidden;
+				
 	}
 	
 	.myPage .msgItem .icon{

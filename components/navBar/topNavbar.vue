@@ -111,6 +111,7 @@
 <style scoped>
 	.top-navbar {
 		height: 100vh;
+		overflow-y: auto;
 	}
 	.tabbar {
 		width: 100%;

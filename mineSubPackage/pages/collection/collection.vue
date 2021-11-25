@@ -1,4 +1,5 @@
 <template>
+	<TopNavbar title='课程收藏' paddingTop="136" bg='#f7f7f7'>
 	<view class="myPage">
 		<view v-if='!list.length' class='collection'>
 			暂无收藏
@@ -6,10 +7,12 @@
 		<view style='height: 20rpx;'></view>
 		<Item v-for='(item,i) in list' :key='i' :item='item' :vip='vip'/>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
 	import Item from './item.vue'
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -20,7 +23,8 @@
 			}
 		},
 		components:{
-			Item
+			Item,
+			TopNavbar
 		},
 
 		async onShow() {

@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='错题集' paddingTop="224">
+	<TopNavbar title='错题集' paddingTop="144">
 		<view>
 			<view class="mydatepicker">
 					

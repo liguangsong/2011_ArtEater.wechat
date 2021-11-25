@@ -1,5 +1,8 @@
 <template>
-	<TopNavbar title='考试记录' bg='#fff' paddingTop='162'>
+	<TopNavbar title='考试记录' bg='#fff' paddingTop='142'>
+		<view v-if='!testHistory.length' class='testHistory'>
+			暂无记录
+		</view>
 		<view class="myView">
 			<view class="hisItem" v-for="(item, index) in testHistory" @click="handleItemClick" :data-item="item">
 				<view class="contView">
@@ -70,6 +73,14 @@
 </script>
 
 <style>
+	.testHistory {
+		height: 600rpx;
+		font-family: PingFangSC-Medium;
+		font-size: 20px;
+		color: rgba(53, 32, 38, 0.4);
+		line-height: 600rpx;
+		text-align: center;
+	}
 	.myView .hisItem{
 		display: flex;
 		height: 142rpx;

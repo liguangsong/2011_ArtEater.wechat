@@ -1,4 +1,5 @@
 <template>
+	<TopNavbar title='分享给好友' paddingTop="-1" bg='#f7f7f7'>
 	<view>
 		<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
 		<view class="rect">
@@ -9,10 +10,13 @@
 				<view class="title">保存并分享</view>
 			</view>
 		</view>
+		<view class="bg"></view>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	import config from 'static/config/index.js'
 	export default {
 		data() {
@@ -25,6 +29,9 @@
 				percent: '',
 				action:''
 			}
+		},
+		components: {
+			TopNavbar
 		},
 		onLoad() {
 			var self = this
@@ -133,7 +140,8 @@
 					url: self.userInfo.avatarUrl,
 					success (headRes) {
 						uni.downloadFile({url: self.qrcode, success (qrcodeRes) {
-							uni.downloadFile({url: self.sharePicImg, success (bgRes) {	
+							uni.downloadFile({url: self.sharePicImg, success (bgRes) {
+								uni.downloadFile({url: 'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/bg.png', success (bg) {
 								const sysInfo = uni.getSystemInfoSync();
 								const screenWidth = sysInfo.screenWidth*3; // 提高画质
 								var factor = screenWidth / 750;
@@ -144,7 +152,8 @@
 								context.draw() // 先清空画布
 								context.fillRect(0, 0, 602 * factor, picHeight * factor)
 								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 850*factor);
-								context.setFillStyle('black')
+								context.drawImage(bg.tempFilePath, 0, 0, 400, 400, 0 , picHeight*factor-500, picWidth*factor, 338*factor);
+								// context.setFillStyle('black')
 								self.roundRect(context, 0, 850 * factor, 602 * factor, 216 * factor, 0 * factor) // 绘制半透明的圆角背景
 								
 								// 绘制二维码
@@ -157,7 +166,7 @@
 								
 								// 标题
 								context.setFontSize(30*factor)
-								context.font = 'normal bold ' + parseInt(30 * factor) + 'px Arial, Helvetica, sans-serif'
+								context.font = 'normal bold ' + parseInt(28 * factor) + 'px Arial, Helvetica, sans-serif'
 								context.setFillStyle('#352026')
 								let title = self.title
 								// const m1 = context.measureText(user)
@@ -180,7 +189,7 @@
 								
 								// 答题正确率百分比
 								context.setFontSize(60*factor)
-								context.setFillStyle('#ff6867')
+								context.setFillStyle('#D81E1F')
 								context.font = 'normal bold ' + parseInt(60 * factor) + 'px Arial, Helvetica, sans-serif'
 								let percent = self.percent + ''
 								const m7 = context.measureText(percent)
@@ -220,6 +229,7 @@
 									}, 500)
 								})
 							}})
+							}})
 						}})
 					}
 				})
@@ -239,7 +249,7 @@
 							// confirmColor: '#72B9C3',
 							success: function (res) {
 							  if (res.confirm) {
-								console.log('用户点击确定');
+									console.log('用户点击确定');
 							  }
 							  self.canvasHidden = true
 							}
@@ -256,46 +266,28 @@
 		background-color: #fbfbfa;
 	}
 	.canvas{
-		width:1806rpx;margin:0 auto;
+		width:1806rpx;
+		margin:0 auto;
 		position:fixed;
+		z-index: 999999;
 		left:10000px;
 		height: 3198rpx;
 	}
 	.rect {
-		margin: 92rpx auto;
+		margin: 198rpx auto 0;
 		width: 602rpx;
+		position: relative;
+		z-index: 99999;
 	}
 	.bgImg{
 		width: 602rpx;
 		height: 1066rpx;
-		background-color: #ffffff;
-		box-shadow: 0rpx 8rpx 24rpx 10rpx 
-				rgba(209, 199, 193, 0.31);
+		background-color: rgba(255, 255, 255, 0.69);
 		border-radius: 40rpx;
 	}
-	/* .download{
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: #ffffff;
-		width: 602rpx;
-		height: 92rpx;
-		line-height: 92rpx;
-		background-image: linear-gradient(1deg, 
-			#ffa394 0%, 
-			#ff9d83 10%, 
-			#ff6666 60%, 
-			#fc4c4c 89%, 
-			#f93131 100%);
-		border-radius: 46rpx;
-		margin-top: 38rpx;
-	} */
 	.download::after{
 		border: 0;
 	}
-	
 	
 	.download{
 		position: relative;
@@ -313,7 +305,8 @@
 		font-weight: bold;
 		font-size: 34rpx;
 		font-family: PingFangSC-Medium;
-		margin-top: 38rpx;
+		margin-top: 92rpx;
+		margin-bottom: 40rpx;
 	}
 	.download image{
 		position: absolute;
@@ -327,6 +320,21 @@
 		position: absolute;
 		z-index: 1;
 		width: 100%;
-		text-align: center;
+		text-align: center; 
+		background: #ED3535;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
+		border-radius: 46rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #FFFFFF;
+	}
+	.bg {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: rgba(0, 0, 0, 0.45);
+		z-index: 10000;
 	}
 </style>

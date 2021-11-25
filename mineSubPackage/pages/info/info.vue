@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='个人信息' :paddingTop='224'>
+	<TopNavbar title='个人信息' :paddingTop='164'>
 		<view class="editForm">
 			<u-form :model="form" ref="uForm" :rules="rules">
 				<u-form-item label="头像" class='headimg' :label-width="150" prop="realname">
