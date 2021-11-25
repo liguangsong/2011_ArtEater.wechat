@@ -75,7 +75,8 @@
 			"path": "pages/important/subject",
 			"style": {
 				"navigationBarTitleText": "必考题库",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
 			}
 		}, {
 			"path": "pages/important/exam",
@@ -89,7 +90,8 @@
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfb",
 				"navigationBarTitleText": "必考题库",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
 			}
 		}, {
 			"path": "pages/important/complate",
@@ -121,7 +123,8 @@
 			"path": "pages/mine/testresult",
 			"style": {
 				"navigationBarTitleText": "考试成绩",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
 			}
 		}, {
 			"path": "pages/mine/testdetail",

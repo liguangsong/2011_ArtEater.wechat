@@ -1,4 +1,5 @@
 <template>
+	<TopNavbar title='重点题库' paddingTop='216'>
 	<view class="myPage">
 		<!-- <view style="text-align: center;padding-top: 200rpx;">	
 			<view style="text-align: center;">
@@ -10,7 +11,7 @@
 			锁定必考知识点，精选出必考题库，
 			使复习有的放矢，大大节省你的学习时间。</text>
 		</view> -->
-		<view v-else class="subjectItem" v-if="sub.subject_name!='科技文艺'" v-for="(sub) in subjects" @click="handleSubjectClick" :data-item="sub">
+		<view class="subjectItem" v-if="sub.subject_name!='科技文艺常识'" v-for="(sub) in subjects" @click="handleSubjectClick" :data-item="sub">
 			<view class="img">
 				<image v-if="sub.subject_name=='中国美术史'" src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93%E4%B8%AD%E5%9B%BD%E7%BE%8E%E6%9C%AF%E5%8F%B2%403x.png" mode=""></image>
 				<image v-if="sub.subject_name=='外国美术史'" src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93%E5%A4%96%E5%9B%BD%E7%BE%8E%E6%9C%AF%E5%8F%B2%403x.png" mode=""></image>
@@ -24,9 +25,11 @@
 			</view>
 		</view>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -34,6 +37,9 @@
 				subjects:[],
 				subjectProgress:[]
 			}
+		},
+		components: {
+			TopNavbar
 		},
 		onShow() {			
 			var self = this
@@ -62,12 +68,12 @@
 					title:'加载中……'
 				})
 				var query = new this.Parse.Query("Subjects")
-				// query.equalTo("parent_ID", this.subjectId)
 				query.ascending('createdAt')
 				query.limit(10000)
 				query.find().then(res=>{
 					var tree = self.initSubjectTree(res, '0')
 					self.subjects = tree
+					console.log(self.subjects)
 					self.subjects.forEach(t=>{
 						self.handleGetTestCount(t)
 					})
@@ -105,7 +111,8 @@
 			},
 			handleSubjectClick(e){
 				var item = e.currentTarget.dataset.item
-				console.log(e);
+				// console.log(e);
+				// return
 				uni.navigateTo({
 					url:'./subject?sid='+item.id
 				})
@@ -193,22 +200,16 @@
 </script>
 
 <style>
-	page{
-		background-color: #fbfbfb;
-	}
-	.myPage{
-		padding:0 34rpx 50rpx 36rpx;
-	}
 	.myPage .subjectItem{
 		position: relative;
-		margin-top: 24rpx;
+		margin: 0 auto 24rpx;
 		width: 690rpx;
-		height: 324rpx;
-		line-height: 324rpx;
+		height: 280rpx;
 		background-color: #ffffff;
 		box-shadow: 0rpx 16rpx 44rpx 0rpx 
 			rgba(226, 171, 166, 0.21);
-		border-radius: 36rpx;
+		border-radius: 24rpx;
+		overflow: hidden;
 	}
 	.myPage .subjectItem .img{
 		/* position: absolute;
@@ -219,31 +220,30 @@
 		width: 670rpx;
 		 */
 		position: absolute;
-		top: 10rpx;
-		left: 0rpx;
-		height: 230rpx;
-		line-height: 230rpx;
+		top: 0;
+		left: 0;
+		height: 192rpx;
+		line-height: 192rpx;
 		text-align: center;
 		width: 100%;
 	}
 	.myPage .subjectItem .img image{
-		width: 670rpx;
-		height: 230rpx;
-		line-height: 230rpx;
-		border-radius: 30rpx;
+		width: 100%;
+		height: 192rpx;
+		line-height: 192rpx;
 	}
 	.myPage .subjectItem .progress{
 		position: relative;
-		top: 248rpx;
-		width: 670rpx;
-		left: 10rpx;
+		top: 212rpx;
+		width: 654rpx;
+		left: 18rpx;
 		height: 10rpx;
 		line-height: 10rpx;
 	}
 	.myPage .subjectItem .tips{
 		position: relative;
-		top: 266rpx;
-		left: 10rpx;
+		top: 234rpx;
+		left: 18rpx;
 		height: 26rpx;
 		line-height: 26rpx;
 		font-family: PingFangSC-Regular;
