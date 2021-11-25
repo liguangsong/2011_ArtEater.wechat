@@ -1338,7 +1338,7 @@
 		border: 2rpx solid #ffdfdf;
 	}
 	.questionView .options{
-		padding: 20rpx 36rpx;
+		padding: 20rpx 0rpx;
 	}
 	.actionView{
 		/* margin-top: 50rpx; */
@@ -1522,7 +1522,7 @@
 		line-height: 48rpx;
 	}
 	.actionView .btnGroup .prev.disable,.actionView .btnGroup .next.disable{
-		color: rgba(53, 32, 38, 0.4);
+		color: rgba(0, 0, 0, 0.3);
 	}
 	.buylView {
 		width: 100%;

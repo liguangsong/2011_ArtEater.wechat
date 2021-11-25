@@ -59,6 +59,10 @@
 		min-height: 48rpx;
 		line-height: 48rpx;
 		padding: 15rpx 0 22rpx 0;
+		border-bottom: 1rpx solid rgba(0,0,0,0.1);
+		width: 678rpx;
+		margin-left: 36rpx;
+		min-height: 99rpx;
 	}
 	
 	.optionItem .icon{
