@@ -92,11 +92,11 @@
 										<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../static/icon/icon_percent_m.png"></image>
 										<image v-if="questionDetail.aPercent<percentM" src="../../static/icon/icon_percent_l.png"></image>
 									</view>
-									<view style="flex: 1;">全民正确率：{{questionDetail.aPercent}}%</view>
+									<view>全民正确率：{{questionDetail.aPercent}}%</view>
+									<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
+									<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
+									<view v-if="questionDetail.aPercent<percentM" class="atips">大家都错了也不是你做错的理由。</view>
 								</view>
-								<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
-								<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
-								<view v-if="questionDetail.aPercent<percentM" class="atips">记住：大家都错了也不是你做错的理由。</view>
 							</view>
 							<u-parse :html="questionDetail.comments?questionDetail.comments:'暂无解析'"></u-parse>
 						</view>
@@ -118,11 +118,11 @@
 											<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../static/icon/icon_percent_m.png"></image>
 											<image v-if="questionDetail.aPercent<percentM" src="../../static/icon/icon_percent_l.png"></image>
 										</view>
-										<view style="flex: 1;">全民正确率：{{questionDetail.aPercent}}%</view>
+										<view>全民正确率：{{questionDetail.aPercent}}%</view>
+										<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
+										<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
+										<view v-if="questionDetail.aPercent<percentM" class="atips">大家都错了也不是你做错的理由。</view>
 									</view>
-									<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
-									<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
-									<view v-if="questionDetail.aPercent<percentM" class="atips">记住：大家都错了也不是你做错的理由。</view>
 								</view>
 								<u-parse :html="questionDetail.comments?questionDetail.comments:'暂无解析'"></u-parse>
 							</view>
@@ -1261,9 +1261,12 @@
 		border-radius: 20rpx;
 	}
 	.questionView .title .txt.success{
-		color: #3cc0da;
-		background-color: #eaf1f4;
-		border: 2rpx solid #d9e6e7;
+		color: #32CD72;
+		width: 52rpx;
+		height: 52rpx;
+		background: rgba(50, 205, 114, 0.15);
+		border-radius: 8rpx;
+		border: 2rpx solid rgba(50, 205, 114, 0.29);
 	}
 	.questionView .title .txt.error{
 		color: #fa5151;
@@ -1312,8 +1315,9 @@
 	}
 	.htmlView{
 		background-color: #FFFFFF;
-		padding: 60rpx 40rpx!important;
-		border-radius: 46rpx;
+		padding: 36rpx 36rpx!important;
+        box-shadow: 0rpx 0px 12rpx 0rpx rgba(0,0,0,0.09);
+		border-radius: 26rpx;
 	}
 	.commentView.needbuy{
 		padding: 0;
@@ -1371,7 +1375,7 @@
 		display: flex;
 	}
 	.commentView .comment .accuracy .apercent .icon{
-		width: 42rpx;height: 42rpx;line-height: 45rpx;font-size: 0;
+		width: 40rpx;height: 42rpx;line-height: 42rpx;font-size: 0;
 	}
 	.commentView .comment .accuracy .apercent.h{
 		color: rgba(76, 192, 143, 0.95);
@@ -1389,14 +1393,17 @@
 		vertical-align: middle;
 	}
 	.commentView .comment .accuracy .atips{
-		height: 36rpx;
-		line-height: 36rpx;
-		font-family: PingFangSC-Regular;
-		font-size: 26rpx;
-		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.4);
+		color: rgba(0, 0, 0, 0.4);
+		height: 26rpx;
+		font-size: 18rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		margin-top:12rpx;
+		line-height: 26rpx;
+		text-align: right;
+		flex: 1;
 	}
 	.actionView button.next{
 		background-color: #FFFFFF;
@@ -1405,12 +1412,14 @@
 	}
 	.actionView .btnGroup{
 		background-color: #FFFFFF;
-		border: 2rpx solid #ffb9b8;
-		color: #f16564;
+		border: 2px solid #D81E1F;
+		color: #D81E1F;
 		height: 92rpx;
 		line-height: 92rpx;
 		border-radius: 46rpx;
 		display: flex;
+		font-size: 34rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
 	}
 	.actionView .btnGroup .prev{
 		display: inline-block;
@@ -1420,11 +1429,14 @@
 		margin-left: 30rpx;
 		background-color:#ffffff;
 		border: 0;
-		height: 54rpx;
-		line-height: 54rpx;
 		border-radius: 0;
-		border-right: 1rpx solid #f16564;
-		color: #f16564;
+		border-right: 1px solid #D81E1F;
+		color: #D81E1F;
+		height: 48rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		opacity: 0.8;
+		line-height: 48rpx;
 	}
 	.actionView .btnGroup .next{
 		display: inline-block;
@@ -1432,9 +1444,12 @@
 		margin: auto 0;
 		flex: 1;
 		border: 0;
-		height: 54rpx;
-		line-height: 54rpx;
-		color: #f16564;
+		color: #D81E1F;
+		height: 48rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		opacity: 0.8;
+		line-height: 48rpx;
 	}
 	.actionView .btnGroup .prev.disable,.actionView .btnGroup .next.disable{
 		color: rgba(53, 32, 38, 0.4);

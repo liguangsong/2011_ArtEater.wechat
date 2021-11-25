@@ -55,7 +55,7 @@
 					</view>
 				</view>
 				<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
-				<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
+				<view class="title" v-if="questionDetail.type==3">
 					<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c}}
 						<!-- <block v-if="tab=='tab2'">
 							<input v-if="i!=questionDetail.cinputs.length-1" :style="{width: (options[i].value[0].txt.length * 34 + 60) + 'rpx;'}" :data-index="i" @input="handleAnswerChange" @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />
@@ -63,7 +63,11 @@
 						</block>
 						<block v-else> -->
 							<block v-if="hasSubmit||tab=='tab2'">
-								<view v-if="i!=questionDetail.cinputs.length-1" :class="'txt '+ (options[i].state==1?'success':'error')">{{options[i].content}}</view>
+								<template v-if="i!=questionDetail.cinputs.length-1">
+									<view :class="'txt '+ (options[i].state==1?'success':'error')" v-for="(item,letter) in options[i].content" :key="letter">
+										{{options[i].content[letter]}}
+									</view>
+								</template>
 							</block>
 							<block v-else>
 								<input v-if="i!=questionDetail.cinputs.length-1" :style="{width: (options[i].value[0].txt.length * 34 + 60) + 'rpx;'}" :data-index="i" @input="handleAnswerChange" @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />
@@ -92,7 +96,7 @@
 				<view class="bg" v-if="!isShowComments&&!hasBuyedComments">
 					<image src="../../../static/dajxbg.png"></image>
 				</view>
-				<view style="position: relative;padding: 60rpx 70rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
+				<view style="position: relative;padding: 48rpx 60rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
 					<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
 						<view style="display:inline-block;margin-right: 10rpx;" v-for="s in options">{{s.rightAnswer}}</view>
 					</view>
@@ -106,21 +110,22 @@
 										<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../../static/icon/icon_percent_m.png"></image>
 										<image v-if="questionDetail.aPercent<percentM" src="../../../static/icon/icon_percent_l.png"></image>
 									</view>
-									<view style="flex: 1;">全民正确率：{{questionDetail.aPercent}}%</view>
+									<view>全民正确率：{{questionDetail.aPercent}}%</view>
+									<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
+									<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
+									<view v-if="questionDetail.aPercent<percentM" class="atips">大家都错了也不是你做错的理由。</view>
 								</view>
-								<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
-								<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
-								<view v-if="questionDetail.aPercent<percentM" class="atips">记住：大家都错了也不是你做错的理由。</view>
+								
 							</view>
 							<u-parse :html="questionDetail.comments?questionDetail.comments:'暂无解析'"></u-parse>
 						</view>
 						<view v-else>
 							<view v-if="!hasBuyedComments">
 								<view class="accuracy" style="margin: 0;">全民正确率：解锁试题解析可见</view>
-								<view  style="text-align: center;margin-top: 120rpx;">
+								<view  style="text-align: center;margin-top: 186rpx;">
 									<button class="btnComments" type="default" @click="handleBuyComments">
-										<image src="../../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
-										<view style="text-indent: 20rpx;display: inline-block;">解锁试题解析</view>
+										<image src="../../../static/icon/icon_lock.png" style="margin-top: -5rpx;width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
+										<view style="text-indent: 20rpx;display: inline-block; height: 62rpx;">解锁试题解析</view>
 									</button>
 								</view>
 							</view>
@@ -132,11 +137,12 @@
 											<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../../static/icon/icon_percent_m.png"></image>
 											<image v-if="questionDetail.aPercent<percentM" src="../../../static/icon/icon_percent_l.png"></image>
 										</view>
-										<view style="flex: 1;">全民正确率：{{questionDetail.aPercent}}%</view>
+										<view>全民正确率：{{questionDetail.aPercent}}%</view>
+										<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
+										<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
+										<view v-if="questionDetail.aPercent<percentM" class="atips">大家都错了也不是你做错的理由。</view>
 									</view>
-									<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
-									<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
-									<view v-if="questionDetail.aPercent<percentM" class="atips">记住：大家都错了也不是你做错的理由。</view>
+									
 								</view>
 								<u-parse :html="questionDetail.comments?questionDetail.comments:'暂无解析'"></u-parse>
 							</view>
@@ -1302,27 +1308,33 @@
 		border: 2rpx solid #e3e3e3;
 		border-radius: 20rpx;
 		background-color: #FFFFFF;
-		height: 64rpx;
-		line-height: 60rpx;
-		min-width: 80rpx;
-		padding: 0 30rpx;
+		height: 52rpx;
+		line-height: 50rpx;
+		padding: 0 0rpx;
 		display: inline-block;
-		margin: 0 20rpx;
+		margin: 0 4rpx;
 		vertical-align: middle;
 		font-size: 34rpx;
 		font-weight: normal;
 		color: #352026;
 		font-size: PingFangSC-Medium;
 		border-radius: 20rpx;
+		text-align: center;
 	}
 	.questionView .title .txt.success{
-		color: #3cc0da;
-		background-color: #eaf1f4;
-		border: 2rpx solid #d9e6e7;
+		color: #32CD72;
+		width: 52rpx;
+		height: 52rpx;
+		background: rgba(50, 205, 114, 0.15);
+		border-radius: 8rpx;
+		border: 2rpx solid rgba(50, 205, 114, 0.29);
 	}
 	.questionView .title .txt.error{
 		color: #fa5151;
+		width: 52rpx;
+		height: 52rpx;
 		background-color: #ffe8e8;
+		border-radius: 8rpx;
 		border: 2rpx solid #ffdfdf;
 	}
 	.questionView .options{
@@ -1361,40 +1373,42 @@
 	.commentView{
 		/* background-color: #FFFFFF; */
 		border-radius: 46rpx;
-		padding: 60rpx 40rpx;
+		padding: 38rpx 48rpx;
 		/* margin-top: 10rpx; */
 		/* margin-bottom: 196rpx; */
-		min-height: 472rpx;
+		min-height: 572rpx;
 	}
 	.htmlView{
 		background-color: #FFFFFF;
-		padding: 60rpx 40rpx!important;
-		border-radius: 46rpx;
+		padding: 36rpx 36rpx!important;
+        box-shadow: 0rpx 0rpx 12rpx 0rpx rgba(0,0,0,0.09);
+		border-radius: 26rpx;
 	}
 	.commentView.needbuy{
 		padding: 0;
-		position: relative;
+		position: absolute;
+		width: 702rpx;
+		left: 24rpx;
 		background-color: unset;
 	}
 	.needbuy .bg{
 		position: absolute;
-		left: 0;
-		width: 100%;
-		height: 434rpx;
+		width: 702rpx;
+		height: 572rpx;
 	}
 	.needbuy .bg image{
 		width: 100%;
-		height: 434rpx;
+		height: 572rpx;
 	}
 	
 	.commentView .rightAnswer{
-		font-size: 30rpx;
-		font-weight: bold;
-		/* height: 42rpx; */
-		line-height: 42rpx;
-		font-family: PingFangSC-Medium;
-		color: #352026;
 		margin-right: 10rpx;
+		height: 44rpx;
+		font-size: 32rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+		line-height: 44rpx;
 	}
 	.commentView .comment{
 		font-size: 26rpx;
@@ -1405,29 +1419,31 @@
 		line-height: 54rpx;
 		letter-spacing: 0rpx;
 		color: #352026;
+		margin-top: 14rpx;
 	}
 	.commentView .comment .accuracy{
-		font-family: PingFangSC-Regular;
-		font-size: 26rpx;
-		font-weight: normal;
-		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.7);
-		margin: 36rpx 0;
+		color: rgba(0, 0, 0, 0.7);
+		margin: 16rpx 0 36rpx 0;
+		height: 40rpx;
+		font-size: 28rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		line-height: 40rpx;
 	}
 	.commentView .comment .accuracy .apercent{
-		height: 42rpx;
-		line-height: 42rpx;
-		font-family: PingFangSC-Regular;
-		font-size: 30rpx;
-		font-weight: normal;
+		height: 40rpx;
+		line-height: 40rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-size: 28rpx;
+		font-weight: 400;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
 		color: rgba(76, 192, 143, 0.95);
 		display: flex;
 	}
 	.commentView .comment .accuracy .apercent .icon{
-		width: 42rpx;height: 42rpx;line-height: 45rpx;font-size: 0;
+		width: 40rpx;height: 42rpx;line-height: 42rpx;font-size: 0;
 	}
 	.commentView .comment .accuracy .apercent.h{
 		color: rgba(76, 192, 143, 0.95);
@@ -1436,7 +1452,8 @@
 		color: #fbb955;
 	}
 	.commentView .comment .accuracy .apercent.l{
-		color: rgba(237, 53, 53, 0.7);
+		color: #ED3535;
+		opacity: 0.7;
 	}
 	.commentView .comment .accuracy .apercent image{
 		width: 32rpx;
@@ -1445,14 +1462,17 @@
 		vertical-align: middle;
 	}
 	.commentView .comment .accuracy .atips{
-		height: 36rpx;
-		line-height: 36rpx;
-		font-family: PingFangSC-Regular;
-		font-size: 26rpx;
-		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.4);
+		color: rgba(0, 0, 0, 0.4);
+		height: 26rpx;
+		font-size: 18rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		margin-top:12rpx;
+		line-height: 26rpx;
+		text-align: right;
+		flex: 1;
 	}
 	.actionView button.next{
 		background-color: #FFFFFF;
@@ -1462,12 +1482,14 @@
 	}
 	.actionView .btnGroup{
 		background-color: #FFFFFF;
-		border: 2rpx solid #ffb9b8;
-		color: #f16564;
+		border: 2px solid #D81E1F;
+		color: #D81E1F;
 		height: 92rpx;
 		line-height: 92rpx;
 		border-radius: 46rpx;
 		display: flex;
+		font-size: 34rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
 	}
 	.actionView .btnGroup .prev{
 		display: inline-block;
@@ -1477,11 +1499,14 @@
 		margin-left: 30rpx;
 		background-color:#ffffff;
 		border: 0;
-		height: 54rpx;
-		line-height: 54rpx;
 		border-radius: 0;
-		border-right: 1rpx solid #f16564;
-		color: #f16564;
+		border-right: 1px solid rgba(216,30,31,0.3);
+		color: #D81E1F;
+		height: 48rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		opacity: 0.8;
+		line-height: 48rpx;
 	}
 	.actionView .btnGroup .next{
 		display: inline-block;
@@ -1489,9 +1514,12 @@
 		margin: auto 0;
 		flex: 1;
 		border: 0;
-		height: 54rpx;
-		line-height: 54rpx;
-		color: #f16564;
+		color: #D81E1F;
+		height: 48rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		opacity: 0.8;
+		line-height: 48rpx;
 	}
 	.actionView .btnGroup .prev.disable,.actionView .btnGroup .next.disable{
 		color: rgba(53, 32, 38, 0.4);
@@ -1532,14 +1560,15 @@
 	.btnComments{
 		display: inline-block;
 		font-size: 24rpx;
-		font-weight: normal;
+		font-weight: 400;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: #ff6867!important;
+		color: #000000!important;
 		width: 254rpx;
 		height: 62rpx;
-		background-color: #ffe6e6!important;
+		background-color: #FFFFFF!important;
 		border-radius: 31rpx;
+        font-family: PingFangSC-Regular, PingFang SC;
 	}
 	.btnComments::after{
 		border: 0;
