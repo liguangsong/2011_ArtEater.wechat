@@ -6,8 +6,8 @@
 			</view>
 			<text class="more" v-if="showMore" @click="gotolist">查看更多 ></text> -->
 			
-			<view class="title-info title">
-				<view class="left" v-if="title">
+			<view class="title-info title" v-if="title && showMore">
+				<view class="left" >
 					<view class="red-block"></view>
 				   {{title}}
 				</view>

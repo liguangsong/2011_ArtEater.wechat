@@ -34,7 +34,7 @@
 									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93.png"></image>
 									<!-- <image src="../../static/svg/tiku.svg"></image> -->
 								</view>
-								<view class="title">必考题库</view>
+								<view class="title">重点题库</view>
 							</view>
 							<view class="navItem" @click="handleExamClick">
 								<view class="img">
@@ -540,8 +540,16 @@
 			},
 			/*重点题库*/
 			handleImportantClick() {
+				let app = getApp()
 				if (this.userInfo && this.userInfo.openid) {
+					var member = app.globalData.member;
 					if (this.userInfo.phone) { // 已绑定手机号
+						if (member.memberType == 0 || member.memberType == 1) {
+							uni.navigateTo({
+								url: '../important/index'
+							})
+							return;
+						}
 						if (this.zdtkConfig.get('isNeedPay') == 1 && !this.hasBuyedZDTK) { // 需要购买，但是没买
 							// this.isShowImportBuy = true
 							uni.navigateTo({
@@ -569,8 +577,16 @@
 			},
 			/*考试*/
 			handleExamClick() {
+				let app = getApp()
 				if (this.userInfo && this.userInfo.openid) {
+					var member = app.globalData.member;
 					if (this.userInfo.phone) {
+						if (member.memberType == 0 || member.memberType == 1) {
+							uni.navigateTo({
+								url: '../exam/index'
+							})
+							return;
+						}
 						if (this.mnksConfig.get('isNeedPay') == 1 && !this.hasBuyedMNKS) { // 需要购买，但是没买
 							// this.isShowTestBuy = true
 							uni.navigateTo({

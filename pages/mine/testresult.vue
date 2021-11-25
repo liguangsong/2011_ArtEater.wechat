@@ -1,18 +1,43 @@
 <template>
-	<view>
+	<TopNavbar title='积分兑换' paddingTop='-1'  :tabbarBg='false'>
+	<view style='background: #f7f7f7;'>
 		<view class="resultView">
-			<view class="tips">您的得分为：</view>
+			<image class='bg' src="../../static/mine/reselt.png"></image>
+			<view class='resBox'>
+				
+			<view class="title-info">
+				<view class="left">
+					<view class="red-block"></view>
+				  您的得分为
+				</view>
+				<view class="right right-info">
+					<view class="tips">及格分数为：{{history.pass_score}}</view>
+					<view class="tips">满分分数为：{{history.allscore}}</view>
+				</view>
+			</view>
 			<view class="scoreView">
 				<view class="score">{{history.score}}</view>
 				<view class="txt">分</view>
 			</view>
-			<view class="tips">及格分数为：{{history.pass_score}}</view>
-			<view class="tips">满分分数为：{{history.allscore}}</view>
+			</view>
 		</view>
 		<view class="view1">
-			<view class="title">答题卡</view>
+			<view class="title-info">
+				<view class="left">
+					<view class="red-block"></view>
+				  您的得分为
+				</view>
+				<view class="right right-info">
+					<view class="success">
+						正确
+					</view>
+					<view class="error">
+						错误
+					</view>
+				</view>
+			</view>
 			<view class="rView">
-				<view @click="handleResultClick" :class="'resultItem '+ ((item.answer.length==0||item.answer==null)? '': (item.result?'right':'error'))" 
+				<view @click="handleResultClick" :class="'resultItem '+ ((item.answer.length==0||item.answer==null)? '': (item.result?'right':'error'))"
 					v-for="(item, index) in history.answers" :data-item="item" :data-index="index">{{index + 1}}</view>
 			</view>
 		</view>
@@ -29,10 +54,12 @@
 			</view>
 		</u-mask>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
 	import config from 'static/config/index.js'
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -45,6 +72,9 @@
 				sharePicImg: '',
 				qrcode:''
 			}
+		},
+		components: {
+			TopNavbar
 		},
 		onLoad(options) {
 			var self = this
@@ -331,42 +361,75 @@
 </script>
 
 <style>
-	page{
-		background-color: #fbfbfb;
-	}
 	.resultView{
-		padding-top: 52rpx;
+		/* padding-top: 52rpx;
 		height: 412rpx;
 		border-bottom: 2rpx solid #f2f2f2;
-		margin: 0 30rpx;
+		margin: 0 30rpx; */
+		position: relative;
+		width: 750rpx;
+		height: 776rpx;
 	}
-	.resultView .tips{
-		padding-left: 78rpx;
-		font-size: 26rpx;
-		height: 42rpx;
-		line-height: 42rpx;
-		color: #352026;
-		font-family: PingFangSC-Medium;
+	.resultView .bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
 	}
-	.resultView .scoreView{
+	.resultView .resBox {
+		position: relative;
+		z-index: 10;
+		padding-top: 224rpx;
+	}
+	.right-info {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.right-info view {
+		display: inline;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,.5);
+		line-height: 28rpx;
+		margin-right: 20rpx;
+	}
+	.right-info .success:before, .right-info .error:before {
+		display: inline-block;
+		content: '';
+		width: 16rpx;
+		height: 16rpx;
+		margin-right: 10rpx;
+		background: #32CD72;
+		border-radius: 50%;
+	}
+	.right-info .error:before {
+		background: #ED3535;
+	}
+	
+	.resultView .scoreView {
+		padding-top: 202rpx;
 		height: 154rpx;
 		text-align: center;
 		margin-bottom: 56rpx;
 	}
 	.resultView .scoreView .score{
-		height: 154rpx;
 		display: inline;
 		font-size: 110rpx;
-		font-weight: bold;
-		color: #ff6867;
-		font-family: PingFangSC-Medium;
+		font-weight: 500;
+		color: #D81E1F;
+		line-height: 154rpx;
 	}
 	.resultView .scoreView .txt{
 		display: inline;
-		font-size: 34rpx;
-		font-weight: bold;
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
 		color: #352026;
-		font-family: PingFangSC-Medium;
+		line-height: 34rpx;
 	}
 	.view1{
 		padding-top:44rpx;
@@ -380,40 +443,44 @@
 		font-family: PingFangSC-Medium;
 	}
 	.view1 .rView{
-		margin-top: 26rpx;
+		width: 690rpx;
+		margin: 24rpx auto 0;
+		background: #fff;
+		border-radius: 24rpx;	
+		padding: 24rpx 34rpx 48rpx 32rpx;
 	}
 	.view1 .rView .resultItem{
 		display: inline-block;
-		margin-left: 36rpx;
-		margin-top: 22rpx;
-		width: 82rpx;
-		height:82rpx;
-		line-height:82rpx;
+		margin: 32rpx 25rpx 0;
+		width: 56rpx;
+		height: 56rpx;
+		line-height:52rpx;
 		text-align: center;
 		border-radius: 50%;
-		background-color: #fbfbfb;
-		font-size: 34rpx;
-		color: rgba(53,32,38,0.4);
+		font-size: 24rpx;
+		color: #DED0CD;
+		/* background: #ccc; */
 		font-family: PingFangSC-Medium;
 	}
 	.view1 .rView .resultItem.error{
-		background-color: #ffefef;
-		color: rgba(250,81,81,0.8);
+		color: #ED3535;
+		border: 2rpx solid #ED3535;
 	}
 	.view1 .rView .resultItem.right{
-		background-color: #eaf1f4;
-		color: #3CC0DA;
+		color: #32CD72;
+		border: 2rpx solid #32CD72;
 	}
 	.btnShare{
+		width: 690rpx;
 		height: 92rpx;
+		margin: 112rpx auto 40rpx;
 		line-height: 92rpx;
-		border-radius: 92rpx;
-		background-color: #ff776f;
-		border-radius: 94rpx;
-		color: #ffffff;
+		border-radius: 46rpx;
+		color: rgba(255,255,255,1);
 		font-size: 34rpx;
-		font-family: PingFangSC-Medium;
-		margin: 32rpx;
+		border: 2rpx solid #ff776f;
+		background: #ED3535;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
 	}
 	.btnPrev{
 		height: 92rpx;
@@ -428,15 +495,14 @@
 		margin: 32rpx;
 	}
 	.download{
-		height: 80rpx;
-		line-height: 80rpx;
-		border-radius: 94rpx;
-		color: #ff776f;
+		height: 92rpx;
+		line-height: 92rpx;
+		border-radius: 46rpx;
+		color: rgba(255,255,255,1);
 		font-size: 34rpx;
-		font-family: PingFangSC-Medium;
 		border: 2rpx solid #ff776f;
-		border-radius: 92rpx;
-		background-color: #ffffff;
+		background: #ED3535;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
 	}
 	.canvas{
 		width:750rpx;margin:0 auto;
