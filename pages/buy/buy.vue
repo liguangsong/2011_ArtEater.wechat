@@ -678,7 +678,7 @@
 					}
 					var user = self.Parse.User.current()
 					var cash = self.cash * 100
-					cash = 0
+					// cash = 0
 					if (cash == 0) {
 						var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5)
 						// uni.setStorage({

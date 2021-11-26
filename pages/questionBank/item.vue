@@ -9,7 +9,7 @@
 				<view>
 					<view class='regular'>已完成: {{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}}</view>
 				</view>
-				<view class="btn" v-if='vip'>
+				<view class="btn" v-if='vip1 || vip'>
 					<text style='transform: translateY(-1px); display: inline-block;'>学习</text>
 				</view>
 				<view class="btn1" v-else @click.stop='unlock'>
@@ -30,9 +30,20 @@
 			img: {
 				type: String
 			},
+			uid: {
+				type: String
+			},
+			n: {
+				type: Number
+			},
 			vip: {
 				type: Boolean,
 				default: false
+			}
+		},
+		watch: {
+			n() {
+				
 			}
 		},
 		data() {
@@ -44,7 +55,7 @@
 				subjects: [],
 				questionHistory: [],
 				subjectProgress: [],
-				// vip1: false
+				vip1: false
 			}
 		},
 		async created() {
@@ -56,21 +67,40 @@
 				success: async res => {
 					self.userInfo = res.data;
 					self.bindSubjectDetail()
-					// console.log(self.userInfo.openid,'----', self.id );
-					// var query = new self.Parse.Query("Order")
-					// query.equalTo('openId', self.userInfo.openid)
-					// query.contains('subjectId', self.id)
-					// query.equalTo('state', 1)
-					// let r = await query.first();
-					// // console.log(r, '------');
-					// if (r) {
-					// 	self.vip1 = true;
-					// 	// console.log('\\\\\\\\', self.vip1);
-					// }
+					console.log(self.userInfo.openid,'----', self.uid );
+					var query = new self.Parse.Query("Order")
+					query.equalTo('openId', self.userInfo.openid)
+					query.contains('subjectId', self.uid)
+					query.equalTo('state', 1)
+					let r = await query.first();
+					console.log(r, '------');
+					if (r) {
+						self.vip1 = true;
+						// console.log('\\\\\\\\', self.vip1);
+					}
 				}
 			})
 		},
 		methods: {
+			fn() {
+				var self = this;
+				this.subjectId = this.item.objectId
+				uni.getStorage({
+					key:'userInfo',
+					success: async res => {
+						self.userInfo = res.data;
+						self.bindSubjectDetail()
+						var query = new self.Parse.Query("Order")
+						query.equalTo('openId', self.userInfo.openid)
+						query.contains('subjectId', self.uid)
+						query.equalTo('state', 1)
+						let r = await query.first();
+						if (r) {
+							self.vip1 = true;
+						}
+					}
+				})
+			},
 			// 解锁
 			unlock() {
 				uni.showModal({
