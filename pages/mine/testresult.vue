@@ -1,5 +1,6 @@
 <template>
-	<TopNavbar title='积分兑换' paddingTop='-1'  :tabbarBg='false'>
+	<TopNavbar title='积分兑换' height='400' fontColor='#000' iconColor='#000' align='center'>
+	<!-- <TopNavbar title='积分兑换'> -->
 	<view style='background: #f7f7f7;'>
 		<view class="resultView">
 			<image class='bg' src="../../static/mine/reselt.png"></image>
@@ -59,7 +60,8 @@
 
 <script>
 	import config from 'static/config/index.js'
-	import TopNavbar from '@/components/navBar/topNavbar.vue'
+	// import TopNavbar from '@/components/navBar/topNavbar.vue'
+	import TopNavbar from '@/components/navBar/navbar.vue'
 	export default {
 		data() {
 			return {

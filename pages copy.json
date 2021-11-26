@@ -52,6 +52,14 @@
 			}
 
 		}, {
+			"path": "pages/exam/exam",
+			"style": {
+				"navigationBarBackgroundColor": "#f7f7f7",
+				"enablePullDownRefresh": false,
+				"navigationBarTitleText": ""
+			}
+
+		}, {
 			"path": "pages/subject/complate",
 			"style": {
 				"navigationBarTitleText": "",
@@ -59,6 +67,54 @@
 			}
 		}, {
 			"path": "pages/mine/note",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/important/subject",
+			"style": {
+				"navigationBarTitleText": "必考题库",
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+			}
+		}, {
+			"path": "pages/important/exam",
+			"style": {
+				"navigationBarBackgroundColor": "#f7f7f7",
+				"enablePullDownRefresh": false,
+				"navigationBarTitleText": ""
+			}
+		}, {
+			"path": "pages/important/index",
+			"style": {
+				"navigationBarBackgroundColor": "#fbfbfb",
+				"navigationBarTitleText": "必考题库",
+				"enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+			}
+		}, {
+			"path": "pages/important/complate",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/exam/index",
+			"style": {
+				"navigationBarBackgroundColor": "#fbfbfb",
+				"navigationBarTitleText": "模拟考试",
+				"navigationStyle":"custom",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/exam/share",
+			"style": {
+				"navigationBarTitleText": "分享",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/exam/result",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
@@ -83,7 +139,15 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-		},  {
+		}, {
+			"path": "pages/important/result",
+			"style": {
+				"navigationBarBackgroundColor": "#fbfbfa",
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
 			"path": "pages/buy/buy",
 			"style": {
 				"navigationBarTitleText": "购买",
@@ -97,6 +161,13 @@
 				"navigationBarTitleText": "选择优惠券",
 				"enablePullDownRefresh": false,
 				"navigationStyle":"custom"
+			}
+
+		}, {
+			"path": "pages/exam/oldexams",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
 			}
 
 		}, {
@@ -138,91 +209,6 @@
 		   {
 			"root": "homeSubPackage",
 			"pages": [
-				{
-					"path": "pages/important/result",
-					"style": {
-						"navigationBarBackgroundColor": "#f7f7f7",
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				
-				},
-				{
-					"path": "pages/error/note",
-					"style": {
-						"navigationBarBackgroundColor": "#f7f7f7",
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				
-				},
-				{
-					"path": "pages/important/subject",
-					"style": {
-						"navigationBarTitleText": "必考题库",
-						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
-					}
-				}, {
-					"path": "pages/important/exam",
-					"style": {
-						"navigationBarBackgroundColor": "#f7f7f7",
-						"enablePullDownRefresh": false,
-						"navigationBarTitleText": ""
-					}
-				}, {
-					"path": "pages/important/index",
-					"style": {
-						"navigationBarBackgroundColor": "#fbfbfb",
-						"navigationBarTitleText": "必考题库",
-						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
-					}
-				}, {
-					"path": "pages/important/complate",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				}, 
-				{
-					"path": "pages/exam/exam",
-					"style": {
-						"navigationBarBackgroundColor": "#f7f7f7",
-						"enablePullDownRefresh": false,
-						"navigationBarTitleText": ""
-					}
-				
-				}, 
-				{
-					"path": "pages/exam/oldexams",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				
-				}, 
-				{
-					"path": "pages/exam/index",
-					"style": {
-						"navigationBarBackgroundColor": "#fbfbfb",
-						"navigationBarTitleText": "模拟考试",
-						"navigationStyle":"custom",
-						"enablePullDownRefresh": false
-					}
-				}, {
-					"path": "pages/exam/share",
-					"style": {
-						"navigationBarTitleText": "分享",
-						"enablePullDownRefresh": false
-					}
-				}, {
-					"path": "pages/exam/result",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				}, 
 				{
 					"path": "pages/subject/subject",
 					"style": {

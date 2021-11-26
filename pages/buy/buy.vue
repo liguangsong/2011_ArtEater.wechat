@@ -117,7 +117,7 @@
 							您将购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
 						</view>
 						<view class="tips">
-							购买后可在【个人中心-会员中心-已购项目】中查看
+							购买后可在【个人中心-积分兑换-已购项目】中查看
 						</view>
 					</view>
 					<view @click="isShowBuyTips=false" class="btnActions"
@@ -678,9 +678,13 @@
 					}
 					var user = self.Parse.User.current()
 					var cash = self.cash * 100
-
+					cash = 0
 					if (cash == 0) {
 						var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5)
+						// uni.setStorage({
+						// 	key: 'tiku',
+						// 	data: true,
+						// })
 						self.PayCallBack(orderNo, _subjectId, _subjectName)
 					} else {
 						this.Parse.Cloud.run('initiatePayment', {
@@ -698,7 +702,11 @@
 								signType: payload.signType,
 								paySign: payload.paySign,
 								success(res) {
-									self.PayCallBack(tradeId, _subjectId, _subjectName)
+									self.PayCallBack(tradeId, _subjectId, _subjectName);
+									// uni.setStorage({
+									// 	key: 'tiku',
+									// 	data: true,
+									// })
 								},
 								fail(res) {
 									uni.hideLoading()

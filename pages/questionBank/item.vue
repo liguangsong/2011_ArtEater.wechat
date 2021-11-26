@@ -9,9 +9,11 @@
 				<view>
 					<view class='regular'>已完成: {{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}}</view>
 				</view>
-				<view class="btn">
+				<view class="btn" v-if='vip'>
 					<text style='transform: translateY(-1px); display: inline-block;'>学习</text>
-					<!-- <image src="../../static/study.png" mode=""></image> -->
+				</view>
+				<view class="btn1" v-else @click.stop='unlock'>
+					<text style='transform: translateY(-1px); display: inline-block;'>解锁</text>
 				</view>
 			</view>
 		</view>
@@ -27,6 +29,10 @@
 			},
 			img: {
 				type: String
+			},
+			vip: {
+				type: Boolean,
+				default: false
 			}
 		},
 		data() {
@@ -37,22 +43,50 @@
 				subjectDetail: null,
 				subjects: [],
 				questionHistory: [],
-				subjectProgress: []
+				subjectProgress: [],
+				// vip1: false
 			}
 		},
-		created() {
-			var self = this
-
+		async created() {
+			// console.log('0000', this.id);
+			var self = this;
 			this.subjectId = this.item.objectId
 			uni.getStorage({
 				key:'userInfo',
-				success: res => {
+				success: async res => {
 					self.userInfo = res.data;
 					self.bindSubjectDetail()
+					// console.log(self.userInfo.openid,'----', self.id );
+					// var query = new self.Parse.Query("Order")
+					// query.equalTo('openId', self.userInfo.openid)
+					// query.contains('subjectId', self.id)
+					// query.equalTo('state', 1)
+					// let r = await query.first();
+					// // console.log(r, '------');
+					// if (r) {
+					// 	self.vip1 = true;
+					// 	// console.log('\\\\\\\\', self.vip1);
+					// }
 				}
 			})
 		},
 		methods: {
+			// 解锁
+			unlock() {
+				uni.showModal({
+					title: '解锁付费内容',
+					confirmColor: '#ED3535',
+					confirmText: '立即解锁',
+					content: '考纲三大板块中国美术史、\n外国美术史、艺术概论组合题库包，\n1800道题覆盖所有基础知识点',
+					success(res) {
+						if (res.confirm) {
+							uni.navigateTo({
+								url: '/mineSubPackage/pages/vip/vip'
+							})
+						}
+					}
+				})
+			},
 			/*加载科目详情*/
 			bindSubjectDetail(){
 				var self = this
@@ -288,25 +322,26 @@
 		margin-bottom: -10rpx;
 	}
 	.questionbank-item .btn{
-		/* width: 100rpx;
-		height: 40rpx;
-		border-radius: 20rpx;
-		font-size: 24rpx;
-		text-align: center;
-		line-height: 40rpx;
-		color: #FF6867;
-		border: 2rpx solid #FF6867;
-		margin-right: 12rpx; */
 		width: 100rpx;
 		height: 40rpx;
 		line-height: 40rpx;
 		text-align: center;
 		border-radius: 20rpx;
 		overflow: hidden;
-		/* transform: translateY(-2rpx); */
 		margin-right: 24rpx;
 		border: 2rpx solid #FF6867;
 		background: #fff;
 		color: #FF6867;
+	}
+	.questionbank-item .btn1 {
+		width: 100rpx;
+		height: 40rpx;
+		line-height: 40rpx;
+		text-align: center;
+		border-radius: 20rpx;
+		overflow: hidden;
+		margin-right: 24rpx;
+		background: rgba(0,0,0,.1);
+		color: rgba(0,0,0,.5);
 	}
 </style>

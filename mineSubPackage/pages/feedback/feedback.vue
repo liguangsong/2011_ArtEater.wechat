@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='意见反馈' paddingTop="144">
+	<TopNavbar title='意见反馈' paddingTop="224">
 	<view style="padding: 0 30rpx;">
 		<u-form :model="form" label-position="top" :border-bottom="false" ref="uForm" :rules="rules">
 			<u-form-item :label-width="150" :border-bottom="false" prop="content">

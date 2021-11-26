@@ -1,10 +1,10 @@
 <template>
-	<TopNavbar title='我的优惠券' paddingTop="116" bg='#fafafa'>
+	<TopNavbar title='我的优惠券' paddingTop="204" bg='#fafafa'>
 	<view style="text-align: center;padding-bottom: 100rpx;">
 		<view class="testView" v-if="!coupons||coupons.length==0">
 			<view style="text-align: center;padding-top: 200rpx;">
 				<view style="text-align: center;height: 228rpx;">
-					<image mode="aspectFit" src="../../static/coupon-white.png" style="width: 750rpx;height: 486rpx;">
+					<image mode="aspectFit" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/coupon-white.png" style="width: 750rpx;height: 486rpx;">
 					</image>
 				<view
 					style="line-height: 40rpx;font-family: PingFangSC-Medium;font-size: 28rpx;color: rgba(0,0,0,0.6);margin-top: 28rpx;">
@@ -15,10 +15,10 @@
 		<view :class="'couponItem '+((coupon.tipName&&coupon.productType&&coupon.productType!='all')?'large':'')"
 			v-for="coupon in coupons">
 			<view class="bg1" v-if="coupon.tipName&&coupon.productType&&coupon.productType!='all'">
-				<image src="../../static/coupon1.png"></image>
+				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/coupon1.png"></image>
 			</view>
 			<view class="bg" v-else>
-				<image src="../../static/coupon2.png"></image>
+				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/coupon2.png"></image>
 			</view>
 			<view :class="'content '+  (coupon.state!=0?'enable':'')">
 				<view style="display: flex;width: 100%;">

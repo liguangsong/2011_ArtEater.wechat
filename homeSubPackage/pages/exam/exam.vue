@@ -3,13 +3,23 @@
 		<view class="timeView">
 			考试剩余时间：<u-count-down color="#b1b1b1" font-size="26" separator="zh" separator-size="26" @end='handleTimeOut' separator-color="#b1b1b1" @change="handleChange" :timestamp="endTime"></u-count-down>
 		</view>
-		<view class="questionView">
+		<view class="questionView" style='margin-top: 100rpx;margin-bottom: 120rpx;'>
 			<view class="headView">
+				<image class="red-block" src="../../../static/icon/icon_red_block.png"></image>
 				<view v-if="questionDetail.type==1" class="queType">单选题</view>
 				<view v-if="questionDetail.type==2" class="queType">多选题</view>
 				<view v-if="questionDetail.type==3" class="queType">填空题</view>
 				<view v-if="questionDetail.type==4" class="queType">多项选择题</view>
-				<view class="countView">{{index}}/{{count}}</view>
+				<view class="countView">
+					<view class="prev">
+						<image v-if="subjectIndex==1" src="../../../static/icon/icon_one.png"></image>
+						<image v-else src="../../../static/icon/icon_prev.png"></image>
+					</view>
+					<view class="process">{{index}}/{{count}}</view>
+					<view class="next">
+						<image src="../../../static/icon/icon_next.png"></image>
+					</view>
+				</view>
 			</view>
 			<view class="imgView">
 				<view class="imgItem" v-for="img in questionDetail.images">
@@ -67,8 +77,8 @@
 </template>
 
 <script>
-	import myRadioGroup from '../../components/myRadio/myRadioGroup.vue'
-	import { dateFormat, toDateFromString,addMonths, addDays, addSeconds, GetRandomNum } from '../../js/common.js'
+	import myRadioGroup from '@/components/myRadio/myRadioGroup.vue'
+	import { dateFormat, toDateFromString,addMonths, addDays, addSeconds, GetRandomNum } from '@/js/common.js'
 	const codes = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	export default {
 		components:{
@@ -98,7 +108,11 @@
 				version: ''
 			}
 		},
+		onShow() {
+			console.log(9999999);
+		},
 		onLoad(options) {
+			console.log(options,'--------');
 			var self = this
 			if(options.tid){
 				this.examId = options.tid
@@ -621,181 +635,7 @@
 	}
 </script>
 
+
 <style>
-	page{
-		background-color: #fbfbfb;
-	}
-	.timeView{
-		height: 72rpx;
-		line-height: 72rpx;
-		padding-left: 36rpx;
-		font-size: 26rpx;
-		color: #b1b1b1;
-		font-family: PingFangSC-Medium;
-		background-color: #ffffff;
-		position: fixed;
-		top: 0;
-		width: 100%;
-	}
-	.questionView{
-		padding: 0 36rpx;
-		margin-top: 104rpx;
-		padding-bottom: 200rpx;
-	}
-	.questionView .headView{
-		display: flex;
-	}
-	.questionView .headView .queType{
-		flex: 1;
-		font-size: 38rpx;
-		font-weight: bold;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		line-height: 50rpx;
-		height: 50rpx;
-	}
-	.questionView .headView .countView{
-		width: 150rpx;
-		text-align: right;
-		font-size: 26rpx;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		line-height: 50rpx;
-		height: 50rpx;
-	}
-	.questionView .imgView{
-		margin-top: 60rpx;
-	}
-	.questionView .imgView image{
-		width: 100%;
-	}
-	.questionView .title{
-		margin-top: 24rpx;
-		font-size: 34rpx;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		line-height: 80rpx;
-	}
-	.questionView .title .tips{
-		display: inline;
-		font-size: 26rpx;
-		color: rgb(53,32,38,0.4);
-		font-size: PingFangSC-Medium;
-		line-height: 80rpx;
-	}
-	.questionView .title .inputTxt{
-		border: 2rpx solid #e3e3e3;
-		border-radius: 20rpx;
-		background-color: #FFFFFF;
-		height: 64rpx;
-		line-height: 60rpx;
-		max-width: 630rpx;
-		min-width: 80rpx;
-		width: 80rpx;
-		padding: 0 30rpx;
-		display: inline-block;
-		margin: 0 20rpx;
-		vertical-align: middle;
-		font-size: 34rpx;
-		font-weight: normal;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-	}
-	.questionView .title .txt{
-		border: 2rpx solid #e3e3e3;
-		border-radius: 20rpx;
-		background-color: #FFFFFF;
-		height: 64rpx;
-		line-height: 60rpx;
-		min-width: 80rpx;
-		padding: 0 30rpx;
-		display: inline-block;
-		margin: 0 20rpx;
-		vertical-align: middle;
-		font-size: 34rpx;
-		font-weight: normal;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		border-radius: 20rpx;
-	}
-	.questionView .title .txt.success{
-		color: #3cc0da;
-		background-color: #eaf1f4;
-		border: 2rpx solid #d9e6e7;
-	}
-	.questionView .title .txt.error{
-		color: #fa5151;
-		background-color: #ffe8e8;
-		border: 2rpx solid #ffdfdf;
-	}
-	.questionView .options{
-		padding: 20rpx 0;
-	}
-	.actionView{
-		/* margin-top: 50rpx; */
-		width: 100%;
-		padding: 36rpx;
-		height: 196rpx;
-		position: fixed;
-		bottom: 0;
-		padding-top: 12rpx;
-		background-color: #fbfbfa;
-	}
-	.actionView button{
-		width: 100%;
-		height: 92rpx;
-		border-radius: 46rpx;
-		background-color: #ED3535;
-		color: #ffffff;
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-		border: 0;
-	}
-	.actionView button::after{
-		border: 0;
-	}
-	.actionView button.noAnswer{
-		background-color: #ffe8e8;
-	}
-	.actionView button.hasAnswer{
-		background-color: #ED3535;
-	}
-	.commentView{
-		background-color: #FFFFFF;
-		border-radius: 46rpx;
-		padding: 60rpx 40rpx;
-		margin-top: 10rpx;
-	}
-	.commentView .rightAnswer{
-		font-size: 30rpx;
-		font-weight: bold;
-		/* height: 42rpx; */
-		line-height: 42rpx;
-		font-family: PingFangSC-Medium;
-		color: #352026;
-		margin-right: 10rpx;
-	}
-	.commentView .comment{
-		margin-top: 32rpx;
-		font-size: 26rpx;
-		line-height: 42rpx;
-		font-family: PingFangSC-Medium;
-		color: #352026;
-	}
-	.actionView button.next{
-		background-color: #FFFFFF;
-		border: 2rpx solid #ffb9b8;
-		color: #f16564;
-	}
-	.vtips{
-		text-align: right;
-		font-size: 18rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.7);
-	}
-	.imgView .imgItem{
-		margin-bottom: 20rpx;
-	}
+	@import '@/css/dati.css'
 </style>

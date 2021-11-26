@@ -6,11 +6,10 @@
 				<image @tap.stop v-if="sharePicImg" :src="sharePicImg" mode="aspectFill" class="bgImg"></image>
 				<!-- <button class="download" @click="handleSaveImg">保存并分享</button> -->
 				<view @click="handleSaveImg" class="download">
-					<image src="../../../static/icon_sharebg.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon_sharebg.png"></image>
 					<view class="title">保存并分享</view>
 				</view>
 			</view>
-			<view class="bg"></view>
 		</view>
 	</TopNavbar>
 </template>
@@ -231,7 +230,7 @@
 								context.fillText(days, (190 - m4.width / factor) / 2 * factor, 988 * factor )
 								// 天
 								context.setFontSize(22*factor)
-								context.setFillStyle('rgba(255, 255, 255, 0.7)')
+								context.setFillStyle('rgba(237, 53, 53, 1)')
 								context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
 								const m5 = context.measureText('天')
 								context.fillText('天', ((190 - (m4.width / factor)) / 2 * factor) + (m4.width), 988*factor )
@@ -253,7 +252,7 @@
 								context.fillText(percent, 400* factor + (200 - m7.width / factor) / 2 * factor, 988 * factor )
 								// %
 								context.setFontSize(22*factor)
-								context.setFillStyle('rgba(255, 255, 255, 0.7)')
+								context.setFillStyle('rgba(237, 53, 53, 1)')
 								context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
 								const m8 = context.measureText('%')
 								context.fillText('%', 400 * factor + ((200 - (m7.width / factor)) / 2 * factor) + (m7.width), 988*factor )

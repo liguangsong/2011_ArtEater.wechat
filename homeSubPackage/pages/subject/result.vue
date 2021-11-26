@@ -11,7 +11,7 @@
 		<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
 		<!-- <button @click="handleShare" class="btnShare">分享</button> -->
 		<view @click="handleShare" class="btnShare">
-			<image src="../../../static/icon_sharebg.png"></image>
+			<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon_sharebg.png"></image>
 			<view class="title">分享</view>
 		</view>
 		<button @click="handHomePage" class="btnPrev">返回</button>

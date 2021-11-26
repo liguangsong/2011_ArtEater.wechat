@@ -50,7 +50,7 @@
 		<template v-else>
 			<view style="text-align: center;padding-top: 200rpx;">
 				<view style="text-align: center;">
-					<image mode="aspectFit" src="/static/icon_video_null.png" style="width:422rpx;height: 362rpx;"></image>
+					<image mode="aspectFit" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon_video_null.png" style="width:422rpx;height: 362rpx;"></image>
 				</view>
 				<view style="font-family: PingFangSC-Medium;font-size: 38rpx;line-height: 42rpx;margin-top:20rpx;color: rgba(53, 32, 38, 0.7);">
 				暂无视频课程</view>

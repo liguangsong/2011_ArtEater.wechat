@@ -81,6 +81,7 @@
 		},
 		methods: {
 			handleTestClick(e){
+				console.log(111111, e.id);
 				uni.navigateTo({
 					url:'./exam?tid=' + e.id
 				})

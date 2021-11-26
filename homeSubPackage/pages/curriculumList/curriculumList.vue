@@ -3,7 +3,7 @@
 		<!-- <audition-learning :list="curriculumList" v-if="curriculumList.length&&moduleName=='正在学习'" @learnChangeUrl="changeUrl"></audition-learning>
 		<audition :list="curriculumList" v-else-if="curriculumList.length" @changeUrl="changeUrl"></audition> -->
 		<Navbar navbarBg='#F7F7F7' :title='moduleName' align='center' fontColor="#000" iconColor='#000'>
-			<!-- <view style='height: 24rpx;'></view> -->
+			<view v-if='moduleName == "正在学习"' style='height: 20rpx;'></view>
 			<audition-learning :list="curriculumList" v-if="curriculumList.length&&moduleName=='正在学习'" @learnChangeUrl="changeUrl"></audition-learning>
 			<audition :list="curriculumList" v-else-if="curriculumList.length" @changeUrl="changeUrl"></audition>
 		</Navbar>

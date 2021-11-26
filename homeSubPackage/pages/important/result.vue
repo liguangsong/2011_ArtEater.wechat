@@ -18,7 +18,7 @@
 		</view> -->
 		<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
 		<view @click="handleShare" class="btnShare">
-			<image src="../../static/icon_sharebg.png"></image>
+			<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon_sharebg.png"></image>
 			<view class="title">分享</view>
 		</view>
 		<button @click="handHomePage" class="btnPrev">返回</button>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-	import config from 'static/config/index.js'
+	import config from '@/static/config/index.js'
 	export default {
 		data() {
 			return {

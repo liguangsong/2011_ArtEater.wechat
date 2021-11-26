@@ -243,15 +243,16 @@
 			uni.hideTabBar({
 				animation: false
 			});
+			var app = getApp();
+			var member = app.globalData.member;
 			let res = await Utils.getcount();
 			if (res) {
 				this.userInfo = res.userInfo;
 				this.msgCount = res.msgCount;
 				this.couponCount = res.couponCount;
 				// //获取本地正在学习的课程
-				this.getLearning();
-				var app = getApp();
-				var member = app.globalData.member;
+				this.getLearning();	
+				
 				// 判断是不是会员
 				if (member) {
 					if (member.memberType != 2) {
@@ -266,11 +267,12 @@
 							results.save();
 						}
 					}
+					
 				} else {
 					await this.getMember();
 				}
-
 			}
+			
 			this.bindConfig();
 			//获取所有的模块
 			this.getModules();
@@ -310,6 +312,8 @@
 			recommendQuery.find().then(recommends => {
 				self.recommends = recommends
 			})
+			
+			
 		},
 		methods: {
 			async getMember() {
@@ -326,6 +330,7 @@
 				if (results) {
 					var r = JSON.parse(JSON.stringify(results));
 					app.globalData.member = r;
+					// this.handleImportant(r)
 					if (r.memberType != 2) {
 						if (r.endTime > Date.now()) {
 							this.vip = true;
@@ -461,6 +466,8 @@
 					self.zdtkConfig = app.globalData.zdtkConfig
 					self.mnksConfig = app.globalData.mnksConfig
 					self.bindOrder()
+					
+					// self.handleImportant()
 				})
 			},
 			//正在学习
@@ -484,7 +491,6 @@
 			},
 			/* 登录完成 */
 			handleLoginComplate() {
-				console.log(11111111000000);
 				var self = this
 				this.isShowLogin = false
 				uni.getStorage({
@@ -539,16 +545,29 @@
 				}
 			},
 			/*重点题库*/
+			// handleImportant(member) {
+			// 		if (this.zdtkConfig.get('isNeedPay') == 1 && this.hasBuyedZDTK) { // 需要购买，但是没买
+			// 			// this.isShowImportBuy = true
+			// 			console.log(999999);
+			// 			uni.setStorage({
+			// 				key: 'tiku',
+			// 				data: true,
+			// 			})
+			// 		}
+			// },
 			handleImportantClick() {
 				let app = getApp()
 				if (this.userInfo && this.userInfo.openid) {
 					var member = app.globalData.member;
 					if (this.userInfo.phone) { // 已绑定手机号
-						if (member.memberType == 0 || member.memberType == 1) {
-							uni.navigateTo({
-								url: '../important/index'
-							})
-							return;
+						if (member) {
+							
+							if (member.memberType == 0 || member.memberType == 1) {
+								uni.navigateTo({
+									url: '/homeSubPackage/pages/important/index'
+								})
+								return;
+							}
 						}
 						if (this.zdtkConfig.get('isNeedPay') == 1 && !this.hasBuyedZDTK) { // 需要购买，但是没买
 							// this.isShowImportBuy = true
@@ -562,7 +581,7 @@
 							})
 						} else {
 							uni.navigateTo({
-								url: '../important/index'
+								url: '/homeSubPackage/pages/important/index'
 							})
 						}
 					} else { // 未绑定手机号，跳转至绑定页
@@ -581,11 +600,14 @@
 				if (this.userInfo && this.userInfo.openid) {
 					var member = app.globalData.member;
 					if (this.userInfo.phone) {
-						if (member.memberType == 0 || member.memberType == 1) {
-							uni.navigateTo({
-								url: '../exam/index'
-							})
-							return;
+						if (member) {
+							
+							if (member.memberType == 0 || member.memberType == 1) {
+								uni.navigateTo({
+									url: '/homeSubPackage/pages/exam/index'
+								})
+								return;
+							}
 						}
 						if (this.mnksConfig.get('isNeedPay') == 1 && !this.hasBuyedMNKS) { // 需要购买，但是没买
 							// this.isShowTestBuy = true
@@ -599,7 +621,7 @@
 							})
 						} else {
 							uni.navigateTo({
-								url: '../exam/index'
+								url: '/homeSubPackage/pages/exam/index'
 							})
 						}
 					} else {

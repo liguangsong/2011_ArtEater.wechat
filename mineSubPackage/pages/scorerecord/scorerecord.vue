@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='积分记录' paddingTop="128">
+	<TopNavbar title='积分记录' paddingTop="188">
 		<view>
 		<view class="scoreView">
 			<view class="title">当前积分：</view>

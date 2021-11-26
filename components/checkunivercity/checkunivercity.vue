@@ -1,19 +1,21 @@
 <template>
 	<view>
-		<u-popup v-model="visiable" height="100%" mode="bottom" @close="handleCancle">
+		<u-popup v-model="visiable" mode="bottom" @close="handleCancle">
 			<TopNavbar bg='#fff' title='目标院校' @closeNavbar='$emit("changeVisiable")' :iconFn='true'>
-				<view class="myckView">
-					<view class="checkGroup">
-						<view class="checkItem" v-for="(item, index) in universities" @click="handleCheckItem" :data-item="item">
-							<view :class="'title '+ (item.checked?'checked':'')">{{item.name}}</view>
-							<view class="icon">
-								<image v-if="!item.checked" src="../../static/icon/icon_check_normal.png"></image>
-								<image v-else src="../../static/icon/icon_check_checked.png"></image>
+				<scroll-view style='height: calc(100% - 140rpx);' :scroll-y='true'>
+					
+					<view class="myckView">
+						<view class="checkGroup">
+							<view class="checkItem" v-for="(item, index) in universities" @click="handleCheckItem" :data-item="item">
+								<view :class="'title '+ (item.checked?'checked':'')">{{item.name}}</view>
+								<view class="icon">
+									<image v-if="!item.checked" src="../../static/icon/icon_check_normal.png"></image>
+									<image v-else src="../../static/icon/icon_check_checked.png"></image>
+								</view>
 							</view>
 						</view>
 					</view>
-				</view>
-				<view style='height: 140rpx;'></view>
+				</scroll-view>
 			</TopNavbar>
 			<view class="close">
 				<button class="btnChoose" @click="handleComplate">确定</button>
@@ -47,6 +49,7 @@
 					{code:'中国美术学院',name:'中国美术学院',checked:false},
 					{code:'四川美术学院',name:'四川美术学院',checked:false},
 					{code:'广州美术学院',name:'广州美术学院',checked:false},
+					{code:'鲁迅美术学院',name:'鲁迅美术学院',checked:false},
 					{code:'天津美术学院',name:'天津美术学院',checked:false},
 					{code:'西安美术学院',name:'西安美术学院',checked:false},
 					{code:'湖北美术学院',name:'湖北美术学院',checked:false},
@@ -113,7 +116,7 @@
 	.checkGroup{
 		padding-left: 48rpx;
 		text-align: center;
-		height: 100%;
+		
 	}
 	.checkGroup .checkItem{
 		width: 100%;

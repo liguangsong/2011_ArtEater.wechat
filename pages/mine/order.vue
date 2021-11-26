@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='积分兑换' paddingTop='138'>
+	<TopNavbar title='积分兑换' paddingTop='218'>
 		<view class="myPage">
 			<view class="tabView">
 				<view :class="'tabItem ' + (tab=='tab1'? 'curr':'')" @click="tab = 'tab1'">
@@ -15,7 +15,7 @@
 					</view>
 				</view>
 			</view>
-			<view style='height: calc(100vh - 226rpx); overflow-y: auto;'>
+			<view style='height: calc(100vh - 268rpx); overflow-y: auto;'>
 				<view class="buyView" v-if="tab=='tab1'">
 					<view class="myView" :style="{height:(windowHeight - 510)+'rpx',paddingBottom:'30rpx'}">
 						<view class="buyView">
@@ -117,7 +117,7 @@
 								您将购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
 							</view>
 							<view class="tips">
-								购买后可在【个人中心-会员中心-已购项目】中查看
+								购买后可在【个人中心-积分兑换-已购项目】中查看
 							</view>
 						</view>
 						<view @click="isShowBuyTips=false" class="btnActions"
@@ -540,8 +540,7 @@
 			/* 查看详情 */
 			showComments(comments) {
 				this.comments = comments
-				this.isShowProductDetail = true
-				return
+				// this.isShowProductDetail = true
 				if (comments) {
 					this.comments = comments
 					this.isShowProductDetail = true
@@ -785,7 +784,14 @@
 		line-height: 44rpx;
 		margin-bottom: 6rpx;
 	}
-
+	
+	.orderItem .conView .subject {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		width: 350rpx;
+	}
+	
 	.orderItem .headView {
 		font-size: 20rpx;
 		font-family: PingFangSC-Semibold, PingFang SC !important;
@@ -838,6 +844,9 @@
 		font-weight: 500;
 		color: rgba(0, 0, 0, .9);
 		line-height: 44rpx;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 
 	.myView .contentView .titleView .price {

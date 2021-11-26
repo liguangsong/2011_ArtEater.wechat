@@ -24,8 +24,8 @@
 								<view class="actionExtend"
 									style="text-align: center;height: 50rpx;line-height: 50rpx;position: relative;left: 10rpx;"
 									@click="handleExtend(subject)">
-									<image v-if="!subject.extend" src="../../static/icon/icon_add.png"></image>
-									<image v-else src="../../static/icon/icon_remove.png"></image>
+									<image v-if="!subject.extend" src="../../../static/icon/icon_add.png"></image>
+									<image v-else src="../../../static/icon/icon_remove.png"></image>
 								</view>
 							</template>
 						</view>
@@ -34,20 +34,20 @@
 						
 						<view class="content" style="padding-left: 0;">
 							<view class="conView">
-								<view class="listTxt" @click="handleNameClick" :data-item="subject">
+								<view class="listTxt" @click="handleTestClick" :data-item="subject">
 									{{subject.subject_name}}
-									<image v-if="subject.price==0" src="../../static/icon/icon_free.png" class='free'></image>
+									<image v-if="subject.price==0" src="../../../static/icon/icon_free.png" class='free'></image>
 									
 								</view>
 								<!-- -------- -->
 								<view class="listAction">
 									<view class="action" @click="handleNameClick" :data-item="subject">
-										<image v-if="subject.content" src="../../static/icon/icon_order.png">
+										<image v-if="subject.content" src="../../../static/icon/icon_order.png">
 										</image>
 									</view>
 									
 									<view class="action" @click="handleTestClick" :data-item="subject">
-										<image src="../../static/icon/icon_pencle.png"></image>
+										<image src="../../../static/icon/icon_pencle.png"></image>
 										<view class="progress">
 											<u-line-progress :percent="subject.progress*100/subject.childrenCount"
 												:show-percent="false" height="4" active-color="#ED3535">
@@ -62,21 +62,21 @@
 									<view class="listIcon">
 										<template v-if="sub.has_down_level">
 											<view class="actionExtend" @click="handleExtend(sub)">
-												<image v-if="!sub.extend" src="../../static/icon/icon_add_child.png">
+												<image v-if="!sub.extend" src="../../../static/icon/icon_add_child.png">
 												</image>
-												<image v-else src="../../static/icon/icon_remove_children.png"></image>
+												<image v-else src="../../../static/icon/icon_remove_children.png"></image>
 											</view>
 										</template>
 										<template v-else>
 											<view class="actionExtend"
 												style="text-align: center;height: 50rpx;position: relative;">
-												<image src="../../static/icon/icon_nochild.png"></image>
+												<image src="../../../static/icon/icon_nochild.png"></image>
 											</view>
 										</template>
 									</view>
 									<view class="content">
 										<view class="conView">
-											<view class="listTxt" @click="handleNameClick" :data-item="sub">
+											<view class="listTxt" @click="handleTestClick" :data-item="sub">
 												{{sub.subject_name}}
 												</view>
 											<view class="listAction">
@@ -85,7 +85,7 @@
 														src="../../../static/icon/icon_order.png"></image>
 												</view>
 												<view class="action" @click="handleTestClick" :data-item="sub">
-													<image src="../../static/icon/icon_pencle.png"></image>
+													<image src="../../../static/icon/icon_pencle.png"></image>
 													<view class="progress">
 														<u-line-progress :percent="sub.progress*100/sub.childrenCount"
 															:show-percent="false" height="4" active-color="#ff6867">
@@ -101,27 +101,34 @@
 													<template v-if="sub1.has_down_level">
 														<view class="actionExtend" @click="handleExtend(sub1)">
 															<image v-if="!sub1.extend"
-																src="../../static/icon/icon_add_child.png"></image>
+																src="../../../static/icon/icon_add_child.png"></image>
 															<image v-else
-																src="../../static/icon/icon_remove_children.png">
+																src="../../../static/icon/icon_remove_children.png">
 															</image>
 														</view>
 													</template>
 													<template v-else>
 														<view class="actionExtend"
 															style="text-align: center;height: 50rpx;position: relative;">
-															<image src="../../static/icon/icon_nochild.png"></image>
+															<image src="../../../static/icon/icon_nochild.png"></image>
 														</view>
 													</template>
 												</view>
 												<view class="content">
+													
+
+													
 													<view class="conView">
-														<view class="listTxt" @click="handleNameClick" style="font-weight: 400;font-family: PingFangSC-Regular, PingFang SC;"
+														<view class="listTxt" @click="handleTestClick" style="font-weight: 400;font-family: PingFangSC-Regular, PingFang SC;"
 															:data-item="sub1">{{sub1.subject_name}}</view>
 														<view class="listAction">
+															<view class="action" @click="handleNameClick" :data-item="sub1">
+																<image v-if="sub.content"
+																	src="../../../static/icon/icon_order.png"></image>
+															</view>
 															<view class="action" @click="handleTestClick"
 																:data-item="sub1">
-																<image src="../../static/icon/icon_pencle.png"></image>
+																<image src="../../../static/icon/icon_pencle.png"></image>
 																<view class="progress">
 																	<u-line-progress
 																		:percent="sub1.progress*100/sub1.childrenCount"
@@ -140,17 +147,17 @@
 																	<view class="actionExtend"
 																		@click="handleExtend(sub2)">
 																		<image v-if="!sub2.extend"
-																			src="../../static/icon/icon_add_child.png">
+																			src="../../../static/icon/icon_add_child.png">
 																		</image>
 																		<image v-else
-																			src="../../static/icon/icon_remove_children.png">
+																			src="../../../static/icon/icon_remove_children.png">
 																		</image>
 																	</view>
 																</template>
 																<template v-else>
 																	<view class="actionExtend"
 																		style="text-align: center;height: 50rpx;position: relative;">
-																		<image src="../../static/icon/icon_nochild.png">
+																		<image src="../../../static/icon/icon_nochild.png">
 																		</image>
 																	</view>
 																</template>
@@ -163,7 +170,7 @@
 																		<view class="action" @click="handleTestClick"
 																			:data-item="sub2">
 																			<image
-																				src="../../static/icon/icon_pencle.png">
+																				src="../../../static/icon/icon_pencle.png">
 																			</image>
 																			<view class="progress">
 																				<u-line-progress
@@ -184,10 +191,10 @@
 																				<view class="actionExtend"
 																					@click="handleExtend(sub3)">
 																					<image v-if="!sub3.extend"
-																						src="../../static/icon/icon_add_child.png">
+																						src="../../../static/icon/icon_add_child.png">
 																					</image>
 																					<image v-else
-																						src="../../static/icon/icon_remove_children.png">
+																						src="../../../static/icon/icon_remove_children.png">
 																					</image>
 																				</view>
 																			</template>
@@ -195,7 +202,7 @@
 																				<view class="actionExtend"
 																					style="text-align: center;height: 50rpx;position: relative;">
 																					<image
-																						src="../../static/icon/icon_nochild.png">
+																						src="../../../static/icon/icon_nochild.png">
 																					</image>
 																				</view>
 																			</template>
@@ -211,7 +218,7 @@
 																						@click="handleTestClick"
 																						:data-item="sub3">
 																						<image
-																							src="../../static/icon/icon_pencle.png">
+																							src="../../../static/icon/icon_pencle.png">
 																						</image>
 																						<view class="progress">
 																							<u-line-progress
@@ -235,10 +242,10 @@
 																								@click="handleExtend(sub4)">
 																								<image
 																									v-if="!sub4.extend"
-																									src="../../static/icon/icon_add_child.png">
+																									src="../../../static/icon/icon_add_child.png">
 																								</image>
 																								<image v-else
-																									src="../../static/icon/icon_remove_children.png">
+																									src="../../../static/icon/icon_remove_children.png">
 																								</image>
 																							</view>
 																						</template>
@@ -246,7 +253,7 @@
 																							<view class="actionExtend"
 																								style="text-align: center;height: 50rpx;position: relative;">
 																								<image
-																									src="../../static/icon/icon_nochild.png">
+																									src="../../../static/icon/icon_nochild.png">
 																								</image>
 																							</view>
 																						</template>
@@ -263,7 +270,7 @@
 																									@click="handleTestClick"
 																									:data-item="sub4">
 																									<image
-																										src="../../static/icon/icon_pencle.png">
+																										src="../../../static/icon/icon_pencle.png">
 																									</image>
 																									<view
 																										class="progress">
@@ -292,11 +299,11 @@
 																											@click="handleExtend(sub5)">
 																											<image
 																												v-if="!sub5.extend"
-																												src="../../static/icon/icon_add_child.png">
+																												src="../../../static/icon/icon_add_child.png">
 																											</image>
 																											<image
 																												v-else
-																												src="../../static/icon/icon_remove_children.png">
+																												src="../../../static/icon/icon_remove_children.png">
 																											</image>
 																										</view>
 																									</template>
@@ -305,7 +312,7 @@
 																											class="actionExtend"
 																											style="text-align: center;height: 50rpx;position: relative;">
 																											<image
-																												src="../../static/icon/icon_nochild.png">
+																												src="../../../static/icon/icon_nochild.png">
 																											</image>
 																										</view>
 																									</template>
@@ -326,7 +333,7 @@
 																												@click="handleTestClick"
 																												:data-item="sub5">
 																												<image
-																													src="../../static/icon/icon_pencle.png">
+																													src="../../../static/icon/icon_pencle.png">
 																												</image>
 																												<view
 																													class="progress">
@@ -382,7 +389,7 @@
 	import {
 		dateFormat,
 		GetRandomNum
-	} from '../../js/common.js'
+	} from '@/js/common.js'
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
@@ -629,7 +636,7 @@
 				var self = this
 				var item = e.currentTarget.dataset.item
 				uni.navigateTo({
-					url: 'exam?bsid=' + self.subjectId + '&sid=' + item.value,
+					url: '/homeSubPackage/pages/important/exam?bsid=' + self.subjectId + '&sid=' + item.value,
 					success(res) {
 						res.eventChannel.emit('subjectTree', item)
 					},
@@ -965,3 +972,4 @@
 		left: 507rpx;
 	}
 </style>
+

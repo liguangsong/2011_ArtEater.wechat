@@ -5,7 +5,7 @@
 			<image @tap.stop v-if="sharePicImg" :src="sharePicImg" mode="aspectFill" class="bgImg"></image>
 			<!-- <button class="download" @click="handleSaveImg">保存并分享</button> -->
 			<view @click="handleSaveImg" class="download">
-				<image src="../../../static/icon_sharebg.png"></image>
+				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon_sharebg.png"></image>
 				<view class="title">保存并分享</view>
 			</view>
 		</view>

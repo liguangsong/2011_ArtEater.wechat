@@ -1,5 +1,6 @@
 <template>
-	<TopNavbar title='个人信息' :paddingTop='164'>
+	<view>
+	<TopNavbar title='个人信息' :paddingTop='224'>
 		<view class="editForm">
 			<u-form :model="form" ref="uForm" :rules="rules">
 				<u-form-item label="头像" class='headimg' :label-width="150" prop="realname">
@@ -45,7 +46,7 @@
 					</view>
 				</u-form-item>
 				<u-form-item label="目标院校" :label-width="150" prop="university">
-					<checkunivercity :visiable="isShowUniversity"  @complate="handleComplate" :value="form.university" @changeVisiable='isShowUniversity = false'></checkunivercity>
+					
 					<u-input v-model="form.university" @click="handleUnClick" :custom-style="custStyle" :disabled="true" input-align="right" maxlength='30' placeholder="请选择目标院校" />
 					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item">
 						<u-icon name="arrow-right" size="26" color="#c0c4cc"></u-icon>
@@ -72,6 +73,8 @@
 			<!-- <u-button @click="submit">提交</u-button> -->
 		</view>
 	</TopNavbar>
+	<checkunivercity :visiable="isShowUniversity"  @complate="handleComplate" :value="form.university" @changeVisiable='isShowUniversity = false'></checkunivercity>
+	</view>
 </template>
 
 <script>

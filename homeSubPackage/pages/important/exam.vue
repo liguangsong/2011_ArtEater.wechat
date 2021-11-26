@@ -4,13 +4,13 @@
 			<view :class="'tabItem ' + (tab=='tab1'? 'curr':'')"  @click="tab = 'tab1'">
 				<view class="title">答题</view>
 				<view class="icon" v-if="tab=='tab1'">
-					<image src="../../static/icon/icon_tab_bg.png"></image>
+					<image src="../../../static/icon/icon_tab_bg.png"></image>
 				</view>
 			</view>
 			<view :class="'tabItem ' + (tab=='tab2'? 'curr':'')"  @click="tab = 'tab2'">
 				<view class="title">复习</view>
 				<view class="icon" v-if="tab=='tab2'">
-					<image src="../../static/icon/icon_tab_bg.png"></image>
+					<image src="../../../static/icon/icon_tab_bg.png"></image>
 				</view>
 			</view>
 		</view>
@@ -20,17 +20,19 @@
 			</view>
 			<view v-else class="questionView">
 				<view class="headView">
+					<image class="red-block" src="../../../static/icon/icon_red_block.png"></image>
 					<view v-if="questionDetail.type==1" class="queType">单选题</view>
 					<view v-if="questionDetail.type==2" class="queType">多选题</view>
 					<view v-if="questionDetail.type==3" class="queType">填空题</view>
 					<view v-if="questionDetail.type==4" class="queType">多项选择题</view>
 					<view class="countView">
 						<view class="prev">
-							<image src="../../static/icon/icon_prev.png"></image>
+							<image v-if="subjectIndex==1" src="../../../static/icon/icon_one.png"></image>
+							<image v-else src="../../../static/icon/icon_prev.png"></image>
 						</view>
-						<view>{{subjectIndex}}/{{count}}</view>
+						<view class="process">{{subjectIndex}}/{{count}}</view>
 						<view class="next">
-							<image src="../../static/icon/icon_next.png"></image>
+							<image src="../../../static/icon/icon_next.png"></image>
 						</view>
 					</view>
 				</view>
@@ -76,7 +78,7 @@
 			</view>
 			<view :class="'commentView ' + ((!isShowComments&&!hasBuyedComments)?'needbuy':'')" v-if="hasSubmit||tab=='tab2'">
 				<view class="bg" v-if="!isShowComments&&!hasBuyedComments">
-					<image src="../../static/dajxbg.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg.png"></image>
 				</view>
 				<view style="position: relative;padding: 60rpx 70rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
 					<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
@@ -88,9 +90,9 @@
 							<view class="accuracy">
 								<view :class="'apercent ' + (questionDetail.aPercent>=percentH?'h':(questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH?'m':'l'))">
 									<view class="icon">
-										<image v-if="questionDetail.aPercent>=percentH" src="../../static/icon/icon_percent_h.png"></image>
+										<image v-if="questionDetail.aPercent>=percentH" src="../../../static/icon/icon_percent_h.png"></image>
 										<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../static/icon/icon_percent_m.png"></image>
-										<image v-if="questionDetail.aPercent<percentM" src="../../static/icon/icon_percent_l.png"></image>
+										<image v-if="questionDetail.aPercent<percentM" src="../../../static/icon/icon_percent_l.png"></image>
 									</view>
 									<view>全民正确率：{{questionDetail.aPercent}}%</view>
 									<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
@@ -105,7 +107,7 @@
 								<view class="accuracy" style="margin: 0;">全民正确率：解锁试题解析可见</view>
 								<view  style="text-align: center;margin-top: 120rpx;">
 									<button class="btnComments" type="default" @click="handleBuyComments">
-										<image src="../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
+										<image src="../../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
 										<view style="text-indent: 20rpx;display: inline-block;">解锁试题解析</view>
 									</button>
 								</view>
@@ -114,9 +116,9 @@
 								<view class="accuracy">
 									<view :class="'apercent ' + (questionDetail.aPercent>=percentH?'h':(questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH?'m':'l'))">
 										<view class="icon">
-											<image v-if="questionDetail.aPercent>=percentH" src="../../static/icon/icon_percent_h.png"></image>
-											<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../static/icon/icon_percent_m.png"></image>
-											<image v-if="questionDetail.aPercent<percentM" src="../../static/icon/icon_percent_l.png"></image>
+											<image v-if="questionDetail.aPercent>=percentH" src="../../../static/icon/icon_percent_h.png"></image>
+											<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../../static/icon/icon_percent_m.png"></image>
+											<image v-if="questionDetail.aPercent<percentM" src="../../../static/icon/icon_percent_l.png"></image>
 										</view>
 										<view>全民正确率：{{questionDetail.aPercent}}%</view>
 										<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
@@ -176,7 +178,7 @@
 </template>
 
 <script>
-	import myRadioGroup from '../../components/myRadio/myRadioGroup.vue'
+	import myRadioGroup from '@/components/myRadio/myRadioGroup.vue'
 	export default {
 		components:{
 			myRadioGroup
@@ -1088,429 +1090,8 @@
 </script>
 
 <style>
-	page{
-		background-color: #fbfbfb;
-	}
-	
-	.tabView{
-		padding: 20rpx 48rpx 10rpx 48rpx;
-		display: flex;
-		border-bottom: 4rpx solid #f4f4f4;
-	}
-	.tabView .tabItem{
-		flex: 1;
-		text-align: center;
-		height: 50rpx;
-	}
-	.tabView .tabItem .title{
-		height: 36rpx;
-		font-family: PingFangSC-Medium;
-		font-size: 26rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.7);
-	}
-	.tabView .tabItem.curr .title{
-		color: #352026;
-	}
-	.tabView .tabItem .icon{
-		width: 52rpx;
-		height: 8rpx;
-		text-align: center;
-		display: inline-block;
-		position: relative;
-		top: -16rpx;
-	}
-	.tabView .tabItem .icon image{
-		width: 52rpx;
-		height: 8rpx;
-		display: inline-block;
-		vertical-align: middle;
-		position: absolute;
-		left: 0;
-	}
-	.buytipsView{
-		background-color: #ffb8b7;
-		height: 72rpx;
-		line-height: 72rpx;
-	}
-	.buytipsView .tipView{
-		display: flex;
-		padding: 0 36rpx;
-	}
-	.buytipsView .tipView .txt{
-		flex: 1;
-		font-size: 26rpx;
-		font-family: PingFangSC-Medium;
-		color: #ffffff;
-	}
-	.buytipsView .tipView .icon{
-		width: 50rpx;
-		text-align: right;
-	}
-	.questionView{
-		margin-top: 42rpx;
-		/* padding-bottom: 200rpx; */
-	}
-	.questionView .headView{
-		display: flex;
-		padding-left:36rpx;
-		padding-right:30rpx;
-	}
-	.questionView .headView .queType{
-		flex: 1;
-		font-size: 38rpx;
-		font-weight: bold;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		line-height: 50rpx;
-		height: 50rpx;
-	}
-	.questionView .headView .countView{
-		/* width: 150rpx; */
-		text-align: right;
-		font-size: 26rpx;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		line-height: 50rpx;
-		height: 50rpx;
-		display: inline-flex;
-	}
-	.questionView .headView .countView .prev{
-		width: 36rpx;
-		height: 50rpx;
-		line-height: 50rpx;
-		font-size: 0;
-		text-align: left;
-	}
-	.questionView .headView .countView .prev image{
-		width: 30rpx;
-		height: 30rpx;
-		display: inline-block;
-		vertical-align: middle;
-	}
-	.questionView .headView .countView .next{
-		width: 32rpx;
-		height: 50rpx;
-		line-height: 50rpx;
-		font-size: 0;
-		text-align: right;
-	}
-	.questionView .headView .countView .next image{
-		width: 30rpx;
-		height: 30rpx;
-		display: inline-block;
-		vertical-align: middle;
-	}
-	.questionView .imgView{
-		margin-top: 60rpx;
-		padding: 0 36rpx;
-	}
-	.questionView .imgView image{
-		width: 100%;
-	}
-	.questionView .title{
-		padding: 0 36rpx;
-		margin-top: 24rpx;
-		font-size: 34rpx;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		line-height: 80rpx;
-	}
-	.questionView .title .tips{
-		display: inline;
-		font-size: 26rpx;
-		color: rgb(53,32,38,0.4);
-		font-size: PingFangSC-Medium;
-		line-height: 80rpx;
-	}
-	.questionView .title .inputTxt{
-		border: 2rpx solid #e3e3e3;
-		border-radius: 20rpx;
-		background-color: #FFFFFF;
-		height: 64rpx;
-		line-height: 60rpx;
-		max-width: 630rpx;
-		min-width: 80rpx;
-		width: 80rpx;
-		padding: 0 30rpx;
-		display: inline-block;
-		margin: 0 20rpx;
-		vertical-align: middle;
-		font-size: 34rpx;
-		font-weight: normal;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-	}
-	.questionView .title .txt{
-		border: 2rpx solid #e3e3e3;
-		border-radius: 20rpx;
-		background-color: #FFFFFF;
-		height: 64rpx;
-		line-height: 60rpx;
-		min-width: 80rpx;
-		padding: 0 30rpx;
-		display: inline-block;
-		margin: 0 20rpx;
-		vertical-align: middle;
-		font-size: 34rpx;
-		font-weight: normal;
-		color: #352026;
-		font-size: PingFangSC-Medium;
-		border-radius: 20rpx;
-	}
-	.questionView .title .txt.success{
-		color: #32CD72;
-		width: 52rpx;
-		height: 52rpx;
-		background: rgba(50, 205, 114, 0.15);
-		border-radius: 8rpx;
-		border: 2rpx solid rgba(50, 205, 114, 0.29);
-	}
-	.questionView .title .txt.error{
-		color: #fa5151;
-		background-color: #ffe8e8;
-		border: 2rpx solid #ffdfdf;
-	}
-	.questionView .options{
-		padding: 20rpx 36rpx;
-	}
-	.actionView{
-		/* margin-top: 50rpx; */
-		width: 100%;
-		padding: 36rpx;
-		height: 196rpx;
-		position: fixed;
-		bottom: 0;
-		padding-top: 12rpx;
-		background-color: #fbfbfa;
-	}
-	.actionView button{
-		width: 100%;
-		height: 92rpx;
-		border-radius: 46rpx;
-		background-color: #ED3535;
-		color: #ffffff;
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-		border: 0;
-	}
-	.actionView button::after{
-		border: 0;
-	}
-	.actionView button.noAnswer{
-		background-color: #ffe8e8;
-	}
-	.actionView button.hasAnswer{
-		background-color: #ED3535;
-	}
-	.commentView{
-		/* background-color: #FFFFFF; */
-		border-radius: 46rpx;
-		padding: 60rpx 40rpx;
-		/* margin-top: 10rpx; */
-		/* margin-bottom: 196rpx; */
-		min-height: 472rpx;
-	}
-	.htmlView{
-		background-color: #FFFFFF;
-		padding: 36rpx 36rpx!important;
-        box-shadow: 0rpx 0px 12rpx 0rpx rgba(0,0,0,0.09);
-		border-radius: 26rpx;
-	}
-	.commentView.needbuy{
-		padding: 0;
-		position: relative;
-		background-color: unset;
-	}
-	.needbuy .bg{
-		position: absolute;
-		left: 0;
-		width: 100%;
-		height: 434rpx;
-	}
-	.needbuy .bg image{
-		width: 100%;
-		height: 434rpx;
-	}
-	
-	.commentView .rightAnswer{
-		font-size: 30rpx;
-		font-weight: bold;
-		/* height: 42rpx; */
-		line-height: 42rpx;
-		font-family: PingFangSC-Medium;
-		color: #352026;
-		margin-right: 10rpx;
-	}
-	.commentView .comment{
-		font-size: 26rpx;
-		line-height: 42rpx;
-		font-family: PingFangSC-Medium;
-		font-weight: normal;
-		font-stretch: normal;
-		line-height: 54rpx;
-		letter-spacing: 0rpx;
-		color: #352026;
-	}
-	.commentView .comment .accuracy{
-		font-family: PingFangSC-Regular;
-		font-size: 26rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.7);
-		margin: 36rpx 0;
-	}
-	.commentView .comment .accuracy .apercent{
-		height: 42rpx;
-		line-height: 42rpx;
-		font-family: PingFangSC-Regular;
-		font-size: 30rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(76, 192, 143, 0.95);
-		display: flex;
-	}
-	.commentView .comment .accuracy .apercent .icon{
-		width: 40rpx;height: 42rpx;line-height: 42rpx;font-size: 0;
-	}
-	.commentView .comment .accuracy .apercent.h{
-		color: rgba(76, 192, 143, 0.95);
-	}
-	.commentView .comment .accuracy .apercent.m{
-		color: #fbb955;
-	}
-	.commentView .comment .accuracy .apercent.l{
-		color: rgba(237, 53, 53, 0.7);
-	}
-	.commentView .comment .accuracy .apercent image{
-		width: 32rpx;
-		height: 32rpx;
-		display: inline-block;
-		vertical-align: middle;
-	}
-	.commentView .comment .accuracy .atips{
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(0, 0, 0, 0.4);
-		height: 26rpx;
-		font-size: 18rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		margin-top:12rpx;
-		line-height: 26rpx;
-		text-align: right;
-		flex: 1;
-	}
-	.actionView button.next{
-		background-color: #FFFFFF;
-		border: 2rpx solid #ffb9b8;
-		color: #f16564;
-	}
-	.actionView .btnGroup{
-		background-color: #FFFFFF;
-		border: 2px solid #D81E1F;
-		color: #D81E1F;
-		height: 92rpx;
-		line-height: 92rpx;
-		border-radius: 46rpx;
-		display: flex;
-		font-size: 34rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
-	}
-	.actionView .btnGroup .prev{
-		display: inline-block;
-		vertical-align: middle;
-		margin: auto 0;
-		width: 200rpx;
-		margin-left: 30rpx;
-		background-color:#ffffff;
-		border: 0;
-		border-radius: 0;
-		border-right: 1px solid #D81E1F;
-		color: #D81E1F;
-		height: 48rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		opacity: 0.8;
-		line-height: 48rpx;
-	}
-	.actionView .btnGroup .next{
-		display: inline-block;
-		vertical-align: middle;
-		margin: auto 0;
-		flex: 1;
-		border: 0;
-		color: #D81E1F;
-		height: 48rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		opacity: 0.8;
-		line-height: 48rpx;
-	}
-	.actionView .btnGroup .prev.disable,.actionView .btnGroup .next.disable{
-		color: rgba(53, 32, 38, 0.4);
-	}
-	.buylView {
-		width: 100%;
-	}
-	.buylView .title{
-		font-size: 38rpx;
-		font-weight: bold;
-		font-family: PingFangSC-Medium;
-		color: #352026;
-	}
-	.buylView .price{
-		font-size: 34rpx;
-		margin-top: 12rpx;
-		font-family: PingFangSC-Medium;
-		color: #ed3535;
-	}
-	.buylView .tips{		
-		font-size: 26rpx;
-		margin-top: 54rpx;
-		font-family: PingFangSC-Medium;
-		color: rgba(53,32,38,0.4);
-	}
-	.buylView .btnActions{
-		margin-top: 96rpx;
-	}
-	.buylView .btnActions button{
-		width: 100%;
-		height: 92rpx;
-		border-radius: 46rpx;
-		background-color: #ED3535;
-		color: #ffffff;
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-	}
-	.btnComments{
-		display: inline-block;
-		font-size: 24rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: #ff6867!important;
-		width: 254rpx;
-		height: 62rpx;
-		background-color: #ffe6e6!important;
-		border-radius: 31rpx;
-	}
-	.btnComments::after{
-		border: 0;
-	}
-	.vtips{
-		text-align: right;
-		font-size: 18rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.7);
-	}
-	.imgView .imgItem{
-		margin-bottom: 20rpx;
-	}
+	@import '@/css/dati.css'
+
 </style>
+
+

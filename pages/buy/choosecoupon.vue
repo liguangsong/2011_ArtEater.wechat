@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='选择优惠券' paddingTop="124" bg='#f7f7f7'>
+	<TopNavbar title='选择优惠券' paddingTop="204" bg='#f7f7f7'>
 	<view style="text-align: center;padding-bottom: 200rpx;">
 		<view class="noChooseItem" @click="handleCheckCoupon(null)">
 			<view class="title">暂不使用优惠券</view>

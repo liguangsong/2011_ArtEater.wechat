@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='积分兑换' paddingTop='298'>
+	<TopNavbar title='食艺兽' paddingTop='238'>
 		<view class="myPage">
 			<view class="boxView">
 				<view class="editForm" >
@@ -54,7 +54,7 @@
 					</u-form>
 					<view style='height: 500rpx;'></view>
 				</view>
-				<image class='writebg' src="../../static/writeinfo.png" mode=""></image>
+				<image class='writebg' src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/writeinfo.png" mode=""></image>
 			</view>
 		</view>
 		<u-select v-model="isShowArea" mode="mutil-column-auto" confirm-color="#352026"
@@ -63,7 +63,7 @@
 		<checkunivercity :visiable="isShowUniversity" @cancle="handleCancel"
 			@complate="handleComplate" :value="form.university" @changeVisiable='isShowUniversity = false'></checkunivercity>
 		<view class="btnView">
-			<image class="btnSubmit" @click="submit" src="../../static/journey.png" mode=""></image>
+			<image class="btnSubmit" @click="submit" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/journey.png" mode=""></image>
 		</view>
 	</TopNavbar>
 </template>

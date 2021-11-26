@@ -392,6 +392,7 @@
 			position: fixed;
 			width: 100%;
 			background: #fff;
+			z-index: 1000;
 
 			.tabbar {
 				width: 100%;
@@ -538,6 +539,8 @@
 			font-size: 24rpx;
 			overflow: hidden;
 			box-shadow: 0 0 8rpx 2rpx rgba(0, 0, 0, 0.08);
+			position: relative;
+			z-index: 10;
 		}
 
 		.html image,

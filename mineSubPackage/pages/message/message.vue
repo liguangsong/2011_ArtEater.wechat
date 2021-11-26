@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='消息中心' paddingTop="150">
+	<TopNavbar title='消息中心' paddingTop="214">
 	<view class="myPage u-demo-area">
 		<view class="readAllView">
 			<button v-if="notReadCount > 0" @click="handleReadAll">全部已读</button>
@@ -7,7 +7,7 @@
 		</view>
 		<view class="msgItem u-badge-wrap" v-for="msg in msgList" @click="handleMsgClick" :data-item="msg">
 			<view class="conImg">
-				<image src="../../static/bojin.png"></image>
+				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/coupon2.png"></image>
 			</view>
 			<view style='display: flex; flex: 1;border-bottom: 2rpx solid rgba(0,0,0,.1);'>
 				<view class="conView">
@@ -96,6 +96,7 @@
 							})
 							self.status = 'loadmore'
 							self.msgList = self.msgList.concat(mres)
+							console.log(self.msgList );
 						} else {
 							self.status = 'nomore'
 						}
@@ -173,6 +174,8 @@
 
 <style>
 	.myPage{
+		width: 100%;
+		overflow-x: hidden;
 		padding-left: 30rpx;
 	}
 	.myPage .readAllView{

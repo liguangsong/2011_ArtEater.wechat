@@ -98,7 +98,7 @@
 			/* 我的错题集 */
 			handleMyNoteClick(){
 				uni.navigateTo({
-					url:'../mine/note'
+					url:'/homeSubPackage/pages/error/note'
 				})
 			},
 			/*公共错题集*/
@@ -115,7 +115,7 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 	.blankpage {
 		position: relative;
 		height: 100%;

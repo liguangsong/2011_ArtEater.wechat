@@ -11,7 +11,6 @@
 					<view v-if="questionDetail.type==2" class="queType">多选题</view>
 					<view v-if="questionDetail.type==3" class="queType">填空题</view>
 					<view v-if="questionDetail.type==4" class="queType">多项选择题</view>
-					<!-- <view class="countView"></view> -->
 					<view class="countView">
 						<view class="prev">
 							<image v-if="subjectIndex==1" src="../../../static/icon/icon_one.png"></image>
@@ -79,7 +78,7 @@
 										<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../../static/icon/icon_percent_m.png"></image>
 										<image v-if="questionDetail.aPercent<percentM" src="../../../static/icon/icon_percent_l.png"></image>
 									</view>
-									<view style="flex: 1;">全民正确率：{{questionDetail.aPercent}}%</view>
+									<view style="flex: 1; ">全民正确率：{{questionDetail.aPercent}}%</view>
 								</view>
 								<view v-if="questionDetail.aPercent>=percentH" class="atips">此为送分题，且行且珍惜。</view>
 								<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
@@ -121,9 +120,8 @@
 		<view v-if="count > 0" class="actionView">	
 			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
 			<button v-if="hasSubmit && index < count" @click="handleNext" class="next">下一题</button>
-			<button v-if="hasSubmit && index == count" @click="handleHome" class="next">完成</button>
 		</view>
-		<!-- <u-popup v-model="isShowCommentBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
+		<u-popup v-model="isShowCommentBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
 			<view class="buylView" style="padding:74rpx 40rpx;">
 				<view class="title">{{dajxConfig.action}}</view>
 				<view class="price">¥{{dajxConfig.price}}</view>
@@ -137,7 +135,7 @@
 					<button @click="handleBuyCommentsBtnClick">确认购买</button>
 				</view>
 			</view>
-		</u-popup> -->
+		</u-popup>
 	</view>
 </template>
 
@@ -149,8 +147,6 @@
 		},
 		data() {
 			return {
-				// begin: new Date(),
-				// end: new Date(),
 				index: 1, // 当前序号
 				count:0, // 总题数
 				isShowComments: true, // 是否显示答案解析
@@ -166,7 +162,7 @@
 				notes:[],
 				dajxConfig: null, // 答案解析配置
 				hasBuyedComments: false, // 是否购买了答案解析
-				isShowCommentBuy: true,
+				isShowCommentBuy: false,
 				allQuestions:[],
 				version: '',
 				percentH: 0,
@@ -180,28 +176,18 @@
 				success: res => {
 					this.userInfo = res.data
 					uni.showLoading()
-					if(options.y){
-						let start = new Date(options.y, options.m, options.d, 0, 0, 0)
-						let end = new Date(options.y, options.m, options.d, 23, 59, 59)
-						let eQuery = new self.Parse.Query("QuestReport");
-						eQuery.equalTo('date', (options.y+'-'+options.m+'-'+options.d))
-						// eQuery.equalTo('result', false)
-						eQuery.descending('accuracy') // 错误率从大到小排序
-						eQuery.limit(10)
-						eQuery.find().then(res=>{
-							let ids = []
-							res.forEach(t=>{
-								ids.push(t.get('questionId'))
-							})
-							if(ids.length>0){
-								self.allQuestions = ids
-								self.bindQuestion()
-							} else {
-								uni.hideLoading()
-							}
+					var question = new self.Parse.Query("TestQuestions")
+					question.select('objectId')
+					question.limit(10000)
+					question.find().then(res=>{
+						let ids = []
+						res.forEach(t=>{
+							ids.push(t.id)
 						})
-						self.bindCommentsOrder()
-					}
+						self.allQuestions = ids
+						self.bindQuestion()
+					})
+					self.bindCommentsOrder()
 				}
 			})
 			uni.getSystemInfo({
@@ -279,29 +265,41 @@
 			/*加载题目*/
 			bindQuestion(){
 				var self = this
-				self.index = 1
-				self.count = 10
-				self.allQuestions = self.allQuestions.sort(function(){
-					return Math.random() - 0.5;
-				});
-				self.currnote = self.allQuestions[0]
-				self.notes = self.allQuestions
-				var cquery = new self.Parse.Query("TestQuestions")
-				cquery.get(self.currnote).then(res=>{
-					if(res){
-						var quesItem = JSON.parse(JSON.stringify(res))
-						self.existsQuestiionComments(quesItem)
-						if(quesItem.type == 3){
-							quesItem.cinputs = quesItem.title.split('____')
-						}
-						if(res.get('type') == 4){
-							quesItem.cinputs = quesItem.title.split('()')
-						}
-						quesItem.aPercent =  quesItem.accuracy?(quesItem.accuracy*100).toFixed(2):'0'
-						self.questionDetail = quesItem
-						self.options =  quesItem.options
+				var hisQuery = new this.Parse.Query("ErrorHistory")
+				hisQuery.equalTo("openid", this.userInfo.openid)
+				hisQuery.containedIn('questionId', self.allQuestions)
+				hisQuery.limit(10000)
+				hisQuery.ascending('createdAt')
+				hisQuery.find().then(hres=>{
+					if(hres) {
+						self.index = 1
+						self.count = hres.length
+						hres.sort(function(){
+							return Math.random() - 0.5;
+						});
+						self.currnote = hres[0]
+						self.notes = hres
+						var cquery = new self.Parse.Query("TestQuestions")
+						cquery.get(self.currnote.get('questionId')).then(res=>{
+							if(res){
+								var question = JSON.parse(JSON.stringify(res))
+								self.existsQuestiionComments(question)
+								if(question.type == 3){
+									question.cinputs = question.title.split('____')
+								}
+								if(question.type == 4){
+									question.cinputs = question.title.split('()')
+								}
+								question.aPercent =  (question.accuracy?(question.accuracy*100).toFixed(2):'0')
+								self.questionDetail = question
+								self.options =  question.options
+							}
+							uni.hideLoading()
+						})
+					} else {
+						self.count = 0
+						uni.hideLoading()
 					}
-					uni.hideLoading()
 				})
 			},
 			/*选择答案*/
@@ -414,6 +412,45 @@
 							}
 						})
 					}
+					if(result) { // 答对了，删除错题记录
+						/*错题记录*/
+						var query = new this.Parse.Query("ErrorHistory")
+						query.get(self.currnote.id).then((note)=>{
+							if(note.get('count')==2){
+								// 删除当前题目
+								note.destroy().then((delete_result)=>{
+									console.log('答对了，删除错题记录')
+									var queryRight = self.Parse.Object.extend("RightHistory")
+									var query = new self.Parse.Query(queryRight)
+									query.equalTo('openid', self.userInfo.openid)
+									query.first().then(rhis=>{
+										if(rhis){ // 已存在正确记录
+											let _questionId = rhis.get('questions').find(t=>{
+												return t == self.questionDetail.objectId
+											})
+											if(!_questionId){ // 不存在正确记录中，保存至正确记录
+												let _questionIds = rhis.get('questions')
+												_questionIds.push(self.questionDetail.objectId)
+												rhis.set('questions',_questionIds)
+												rhis.save()
+											}
+										} else {
+											let _questionIds = [self.questionDetail.objectId]
+											var dbRight = new queryRight()
+											dbRight.set('openid', self.userInfo.openid)
+											dbRight.set('questions',_questionIds)
+											dbRight.save()											
+										}
+										
+									})
+								})								
+							} else {
+								note.set('count',note.get('count')+1)
+								note.save()
+							}
+						})
+					}
+					
 					let _questionId =  self.questionDetail.objectId
 					// 答题记录和赠送积分
 					self.Parse.Config.get().then(config=>{
@@ -477,7 +514,6 @@
 										})
 									})
 								})
-								
 								var examRecordQuery = new self.Parse.Query(ExamRecords)
 								let now = new Date()
 								let y = now.getFullYear()
@@ -495,7 +531,7 @@
 									examRecordRightQuery.greaterThanOrEqualTo('createdAt', start)
 									examRecordRightQuery.lessThanOrEqualTo('createdAt', end)
 									examRecordRightQuery.count().then(errorCount=>{
-										console.log('错误率：'+ errorCount + '/' + examCount)
+										console.log('正确率：'+ errorCount + '/' + examCount)
 										var QuestReports = self.Parse.Object.extend("QuestReport")
 										let reportQuery = new self.Parse.Query(QuestReports)
 										let date = y+'-'+m+'-'+d
@@ -529,35 +565,29 @@
 				this.canSubmit = false;
 				this.currnote = this.notes[this.index-1]
 				var cquery = new self.Parse.Query("TestQuestions")
-				cquery.get(this.currnote).then(res=>{
+				cquery.get(this.currnote.get('questionId')).then(res=>{
 					if(res){
-						var quesItem = JSON.parse(JSON.stringify(res))
-						if(quesItem.type == 3){
-							quesItem.cinputs = quesItem.title.split('____')
+						var question = JSON.parse(JSON.stringify(res))
+						if(question.type == 3) {
+							question.cinputs = question.title.split('____')
 						}
-						if(quesItem.type == 4){
-							quesItem.cinputs = quesItem.title.split('()')
+						if(question.type == 4) {
+							question.cinputs = question.title.split('()')
 						}
-						quesItem.aPercent =  (quesItem.accuracy?(quesItem.accuracy*100).toFixed(2):'0')
-						self.questionDetail = quesItem
-						self.options =  quesItem.options
+						question.aPercent =  (question.accuracy?(question.accuracy*100).toFixed(2):'0')
+						self.questionDetail = question
+						self.options =  question.options
 						wx.pageScrollTo({
 							scrollTop: 0
 						})
 					}
 				})
 			},
-			handleHome(){
-				uni.redirectTo({
-					url:'./success'
-				})
-			}
 		}
 	}
 </script>
 
-
 <style>
-	@import '@/css/dati.css'
-
+	@import '@/css/dati.css';
 </style>
+	

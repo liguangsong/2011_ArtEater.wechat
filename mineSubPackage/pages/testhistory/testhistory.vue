@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='考试记录' bg='#fff' paddingTop='142'>
+	<TopNavbar title='考试记录' bg='#fff' paddingTop='192'>
 		<view v-if='!testHistory.length' class='testHistory'>
 			暂无记录
 		</view>

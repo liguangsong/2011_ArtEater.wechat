@@ -2,7 +2,7 @@
 	<TopNavbar title='积分排行榜' bg='#fff' paddingTop='-1' :tabbarBg='false'>
 		<view class="myPage">
 			<view class="headView">
-				<image src="../../static/sourcebg.png" mode=""></image>
+				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/sourcebg.png" mode=""></image>
 				<view class="headView-title">
 					<view>
 						<view style='margin-right: 128rpx;'>排名</view>
@@ -14,35 +14,13 @@
 			<view class="scoreView">
 				<view class="scoreItem" v-for="(user,index) in scoreList">
 					<view v-if="index==0" class="index first">
-						<image src="../../static/first.png" mode=""></image>
+						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/first.png" mode=""></image>
 					</view>
 					<view v-if="index==1" class="index second">
-						<image src="../../static/second.png" mode=""></image>
+						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/second.png" mode=""></image>
 					</view>
 					<view v-if="index==2" class="index third">
-						<image src="../../static/third.png" mode=""></image>
-					</view>
-					<view v-if="index>2" class="index">{{index + 1}}</view>
-					<view class="cont">
-						<view class="headIcon">
-							<image :src="user.avatarUrl"></image>
-						</view>
-						<view class="nickName">{{user.nickName}}</view>
-						<view v-if="index==0" class="score first">{{user.score}}</view>
-						<view v-if="index==1" class="score second">{{user.score}}</view>
-						<view v-if="index==2" class="score third">{{user.score}}</view>
-						<view v-if="index>2" class="score">{{user.score}}</view>
-					</view>
-				</view>
-				<view class="scoreItem" v-for="(user,index) in scoreList">
-					<view v-if="index==0" class="index first">
-						<image src="../../static/first.png" mode=""></image>
-					</view>
-					<view v-if="index==1" class="index second">
-						<image src="../../static/second.png" mode=""></image>
-					</view>
-					<view v-if="index==2" class="index third">
-						<image src="../../static/third.png" mode=""></image>
+						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/third.png" mode=""></image>
 					</view>
 					<view v-if="index>2" class="index">{{index + 1}}</view>
 					<view class="cont">
@@ -60,20 +38,21 @@
 					荣誉只属于最勤奋的50位选手
 				</view>
 				<view style="height: 134rpx;"></view>
-				<view class="btmScore">
-					
-					<view class="scoreItem">
-						<view class="index">{{myscore.index + 1}}</view>
-						<view class="cont">
-							<view class="headIcon" @click="handleScoreRecord">
-								<image :src="myscore.avatarUrl"></image>
-							</view>
-							<view class="nickName regular">{{myscore.nickName}}</view>
-							<view class="score regular">{{myscore.score}}</view>
+				
+			</view>
+			<view class="btmScore">
+				
+				<view class="scoreItem">
+					<view class="index">{{myscore.index + 1}}</view>
+					<view class="cont">
+						<view class="headIcon" @click="handleScoreRecord">
+							<image :src="myscore.avatarUrl"></image>
 						</view>
+						<view class="nickName regular">{{myscore.nickName}}</view>
+						<view class="score regular">{{myscore.score}}</view>
 					</view>
-					<image class='paiming' src="../../static/source-paiming.png"></image>
 				</view>
+				<image class='paiming' src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/source-paiming.png"></image>
 			</view>
 		</view>
 	</TopNavbar>
@@ -311,6 +290,7 @@
 		position: fixed;
 		bottom: 0;
 		color: #fff;
+		z-index: 999999;
 	}
 	.btmScore .paiming {
 		position: absolute;

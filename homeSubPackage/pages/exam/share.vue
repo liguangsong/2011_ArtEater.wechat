@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="bg" :style="{'height':screenHeight+'rpx'}">
-			<image mode="scaleToFill" src="../../static/sharebg.png"></image>
+			<image mode="scaleToFill" src="../../../static/sharebg.png"></image>
 		</view>
 		<view class="contains">
 			<view class="head">
@@ -15,7 +15,7 @@
 				<view class="tips">分</view>
 			</view>
 			<view class="qrcode">
-				<image src="../../static/qrcode.png"></image>
+				<image src="../../../static/qrcode.png"></image>
 			</view>
 		</view>
 	</view>

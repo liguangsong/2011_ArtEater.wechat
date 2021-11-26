@@ -34,7 +34,7 @@
 							
 							<view class="content" style="padding-left: 0;">
 								<view class="conView">
-									<view class="listTxt" @click="handleNameClick" :data-item="subject">
+									<view class="listTxt" @click="handleTestClick" :data-item="subject">
 										{{subject.subject_name}}
 										<image v-if="subject.price==0" class="free"
 											src="../../../static/icon/icon_free.png"></image>
@@ -79,7 +79,7 @@
 										</view>
 										<view class="content">
 											<view class="conView">
-												<view class="listTxt" @click="handleNameClick" :data-item="sub">
+												<view class="listTxt" @click="handleTestClick" :data-item="sub">
 													{{sub.subject_name}}</view>
 												<view class="listAction">
 													<view class="action" @click="handleNameClick" :data-item="sub">
@@ -123,7 +123,7 @@
 														<view class="conView">
 															<view class="listTxt"
 																style="font-weight: 400;font-family: PingFangSC-Regular, PingFang SC;"
-																@click="handleNameClick" :data-item="sub1">
+																@click="handleTestClick" :data-item="sub1">
 																{{sub1.subject_name}}</view>
 															<view class="listAction">
 																<view class="action" @click="handleNameClick"
@@ -172,7 +172,7 @@
 																</view>
 																<view class="content">
 																	<view class="conView">
-																		<view class="listTxt" @click="handleNameClick"
+																		<view class="listTxt" @click="handleTestClick"
 																			:data-item="sub2">{{sub2.subject_name}}
 																		</view>
 																		<view class="listAction">
@@ -227,7 +227,7 @@
 																			<view class="content">
 																				<view class="conView">
 																					<view class="listTxt"
-																						@click="handleNameClick"
+																						@click="handleTestClick"
 																						:data-item="sub3">
 																						{{sub3.subject_name}}</view>
 																					<view class="listAction">
@@ -288,7 +288,7 @@
 																						<view class="content">
 																							<view class="conView">
 																								<view class="listTxt"
-																									@click="handleNameClick"
+																									@click="handleTestClick"
 																									:data-item="sub4">
 																									{{sub4.subject_name}}
 																								</view>
@@ -361,7 +361,7 @@
 																											class="conView">
 																											<view
 																												class="listTxt"
-																												@click="handleNameClick"
+																												@click="handleTestClick"
 																												:data-item="sub5">
 																												{{sub5.subject_name}}
 																											</view>
@@ -517,7 +517,6 @@
 			var app = getApp();
 			var member = app.globalData.member;
 			// 判断是不是会员
-			console.log(member);
 			if (member) {
 				if (member.memberType == 0 || member.memberType == 2) {
 					if (member.endTime > Date.now()) {

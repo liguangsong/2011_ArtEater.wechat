@@ -1,5 +1,5 @@
 <template>
-	<scroll-view class='scroll' style='height:100%;' :scroll-y='true' @scroll='scroll'>
+	<scroll-view class='scroll' style='height:100vh;' :scroll-y='true' @scroll='scroll'>
 		<view class="tabbar" :style='{background: height != 0 ? "" : "#fff", height: height != 0 ? height: tabbarheight+"rpx"}'>	
 			<slot name='img'></slot>
 			<view class="navbar"
@@ -113,10 +113,12 @@
 				})
 			},
 			scroll(e) {
+				// console.log(this.opacity);
 				if (this.height == 0) {
 					this.opacity = 1;
 					return
 				}
+				
 				var {scrollTop, deltaY, scrollHeight} = e.detail;
 				var n = scrollHeight - this.screenHeight > this.scrollHeight ? this.scrollHeight : scrollHeight - this.screenHeight;
 				if (scrollTop > n - 20 || scrollTop <= n && -deltaY > 40) {
@@ -138,6 +140,9 @@
 </script>
 
 <style scoped>
+	.scroll {
+		height: 100vh;
+	}
 	.bg {
 		background: #fff;
 	}

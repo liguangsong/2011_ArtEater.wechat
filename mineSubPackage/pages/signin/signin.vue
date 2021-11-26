@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='错题集' paddingTop="144">
+	<TopNavbar title='签到' paddingTop="224">
 		<view>
 			<view class="mydatepicker">
 					
@@ -19,7 +19,7 @@
 			</view>
 
 				<view class="body">
-					<image src="../../static/signin.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/signin.png"></image>
 					<view class="content">
 						<view v-for="item in prevDays" class="item prev">
 							<view @click="handleClickItem" :data-item="item"
