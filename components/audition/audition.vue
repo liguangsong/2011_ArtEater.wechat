@@ -5,8 +5,8 @@
 			   {{title}}
 			</view>
 			<text class="more" v-if="showMore" @click="gotolist">查看更多 ></text> -->
-			<view class="title-info title" v-if="title && showMore">
-				<view class="left">
+			<view class="title-info title">
+				<view class="left" v-if="title">
 					<view class="red-block"></view>
 				   {{title}}
 				</view>
@@ -62,6 +62,17 @@
 				type: Array,
 				default: () => []
 			}
+		},
+		watch:{
+			list: {
+				handler() {
+                console.log(123)
+				console.log(this.list,4456789)
+				},
+				deep:true,
+				immediate:true
+				
+			},
 		},
 		data() {
 			return {
