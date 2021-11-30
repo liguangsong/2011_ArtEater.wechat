@@ -222,6 +222,7 @@ export default {
 
 		newContent = newContent.replace(/style="/gi, '$& max-width:100% !important; ');
 		newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+		newContent = newContent.replace(/<figure[^>]*>|<\/figure[^>]*>/gi, "");
 		return newContent;
 	},
 	//添加取消收藏
