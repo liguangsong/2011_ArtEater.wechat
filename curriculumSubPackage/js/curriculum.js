@@ -219,7 +219,8 @@ export default {
 			}
 			return match;
 		});
-		newContent = newContent.replace(/<p\s+.*?>&nbsp;+<\/p>/gi, function(match, capture) {
+		newContent = newContent.replace(/&nbsp;+/gi, function(match, capture) {
+			console.log(match,654322)
 			match=match.replace(/&nbsp;/g,'\xa0')
 			return match;
 		});
