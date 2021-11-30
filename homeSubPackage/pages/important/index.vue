@@ -15,7 +15,9 @@
 			<view class="img">
 				<image v-if="sub.subject_name=='中国美术史'" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E4%B8%AD%E5%9B%BD%E7%BE%8E%E6%9C%AF%E5%8F%B2-%E6%A0%87%E9%A2%98%E5%9B%BE1.jpg" mode=""></image>
 				<image v-if="sub.subject_name=='外国美术史'" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%A4%96%E5%9B%BD%E7%BE%8E%E6%9C%AF%E5%8F%B2-%E6%A0%87%E9%A2%98%E5%9B%BE1.jpg" mode=""></image>
-				<image v-if="sub.subject_name=='美术鉴赏'" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E8%89%BA%E6%9C%AF%E6%A6%82%E8%AE%BA-%E6%A0%87%E9%A2%98%E5%9B%BE1.jpg" mode=""></image>
+
+				<image v-if="sub.subject_name=='美术鉴赏'" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E7%BE%8E%E6%9C%AF%E9%89%B4%E8%B5%8F-%E6%A0%87%E9%A2%98%E5%9B%BE1.jpg" mode=""></image>
+
 			</view>
 			<view class="progress">
 				<u-line-progress :percent="sub.progress*100/sub.childrenCount" :show-percent="false" height="10" active-color="#ff6f68"></u-line-progress>
