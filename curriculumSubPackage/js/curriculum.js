@@ -219,7 +219,10 @@ export default {
 			}
 			return match;
 		});
-
+		newContent = newContent.replace(/<p\s+.*?>&nbsp;+<\/p>/gi, function(match, capture) {
+			match=match.replace(/&nbsp;/g,'\xa0')
+			return match;
+		});
 		newContent = newContent.replace(/style="/gi, '$& max-width:100% !important; ');
 		newContent = newContent.replace(/<br[^>]*\/>/gi, '');
 		newContent = newContent.replace(/<figure[^>]*>|<\/figure[^>]*>/gi, "");
