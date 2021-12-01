@@ -51,7 +51,12 @@
 						</block>
 						<block v-else> -->
 							<block v-if="hasSubmit || tab=='tab2'">
-								<view v-if="i!=questionDetail.cinputs.length-1" :class="'txt '+ (options[i].state==1?'success':'error')">{{options[i].content}}</view>
+								<template v-if="i!=questionDetail.cinputs.length-1">
+									<view :class="'txt '+ (options[i].state==1?'success':'error')" v-for="(item,letter) in options[i].content" :key="letter">
+										{{options[i].content[letter]}}
+									</view>
+								</template>
+								<!-- <view v-if="i!=questionDetail.cinputs.length-1" :class="'txt '+ (options[i].state==1?'success':'error')">{{options[i].content}}</view> -->
 							</block>
 							<block v-else>
 								<input v-if="i!=questionDetail.cinputs.length-1" :style="{width: (options[i].value[0].txt.length * 34 + 60) + 'rpx;'}" :data-index="i" @input="handleAnswerChange" @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />
