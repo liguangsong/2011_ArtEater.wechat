@@ -406,7 +406,7 @@
 		height: 100%;
 	}
 	.inputItem {
-		height: 84rpx;
+		height: 82rpx;
 		width: 100%;
 		padding-right: 114rpx;
 		overflow: hidden;

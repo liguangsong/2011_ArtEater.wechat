@@ -3,6 +3,9 @@
 		<Navbar navbarBg='#F7F7F7' :icon='false' title='题库' align='center' fontColor="#000" iconColor='#000'>
 				<view style='height:20rpx;'></view>
 				<Item v-for='(item, i) in subjects' :n='n' :item='item' :uid='item.objectId' :img='arr[i]' :key='i' :vip='vip'/>
+				<view class="class" @click='navto'>
+					信息页面
+				</view>
 				<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
 		</Navbar>
 	</view>
@@ -63,6 +66,11 @@
 			});
 		},
 		methods: {
+			navto() {
+				uni.navigateTo({
+					url: '/pages/login/login'
+				})
+			},
 			// 切换tab
 			tabbarChange(item) {
 				uni.switchTab({

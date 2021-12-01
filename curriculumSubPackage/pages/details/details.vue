@@ -258,6 +258,7 @@
 				let res = await Curriculum.getCurriculum(this.objectId);
 				let info = res[0];
 				this.curriculumInfo = info;
+				
 				if (info.rootId) {
 					var q = new this.Parse.Query('CoursesModule')
 					q.equalTo('objectId', info.rootId)
@@ -290,6 +291,7 @@
 					let q1 = uni.createSelectorQuery().in(this);
 					q1.select('.recommend').boundingClientRect(d => {
 						let h = uni.getSystemInfoSync().screenHeight - d.height;
+						console.log(data, d, h);
 						if (h > data.height) {
 							this.infoTop = h;
 						} else {
@@ -301,9 +303,7 @@
 			},
 			//获取推荐课程
 			async getRecommended(ids) {
-				console.log('ids', ids);
 				let res = await Curriculum.getRecommended(ids);
-				console.log('res', res);
 				this.recommendedList = res;
 			},
 			// 获取课表
