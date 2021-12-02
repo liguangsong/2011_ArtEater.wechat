@@ -13,6 +13,9 @@
 				</view>
 			</view>
 		</view>
+		<view class="navbar-time" :style='{top: tabbarheight+"rpx"}'>
+			<slot name='time'></slot>
+		</view>
 		<slot></slot>
 	</view>
 </template>
@@ -109,6 +112,12 @@
 </script>
 
 <style scoped>
+	.navbar-time {
+		position: fixed;
+		left: 0;
+		right: 0;
+		z-index: 1000;
+	}
 	.top-navbar {
 		height: 100vh;
 		overflow-y: auto;
