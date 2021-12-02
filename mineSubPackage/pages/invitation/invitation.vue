@@ -149,7 +149,7 @@
 				ctx.save()
 				ctx.beginPath(); //开始绘制
 				//先画个圆   前两个参数确定了圆心 （x,y） 坐标  第三个参数是圆的半径  四参数是绘图方向  默认是false，即顺时针
-				ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_width / 2 + avatarurl_y, 64, 0, Math.PI * 2, false);
+				ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_width / 2 + avatarurl_y, 80, 0, Math.PI * 2, false);
 				ctx.setFillStyle('#fff')
 				ctx.fill()
 			},
@@ -182,11 +182,11 @@
 								context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 52 * factor, 98 * factor,98 * factor);
 								// 绘制头像外层圆形框
 								// console.log(factor, 'factor[[[[]]]]');
-								self.headFill(context, '',  80 * factor, 260 * factor, 740 * factor) // 绘制头像外层框
-								self.headPic(context, '',  80 * factor, 260 * factor, 740 * factor) // 绘制头像外层框
+								self.headFill(context, '',  90 * factor, 260 * factor, 720 * factor) // 绘制头像外层框
+								self.headPic(context, '',  90 * factor, 260 * factor, 720 * factor) // 绘制头像外层框
 								
 								// 将头像装进头像框
-								context.drawImage(headRes.tempFilePath, 250 * factor, 720 * factor,100 * factor,100 * factor);
+								context.drawImage(headRes.tempFilePath, 250 * factor, 710 * factor,100 * factor,100 * factor);
 								context.restore()
 								
 								// 用户名
