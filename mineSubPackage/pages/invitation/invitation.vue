@@ -149,7 +149,7 @@
 				ctx.save()
 				ctx.beginPath(); //开始绘制
 				//先画个圆   前两个参数确定了圆心 （x,y） 坐标  第三个参数是圆的半径  四参数是绘图方向  默认是false，即顺时针
-				ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_width / 2 + avatarurl_y, 94, 0, Math.PI * 2, false);
+				ctx.arc(avatarurl_width / 2 + avatarurl_x, avatarurl_width / 2 + avatarurl_y, 64, 0, Math.PI * 2, false);
 				ctx.setFillStyle('#fff')
 				ctx.fill()
 			},
@@ -161,7 +161,7 @@
 					url: self.userInfo.avatarUrl,
 					success (headRes) {
 						uni.downloadFile({url: self.qrcode, success (qrcodeRes) {
-							uni.downloadFile({url: 'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/bg.png', success (bg) {
+							uni.downloadFile({url: 'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%88%86%E4%BA%AB%E8%83%8C%E6%9D%BF.png', success (bg) {
 							uni.downloadFile({url: self.sharePicImg, success (bgRes) {	
 								const sysInfo = uni.getSystemInfoSync();
 								const screenWidth = sysInfo.screenWidth*3; // 提高画质
@@ -172,8 +172,8 @@
 								const context = uni.createCanvasContext('mycanvas')
 								context.draw() // 先清空画布
 								context.fillRect(0, 0, 750 * factor, picHeight * factor)
-								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, picHeight*factor);
-								context.drawImage(bg.tempFilePath, 0, 0, 400, 550, 0 , picHeight*factor-550, picWidth*factor, 338*factor);
+								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 982*factor);
+								context.drawImage(bg.tempFilePath, 0, 0, bg.width, bg.height, 0, picHeight*factor-520, picWidth*factor, 338*factor);
 								// console.log(uni.upx2px(338),'///')
 								context.setFillStyle('black')
 								self.roundRect(context, 462 * factor, 50 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
@@ -182,21 +182,20 @@
 								context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 52 * factor, 98 * factor,98 * factor);
 								// 绘制头像外层圆形框
 								// console.log(factor, 'factor[[[[]]]]');
-								self.headFill(context, '',  112 * factor, 250 * factor, 770 * factor) // 绘制头像外层框
-								self.headPic(context, '',  112 * factor, 250 * factor, 770 * factor, factor) // 绘制头像外层框
-								
+								self.headFill(context, '',  80 * factor, 260 * factor, 740 * factor) // 绘制头像外层框
+								self.headPic(context, '',  80 * factor, 260 * factor, 740 * factor) // 绘制头像外层框
 								
 								// 将头像装进头像框
-								context.drawImage(headRes.tempFilePath, 220 * factor, 730 * factor,160 * factor,160 * factor);
+								context.drawImage(headRes.tempFilePath, 250 * factor, 720 * factor,100 * factor,100 * factor);
 								context.restore()
 								
 								// 用户名
 								context.setFontSize(26*factor)
-								context.font = 'normal normal ' + parseInt(26 * factor) + 'px Arial, Helvetica, sans-serif'
+								context.font = 'normal normal ' + parseInt(24 * factor) + 'px Arial, Helvetica, sans-serif'
 								context.setFillStyle('#000')
 								let user = self.userInfo.nickName
 								const m3 = context.measureText(user)
-								context.fillText(user, 270 * factor, 910 * factor )
+								context.fillText(user, 275 * factor, 856 * factor )
 								
 								
 								// 已学习时间
@@ -204,14 +203,14 @@
 								context.setFillStyle('rgba(0, 0, 0, .69)')
 								context.font = 'normal normal ' + parseInt(20 * factor) + 'px Arial, Helvetica, sans-serif'
 								const ma = context.measureText('已学习时间')
-								context.fillText('已学习时间', (190 - ma.width / factor) / 2 * factor, 1022 * factor )
+								context.fillText('已学习时间', (190 - ma.width / factor) / 2 * factor, 1000 * factor )
 								
 								// 已消灭题目
 								context.setFontSize(20 * factor)
 								context.setFillStyle('rgba(0, 0, 0, .69)')
 								context.font = 'normal normal ' + parseInt(20 * factor) + 'px Arial, Helvetica, sans-serif'
 								const mb = context.measureText('已消灭题目')
-								context.fillText('已消灭题目', 200 *factor + ((200 - mb.width / factor) / 2 * factor), 1022 * factor )
+								context.fillText('已消灭题目', 200 *factor + ((200 - mb.width / factor) / 2 * factor), 1000 * factor )
 								
 								
 								// 答题正确率
@@ -219,7 +218,7 @@
 								context.setFillStyle('rgba(0, 0, 0, .69)')
 								context.font = 'normal normal ' + parseInt(20 * factor) + 'px Arial, Helvetica, sans-serif'
 								const mc = context.measureText('答题正确率')
-								context.fillText('答题正确率', 400 * factor + ((200 - mc.width / factor) / 2 * factor), 1022 * factor )
+								context.fillText('答题正确率', 400 * factor + ((200 - mc.width / factor) / 2 * factor), 1000 * factor )
 								
 								// 时间
 								context.setFontSize(54*factor)
@@ -227,13 +226,13 @@
 								context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
 								let days = self.days + ''
 								const m4 = context.measureText(days)
-								context.fillText(days, (190 - m4.width / factor) / 2 * factor, 988 * factor )
+								context.fillText(days, (190 - m4.width / factor) / 2 * factor, 966 * factor )
 								// 天
 								context.setFontSize(22*factor)
 								context.setFillStyle('rgba(237, 53, 53, 1)')
 								context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
 								const m5 = context.measureText('天')
-								context.fillText('天', ((190 - (m4.width / factor)) / 2 * factor) + (m4.width), 988*factor )
+								context.fillText('天', ((190 - (m4.width / factor)) / 2 * factor) + (m4.width), 966*factor )
 								
 								// 以消灭题目数
 								context.setFontSize(54*factor)
@@ -241,21 +240,22 @@
 								context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
 								let complateCount = self.complateCount + ''
 								const m6 = context.measureText(complateCount)
-								context.fillText(complateCount, 200 * factor + (200 - m6.width / factor) / 2 * factor, 988 * factor )
+								context.fillText(complateCount, 200 * factor + (200 - m6.width / factor) / 2 * factor, 966 * factor )
 								
 								// 答题正确率百分比
 								context.setFontSize(54*factor)
 								context.setFillStyle('rgba(237, 53, 53, 1)')
 								context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
-								let percent = self.percent + ''
+								let percent = parseInt(self.percent) + ''
 								const m7 = context.measureText(percent)
-								context.fillText(percent, 400* factor + (200 - m7.width / factor) / 2 * factor, 988 * factor )
+								context.fillText(percent, 400* factor + (200 - m7.width / factor) / 2 * factor, 966 * factor )
 								// %
 								context.setFontSize(22*factor)
-								context.setFillStyle('rgba(237, 53, 53, 1)')
+								context.setFillStyle('rgba(237, 53, 53, 1)');
+								
 								context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
 								const m8 = context.measureText('%')
-								context.fillText('%', 400 * factor + ((200 - (m7.width / factor)) / 2 * factor) + (m7.width), 988*factor )
+								context.fillText('%', 400 * factor + ((200 - (m7.width / factor)) / 2 * factor) + (m7.width), 966*factor )
 								
 								// context.draw(true)
 								context.draw(true,function(){

@@ -1,4 +1,5 @@
 <template>
+	<TopNavbar>
 	<view>
 		<view class="buytipsView" v-if="baseSubjectDetail.price>0 && !hasBuyed">
 			<view class="tipView" @click="handleSubjectBuy">
@@ -193,13 +194,15 @@
 			</view>
 		</u-popup>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	import myRadioGroup from '../../../components/myRadio/myRadioGroup.vue'
 	export default {
 		components:{
-			myRadioGroup
+			myRadioGroup, TopNavbar
 		},
 		data() {
 			return {

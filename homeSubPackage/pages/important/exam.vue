@@ -1,4 +1,5 @@
 <template>
+	<TopNavbar>
 	<view>
 		<view class="tabView" v-if="isShowTab">
 			<view :class="'tabItem ' + (tab=='tab1'? 'curr':'')"  @click="tab = 'tab1'">
@@ -180,13 +181,15 @@
 			</view>
 		</u-popup>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	import myRadioGroup from '@/components/myRadio/myRadioGroup.vue'
 	export default {
 		components:{
-			myRadioGroup
+			myRadioGroup, TopNavbar
 		},
 		data() {
 			return {

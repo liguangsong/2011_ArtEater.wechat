@@ -73,7 +73,7 @@
 		}, {
 			"path": "pages/mine/testdetail",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationStyle":"custom",
 				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#f7f7f7"
 			}
@@ -168,7 +168,7 @@
 					"style": {
 						"navigationBarBackgroundColor": "#f7f7f7",
 						"enablePullDownRefresh": false,
-						"navigationBarTitleText": ""
+						"navigationStyle":"custom"
 					}
 				}, {
 					"path": "pages/important/index",
@@ -190,7 +190,7 @@
 					"style": {
 						"navigationBarBackgroundColor": "#f7f7f7",
 						"enablePullDownRefresh": false,
-						"navigationBarTitleText": ""
+						"navigationStyle":"custom"
 					}
 				
 				}, 
@@ -237,7 +237,8 @@
 					"style": {
 						"navigationBarBackgroundColor": "#fbfbfa",
 						"navigationBarTitleText": "章节练习",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle":"custom"
 					}
 				
 				},

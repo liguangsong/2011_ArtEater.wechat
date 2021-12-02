@@ -1,13 +1,15 @@
 <template>
-	<view class="myPage" :style="{'height':windowHeight + 'px','overflow': 'scroll','padding-bottom':pdbtm+'rpx'}">
-		<Navbar navbarBg='#F7F7F7' :icon='false' title='题库' align='center' fontColor="#000" iconColor='#000'>
+	<view class="myPage" :style="{'overflow': 'scroll'}">
+		<TopNavbar title='题库' bg='#f7f7f7'  :icon='false'>
+			<view :style="{'padding-bottom':pdbtm+'rpx'}">
 				<view style='height:20rpx;'></view>
 				<Item v-for='(item, i) in subjects' :n='n' :item='item' :uid='item.objectId' :img='arr[i]' :key='i' :vip='vip'/>
 				<view class="class" @click='navto'>
 					信息页面
 				</view>
-				<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
-		</Navbar>
+			</view>
+		</TopNavbar>
+		<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
 
@@ -15,7 +17,8 @@
 	import Utils from '@/js/utils/index.js'
 	import Tabbar from '@/components/tabBar/tabBar.vue';
 	import Item from './item.vue'
-	import Navbar from '../../components/navBar/navbar.vue';
+	// import Navbar from '../../components/navBar/navbar.vue';
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -36,7 +39,7 @@
 		components:{
 			'view-tabbar': Tabbar,
 			Item,
-			Navbar
+			TopNavbar
 		},
 		created() {
 			var _this = this;

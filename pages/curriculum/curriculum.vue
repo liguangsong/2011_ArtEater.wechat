@@ -1,13 +1,16 @@
 <template>
-	<view class="myPage" :style="{'overflow-y': 'scroll','padding-bottom':pdbtm+'rpx'}">
+	<view class="myPage" :style="{'overflow-y': 'scroll'}">
 		<view v-if='!list.length' class='collection'>
 			暂无课程
 		</view>
-		<Navbar v-else navbarBg='#F7F7F7' title='课程' :icon='false' align='center' fontColor="#000" iconColor='#000'>
-			<view style='height:20rpx;'></view>
-			<Item v-for='(item,i) in list' v-if='!item.hide' :key='i' :item='item' :vip='vip' />
-			<view style='height:33rpx'></view>
-		</Navbar>
+		<!-- <Navbar v-else navbarBg='#F7F7F7' title='课程' :icon='false' align='center' fontColor="#000" iconColor='#000'> -->
+		<TopNavbar title='课程' bg='#f7f7f7'  :icon='false'>
+			<view :style="{'padding-bottom':pdbtm+'rpx'}">
+				<view style='height:20rpx;'></view>
+				<Item v-for='(item,i) in list' v-if='!item.hide' :key='i' :item='item' :vip='vip' />
+				<!-- <view style='height:33rpx'></view> -->
+			</view>
+		</TopNavbar>
 		<view-tabbar :current="1" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
 </template>
@@ -15,7 +18,8 @@
 <script>
 	import Tabbar from '@/components/tabBar/tabBar.vue';
 	import Item from './item.vue';
-	import Navbar from '../../components/navBar/navbar.vue';
+	// import Navbar from '../../components/navBar/navbar.vue';
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -28,7 +32,7 @@
 		components: {
 			'view-tabbar': Tabbar,
 			Item,
-			Navbar
+			TopNavbar
 		},
 		onLoad() {
 			let app = getApp();

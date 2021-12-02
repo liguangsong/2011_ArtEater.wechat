@@ -1,5 +1,6 @@
 <template>
-	<view style='background: #fafafa;'>
+	<TopNavbar bg='#f7f7f7'>
+	<view>
 		<view class="timeView">
 			考试剩余时间：<u-count-down color="#b1b1b1" font-size="26" separator="zh" separator-size="26" @end='handleTimeOut' separator-color="#b1b1b1" @change="handleChange" :timestamp="endTime"></u-count-down>
 		</view>
@@ -74,15 +75,17 @@
 			<button v-else @click="handleSubmit" :class="canSubmit?'next':'noAnswer'">提交</button>
 		</view>
 	</view>
+	</TopNavbar>
 </template>
 
 <script>
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	import myRadioGroup from '@/components/myRadio/myRadioGroup.vue'
 	import { dateFormat, toDateFromString,addMonths, addDays, addSeconds, GetRandomNum } from '@/js/common.js'
 	const codes = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	export default {
 		components:{
-			myRadioGroup
+			myRadioGroup, TopNavbar
 		},
 		data() {
 			return {

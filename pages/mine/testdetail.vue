@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<TopNavbar bg='#f7f7f7'>
 		<view style="padding-bottom: 100rpx;">
 			<view class="questionView">
 				<view class="headView">
@@ -111,15 +111,16 @@
 				</view>
 			</view>
 		</u-popup>
-	</view>
+	</TopNavbar>
 </template>
 
 <script>
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	import myRadioGroup from '../../components/myRadio/myRadioGroup.vue'
 	import { dateFormat, toDateFromString,addMonths, addDays, addSeconds, GetRandomNum } from '../../js/common.js'
 	export default {
 		components:{
-			myRadioGroup
+			myRadioGroup, TopNavbar
 		},
 		data() {
 			return {
