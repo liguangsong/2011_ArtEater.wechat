@@ -55,7 +55,7 @@
 		</view>
 		<!-- 图文 -->
 		<view class="html regular" :style='{paddingTop: htmlInfoTop + 10 + "px"}' v-if="curriculumInfo.explain">
-			<rich-text :nodes='curriculumInfo.explain|formatRichText'></rich-text>
+			<rich-text class="ql-editor" :nodes='curriculumInfo.explain|formatRichText'></rich-text>
 		</view>
 		<view v-else :style='{paddingTop: infoTop + "px"}'></view>
 		<!-- 推荐学习 -->

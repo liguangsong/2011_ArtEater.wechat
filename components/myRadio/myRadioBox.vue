@@ -63,6 +63,8 @@
 		width: 678rpx;
 		margin-left: 36rpx;
 		min-height: 99rpx;
+		position: relative;
+        top: 1rpx;
 	}
 	
 	.optionItem .icon{
@@ -82,7 +84,7 @@
 	}
 	.optionItem .txt{
 		flex: 1;
-		padding-top: 14rpx;
+		padding-top: 15rpx;
 		min-height: 40rpx;
 		font-size: 28rpx;
 		font-family: PingFangSC-Regular, PingFang SC;

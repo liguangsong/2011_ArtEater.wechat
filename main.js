@@ -5,6 +5,9 @@ import store from './store'
 import config from 'static/config/index.js'
 import parse from '@/parse/index.js'
 import uView from "uview-ui"
+import './css/quill.bubble.css'
+import './css/quill.core.css'
+import './css/quill.snow.css'
 Vue.use(uView);
 
 Vue.prototype.$store = store

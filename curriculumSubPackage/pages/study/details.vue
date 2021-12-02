@@ -2,7 +2,7 @@
 	<view>
 		<view class="introduce">
 			<text class='title'>课程详情</text>
-			<rich-text class='regular' :nodes='detail | formatRichText' v-if="detail"></rich-text>
+			<rich-text class="ql-editor" class='regular' :nodes='detail | formatRichText' v-if="detail"></rich-text>
 			
 			<!-- <view class="font">
 				<text>术查市资建务周二非称向给子走选。</text>
