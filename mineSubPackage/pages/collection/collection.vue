@@ -1,10 +1,10 @@
 <template>
-	<TopNavbar title='课程收藏' paddingTop="136" bg='#f7f7f7'>
+	<TopNavbar title='课程收藏' bg='#f7f7f7'>
 	<view class="myPage">
 		<view v-if='!list.length' class='collection'>
 			暂无收藏
 		</view>
-		<view style='height: 20rpx;'></view>
+		<view style='height: 40rpx;'></view>
 		<Item v-for='(item,i) in list' :key='i' :item='item' :vip='vip'/>
 	</view>
 	</TopNavbar>

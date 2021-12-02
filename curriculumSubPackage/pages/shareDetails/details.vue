@@ -245,9 +245,7 @@
 			// 获取详情
 			async getCurriculum() {
 				let res = await Curriculum.getHideCurriculum(this.objectId);
-				// console.log(res,88899)
 				let info = res[0];
-				// console.log(info, '[[[[[[[[]]]]]]]]');
 				this.curriculumInfo=info;
 				if (info.rootId) {
 					var q = new this.Parse.Query('CoursesModule')

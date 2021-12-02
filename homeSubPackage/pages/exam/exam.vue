@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view style='background: #fafafa;'>
 		<view class="timeView">
 			考试剩余时间：<u-count-down color="#b1b1b1" font-size="26" separator="zh" separator-size="26" @end='handleTimeOut' separator-color="#b1b1b1" @change="handleChange" :timestamp="endTime"></u-count-down>
 		</view>
@@ -108,11 +108,7 @@
 				version: ''
 			}
 		},
-		onShow() {
-			console.log(9999999);
-		},
 		onLoad(options) {
-			console.log(options,'--------');
 			var self = this
 			if(options.tid){
 				this.examId = options.tid
@@ -126,15 +122,13 @@
 			})
 			uni.getSystemInfo({
 			  success: res => {
-				console.log(res)
-				self.screenWidth = res.screenWidth
+					self.screenWidth = res.screenWidth
 			  }
 			})
 			
 			uni.enableAlertBeforeUnload({
 				message:'当前还未完成考试，返回则默认提交考卷，是否继续退出？',
 				success: res=>{
-					
 				},
 				fail: error=>{}
 			})

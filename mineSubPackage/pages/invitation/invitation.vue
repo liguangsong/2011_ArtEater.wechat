@@ -1,6 +1,6 @@
 <template>
 	<TopNavbar title='分享给好友' paddingTop="-1">
-		<view>
+		<view style='position: relative; z-index: 10;'>
 			<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
 			<view class="rect">
 				<image @tap.stop v-if="sharePicImg" :src="sharePicImg" mode="aspectFill" class="bgImg"></image>
@@ -173,13 +173,13 @@
 								context.draw() // 先清空画布
 								context.fillRect(0, 0, 750 * factor, picHeight * factor)
 								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, picHeight*factor);
-								context.drawImage(bg.tempFilePath, 0, 0, 400, 400, 0 , picHeight*factor-400, picWidth*factor, 338*factor);
+								context.drawImage(bg.tempFilePath, 0, 0, 400, 550, 0 , picHeight*factor-550, picWidth*factor, 338*factor);
 								// console.log(uni.upx2px(338),'///')
 								context.setFillStyle('black')
-								self.roundRect(context, 462 * factor, 24 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
+								self.roundRect(context, 462 * factor, 50 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
 								
 								// 绘制二维码
-								context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 28 * factor, 98 * factor,98 * factor);
+								context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 52 * factor, 98 * factor,98 * factor);
 								// 绘制头像外层圆形框
 								// console.log(factor, 'factor[[[[]]]]');
 								self.headFill(context, '',  112 * factor, 250 * factor, 770 * factor) // 绘制头像外层框
@@ -324,13 +324,14 @@
 	}
 	.rect {
 		margin: 198rpx auto 0;
-		width: 602rpx;
+		width: 698rpx;
+		height: 1202rpx;
 		position: relative;
 		z-index: 99999;
 	}
 	.bgImg{
-		width: 602rpx;
-		height: 1066rpx;
+		width: 100%;
+		height: 100%;
 		background-color: rgba(255, 255, 255, 0.69);
 		border-radius: 40rpx;
 	}

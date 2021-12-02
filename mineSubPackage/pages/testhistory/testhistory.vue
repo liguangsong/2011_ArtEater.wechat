@@ -1,5 +1,6 @@
 <template>
-	<TopNavbar title='考试记录' bg='#fff' paddingTop='192'>
+	<TopNavbar title='考试记录' bg='#fff'>
+		<view style='height:28rpx'></view>
 		<view v-if='!testHistory.length' class='testHistory'>
 			暂无记录
 		</view>
@@ -86,7 +87,7 @@
 		height: 142rpx;
 		line-height: 142rpx;
 		margin-left: 48rpx;
-		border-bottom: 2rpx solid rgba(0,0,0,.1);
+		border-bottom: 2rpx solid rgba(0,0,0,.06);
 	}
 	.myView .hisItem .contView{
 		flex: 1;
@@ -99,6 +100,9 @@
 		width: 100%;
 		height: 42rpx;
 		line-height: 42rpx;
+	}
+	.myView .hisItem:last-child {
+		border-bottom: none;
 	}
 	.tView{
 		display: flex;

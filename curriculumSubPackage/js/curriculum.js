@@ -220,7 +220,6 @@ export default {
 			return match;
 		});
 		newContent = newContent.replace(/&nbsp;+/gi, function(match, capture) {
-			console.log(match,654322)
 			match=match.replace(/&nbsp;/g,'\xa0')
 			return match;
 		});

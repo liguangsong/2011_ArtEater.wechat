@@ -1,6 +1,7 @@
 <template>
-	<TopNavbar title='积分兑换' paddingTop='218'>
+	<TopNavbar title='积分兑换'>
 		<view class="myPage">
+			<view style='height: 24rpx;'></view>
 			<view class="tabView">
 				<view :class="'tabItem ' + (tab=='tab1'? 'curr':'')" @click="tab = 'tab1'">
 					<view class="title">未购项目</view>
@@ -94,7 +95,8 @@
 				<view class="orderView" v-if="tab=='tab2'">
 					<view class="orderItem" v-for="order in orderList">
 						<view class="icon">
-							<u-icon name="checkmark-circle" color="#143a44" size="28"></u-icon>
+							<!-- <u-icon name="checkmark-circle" color="#143a44" size="28"></u-icon> -->
+							<image src="../../static/icon/icon_buy.png" mode=""></image>
 						</view>
 						<view style='padding-top: 30rpx; flex:1;'>
 							<view class="conView">
@@ -114,14 +116,20 @@
 					<view class="buylView">
 						<view style='padding: 48rpx 48rpx 128rpx;font-size: 24rpx;font-family: PingFangSC-Regular, PingFang SC;line-height: 34rpx;'>
 							<view class="title">
-								您将购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
+								购买说明
 							</view>
 							<view class="tips">
-								购买后可在【个人中心-积分兑换-已购项目】中查看
+								·您购买的商品为线上虚拟内容服务，购买后不支持退订、转让 
+							</view>
+							<view class="tips">
+								·本服务有效期为一年，一年内不限使用次数 
+							</view>
+							<view class="tips">
+								·购买后可在[我的-已购买项目]中查看
 							</view>
 						</view>
 						<view @click="isShowBuyTips=false" class="btnActions"
-							style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.1);line-height:78rpx;'>
+							style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.06);line-height:78rpx;'>
 							<text>关闭</text>
 						</view>
 					</view>
@@ -135,7 +143,7 @@
 							</view>
 						</scroll-view>
 						<view @click="isShowProductDetail=false" class="btnActions"
-							style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.1);line-height:78rpx;'>
+							style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.06);line-height:78rpx;'>
 							<text>关闭</text>
 						</view>
 					</view>
@@ -720,7 +728,7 @@
 	.tabView {
 		margin: 0 24rpx;
 		display: flex;
-		border-bottom: 2rpx solid rgba(0, 0, 0, .1);
+		border-bottom: 2rpx solid rgba(0, 0, 0, .06);
 	}
 
 	.tabView .tabItem {
@@ -758,15 +766,22 @@
 	.orderView .orderItem {
 		height: 142rpx;
 		width: 100%;
-		border-bottom: 2rpx solid rgba(0, 0, 0, .1);
+		border-bottom: 2rpx solid rgba(0, 0, 0, .06);
 		display: flex;
 		flex-direction: row;
+	}
+	.orderView .orderItem:last-child {
+		border-bottom: none;
 	}
 
 	.orderItem .icon {
 		width: 72rpx;
 		padding-top: 36rpx;
 		text-align: left;
+	}
+	.orderItem .icon  image {
+		width: 32rpx;
+		height: 34rpx;
 	}
 
 	.orderItem .conView,
@@ -815,7 +830,7 @@
 	.myView .productItem {
 		display: flex;
 		height: 148rpx;
-		border-bottom: 2rpx solid rgba(0, 0, 0, .1);
+		border-bottom: 2rpx solid rgba(0, 0, 0, .06);
 	}
 
 	.myView .iconView {
@@ -898,7 +913,7 @@
 
 	.productItem .contentView .titleView .intro {
 		width: 104rpx;
-		font-size: 22rpx;
+		font-size: 20rpx;
 		font-family: PingFangSC-Medium;
 		color: rgba(53, 32, 38, 0.4);
 		flex: 1;
@@ -920,7 +935,7 @@
 		width: 100%;
 		height: 84rpx;
 		margin-left: 48rpx;
-		border-bottom: 2rpx solid rgba(0, 0, 0, .1);
+		border-bottom: 2rpx solid rgba(0, 0, 0, .06);
 		display: flex;
 		align-items: center;
 	}
@@ -953,7 +968,7 @@
 
 	.buyConfirmView .payment {
 		height: auto;
-		border-top: 2rpx solid rgba(0, 0, 0, .1);
+		border-top: 2rpx solid rgba(0, 0, 0, .06);
 		display: flex;
 	}
 	
@@ -1008,6 +1023,21 @@
 		color: #ffffff;
 		font-size: 34rpx;
 		font-family: PingFangSC-Medium;
+	}
+	.buylView .title {
+		font-size: 28rpx;
+		font-weight: 500;
+		color: #000000;
+		line-height: 40rpx;
+		margin-bottom: 20rpx;
+		text-align: center;
+	}
+	.buylView .tips {
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #000000;
+		line-height: 34rpx;
 	}
 
 	/* .buyConfirmView .couponItem {

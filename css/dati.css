@@ -230,7 +230,8 @@
 		border: 2rpx solid #ffdfdf;
 	}
 	.questionView .options{
-		padding: 20rpx 0rpx;
+		padding: 0 0 20rpx;
+		margin-top: -10rpx;
 	}
 	.actionView{
 		/* margin-top: 50rpx; */
@@ -368,13 +369,13 @@
 	}
 	.actionView button.next{
 		background-color: #FFFFFF;
-		border: 2px solid #D81E1F;
+		border: 2rpx solid #D81E1F;
 		font-family: PingFangSC-Semibold, PingFang SC;
 		color: #D81E1F;
 	}
 	.actionView .btnGroup{
 		background-color: #FFFFFF;
-		border: 2px solid #D81E1F;
+		border: 2rpx solid #D81E1F;
 		color: #D81E1F;
 		height: 92rpx;
 		line-height: 92rpx;
@@ -482,6 +483,6 @@
 	}
 	.head {
 		padding-left: 36rpx;
-		padding-top: 20rpx;
+		padding-top: 40rpx;
 	}
 

@@ -17,7 +17,9 @@
 				<image v-if="sub.subject_name=='外国美术史'" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%A4%96%E5%9B%BD%E7%BE%8E%E6%9C%AF%E5%8F%B2-%E6%A0%87%E9%A2%98%E5%9B%BE1.jpg" mode=""></image>
 
 				<image v-if="sub.subject_name=='美术鉴赏'" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E7%BE%8E%E6%9C%AF%E9%89%B4%E8%B5%8F-%E6%A0%87%E9%A2%98%E5%9B%BE1.jpg" mode=""></image>
-
+				<view class="lock">
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%94%81%E5%AE%9Aicon.png"></image>
+				</view>
 			</view>
 			<view class="progress">
 				<u-line-progress :percent="sub.progress*100/sub.childrenCount" :show-percent="false" height="10" active-color="#ff6f68"></u-line-progress>
@@ -43,7 +45,7 @@
 		components: {
 			TopNavbar
 		},
-		onShow() {			
+		onShow() {
 			var self = this
 			uni.getStorage({
 				key:'openid',
@@ -113,8 +115,6 @@
 			},
 			handleSubjectClick(e){
 				var item = e.currentTarget.dataset.item
-				// console.log(e);
-				// return
 				uni.navigateTo({
 					url:'/homeSubPackage/pages/important/subject?sid='+item.id
 				})
@@ -208,19 +208,11 @@
 		width: 690rpx;
 		height: 280rpx;
 		background-color: #ffffff;
-		box-shadow: 0rpx 16rpx 44rpx 0rpx 
-			rgba(226, 171, 166, 0.21);
+		box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.06);
 		border-radius: 24rpx;
 		overflow: hidden;
 	}
 	.myPage .subjectItem .img{
-		/* position: absolute;
-		top: 10rpx;
-		left: 10rpx;
-		height: 230rpx;
-		line-height: 230rpx;
-		width: 670rpx;
-		 */
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -233,6 +225,19 @@
 		width: 100%;
 		height: 192rpx;
 		line-height: 192rpx;
+	}
+	.myPage .subjectItem .img .lock {
+		position: absolute;
+		bottom: 16rpx;
+		right: 16rpx;
+		width: 24rpx;
+		height: 26rpx;
+		line-height: 26rpx;
+	}
+	.myPage .subjectItem .img .lock image {
+		width: 100%;
+		height: 100%;
+		line-height: 0;
 	}
 	.myPage .subjectItem .progress{
 		position: relative;

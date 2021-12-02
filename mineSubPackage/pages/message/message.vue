@@ -1,6 +1,7 @@
 <template>
-	<TopNavbar title='消息中心' paddingTop="214">
+	<TopNavbar title='消息中心'>
 	<view class="myPage u-demo-area">
+		<view style='height:44rpx'></view>
 		<view class="readAllView">
 			<button v-if="notReadCount > 0" @click="handleReadAll">全部已读</button>
 			<button v-else class="read">全部已读</button>
@@ -9,7 +10,7 @@
 			<view class="conImg">
 				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/coupon2.png"></image>
 			</view>
-			<view style='display: flex; flex: 1;border-bottom: 2rpx solid rgba(0,0,0,.1);'>
+			<view style='display: flex; flex: 1;border-bottom: 2rpx solid rgba(0,0,0,.06);'>
 				<view class="conView">
 					<view class="head">
 						<view class="title">{{msg.title}}</view>
@@ -18,7 +19,7 @@
 					<view class="content">{{msg.content}}</view>
 				</view>
 				<view class="icon">
-					<image  v-if="msg.isRead==0" src="../../static/icon-dot.png"></image>
+					<image v-if="msg.isRead==0" src="../../static/icon-dot.png"></image>
 				</view>
 			</view>
 		</view>
@@ -220,6 +221,7 @@
 	.myPage .msgItem .conView{
 		flex: 1;
 		padding-top: 34rpx;
+		max-width: 436rpx;
 	}
 	.myPage .msgItem .conView .head{
 		display: inline-flex;
@@ -268,8 +270,8 @@
 		text-align: center;
 	}
 	.myPage .msgItem .icon image{
-		width: 32rpx;
-		height: 32rpx;
+		width: 24rpx;
+		height: 24rpx;
 		display: inline-block;
 		vertical-align: middle;
 	}

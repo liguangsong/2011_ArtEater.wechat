@@ -1,6 +1,6 @@
 <template>
 
-		<u-popup v-model="visiable" height="748rpx" mode="bottom" @close='close'>
+		<u-popup border-radius="14" v-model="visiable" height="748rpx" mode="bottom" @close='close'>
 			<view class="box">
 				<view class="button">
 					<view class="close" @click='$emit("changeSpecialitys")'>
@@ -65,6 +65,8 @@
 	.box {
 		display: flex;
 		flex-direction: column;
+		border-top-right-radius: 24rpx;
+		border-top-left-radius: 24rpx;
 	}
 	.button {
 		display: flex;

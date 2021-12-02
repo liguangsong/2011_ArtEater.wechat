@@ -21,6 +21,7 @@
 								<view v-if="product.price < product.originalPrice" class="oPrice"
 									@click="handleProductCheckedChange(product)">¥{{product.originalPrice}}</view>
 								<view class="intro">
+									最多抵现
 									<text v-if="product.maxScoreMoney>0">最多抵现{{product.maxScoreMoney}}元</text><text
 										v-if="product.minScore>0">，积分限制:{{product.minScore}}</text>
 								</view>
@@ -114,14 +115,20 @@
 				<view class="buylView">
 					<view style='padding: 48rpx 48rpx 128rpx;'>
 						<view class="title">
-							您将购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
+							购买说明
 						</view>
 						<view class="tips">
-							购买后可在【个人中心-积分兑换-已购项目】中查看
+							·您购买的商品为线上虚拟内容服务，购买后不支持退订、转让 
+						</view>
+						<view class="tips">
+							·本服务有效期为一年，一年内不限使用次数 
+						</view>
+						<view class="tips">
+							·购买后可在[我的-已购买项目]中查看
 						</view>
 					</view>
 					<view @click="isShowBuyTips=false" class="btnActions"
-						style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.1);line-height:78rpx;'>
+						style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.06);line-height:78rpx;'>
 						<text>关闭</text>
 					</view>
 				</view>
@@ -135,7 +142,7 @@
 						</view>
 					</scroll-view>
 					<view @click="isShowProductDetail=false" class="btnActions"
-						style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.1);line-height:78rpx;'>
+						style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.06);line-height:78rpx;'>
 						<text>关闭</text>
 					</view>
 				</view>
@@ -738,8 +745,14 @@
 				order.set("wechatPayOrderId", '') // 支付流水号
 				order.save().then(_order => {
 					uni.hideLoading()
+					// uni.showModal({
+					// 	content: '恭喜，购买成功',
+					// 	showCancel: false
+					// })
 					uni.showModal({
-						content: '恭喜，购买成功',
+						title: '恭喜，购买成功',
+						confirmColor: '#ED3535',
+						confirmText: '确定',
 						showCancel: false
 					})
 					const eventChannel = self.getOpenerEventChannel()
@@ -819,13 +832,14 @@
 		border-radius: 24rpx;
 		background: #fff;
 		padding-left: 28rpx;
+		box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.06);
 	}
 	.recommendView {
 		
 	}
 	.productItem {
 		height: 148rpx;
-		border-bottom: 2rpx solid rgba(0,0,0,.1);
+		border-bottom: 2rpx solid rgba(0,0,0,.06);
 		display: flex;
 		justify-content: space-between;
 	}
@@ -864,7 +878,7 @@
 	.myView .productItem {
 		display: flex;
 		height: 148rpx;
-		border-bottom: 2rpx solid rgba(0, 0, 0, .1);
+		border-bottom: 2rpx solid rgba(0, 0, 0, .06);
 	}
 	
 	.myView .iconView {
@@ -944,7 +958,7 @@
 	
 	.productItem .contentView .titleView .intro {
 		width: 104rpx;
-		font-size: 22rpx;
+		font-size: 20rpx;
 		font-family: PingFangSC-Medium;
 		color: rgba(53, 32, 38, 0.4);
 		flex: 1;
@@ -1211,7 +1225,7 @@
 		width: 100%;
 		height: 84rpx;
 		margin-left: 48rpx;
-		border-bottom: 2rpx solid rgba(0, 0, 0, .1);
+		border-bottom: 2rpx solid rgba(0, 0, 0, .06);
 		display: flex;
 		align-items: center;
 	}
@@ -1229,7 +1243,7 @@
 		font-size: 20rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
-		color: rgba(0, 0, 0, .39);
+		color: rgba(53, 32, 38, .39);
 		line-height: 28rpx;
 	}
 	
@@ -1244,7 +1258,7 @@
 	
 	.buyConfirmView .payment {
 		height: auto;
-		border-top: 2rpx solid rgba(0, 0, 0, .1);
+		border-top: 2rpx solid rgba(0, 0, 0, .06);
 		display: flex;
 	}
 	
@@ -1287,6 +1301,21 @@
 	}
 	.btnView {
 		padding: 24rpx 26rpx 0 30rpx;
+	}
+	.buylView .title {
+		font-size: 28rpx;
+		font-weight: 500;
+		color: #000000;
+		line-height: 40rpx;
+		margin-bottom: 20rpx;
+		text-align: center;
+	}
+	.buylView .tips {
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #000000;
+		line-height: 34rpx;
 	}
 	
 	.btnPay {

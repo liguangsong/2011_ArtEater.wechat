@@ -59,7 +59,7 @@
 		</view>
 		<view v-else :style='{paddingTop: infoTop + "px"}'></view>
 		<!-- 推荐学习 -->
-		<view class="recommend"  v-if='recommendedList.length'>
+		<view class="recommend" v-if='recommendedList.length'>
 			<view class="recommend-title">
 				推荐学习
 			</view>
@@ -289,15 +289,16 @@
 				query.select('.header').boundingClientRect(data => {
 					this.htmlInfoTop = data.height;
 					let q1 = uni.createSelectorQuery().in(this);
-					q1.select('.recommend').boundingClientRect(d => {
-						let h = uni.getSystemInfoSync().screenHeight - d.height;
-						console.log(data, d, h);
-						if (h > data.height) {
-							this.infoTop = h;
-						} else {
-							this.infoTop = data.height;
-						}
-					}).exec();			
+					if (recommendedList.length) {
+						q1.select('.recommend').boundingClientRect(d => {
+							let h = uni.getSystemInfoSync().screenHeight - d.height;
+							if (h > data.height) {
+								this.infoTop = h;
+							} else {
+								this.infoTop = data.height;
+							}
+						}).exec();	
+					}	
 				}).exec();
 				uni.hideLoading()
 			},

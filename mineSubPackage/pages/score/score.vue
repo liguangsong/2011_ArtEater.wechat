@@ -24,10 +24,14 @@
 					</view>
 					<view v-if="index>2" class="index">{{index + 1}}</view>
 					<view class="cont">
-						<view class="headIcon">
+						<view class="headIcon border" v-if="index<=2">
 							<image :src="user.avatarUrl"></image>
 						</view>
-						<view class="nickName">{{user.nickName}}</view>
+						<view class="headIcon" v-else>
+							<image :src="user.avatarUrl"></image>
+						</view>
+						<view class="nickName weight" v-if="index<=2">{{user.nickName}}</view>
+						<view class="nickName" v-else>{{user.nickName}}</view>
 						<view v-if="index==0" class="score first">{{user.score}}</view>
 						<view v-if="index==1" class="score second">{{user.score}}</view>
 						<view v-if="index==2" class="score third">{{user.score}}</view>
@@ -187,6 +191,14 @@
 		height: 134rpx;
 		line-height: 134rpx;
 	}
+	.scoreView>view:nth-child(2n) {
+		background: rgba(235, 235, 235, .19);
+	}
+	.scoreView .weight {
+		font-weight: 700;
+		color: rgba(0,0,0,.8);
+		font-family: PingFangSC-Medium;
+	}
 
 	.myPage .scoreItem .index {
 		flex: 0 1 168rpx;
@@ -205,20 +217,22 @@
 	}
 
 	.myPage .scoreItem .index.first {
-		color: #ED3535;
+		color: rgba(237, 53, 53, 1);
 		font-size: 38rpx;
 	}
 
 	.myPage .scoreItem .index.second {
-		color: #FF6867;
+		color: rgba(255, 104, 103, 1);
 		font-size: 38rpx;
 	}
-
+	
 	.myPage .scoreItem .index.third {
-		color: #FF9D83;
+		color: rgba(255, 157, 131, 1);
 		font-size: 38rpx;
 	}
-
+	.border image {
+		border: 2rpx solid #D81E1F;
+	}
 	.myPage .scoreItem .cont {
 		border-bottom: 2rpx solid #f4f4f4;
 		flex: 1;
@@ -244,15 +258,16 @@
 		flex: 1;
 		color: rgba(53, 32, 38, 0.69);
 		font-size: 30rpx;
-		font-family: PingFangSC-Medium;
+		font-family: PingFangSC-Regular, PingFang SC;
 	}
 
 	.myPage .scoreItem .cont .score {
 		width: 100rpx;
 		text-align: right;
-		color: rgba(20, 58, 68, 0.69);
-		font-size: 30rpx;
-		font-family: PingFangSC-Medium;
+		font-size: 28rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,.5);
 	}
 
 	.myPage .scoreItem .cont .score.first {

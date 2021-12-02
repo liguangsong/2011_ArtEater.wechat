@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='分享给好友' paddingTop="-1" bg='#f7f7f7'>
+	<TopNavbar title='分享给好友' paddingTop="198" bg='#f7f7f7'>
 	<view>
 		<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
 		<view class="rect">
@@ -152,16 +152,16 @@
 								context.draw() // 先清空画布
 								context.fillRect(0, 0, 602 * factor, picHeight * factor)
 								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 850*factor);
-								context.drawImage(bg.tempFilePath, 0, 0, 400, 400, 0 , picHeight*factor-500, picWidth*factor, 338*factor);
+								context.drawImage(bg.tempFilePath, 0, 0, 400, 400, 0 , picHeight*factor-500, picWidth*factor, 308*factor);
 								// context.setFillStyle('black')
 								self.roundRect(context, 0, 850 * factor, 602 * factor, 216 * factor, 0 * factor) // 绘制半透明的圆角背景
 								
 								// 绘制二维码
-								context.drawImage(qrcodeRes.tempFilePath, 456 * factor, 922 * factor, 120 * factor,120 * factor);
+								context.drawImage(qrcodeRes.tempFilePath, 456 * factor, 917 * factor, 120 * factor,120 * factor);
 								// 绘制头像外层圆形框
-								self.headPic(context, '', 42 * factor, 226 * factor, 996 * factor, factor) // 绘制头像外层框
+								self.headPic(context, '', 42 * factor, 226 * factor, 985 * factor, factor) // 绘制头像外层框
 								// 将头像装进头像框
-								context.drawImage(headRes.tempFilePath, 226 * factor, 996 * factor,42 * factor,42 * factor);
+								context.drawImage(headRes.tempFilePath, 226 * factor, 985 * factor,42 * factor,42 * factor);
 								context.restore()
 								
 								// 标题
@@ -170,14 +170,14 @@
 								context.setFillStyle('#352026')
 								let title = self.title
 								// const m1 = context.measureText(user)
-								context.fillText(title, 30 * factor, 904 * factor )
+								context.fillText(title, 30 * factor, 874 * factor )
 								
 								// 总耗时
 								context.setFontSize(18*factor)
 								context.font = 'normal normal ' + parseInt(18 * factor) + 'px PingFangSC-Light'
-								context.setFillStyle('#352026')
+								context.setFillStyle('rgba(0,0,0,.5)')
 								let time = '总耗时：' + self.minutes
-								context.fillText(time, 30 * factor, 940 * factor )
+								context.fillText(time, 30 * factor, 910 * factor )
 								
 								// 用户名
 								context.setFontSize(22*factor)
@@ -185,7 +185,7 @@
 								context.setFillStyle('#352026')
 								let user = self.userInfo.nickName
 								const m3 = context.measureText(user)
-								context.fillText(user, 280 * factor, 1025 * factor )
+								context.fillText(user, 280 * factor, 1020 * factor )
 								
 								// 答题正确率百分比
 								context.setFontSize(60*factor)
@@ -193,21 +193,21 @@
 								context.font = 'normal bold ' + parseInt(60 * factor) + 'px Arial, Helvetica, sans-serif'
 								let percent = self.percent + ''
 								const m7 = context.measureText(percent)
-								context.fillText(percent, 28 * factor, 1027 * factor )
+								context.fillText(percent, 28 * factor, 1020 * factor )
 								
 								// %
 								context.setFontSize(22*factor)
 								context.setFillStyle('#352026')
 								context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
 								const m8 = context.measureText('%')
-								context.fillText('%', 28 * factor + m7.width + 5 * factor, 1025 * factor )
+								context.fillText('%', 28 * factor + m7.width + 5 * factor, 1020 * factor )
 								
 								// 正确率
 								context.setFontSize(22 * factor)
 								context.setFillStyle('#352026')
 								context.font = 'normal normal ' + parseInt(22 * factor) + 'px PingFangSC-Regular'
 								const mc = context.measureText('正确率')
-								context.fillText('正确率', 28 * factor + m7.width + m8.width + 10 * factor, 1025 * factor )
+								context.fillText('正确率', 28 * factor + m7.width + m8.width + 10 * factor, 1020 * factor )
 								// context.draw(true)
 								context.draw(true,function(){
 									setTimeout(function () {
@@ -274,14 +274,14 @@
 		height: 3198rpx;
 	}
 	.rect {
-		margin: 198rpx auto 0;
-		width: 602rpx;
+		margin: 0 auto 0;
+		width: 698rpx;
 		position: relative;
-		z-index: 99999;
+		z-index: 999;
 	}
 	.bgImg{
-		width: 602rpx;
-		height: 1066rpx;
+		width: 698rpx;
+		height: 1288rpx;
 		background-color: rgba(255, 255, 255, 0.69);
 		border-radius: 40rpx;
 	}
@@ -305,7 +305,7 @@
 		font-weight: bold;
 		font-size: 34rpx;
 		font-family: PingFangSC-Medium;
-		margin-top: 92rpx;
+		margin-top: 66rpx;
 		margin-bottom: 40rpx;
 	}
 	.download image{
@@ -321,6 +321,7 @@
 		z-index: 1;
 		width: 100%;
 		text-align: center; 
+		height: 92rpx;
 		background: #ED3535;
 		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
 		border-radius: 46rpx;
@@ -328,7 +329,7 @@
 		font-weight: 600;
 		color: #FFFFFF;
 	}
-	.bg {
+/* 	.bg {
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -336,5 +337,5 @@
 		height: 100vh;
 		background: rgba(0, 0, 0, 0.45);
 		z-index: 10000;
-	}
+	} */
 </style>

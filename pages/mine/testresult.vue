@@ -1,9 +1,9 @@
 <template>
-	<TopNavbar title='积分兑换' height='400' fontColor='#000' iconColor='#000' align='center'>
+	<TopNavbar title='模拟考试' height='400' fontColor='#000' iconColor='#000' align='center'>
 	<!-- <TopNavbar title='积分兑换'> -->
-	<view style='background: #f7f7f7;'>
+	<view style='background: #f7f7f7;padding-bottom: 40rpx;'>
 		<view class="resultView">
-			<image class='bg' src="../../static/mine/reselt.png"></image>
+			<image class='bg' src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/reselt.png"></image>
 			<view class='resBox'>
 				
 			<view class="title-info">
@@ -431,7 +431,8 @@
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
 		color: #352026;
-		line-height: 34rpx;
+		line-height: 30rpx;
+		margin-left: 10rpx;
 	}
 	.view1{
 		padding-top:44rpx;
@@ -450,6 +451,7 @@
 		background: #fff;
 		border-radius: 24rpx;	
 		padding: 24rpx 34rpx 48rpx 32rpx;
+		box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.06);
 	}
 	.view1 .rView .resultItem{
 		display: inline-block;

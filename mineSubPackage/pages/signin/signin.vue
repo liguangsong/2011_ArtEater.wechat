@@ -1,25 +1,25 @@
 <template>
-	<TopNavbar title='签到' paddingTop="224">
+	<TopNavbar title='签到'>
 		<view>
+			<view style='height: 60rpx'></view>
 			<view class="mydatepicker">
-					
-			<view class="title-info title-margin">
-				<view class="left">
-					<view class="red-block"></view>
-					{{dateStr}}
-				</view>
-				<view class="right">
-					<view class="prev" @click="handlePrev">
-						<u-icon name="arrow-left" color="#ff6867" size="30"></u-icon>
+				<view class="title-info">
+					<view class="left">
+						<view class="red-block"></view>
+						{{dateStr}}
 					</view>
-					<view class="next" @click="handleNext">
-						<u-icon name="arrow-right" color="#ff6867" size="30"></u-icon>
+					<view class="right">
+						<view class="prev" style='margin-right: 48rpx;' @click="handlePrev">
+							<u-icon name="arrow-left" color="#ff0000" size="30"></u-icon>
+						</view>
+						<view class="next" @click="handleNext">
+							<u-icon name="arrow-right" color="#ff0000" size="30"></u-icon>
+						</view>
 					</view>
 				</view>
-			</view>
 
 				<view class="body">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/signin.png"></image>
+					<image src="../../../static/1111.png"></image>
 					<view class="content">
 						<view v-for="item in prevDays" class="item prev">
 							<view @click="handleClickItem" :data-item="item"
@@ -42,12 +42,12 @@
 					</view>
 				</view>
 			</view>
-			<view class="title-info title-margin">
+			<view class="title-info" style='margin-top: 54rpx;'>
 				<view class="left">
 					<view class="red-block"></view>
 					当前积分：{{userInfo.score}}
 				</view>
-			</view> 
+			</view>
 			<view class="actionView">
 				<view v-if="isNeedSign" @click="handleSign" class="action">立即签到</view>
 				<view v-else class="action disabled">已签到</view>
@@ -320,13 +320,14 @@
 	.right {
 		display: flex;
 	}
+
 	.actionView {
-		/* padding: 50rpx; */
 		width: 100%;
 		text-align: center;
 		margin-top: 62rpx;
 		position: relative;
 	}
+
 	.actionView .tips {
 		position: absolute;
 		top: -132rpx;
@@ -334,6 +335,7 @@
 		width: 438rpx;
 		height: 100rpx;
 	}
+
 	.actionView .tips .tipicon {
 		margin-top: 34rpx;
 		font-weight: 500;
@@ -341,6 +343,7 @@
 		line-height: 34rpx;
 		font-size: 24rpx;
 	}
+
 	.actionView .tips image {
 		position: absolute;
 		width: 100%;
@@ -348,7 +351,7 @@
 		top: 0;
 		left: 0;
 	}
-	
+
 	.scoreView {
 		margin-top: 26rpx;
 		height: 48rpx;
@@ -370,15 +373,14 @@
 		color: #ffffff;
 		font-family: PingFangSC-Medium;
 		font-size: 42rpx;
-
 		background: #D81E1F;
-		box-shadow: 0 6rpx 12rpx 0 rgba(0,0,0,0.11);
+		box-shadow: 0 6rpx 12rpx 0 rgba(0, 0, 0, 0.11);
+		margin-bottom: 30rpx;
 	}
 
 	.actionView .action.disabled {
-		background-color: #dcdcdc;
+		background: rgba(0, 0, 0, 0.2);
 		background-image: none;
-		box-shadow: none;
 	}
 
 	.mydatepicker {
@@ -404,6 +406,7 @@
 	.mydatepicker .head .prev {
 		text-align: right;
 		width: 60rpx;
+		margin-right: 48rpx;
 	}
 
 	.mydatepicker .head .next {
@@ -413,12 +416,12 @@
 
 
 	.mydatepicker .body {
-		/* width: 100%; */
 		width: 722rpx;
-		height: 674rpx;
-		margin: 0 auto;
+		height: 720rpx;
+		margin: 30rpx auto 0;
 		position: relative;
 	}
+
 	.mydatepicker .body image {
 		position: absolute;
 		top: 0;
@@ -452,28 +455,30 @@
 	}
 
 	.mydatepicker .body .content {
-		padding: 0 20rpx;
-		min-height: 564rpx;
+		/* padding: 0 20rpx; */
+		padding: 0 45rpx 0 47rpx;
+		/* min-height: 564rpx; */
 		position: relative;
 		z-index: 100;
-		padding-top: 152rpx;
+		padding-top: 146rpx;
 	}
 
 	.mydatepicker .body .content .item {
 		display: inline-block;
-		width: 14.1%;
+		width: 14.28%;
 		text-align: center;
 		margin-bottom: 48rpx;
 		font-size: 20rpx;
 		font-weight: 500;
-		color: rgba(0,0,0,.2);
+		color: rgba(0, 0, 0, .2);
 	}
+
 	.mydatepicker .body .content .item view {
 		width: 40rpx;
 		height: 40rpx;
 		line-height: 40rpx;
 		text-align: center;
-		background: rgba(0,0,0,.05);
+		background: rgba(0, 0, 0, .05);
 		margin: 0 auto;
 		border-radius: 50%;
 	}

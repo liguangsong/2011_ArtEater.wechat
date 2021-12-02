@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='食艺兽' paddingTop='238'>
+	<TopNavbar title='食艺兽' paddingTop='248'>
 		<view class="myPage">
 			<view class="boxView">
 				<view class="editForm" >
@@ -62,8 +62,12 @@
 		<checkspecialitys @changeSpecialitys='changeSpecialitys' :visiable="isShowSpeciality" :list="specialitys" :val='form.speciality' />
 		<checkunivercity :visiable="isShowUniversity" @cancle="handleCancel"
 			@complate="handleComplate" :value="form.university" @changeVisiable='isShowUniversity = false'></checkunivercity>
-		<view class="btnView">
+		<view class="btnView" v-if='opacity'>
 			<image class="btnSubmit" @click="submit" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/journey.png" mode=""></image>
+		</view>
+		
+		<view class="btnView" style='opacity: .4;' v-else>
+			<image class="btnSubmit" @click="submit" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/journey.png"></image>
 		</view>
 	</TopNavbar>
 </template>
@@ -192,11 +196,21 @@
 					]
 				},
 				userInfo: {},
-				canIUse: uni.canIUse('button.open-type.getUserInfo')
+				canIUse: uni.canIUse('button.open-type.getUserInfo'),
+				// opacity: false
 			}
 		},
 		components: {
 			TopNavbar, checkunivercity, checkspecialitys
+		},
+		computed: {
+			opacity() {
+				let {realname, phone, speciality, university, area} = this.form;
+				if (realname && phone && speciality && university && area[0].value) {
+					return true
+				}
+				return false
+			}
 		},
 		onLoad(options) {
 			if (options.q) {
@@ -389,7 +403,7 @@
 	.boxView .editForm {
 		position: relative;
 		z-index: 8;
-		padding-top: 180rpx;
+		padding-top: 182rpx;
 	}
 	.headIcon {
 		position: absolute;
@@ -406,7 +420,7 @@
 		height: 100%;
 	}
 	.inputItem {
-		height: 82rpx;
+		height: 85rpx;
 		width: 100%;
 		padding-right: 114rpx;
 		overflow: hidden;
@@ -416,7 +430,7 @@
 	}
 	.u-input--border {
 		border: none !important;
-		height: 100% !important;
+		height: 85rpx !important;
 		text-align: right !important;
 		
 	}
@@ -435,7 +449,7 @@
 	.u-form-item {
 		padding: 0 !important;
 		display: block !important;
-		margin-bottom: 38rpx;
+		margin-bottom: 36rpx;
 	}
 	.u-form-item--left {
 		margin-bottom: 0 !important;
@@ -467,7 +481,7 @@
 		left: 0;
 		bottom: 0;
 		z-index: 20;
-		background: #fff;
+		/* background: #f7f7f7; */
 	}
 	.btnView image {
 		width: 100%;

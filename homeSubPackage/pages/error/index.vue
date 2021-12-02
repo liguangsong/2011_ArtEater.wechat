@@ -1,6 +1,6 @@
 <template>
 	<TopNavbar title='错题集'>
-		<view class="blankpage" v-if='!dates.length'>
+		<view class="blankpage" v-if='dates.length'>
 			<view class="blankpage-info">
 				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%94%99%E9%A2%98%E9%9B%86%E7%A9%BA%E7%99%BD%E9%A1%B5%E6%8F%92%E5%9B%BE.png"></image>
 				<view class="kill">
@@ -21,7 +21,7 @@
 					<view class="red-block"></view>
 					个人错题集
 				</view>
-				<view class="right">连续答对3遍，它们就会从这里消失。</view>
+				<view class="right">连续答对3遍，它们就会从这里消失</view>
 			</view>
 			<view class="actionView">
 				<view class="actionItem" @click="handleMyNoteClick">
@@ -41,7 +41,7 @@
 					<view class="red-block"></view>
 					公共错题集
 				</view>
-				<view class="right">每天10道错误率最高的全民公敌，大家一起来消灭它们！</view>
+				<view class="right">每天10道错误率最高的全民公敌，大家一起来消灭它们</view>
 			</view>
 			<view class="actionView"  @click="handlePubNoteClick" :data-item="date" v-for="date in dates" :key="date">
 				<view class="actionItem">

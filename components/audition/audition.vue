@@ -1,11 +1,6 @@
 <template>
 	<view class="list" v-if="list.length">
-			<!-- <view class="title" v-if="title">
-				<view class="red-block"></view>
-			   {{title}}
-			</view>
-			<text class="more" v-if="showMore" @click="gotolist">查看更多 ></text> -->
-			<view class="title-info title">
+			<view class="title-info title" v-if="title || showMore">
 				<view class="left" v-if="title">
 					<view class="red-block"></view>
 				   {{title}}

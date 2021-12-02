@@ -18,7 +18,7 @@
 						<label class="txt">{{form.phone}}</label>
 					</view>
 				</u-form-item>
-				<u-form-item label="真实姓名" :label-width="150" prop="realname">
+				<u-form-item label="真实姓名" class='noneborder' :label-width="150" prop="realname">
 					<view  slot="right" style="padding-right: 88rpx;">
 						<label class="txt">{{form.realname}}</label>
 					</view>
@@ -26,7 +26,9 @@
 			</u-form>	
 		</view>
 		
-		<view class="hr"></view>
+		<view class="hr">
+			<view class=""></view>
+		</view>
 		
 		<view class="editForm">
 			<u-form :model="form" ref="uForm" :rules="rules">
@@ -45,7 +47,7 @@
 						<u-icon name="arrow-right" size="26" color="#c0c4cc"></u-icon>
 					</view>
 				</u-form-item>
-				<u-form-item label="目标院校" :label-width="150" prop="university">
+				<u-form-item label="目标院校" class='noneborder' :label-width="150" prop="university">
 					
 					<u-input v-model="form.university" @click="handleUnClick" :custom-style="custStyle" :disabled="true" input-align="right" maxlength='30' placeholder="请选择目标院校" />
 					<view slot="right" class="u-input__right-icon--select u-input__right-icon__item">
@@ -55,7 +57,9 @@
 			</u-form>
 		</view>
 		
-		<view class="hr"></view>
+		<view class="hr">
+			<view class=""></view>
+		</view>
 		
 		<view class="editForm">
 			<u-form :model="form" ref="uForm" :rules="rules">
@@ -64,13 +68,17 @@
 						<label style="opacity: .8;">{{form.amount}}</label>
 					</view>
 				</u-form-item>
-				<u-form-item label="积分" :label-width="150">
+				<u-form-item label="积分" class='noneborder' :label-width="150">
 					<view  slot="right" style="padding-right: 88rpx;">
 						<label style="opacity: .8;">{{form.score}}</label>
 					</view>
 				</u-form-item>
 			</u-form>
+			
 			<!-- <u-button @click="submit">提交</u-button> -->
+		</view>
+		<view class="hr">
+			<view class=""></view>
 		</view>
 	</TopNavbar>
 	<checkunivercity :visiable="isShowUniversity"  @complate="handleComplate" :value="form.university" @changeVisiable='isShowUniversity = false'></checkunivercity>
@@ -319,7 +327,7 @@
 </script>
 
 
-<style>
+<style lang='scss'>
 	.editForm .headimg .u-form-item:first-child  {
 		height: 124rpx !important;
 	}
@@ -369,6 +377,14 @@
 		width: 100vw;
 		height: 24rpx;
 		background: #f7f7f7;
+	}
+	.hr view {
+		width: 100%;
+		height: 10rpx;
+		position: relative;
+		top: -10rpx;
+		z-index: 10;
+		background: #fff;
 	}
 	.u-form-item {
 		padding: 0 !important;
