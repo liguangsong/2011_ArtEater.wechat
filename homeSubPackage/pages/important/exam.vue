@@ -87,7 +87,7 @@
 				</view>
 				<view style="position: relative;padding: 60rpx 70rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
 					<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
-						<view style="display:inline-block;margin-right: 10rpx;" v-for="s in options">{{s.rightAnswer}}</view>
+						<text style="margin-right: 10rpx;" v-for="s in options">{{s.rightAnswer}}</text>
 					</view>
 					<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
 					<view class="comment">

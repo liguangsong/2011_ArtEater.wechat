@@ -296,7 +296,7 @@
 	
 	.commentView .rightAnswer{
 		margin-right: 10rpx;
-		height: 44rpx;
+		min-height: 44rpx;
 		font-size: 32rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
@@ -488,4 +488,6 @@
 		padding-left: 36rpx;
 		padding-top: 40rpx;
 	}
-
+	.myCom .item:last-child .optionItem {
+		border-bottom: none;
+	}
