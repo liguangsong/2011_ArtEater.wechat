@@ -55,7 +55,7 @@
 		</view>
 		<!-- 图文 -->
 		<view class="html" :style='{paddingTop: infoTop + 4 + "px"}' v-if="curriculumInfo.explain">
-			<rich-text :nodes='curriculumInfo.explain|formatRichText'></rich-text>
+			<rich-text class="ql-editor" :nodes='curriculumInfo.explain|formatRichText'></rich-text>
 		</view>
 		<!-- 推荐学习 -->
 		<view class="recommend" v-if='recommendedList.length'>

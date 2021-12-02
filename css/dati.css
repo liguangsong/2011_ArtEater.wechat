@@ -465,6 +465,9 @@
 		border-radius: 31rpx;
         font-family: PingFangSC-Regular, PingFang SC;
 	}
+	.btnComments view{
+		font-family: PingFangSC-Regular,PingFang SC;
+	}
 	.btnComments::after{
 		border: 0;
 	}

@@ -117,7 +117,7 @@
 	}
 	.myCom .item.state5{
 		border-color: #fbfbfb;
-		border-bottom: 2rpx solid #f2f2f2;
+		border-bottom: 1rpx solid #f2f2f2;
 	}
 	.myCom .item.state6{
 		/* border: 2rpx solid #d9e6e7; */
