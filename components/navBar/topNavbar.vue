@@ -3,10 +3,10 @@
 		<view class="tabbar" :style='{background: tabbarBg ? bg : "none", height: tabbarheight+"rpx"}'>	
 			<view class="nav" :style='{height:navbarheight + "rpx", top:tabbarheight - navbarheight + "rpx"}'>
 				<view  @click='back' class="icon" v-if='!iconFn'>
-					<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
+					<u-icon :name="iconName" v-if='icon' :color="iconColor" :size="iconSize"></u-icon>
 				</view>
 				<view class="icon" v-else @click='$emit("closeNavbar")'>
-					<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
+					<u-icon :name="iconName" v-if='icon' :color="iconColor" :size="iconSize"></u-icon>
 				</view>
 				<view class="title" :style='{fontSize: fontSize + "rpx", color: fontColor, textAlign: align}'>
 					<text>{{title}}</text>

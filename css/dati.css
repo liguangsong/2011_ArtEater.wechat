@@ -140,7 +140,7 @@
 		vertical-align: middle;
 	}
 	.questionView .headView .countView .process{
-       margin:0 12rpx;
+       margin:0 20rpx;
 	}
 	.questionView .headView .countView .next{
 		width: 30rpx;
@@ -485,4 +485,14 @@
 		padding-left: 36rpx;
 		padding-top: 40rpx;
 	}
-
+	.questionView .title input {
+		transform: translateY(-4rpx);
+	}
+	.questionView .title .tips {
+		margin-right: 10rpx;
+	}
+	.myCom .item.state2 .txt {
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+	}
