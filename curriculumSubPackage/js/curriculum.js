@@ -95,14 +95,17 @@ export default {
 	async getAllTimetable(rootId, recursion) {
 		let coursesModuleRoot = new Parse.Query("CoursesModule");
 			coursesModuleRoot.notEqualTo('hide', true);
-			coursesModuleRoot.ascending('createdAt');
+			// coursesModuleRoot.ascending('createdAt');
+			// coursesModuleRoot.ascending('innerOrder');
 			coursesModuleRoot.equalTo("objectId", rootId);
 		let curriculum = new Parse.Query('CoursesModule');
 			curriculum.notEqualTo('hide', true);
 			curriculum.equalTo('rootId', rootId);
-			curriculum.ascending('createdAt');
+			// curriculum.ascending('createdAt');
+			// curriculum.ascending('innerOrder');
 		const mainQuery = Parse.Query.or(coursesModuleRoot,curriculum);
-		      mainQuery.ascending('createdAt');
+		    //   mainQuery.ascending('createdAt');
+		      mainQuery.ascending('innerOrder');
 		let res = await mainQuery.find();
 		if (res) {
 			// 获取上次学习的课程Id
@@ -129,6 +132,7 @@ export default {
 				}
 			})
 		}
+		console.log(res,88776655)
 		return res;
 	},
 	// 获取当前课程所属的整个系列课程 扫码分享情况
@@ -137,16 +141,17 @@ export default {
 		if(root){
 			coursesModuleRoot.equalTo('hide', true);
 		}
-			coursesModuleRoot.ascending('createdAt');
+			// coursesModuleRoot.ascending('createdAt');
 			coursesModuleRoot.equalTo("objectId", rootId);
 		let curriculum = new Parse.Query('CoursesModule');
 			if(root){
 				curriculum.notEqualTo('hide', true);
 			}
 			curriculum.equalTo('rootId', rootId);
-			curriculum.ascending('createdAt');
+			// curriculum.ascending('createdAt');
 		const mainQuery = Parse.Query.or(coursesModuleRoot,curriculum);
-		mainQuery.ascending('createdAt');
+		// mainQuery.ascending('createdAt');
+		   mainQuery.ascending('innerOrder');
 		let res = await mainQuery.find();
 		if (res) {
 			// 获取上次学习的课程Id
