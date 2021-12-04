@@ -289,7 +289,7 @@
 				query.select('.header').boundingClientRect(data => {
 					this.htmlInfoTop = data.height;
 					let q1 = uni.createSelectorQuery().in(this);
-					if (recommendedList.length) {
+					if (this.recommendedList.length) {
 						q1.select('.recommend').boundingClientRect(d => {
 							let h = uni.getSystemInfoSync().screenHeight - d.height;
 							if (h > data.height) {
