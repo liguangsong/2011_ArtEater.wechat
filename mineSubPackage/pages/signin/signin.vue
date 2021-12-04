@@ -10,10 +10,12 @@
 					</view>
 					<view class="right">
 						<view class="prev" style='margin-right: 48rpx;' @click="handlePrev">
-							<u-icon name="arrow-left" color="#ff0000" size="30"></u-icon>
+							<!-- <u-icon name="arrow-left" color="#ff0000" size="30"></u-icon> -->
+							<image src="../../../static/icon_arrow.png" mode=""></image>
 						</view>
 						<view class="next" @click="handleNext">
-							<u-icon name="arrow-right" color="#ff0000" size="30"></u-icon>
+							<!-- <u-icon name="arrow-right" color="#ff0000" size="30"></u-icon> -->
+							<image src="../../../static/icon_arrow.png" mode=""></image>
 						</view>
 					</view>
 				</view>
@@ -319,6 +321,13 @@
 <style scoped>
 	.right {
 		display: flex;
+	}
+	.prev image, .next image {
+		width: 30rpx;
+		height: 30rpx;
+	}
+	.prev image {
+		transform: rotate(180deg);
 	}
 
 	.actionView {

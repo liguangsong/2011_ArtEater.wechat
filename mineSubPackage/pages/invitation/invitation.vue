@@ -1,12 +1,12 @@
 <template>
-	<TopNavbar title='分享给好友' paddingTop="-1">
+	<TopNavbar title='分享给好友'>
 		<view style='position: relative; z-index: 10;'>
 			<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
 			<view class="rect">
 				<image @tap.stop v-if="sharePicImg" :src="sharePicImg" mode="aspectFill" class="bgImg"></image>
 				<!-- <button class="download" @click="handleSaveImg">保存并分享</button> -->
 				<view @click="handleSaveImg" class="download">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon_sharebg.png"></image>
+					<!-- <image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon_sharebg.png"></image> -->
 					<view class="title">保存并分享</view>
 				</view>
 			</view>
@@ -166,15 +166,15 @@
 								const sysInfo = uni.getSystemInfoSync();
 								const screenWidth = sysInfo.screenWidth*3; // 提高画质
 								var factor = screenWidth / 750;
-								let picWidth = 602
-								let picHeight = 1066
+								let picWidth = 698;
+								let picHeight = 1202;
 								self.screenHeight=  picHeight*factor 
 								const context = uni.createCanvasContext('mycanvas')
 								context.draw() // 先清空画布
 								context.fillRect(0, 0, 750 * factor, picHeight * factor)
-								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 982*factor);
-								context.drawImage(bg.tempFilePath, 0, 0, bg.width, bg.height, 0, picHeight*factor-520, picWidth*factor, 338*factor);
-								// console.log(uni.upx2px(338),'///')
+								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 1202*factor);
+								// context.drawImage(bg.tempFilePath, 0, 0, bg.width, bg.height, 0, picHeight*factor-520, picWidth*factor, 400*factor);
+								context.drawImage(bg.tempFilePath, 0, (picHeight-500)*factor, (picWidth-96)*factor, 528);
 								context.setFillStyle('black')
 								self.roundRect(context, 462 * factor, 50 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
 								
@@ -195,7 +195,12 @@
 								context.setFillStyle('#000')
 								let user = self.userInfo.nickName
 								const m3 = context.measureText(user)
-								context.fillText(user, 275 * factor, 856 * factor )
+								// const m3 = context.measureText('我是帅我是帅我是帅')
+								// console.log('m3', m3, factor, user);
+								// context.fillText(user, 275 * factor, 856 * factor )
+								// context.fillText('我是帅', 100 * factor  + ((200 - (m3.width / factor)) / 2 * factor) + (m3.width), 840*factor )
+								context.fillText(user, (picWidth-m3.width)/2*factor, 850*factor )
+								
 								
 								
 								// 已学习时间
@@ -323,7 +328,7 @@
 		height: 3198rpx;
 	}
 	.rect {
-		margin: 198rpx auto 0;
+		margin: 0 auto 172rpx;
 		width: 698rpx;
 		height: 1202rpx;
 		position: relative;
@@ -334,12 +339,35 @@
 		height: 100%;
 		background-color: rgba(255, 255, 255, 0.69);
 		border-radius: 40rpx;
+		box-shadow: 0 0 16rpx 4rpx rgba(0, 0, 0, 0.15);
 	}
 	.download::after{
 		border: 0;
 	}
+	.download {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: #fff;
+		z-index: 99999;
+	}
 	
-	.download{
+	.download .title {
+		width: 690rpx;
+		height: 92rpx;
+		background: #ED3535;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
+		border-radius: 46rpx;
+		margin: 20rpx auto 40rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+		font-size: 34rpx;
+		text-align: center;
+		line-height: 92rpx;
+	}
+	/* .download{
 		position: relative;
 		height: 92rpx;
 		line-height: 92rpx;
@@ -377,7 +405,7 @@
 		font-family: PingFangSC-Semibold, PingFang SC;
 		font-weight: 600;
 		color: #FFFFFF;
-	}
+	} */
 	.bg {
 		position: fixed;
 		top: 0;

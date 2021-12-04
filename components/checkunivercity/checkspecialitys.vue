@@ -1,6 +1,6 @@
 <template>
 
-		<u-popup border-radius="14" v-model="visiable" height="748rpx" mode="bottom" @close='close'>
+		<u-popup border-radius="24" v-model="visiable" height="748rpx" mode="bottom" @close='close'>
 			<view class="box">
 				<view class="button">
 					<view class="close" @click='$emit("changeSpecialitys")'>

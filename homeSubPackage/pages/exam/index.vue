@@ -15,9 +15,9 @@
 			</view>
 		</view>
 		<view class="testView" v-if="tab=='tab1'">
-			<view v-if="tests&&tests.length==0" style="text-align: center;padding-top: 200rpx;">
+			<view v-if="tests&&tests.length==0" style="text-align: center;padding-top: 100rpx;">
 				<view style="text-align: center;">
-					<image mode="aspectFit" src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%8B%9F%E8%80%83%E8%AF%95%E7%A9%BA%E7%99%BD%E9%A1%B5%E6%8F%92%E5%9B%BE%403x.png" style="width:598rpx;height: 366rpx;"></image>
+					<image mode="aspectFit" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%A2%98%E5%BA%93%E7%A9%BA%E7%99%BD%E9%A1%B5.png" style="width:598rpx;height: 366rpx;"></image>
 				</view>
 				<view style="height: 50rpx;font-family: PingFangSC-Medium;font-size: 34rpx;color: #352026;margin-top: 84rpx;margin-bottom: 28rpx;">稍等... 一大堆试卷正在向你飞来</view>
 			</view>

@@ -367,8 +367,7 @@
 							</view>
 						</view>
 					</view>
-					<u-line style="position: relative;top: -32rpx;left: 70rpx;" :hair-line="false" class="u-line"
-						color="#f6f6f6"></u-line>
+					<u-line style="position: relative;top: -32rpx;left: 70rpx;" :hair-line="false" class="u-line"></u-line>
 				</view>
 			</view>
 			</view>
@@ -654,5 +653,8 @@
 
 <style lang="scss">
 	@import '@/css/tree.scss';
+	.u-line {
+		border-bottom: 1px solid rgba(0,0,0,.06);
+	}
 </style>
 

@@ -528,7 +528,7 @@
 	}
 	.questionView .title .txt.success{
 		color: #32CD72;
-		width: 52rpx;
+		// width: 52rpx;
 		height: 52rpx;
 		background: rgba(50, 205, 114, 0.15);
 		border-radius: 8rpx;
@@ -536,7 +536,7 @@
 	}
 	.questionView .title .txt.error{
 		color: #fa5151;
-		width: 52rpx;
+		// width: 52rpx;
 		height: 52rpx;
 		background-color: #ffe8e8;
 		border-radius: 8rpx;

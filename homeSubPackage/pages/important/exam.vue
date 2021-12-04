@@ -1,4 +1,4 @@
-<template>
+<template bg='#fafafa'>
 	<TopNavbar>
 	<view>
 		<view class="tabView" v-if="isShowTab">
@@ -83,7 +83,8 @@
 				</view>
 			</view>
 			<view :class="'commentView ' + ((!isShowComments&&!hasBuyedComments)?'needbuy':'')" v-if="hasSubmit||tab=='tab2'">
-				<view class="bg" v-if="!isShowComments&&!hasBuyedComments">
+				<!-- 11111111111 -->
+				<view class="bg" v-if="!isShowComments&&!hasBuyedComments" style='bottom: 0;position: fixed; z-index: 10;'>
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg.png"></image>
 				</view>
 				<view style="position: relative;padding: 60rpx 70rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
@@ -92,6 +93,7 @@
 					</view>
 					<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
 					<view class="comment">
+						<!-- 11111111111 -->
 						<view v-if="isShowComments">
 							<view class="accuracy">
 								<view :class="'apercent ' + (questionDetail.aPercent>=percentH?'h':(questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH?'m':'l'))">
@@ -109,7 +111,7 @@
 							<u-parse :html="questionDetail.comments?questionDetail.comments:'暂无解析'"></u-parse>
 						</view>
 						<view v-else>
-							<view v-if="!hasBuyedComments">
+							<view v-if="hasBuyedComments">
 								<view class="accuracy" style="margin: 0;">全民正确率：解锁试题解析可见</view>
 								<view  style="text-align: center;margin-top: 120rpx;">
 									<button class="btnComments" type="default" @click="handleBuyComments">
@@ -401,6 +403,7 @@
 				} else {
 					self.isShowComments = false
 				}
+
 			},
 			/*查询是否已购买本章节*/
 			bindOrder(){

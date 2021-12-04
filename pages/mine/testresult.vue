@@ -44,8 +44,11 @@
 				</view>
 			</view>
 			<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
-			<button @click="handleShare" class="btnShare">分享</button>
-			<button v-if="from=='exam'" @click="handHomePage" class="btnPrev">返回</button>
+			<view class="btn">
+				<button @click="handleShare" class="btnShare">分享</button>
+				<button v-if="from=='exam'" @click="handHomePage" class="btnPrev">返回</button>
+			</view>
+			<view :style='{height: from=="exam" ? "264rpx" : "132rpx"}'></view>
 
 			<u-mask :show="isShowPicImg" @click="isShowPicImg = false">
 				<view class="warp">
@@ -514,31 +517,7 @@
 		border: 2rpx solid #32CD72;
 	}
 
-	.btnShare {
-		width: 690rpx;
-		height: 92rpx;
-		margin: 112rpx auto 40rpx;
-		line-height: 92rpx;
-		border-radius: 46rpx;
-		color: rgba(255, 255, 255, 1);
-		font-size: 34rpx;
-		border: 2rpx solid #ff776f;
-		background: #ED3535;
-		box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.2);
-	}
-
-	.btnPrev {
-		height: 92rpx;
-		line-height: 92rpx;
-		border: 2rpx solid #ff776f;
-		border-radius: 92rpx;
-		background-color: #ffffff;
-		border-radius: 94rpx;
-		color: #ff776f;
-		font-size: 34rpx;
-		font-family: PingFangSC-Medium;
-		margin: 32rpx;
-	}
+	
 
 	.download {
 		height: 92rpx;
@@ -569,6 +548,39 @@
 	.rect {
 		width: 450rpx;
 		height: 890rpx;
-		/* background-color: #fff; */
+	}
+	.btn {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 16rpx 0;
+		background: #fff;
+	}
+	.btnShare {
+		width: 690rpx;
+		height: 92rpx;
+		margin: 0 auto 24rpx;
+		line-height: 92rpx;
+		border-radius: 46rpx;
+		color: rgba(255, 255, 255, 1);
+		font-size: 34rpx;
+		border: 2rpx solid #ff776f;
+		background: #ED3535;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.2);
+	}
+	
+	.btnPrev {
+		width: 690rpx;
+		height: 92rpx;
+		line-height: 92rpx;
+		border: 2rpx solid #ff776f;
+		border-radius: 92rpx;
+		background-color: #ffffff;
+		border-radius: 46rpx;
+		color: #ff776f;
+		font-size: 34rpx;
+		font-family: PingFangSC-Medium;
+		margin: 0 auto 24rpx;
 	}
 </style>

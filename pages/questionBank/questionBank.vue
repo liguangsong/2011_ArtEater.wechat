@@ -1,7 +1,18 @@
 <template>
 	<view class="myPage" :style="{'overflow': 'scroll'}">
 		<TopNavbar title='题库' bg='#f7f7f7'  :icon='false'>
-			<view :style="{'padding-bottom':pdbtm+'rpx'}">
+			<view class="questionbank" v-if='subjects.length == 0'>
+				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%A2%98%E5%BA%93%E7%A9%BA%E7%99%BD%E9%A1%B5.png" mode=""></image>
+				<view class="soon">
+					即将上线
+				</view>
+				<view class="text">
+					<view>由央美史论名师团队在海量试题中</view>
+					<view>锁定必考知识点，精选出必考题库，</view>
+					<view>使复习有的放矢，大大节省你的学习时间。</view>
+				</view>
+			</view>
+			<view v-else :style="{'padding-bottom':pdbtm+'rpx'}">
 				<view style='height:20rpx;'></view>
 				<Item v-for='(item, i) in subjects' :n='n' :item='item' :uid='item.objectId' :img='arr[i]' :key='i' :vip='vip'/>
 				<view class="class" @click='navto'>
@@ -107,5 +118,29 @@
 <style lang="scss" scoped>
 .myPage{
 	background: #F7F7F7;
+}
+.questionbank {
+	width: 750rpx;
+	padding-top: 200rpx;
+	text-align: center;
+}
+.questionbank image {
+	width: 750rpx;
+	height: 486rpx;
+}
+.questionbank .soon {
+	height: 40rpx;
+	font-size: 28rpx;
+	font-family: PingFangSC-Medium, PingFang SC;
+	font-weight: 500;
+	color: rgba(0,0,0,.6);
+}
+.questionbank .text {
+	margin-top: 28rpx;
+	font-size: 24rpx;
+	font-family: PingFangSC-Regular, PingFang SC;
+	font-weight: 400;
+	color: rgba(0,0,0,0.5);
+	line-height: 34rpx;
 }
 </style>
