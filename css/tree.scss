@@ -82,7 +82,7 @@
 		height: 40rpx;
 		line-height: 40rpx;
 		text-align: right;
-		padding-left: 14rpx;
+		padding-left: 20rpx;
 	}
 
 	.treeView .treeItem .listIcon .actionExtend {
@@ -120,7 +120,12 @@
 		font-weight: 600;
 		color: #000000;
 		height: 40rpx;
+		width: 400rpx;
 		line-height: 40rpx;
+		padding-right: 170rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.treeView .treeItem .content .conView .listTxt .free {

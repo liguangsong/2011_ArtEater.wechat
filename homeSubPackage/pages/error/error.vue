@@ -2,7 +2,8 @@
 	<view>
 		<view style="padding-bottom: 200rpx;">
 			<view v-if="count==0" style="text-align: center;">
-				<u-empty text="网络不理想，请耐心等待" mode="data"></u-empty>
+				<!-- <u-empty text="网络不理想，请耐心等待" icon='https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%A2%98%E5%BA%93%E7%A9%BA%E7%99%BD%E9%A1%B5.png' mode="car"></u-empty> -->
+				<Empty />
 			</view>
 			<view v-else class="questionView">
 				<view class="headView">
@@ -143,9 +144,10 @@
 
 <script>
 	import myRadioGroup from '@/components/myRadio/myRadioGroup.vue'
+	import Empty from '@/components/empty/empty.vue'
 	export default {
 		components:{
-			myRadioGroup
+			myRadioGroup, Empty
 		},
 		data() {
 			return {

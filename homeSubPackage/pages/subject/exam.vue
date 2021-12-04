@@ -7,7 +7,7 @@
 					本章为免费内容，学习更多知识，请点击购买全部章节
 				</view>
 				<view class="icon">
-					<u-icon name="arrow-right" color="#ffffff" size="32"></u-icon>
+					<u-icon name="arrow-right" color="rgba(0, 0, 0, 0.37)" size="24"></u-icon>
 				</view>
 			</view>
 		</view>

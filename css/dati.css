@@ -6,7 +6,7 @@
 		font-size: 26rpx;
 		color: #b1b1b1;
 		font-family: PingFangSC-Medium;
-		background-color: #ffffff;
+		background-color: rgba(222, 208, 205, .39);
 		width: 100%;
 		z-index: 100;
 	}
@@ -70,7 +70,7 @@
 		left: 0;
 	}
 	.buytipsView{
-		background-color: #ffb8b7;
+		background-color: rgba(222, 208, 205, .39);
 		height: 72rpx;
 		line-height: 72rpx;
 	}
@@ -80,9 +80,10 @@
 	}
 	.buytipsView .tipView .txt{
 		flex: 1;
-		font-size: 26rpx;
-		font-family: PingFangSC-Medium;
-		color: #ffffff;
+		font-size: 24rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: rgba(0, 0, 0, 0.37);
 	}
 	.buytipsView .tipView .icon{
 		width: 50rpx;
@@ -98,11 +99,11 @@
 		padding-right:30rpx;
 	}
 	.questionView .headView .red-block{
-        width: 10rpx;
+    width: 10rpx;
 		height: 24rpx;
 		position: relative;
 		margin-right: 8rpx;
-		margin-top: 10rpx;
+		margin-top: 5rpx;
 	}
 	.questionView .headView .queType{
 		flex: 1;
@@ -163,6 +164,7 @@
 	.questionView .title{
 		padding: 0 48rpx;
 		margin-top: 24rpx;
+		margin-bottom: 40rpx;
 		font-size: 32rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
@@ -238,6 +240,7 @@
 		padding: 30rpx;
 		height: 140rpx;
 		position: fixed;
+		z-index: 100;
 		bottom: 0;
 		padding-top: 8rpx;
 		background-color: #fbfbfa;
@@ -251,6 +254,7 @@
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
 		border: 0;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
 	}
 	.actionView button::after{
 		border: 0;
@@ -263,11 +267,8 @@
 		background-color: #ED3535;
 	}
 	.commentView{
-		/* background-color: #FFFFFF; */
 		border-radius: 46rpx;
 		padding: 38rpx 48rpx;
-		/* margin-top: 10rpx; */
-		/* margin-bottom: 196rpx; */
 		min-height: 572rpx;
 	}
 	.htmlView{
@@ -487,6 +488,12 @@
 		padding-left: 36rpx;
 		padding-top: 40rpx;
 	}
+	/* .options>.multisCheckView:first-child .head {
+		padding-top: 80rpx;
+	}
+	.myCom {
+		margin-top: 40rpx;
+	} */
 	.myCom .item:last-child .optionItem {
 		border-bottom: none;
 	}
@@ -500,4 +507,10 @@
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #000000;
+	}
+	.u-countdown-item {
+		background-color: rgba(222, 208, 205, 0) !important;
+	}
+	.optionItem .icon image {
+		padding-top: 6rpx !important;
 	}

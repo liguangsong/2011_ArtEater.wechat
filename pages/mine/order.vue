@@ -781,7 +781,7 @@
 	}
 	.orderItem .icon  image {
 		width: 32rpx;
-		height: 34rpx;
+		height: 32rpx;
 	}
 
 	.orderItem .conView,

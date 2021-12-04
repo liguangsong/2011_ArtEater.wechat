@@ -22,7 +22,11 @@
 			</view>
 			<view :class="'content '+  (coupon.state!=0?'enable':'')">
 				<view style="display: flex;width: 100%;">
-					<view class="price">减¥{{coupon.amount}}</view>
+					<view class="price">
+						<view class="pricebox">
+							减¥{{coupon.amount}}
+						</view>
+					</view>
 					<view class="title" :style="{paddingTop:(coupon.state!=0?'54rpx':'40rpx')}">
 						<view class="name">{{coupon.couponName}}</view>
 						<view class="date" v-if="coupon.state==0">
@@ -46,9 +50,11 @@
 				</view> -->
 				<view class="content1" v-if="coupon.tipName&&coupon.productType&&coupon.productType!='all'">
 					<view class="price">
-						<view class="price1">券后价</view>
-						<view class="price2">¥{{ coupon.total}}</view>
-						<view class="price3">原价¥{{coupon.price}}</view>
+						<!-- <view class="pricebox"> -->
+							<view class="price1">券后价</view>
+							<view class="price2">¥{{ coupon.total}}</view>
+							<view class="price3">原价¥{{coupon.price}}</view>
+						<!-- </view> -->
 					</view>
 					<view class="content">
 						<view class="title">{{coupon.tipName}}</view>
@@ -241,20 +247,28 @@
 		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		padding-top: 52rpx;
+		/* padding-top: 52rpx;
 		padding-left: 60rpx;
-		text-align: left;
+		text-align: left; */
 		font-size: 38rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
 		color: #ED3535;
+	}
+	.couponItem .content .price .pricebox {
+		text-align: center;
+		width: 100%;
+		padding: 0 60rpx;
 		line-height: 52rpx;
+		padding-top: 52rpx;
 	}
 	.couponItem.large .content .price {
 		flex: 0 1 246rpx;
+		width: 246rpx;
 	}
-
-	.couponItem .content.enable .price {
-		/* color: rgba(53, 32, 38, 0.4); */
+	.couponItem.large .content .price .pricebox {
+		padding: 0;
+		padding-top: 52rpx;
+		padding-left: 20rpx;
 	}
 
 	.couponItem .content .title {
@@ -265,11 +279,11 @@
 	.couponItem .content .title .name {
 		height: 42rpx;
 		line-height: 42rpx;
-		font-size: 26rpx;
+		font-size: 28rpx;
 		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: #352026;
+		color: #000;
 		text-align: left;
 		font-weight: bold;
 	}
@@ -324,7 +338,7 @@
 
 	.couponItem .couponDetail {
 		position: absolute;
-		top: 182rpx;
+		top: 188rpx;
 		width: 100%;
 		z-index: 101;
 	}
@@ -372,10 +386,10 @@
 
 	.couponItem .couponDetail .content1 .content .title {
 		padding-top: 0;
-		font-size: 28rpx;
-		font-weight: 500;
-		color: #000000;
 		line-height: 40rpx;
+		font-size: 24rpx;
+		font-weight: 500;
+		color: rgba(0,0,0,.7);
 	}
 
 	.couponItem .couponDetail .content1 .content .content {

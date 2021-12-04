@@ -41,8 +41,8 @@
 				<view class="loadmore">
 					荣誉只属于最勤奋的50位选手
 				</view>
-				<view style="height: 134rpx;"></view>
 				
+				<view style="background:#fff; height: 134rpx;"></view>
 			</view>
 			<view class="btmScore">
 				
@@ -271,15 +271,15 @@
 	}
 
 	.myPage .scoreItem .cont .score.first {
-		color: #ff6867;
+		color: rgba(237, 53, 53, 1)
 	}
 
 	.myPage .scoreItem .cont .score.second {
-		color: rgba(255, 100, 45, 0.7);
+		color: rgba(255, 104, 103, 1)
 	}
 
 	.myPage .scoreItem .cont .score.third {
-		color: rgba(255, 138, 0, 0.7);
+		color: rgba(255, 157, 131, 1)
 	}
 
 	.loadmore {

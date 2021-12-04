@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='考试记录' bg='#fff'>
+	<TopNavbar title='考试记录' bg='#f7f7f7'>
 		<view style='height:28rpx'></view>
 		<view v-if='!testHistory.length' class='testHistory'>
 			暂无记录
@@ -111,6 +111,7 @@
 	}
 	.mView .name{
 		flex: 1;
+		padding-right: 100rpx;
 		text-align: left;
 		font-size: 32rpx;
 		font-weight: bold;

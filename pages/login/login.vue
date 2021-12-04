@@ -403,7 +403,7 @@
 	.boxView .editForm {
 		position: relative;
 		z-index: 8;
-		padding-top: 182rpx;
+		padding-top: 180rpx;
 	}
 	.headIcon {
 		position: absolute;
@@ -420,7 +420,7 @@
 		height: 100%;
 	}
 	.inputItem {
-		height: 85rpx;
+		height: 82rpx;
 		width: 100%;
 		padding-right: 114rpx;
 		overflow: hidden;
@@ -449,7 +449,8 @@
 	.u-form-item {
 		padding: 0 !important;
 		display: block !important;
-		margin-bottom: 36rpx;
+		margin-bottom: 38rpx;
+		height: 82rpx;
 	}
 	.u-form-item--left {
 		margin-bottom: 0 !important;
@@ -486,5 +487,12 @@
 	.btnView image {
 		width: 100%;
 		height: 100%;
+	}
+	.u-input {
+		display: flex;
+		align-items: center;
+	}
+	.u-input__right-icon {
+		margin-top: 10rpx;
 	}
 </style>
