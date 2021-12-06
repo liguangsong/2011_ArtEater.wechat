@@ -29,7 +29,8 @@
 		
 		<view style="padding-bottom: 200rpx;">
 			<view v-if="count==0" style="text-align: center;">
-				<u-empty text="网络不理想，请耐心等待" mode="data"></u-empty>
+				<!-- <u-empty text="网络不理想，请耐心等待" mode="data"></u-empty> -->
+				<Empty />
 			</view>
 			<view v-else class="questionView">
 				<view class="headView">
@@ -93,6 +94,7 @@
 					</view>
 				</view>
 			</view>
+			
 			<view :class="'commentView ' + ((!isShowComments&&!hasBuyedComments)?'needbuy':'')" v-if="hasSubmit||tab=='tab2'">
 				<view class="bg" v-if="!isShowComments&&!hasBuyedComments">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg.png"></image>
@@ -151,6 +153,7 @@
 					</view>
 				</view>
 			</view>
+			<view v-if="hasSubmit||tab=='tab2'" style='height:572rpx'></view>
 		</view>
 		<view v-if="tab == 'tab1' && count > 0" class="actionView">	
 			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
@@ -200,9 +203,10 @@
 <script>
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	import myRadioGroup from '../../../components/myRadio/myRadioGroup.vue'
+	import Empty from '@/components/empty/empty.vue'
 	export default {
 		components:{
-			myRadioGroup, TopNavbar
+			myRadioGroup, TopNavbar, Empty
 		},
 		data() {
 			return {
