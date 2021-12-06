@@ -166,15 +166,15 @@
 								const sysInfo = uni.getSystemInfoSync();
 								const screenWidth = sysInfo.screenWidth*3; // 提高画质
 								var factor = screenWidth / 750;
-								let picWidth = 698;
-								let picHeight = 1202;
+								let picWidth = 602;
+								let picHeight = 1210;
 								self.screenHeight=  picHeight*factor 
 								const context = uni.createCanvasContext('mycanvas')
 								context.draw() // 先清空画布
 								context.fillRect(0, 0, 750 * factor, picHeight * factor)
 								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 1202*factor);
 								// context.drawImage(bg.tempFilePath, 0, 0, bg.width, bg.height, 0, picHeight*factor-520, picWidth*factor, 400*factor);
-								context.drawImage(bg.tempFilePath, 0, (picHeight-500)*factor, (picWidth-96)*factor, 528);
+								context.drawImage(bg.tempFilePath, 0,0,1396,656, 0,(picHeight-485)*factor, 602 * factor,328 * factor);
 								context.setFillStyle('black')
 								self.roundRect(context, 462 * factor, 50 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
 								
@@ -195,11 +195,11 @@
 								context.setFillStyle('#000')
 								let user = self.userInfo.nickName
 								const m3 = context.measureText(user)
-								// const m3 = context.measureText('我是帅我是帅我是帅')
+								// const m3 = context.measureText('我是帅是帅我是帅')
 								// console.log('m3', m3, factor, user);
 								// context.fillText(user, 275 * factor, 856 * factor )
 								// context.fillText('我是帅', 100 * factor  + ((200 - (m3.width / factor)) / 2 * factor) + (m3.width), 840*factor )
-								context.fillText(user, (picWidth-m3.width)/2*factor, 850*factor )
+								context.fillText(user, (picWidth/2)*factor-(m3.width/2), 850*factor )
 								
 								
 								
