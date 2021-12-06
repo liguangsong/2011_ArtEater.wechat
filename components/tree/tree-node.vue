@@ -99,6 +99,11 @@
 	.leave .title .txt {
 		opacity: .75;
 		color: #000;
+		width: 500rpx;
+		overflow: hidden;
+		display: inline-block;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 	.kind {
 		opacity: .3 !important;
