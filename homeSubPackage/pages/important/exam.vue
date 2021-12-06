@@ -1,23 +1,36 @@
-<template bg='#fafafa'>
+<template>
 	<TopNavbar>
 	<view>
+		<view class="buytipsView" v-if="baseSubjectDetail.price>0 && !hasBuyed">
+			<view class="tipView" @click="handleSubjectBuy">
+				<view class="txt">
+					本章为免费内容，学习更多知识，请点击购买全部章节
+				</view>
+				<view class="icon">
+					<u-icon name="arrow-right" color="rgba(0, 0, 0, 0.37)" size="24"></u-icon>
+				</view>
+			</view>
+		</view>
 		<view class="tabView" v-if="isShowTab">
 			<view :class="'tabItem ' + (tab=='tab1'? 'curr':'')"  @click="tab = 'tab1'">
 				<view class="title">答题</view>
-				<view class="icon" v-if="tab=='tab1'">
-					<image src="../../../static/icon/icon_tab_bg.png"></image>
+				<view class="line" v-if="tab=='tab1'">
+					<!-- <image src="../../../static/icon/icon_tab_bg.png"></image> -->
 				</view>
 			</view>
 			<view :class="'tabItem ' + (tab=='tab2'? 'curr':'')"  @click="tab = 'tab2'">
 				<view class="title">复习</view>
-				<view class="icon" v-if="tab=='tab2'">
-					<image src="../../../static/icon/icon_tab_bg.png"></image>
+				<view class="line" v-if="tab=='tab2'">
+					<!-- <image src="../../../static/icon/icon_tab_bg.png"></image> -->
 				</view>
 			</view>
+			<view class="clip-line"></view>
 		</view>
+		
 		<view style="padding-bottom: 200rpx;">
 			<view v-if="count==0" style="text-align: center;">
-				<u-empty text="网络不理想，请耐心等待" mode="data"></u-empty>
+				<!-- <u-empty text="网络不理想，请耐心等待" mode="data"></u-empty> -->
+				<Empty />
 			</view>
 			<view v-else class="questionView">
 				<view class="headView">
@@ -37,27 +50,26 @@
 						</view>
 					</view>
 				</view>
-				<view class="imgView">
+				<view class="imgView" v-if="questionDetail.images.length">
 					<view class="imgItem" v-for="img in questionDetail.images">
 						<image v-if="img"  mode="widthFix" :src="img"></image>
 						<view class="vtips">{{version}}</view>
 					</view>
 				</view>
 				<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
-				<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
+				<view class="title" v-if="questionDetail.type==3">
 					<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c}}
 						<!-- <block v-if="tab=='tab2'">
 							<input v-if="i!=questionDetail.cinputs.length-1" :style="{width: (options[i].value[0].txt.length * 34 + 60) + 'rpx;'}" :data-index="i" @input="handleAnswerChange" @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />
 							<view v-if="i!=questionDetail.cinputs.length-1" class="tips">{{options[i].value[0].txt.length}}个字</view>
 						</block>
 						<block v-else> -->
-							<block v-if="hasSubmit || tab=='tab2'">
+							<block v-if="hasSubmit||tab=='tab2'">
 								<template v-if="i!=questionDetail.cinputs.length-1">
 									<view :class="'txt '+ (options[i].state==1?'success':'error')" v-for="(item,letter) in options[i].content" :key="letter">
 										{{options[i].content[letter]}}
 									</view>
 								</template>
-								<!-- <view v-if="i!=questionDetail.cinputs.length-1" :class="'txt '+ (options[i].state==1?'success':'error')">{{options[i].content}}</view> -->
 							</block>
 							<block v-else>
 								<input v-if="i!=questionDetail.cinputs.length-1" :style="{width: (options[i].value[0].txt.length * 34 + 60) + 'rpx;'}" :data-index="i" @input="handleAnswerChange" @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />
@@ -82,24 +94,23 @@
 					</view>
 				</view>
 			</view>
+			
 			<view :class="'commentView ' + ((!isShowComments&&!hasBuyedComments)?'needbuy':'')" v-if="hasSubmit||tab=='tab2'">
-				<!-- 11111111111 -->
-				<view class="bg" v-if="!isShowComments&&!hasBuyedComments" style='bottom: 0;position: fixed; z-index: 10;'>
+				<view class="bg" v-if="!isShowComments&&!hasBuyedComments">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg.png"></image>
 				</view>
-				<view style="position: relative;padding: 60rpx 70rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
+				<view style="position: relative;padding: 48rpx 60rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
 					<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
 						<text style="margin-right: 10rpx;" v-for="s in options">{{s.rightAnswer}}</text>
 					</view>
 					<view v-else class="rightAnswer">正确答案：<text v-for="s in options">{{s.value=='1'?s.code:''}}</text></view>
 					<view class="comment">
-						<!-- 11111111111 -->
 						<view v-if="isShowComments">
 							<view class="accuracy">
 								<view :class="'apercent ' + (questionDetail.aPercent>=percentH?'h':(questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH?'m':'l'))">
 									<view class="icon">
 										<image v-if="questionDetail.aPercent>=percentH" src="../../../static/icon/icon_percent_h.png"></image>
-										<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../static/icon/icon_percent_m.png"></image>
+										<image v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" src="../../../static/icon/icon_percent_m.png"></image>
 										<image v-if="questionDetail.aPercent<percentM" src="../../../static/icon/icon_percent_l.png"></image>
 									</view>
 									<view>全民正确率：{{questionDetail.aPercent}}%</view>
@@ -107,15 +118,16 @@
 									<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
 									<view v-if="questionDetail.aPercent<percentM" class="atips">大家都错了也不是你做错的理由。</view>
 								</view>
+								
 							</view>
 							<u-parse :html="questionDetail.comments?questionDetail.comments:'暂无解析'"></u-parse>
 						</view>
 						<view v-else>
-							<view v-if="hasBuyedComments">
+							<view v-if="!hasBuyedComments">
 								<view class="accuracy" style="margin: 0;">全民正确率：解锁试题解析可见</view>
-								<view  style="text-align: center;margin-top: 120rpx;">
+								<view  style="text-align: center;margin-top: 186rpx;">
 									<button class="btnComments" type="default" @click="handleBuyComments">
-										<image src="../../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
+										<image src="../../../static/icon/icon_lock.png" style="margin-top: -5rpx;width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
 										<view style="text-indent: 20rpx;display: inline-block;">解锁试题解析</view>
 									</button>
 								</view>
@@ -133,6 +145,7 @@
 										<view v-if="questionDetail.aPercent>=percentM&&questionDetail.aPercent<percentH" class="atips">有些人做错了，但愿不是你。</view>
 										<view v-if="questionDetail.aPercent<percentM" class="atips">大家都错了也不是你做错的理由。</view>
 									</view>
+									
 								</view>
 								<u-parse :html="questionDetail.comments?questionDetail.comments:'暂无解析'"></u-parse>
 							</view>
@@ -140,6 +153,7 @@
 					</view>
 				</view>
 			</view>
+			<view v-if="hasSubmit||tab=='tab2'" style='height:572rpx'></view>
 		</view>
 		<view v-if="tab == 'tab1' && count > 0" class="actionView">	
 			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
@@ -189,9 +203,10 @@
 <script>
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	import myRadioGroup from '@/components/myRadio/myRadioGroup.vue'
+	import Empty from '@/components/empty/empty.vue'
 	export default {
 		components:{
-			myRadioGroup, TopNavbar
+			myRadioGroup, TopNavbar, Empty
 		},
 		data() {
 			return {

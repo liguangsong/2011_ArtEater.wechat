@@ -30,7 +30,7 @@
 						<view class="vtips">{{version}}</view>
 					</view>
 				</view>
-				<!-- <view class="title">世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析世纪巴洛克时代的美术风格要点分析<input @focus="inputFocus" @blur="inputBlur" type="text" class="inputTxt" />格要点分析</view> -->
+				
 				<view class="title" v-if="questionDetail.type==3" style="margin-bottom: 20rpx;">
 					<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c}}
 						<block v-if="hasSubmit">
@@ -118,6 +118,7 @@
 					</view>
 				</view>
 			</view>
+			<view v-if="hasSubmit||tab=='tab2'" style='height:572rpx'></view>
 		</view>
 		<view v-if="count > 0" class="actionView">	
 			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
