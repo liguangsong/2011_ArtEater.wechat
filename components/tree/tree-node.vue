@@ -7,8 +7,8 @@
 			<view class="leave" :style='{paddingLeft: (item.level-1)*56 + "rpx", color:item.kind==4 && (!item.children || !item.children.length)?"rgba(0,0,0,0.3)":"rgba(0,0,0,0.7)"}'>
 				<view class="title">
 					<image class="icon" :src="item.kind == '1' ? video :item.kind == '2'? audio:''"></image>
-					<text class='txt' v-if='item.kind!=4'>{{item.subjectName}}</text>
-					<text class='txt kind' v-else>{{item.subjectName}}</text>
+					<text class='txt' :class="{cur:item.preLearn}" v-if='item.kind!=4'>{{item.subjectName}}</text>
+					<text class='txt kind' :class="{cur:item.preLearn}" v-else>{{item.subjectName}}</text>
 					<text class='free' v-if='!item.vip'>免费</text>
 				</view>
 				<view class="acllow-left" v-if="item.preLearn">
@@ -99,11 +99,14 @@
 	.leave .title .txt {
 		opacity: .75;
 		color: #000;
-		width: 500rpx;
+		width: 562rpx;
 		overflow: hidden;
 		display: inline-block;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+	}
+	.leave .title .txt.cur{
+		width:500rpx;
 	}
 	.kind {
 		opacity: .3 !important;
