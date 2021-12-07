@@ -1,6 +1,6 @@
 <template>
 	<TopNavbar title='错题集'>
-		<view class="blankpage" v-if='dates.length'>
+		<view class="blankpage" v-if='!dates.length'>
 			<view class="blankpage-info">
 				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%94%99%E9%A2%98%E9%9B%86%E7%A9%BA%E7%99%BD%E9%A1%B5%E6%8F%92%E5%9B%BE.png"></image>
 				<view class="kill">
