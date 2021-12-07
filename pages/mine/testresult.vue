@@ -565,7 +565,7 @@
 		border-radius: 46rpx;
 		color: rgba(255, 255, 255, 1);
 		font-size: 34rpx;
-		border: 2rpx solid #ff776f;
+		/* border: 2rpx solid #ff776f; */
 		background: #ED3535;
 		box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.2);
 	}

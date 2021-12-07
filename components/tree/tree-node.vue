@@ -9,7 +9,8 @@
 					<image class="icon" :src="item.kind == '1' ? video :item.kind == '2'? audio:''"></image>
 					<text class='txt' :class="{cur:item.preLearn,fre:!item.vip}" v-if='item.kind!=4'>{{item.subjectName}}</text>
 					<text class='txt kind' :class="{cur:item.preLearn,fre:!item.vip}" v-else>{{item.subjectName}}</text>
-					<text class='free' v-if='!item.vip'>免费</text>
+					<!-- <text class='free' v-if='!item.vip'>免费</text> -->
+					<image class='free' v-if='!item.vip' src="../../static/icon/icon_free.png" mode=""></image>
 				</view>
 				<view class="acllow-left" v-if="item.preLearn">
 					<text class='study'>上次学习</text>
@@ -75,13 +76,15 @@
 		display: inline-block;
 		height: 24rpx;
 		width: 44rpx;
-		background: #eee;
+		/* background: #eee; */
 		color: #ccc;
 		font-size: 14rpx;
 		line-height: 24rpx;
 		text-align: center;
-		margin-left: 20rpx;
+		margin-left: 18rpx;
 		border-radius: 4rpx;
+		vertical-align: middle;
+        margin-top: -4rpx;
 	}
 	.leave {
 		/* height: 85rpx; */

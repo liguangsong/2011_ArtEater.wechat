@@ -22,7 +22,7 @@
 							<view class="listIcon" style="padding-left: 0;">
 								<template v-if="subject.has_down_level">
 									<view class="actionExtend"
-										style="text-align: center;height: 50rpx;line-height: 40rpx;position: relative;left: 10rpx;"
+										style="text-align: center;height: 50rpx;padding-left: 16rpx;position: relative;left: 10rpx;"
 										@click="handleExtend(subject)">
 										<image v-if="!subject.extend" src="../../../static/icon/icon_add.png"></image>
 										<image v-else src="../../../static/icon/icon_remove.png"></image>

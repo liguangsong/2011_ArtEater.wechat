@@ -22,7 +22,7 @@
 				</view> -->
 			</view>
 			<view class="progress">
-				<u-line-progress :percent="sub.progress*100/sub.childrenCount" :show-percent="false" height="10" active-color="#ff6f68"></u-line-progress>
+				<u-line-progress :percent="sub.progress*100/sub.childrenCount" :show-percent="false" height="10"></u-line-progress>
 			</view>
 			<view class="tips">
 				已完成：{{sub.percent}}%
@@ -246,7 +246,12 @@
 		left: 18rpx;
 		height: 10rpx;
 		line-height: 10rpx;
+		
 	}
+	.myPage .subjectItem .progress .u-active {
+			background: linear-gradient(270deg, #ED3535 0%, #F7CCCC 100%);
+			border-radius: inherit;
+		}
 	.myPage .subjectItem .tips{
 		position: relative;
 		top: 234rpx;
