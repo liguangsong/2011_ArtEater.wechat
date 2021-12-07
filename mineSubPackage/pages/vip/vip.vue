@@ -450,7 +450,7 @@
 				</view>
 			</view>
 		</view>
-		<Modal@cancle='isShow=false' :isShow='isShow' :title='title' :submit='submit' :submitFn='submitFn'/>
+		<Modal @cancle='isShow=false' :isShow='isShow' :title='title' :submit='submit' :submitFn='submitFn'/>
 	</view>
 </template>
 

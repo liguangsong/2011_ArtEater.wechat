@@ -24,7 +24,7 @@
 				<view style="display: flex;width: 100%;">
 					<view class="price">
 						<view class="pricebox">
-							¥{{coupon.amount}}
+							减¥{{coupon.amount}}
 						</view>
 					</view>
 					<view class="title" :style="{paddingTop:(coupon.state!=0?'54rpx':'40rpx')}">
@@ -244,6 +244,7 @@
 
 	.couponItem .content .price {
 		flex: 0 1 272rpx;
+		width: 272rpx;
 		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;

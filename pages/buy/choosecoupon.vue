@@ -186,7 +186,7 @@
 	}
 	.couponItem .price{
 		width: 210rpx;
-		padding-left: 42rpx;
+		padding-right: 8rpx;
 		padding-top: 52rpx;
 		font-size: 38rpx;
 		font-weight: normal;

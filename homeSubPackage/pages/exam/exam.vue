@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar bg='#FAFAFA'>
+	<TopNavbar bg='#FAFAFA' :iconFn='true' @closeNavbar='iconBack'>
 		<template v-slot:time>
 			<view class="timeView">
 				考试剩余时间：<u-count-down color="#b1b1b1" font-size="26" separator="zh" separator-size="26"
@@ -52,7 +52,8 @@
 				</view>
 				<view class="title" v-else-if="questionDetail.type==4">
 					<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c===''?' ':c}}<text
-							v-if="i<questionDetail.cinputs.length-1">({{i+1}})</text></block>
+							v-if="i<questionDetail.cinputs.length-1">
+								({{i+1}})</text></block>
 				</view>
 				<view class="title" v-else>{{questionDetail.title}}</view>
 				<view class="options" v-if="questionDetail.type==1||questionDetail.type==2">
@@ -85,6 +86,7 @@
 				<button v-if="index < count" @click="handleSubmit" :class="canSubmit?'next':'noAnswer'">下一题</button>
 				<button v-else @click="handleSubmit" :class="canSubmit?'next':'noAnswer'">提交</button>
 			</view>
+			<Modal @cancle='isShow=false' :isShow='isShow' :title='title' :submit='submitInfo' @submitFn='submitFn'/>
 		</view>
 	</TopNavbar>
 </template>
@@ -92,6 +94,7 @@
 <script>
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	import myRadioGroup from '@/components/myRadio/myRadioGroup.vue'
+	import Modal from '@/components/modal/modalback.vue'
 	import {
 		dateFormat,
 		toDateFromString,
@@ -104,10 +107,15 @@
 	export default {
 		components: {
 			myRadioGroup,
-			TopNavbar
+			TopNavbar,
+			Modal
 		},
 		data() {
 			return {
+				isShow: false,
+				title: '',
+				submitInfo: '',
+				
 				index: 1, // 当前答题序号
 				count: 0, // 总题数
 				isShowComments: true, // 是否显示答案解析
@@ -166,6 +174,17 @@
 			}
 		},
 		methods: {
+			iconBack() {
+				this.title = '当前还未完成考试，返回则默认提交考卷，是否继续退出？';
+				this.submitInfo = '确定';
+				this.isShow = true;
+			},
+			submitFn() {
+				this.isShow = false;
+				uni.navigateBack({
+					delta: 1
+				})
+			},
 			inputFocus(e) {
 				console.log(e, '键盘弹起')
 				var inputHeight = 0

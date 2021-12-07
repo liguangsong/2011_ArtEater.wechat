@@ -39,7 +39,6 @@
 									<image v-if="subject.price==0" src="../../../static/icon/icon_free.png" class='free'></image>
 									
 								</view>
-								<!-- -------- -->
 								<view class="listAction">
 									<view class="action" @click="handleNameClick" :data-item="subject">
 										<image v-if="subject.content" src="../../../static/icon/icon_order.png">
