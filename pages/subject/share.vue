@@ -12,6 +12,23 @@
 				<view class="title">保存并分享</view>
 			</view>
 		</view>
+			<!--图片保存-->
+				<u-popup v-model="isShowTips" width="578rpx" :closeable="false" mode="center" border-radius="24">
+					<view class="saveView">
+						<view style='padding: 48rpx 48rpx 128rpx;font-size: 24rpx;font-family: PingFangSC-Regular, PingFang SC;line-height: 34rpx;'>
+							<view class="title">
+								图片保存成功
+							</view>
+							<view class="tips">
+								快去分享给朋友们吧!
+							</view>
+						</view>
+						<view @click="isShowTips=false" class="btnActions"
+							style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.06);line-height:78rpx;'>
+							<text>确定</text>
+						</view>
+					</view>
+				</u-popup>
 	</TopNavbar>
 </template>
 
@@ -21,6 +38,7 @@
 	export default {
 		data() {
 			return {
+				isShowTips:false,
 				userInfo: {},
 				qrcode: '',
 				sharePicImg: '',
@@ -304,19 +322,20 @@
 					filePath: self.sharePicImg,
 					success(res) {
 						console.log(res);
-						uni.showModal({
-							title: '图片保存成功',
-							content: '快去分享给朋友们吧！',
-							showCancel: false,
-							confirmText: 'ok',
-							// confirmColor: '#72B9C3',
-							success: function(res) {
-								if (res.confirm) {
-									console.log('用户点击确定');
-								}
-								self.canvasHidden = true
-							}
-						})
+						self.isShowTips=true;
+						// uni.showModal({
+						// 	title: '图片保存成功',
+						// 	content: '快去分享给朋友们吧！',
+						// 	showCancel: false,
+						// 	confirmText: 'ok',
+						// 	// confirmColor: '#72B9C3',
+						// 	success: function(res) {
+						// 		if (res.confirm) {
+						// 			console.log('用户点击确定');
+						// 		}
+						// 		self.canvasHidden = true
+						// 	}
+						// })
 					}
 				})
 			}
@@ -381,7 +400,22 @@
 		text-align: center;
 		line-height: 92rpx;
 	}
-
+    .saveView .title {
+		font-size: 28rpx;
+		font-weight: 500;
+		color: #000000;
+		line-height: 40rpx;
+		margin-bottom: 20rpx;
+		text-align: center;
+	}
+	.saveView .tips {
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #000000;
+		text-align: center;
+		line-height: 34rpx;
+	}
 	/* 	.bg {
 		position: fixed;
 		top: 0;

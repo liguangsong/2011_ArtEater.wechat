@@ -11,6 +11,23 @@
 				</view>
 			</view>
 		</view>
+			<!--图片保存-->
+		<u-popup v-model="isShowTips" width="578rpx" :closeable="false" mode="center" border-radius="24">
+			<view class="saveView">
+				<view style='padding: 48rpx 48rpx 128rpx;font-size: 24rpx;font-family: PingFangSC-Regular, PingFang SC;line-height: 34rpx;'>
+					<view class="title">
+						图片保存成功
+					</view>
+					<view class="tips">
+						快去分享给朋友们吧!
+					</view>
+				</view>
+				<view @click="isShowTips=false" class="btnActions"
+					style='position: absolute; bottom: 0; width: 100%; height:78rpx;text-align: center;font-size: 24rpx;border-top:2rpx solid rgba(0,0,0,.06);line-height:78rpx;'>
+					<text>确定</text>
+				</view>
+			</view>
+		</u-popup>
 	</TopNavbar>
 </template>
 
@@ -20,6 +37,7 @@
 	export default {
 		data() {
 			return {
+				isShowTips:false,
 				userInfo: {},
 				qrcode: '',
 				sharePicImg:'',
@@ -167,14 +185,14 @@
 								const screenWidth = sysInfo.screenWidth*3; // 提高画质
 								var factor = screenWidth / 750;
 								let picWidth = 602;
-								let picHeight = 1210;
+								let picHeight = 1066;
 								self.screenHeight=  picHeight*factor 
 								const context = uni.createCanvasContext('mycanvas')
 								context.draw() // 先清空画布
 								context.fillRect(0, 0, 750 * factor, picHeight * factor)
-								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 1202*factor);
+								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 1066*factor);
 								// context.drawImage(bg.tempFilePath, 0, 0, bg.width, bg.height, 0, picHeight*factor-520, picWidth*factor, 400*factor);
-								context.drawImage(bg.tempFilePath, 0,0,1396,656, 0,(picHeight-485)*factor, 602 * factor,328 * factor);
+								context.drawImage(bg.tempFilePath, 0,0,1396,656, 0,(picHeight-328)*factor, 602 * factor,328 * factor);
 								context.setFillStyle('black')
 								self.roundRect(context, 462 * factor, 50 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
 								
@@ -237,7 +255,7 @@
 								context.setFillStyle('rgba(237, 53, 53, 1)')
 								context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
 								const m5 = context.measureText('天')
-								context.fillText('天', ((190 - (m4.width / factor)) / 2 * factor) + (m4.width), 966*factor )
+								context.fillText('天', ((190 - (m4.width / factor)) / 2 * factor) + (m4.width), 962*factor )
 								
 								// 以消灭题目数
 								context.setFontSize(54*factor)
@@ -260,7 +278,7 @@
 								
 								context.font = 'normal normal ' + parseInt(22 * factor) + 'px Arial, Helvetica, sans-serif'
 								const m8 = context.measureText('%')
-								context.fillText('%', 400 * factor + ((200 - (m7.width / factor)) / 2 * factor) + (m7.width), 966*factor )
+								context.fillText('%', 400 * factor + ((200 - (m7.width / factor)) / 2 * factor) + (m7.width), 963*factor )
 								
 								// context.draw(true)
 								context.draw(true,function(){
@@ -295,19 +313,21 @@
 					filePath: self.sharePicImg,
 					success(res) {
 						console.log(res);
-						uni.showModal({
-							title: '图片保存成功',
-							content: '快去分享给朋友们吧！',
-							showCancel: false,
-							confirmText: 'ok',
-							// confirmColor: '#72B9C3',
-							success: function (res) {
-							  if (res.confirm) {
-								console.log('用户点击确定');
-							  }
-							  self.canvasHidden = true
-							}
-						})
+						self.isShowTips=true;
+						// uni.showModal({
+						// 	title: '图片保存成功',
+						// 	content: '快去分享给朋友们吧！',
+						// 	showCancel: false,
+						// 	confirmText: 'ok',
+						// 	// confirmColor: '#72B9C3',
+						// 	success: function (res) {
+						// 	  if (res.confirm) {
+						// 		console.log('用户点击确定');
+						// 	  }
+						// 	  self.canvasHidden = true
+						// 	}
+						// })
+						
 					}
 				})
 			}
@@ -414,5 +434,21 @@
 		height: 100vh;
 		background: rgba(0, 0, 0, 0.45);
 		z-index: 10000;
+	}
+	.saveView .title {
+		font-size: 28rpx;
+		font-weight: 500;
+		color: #000000;
+		line-height: 40rpx;
+		margin-bottom: 20rpx;
+		text-align: center;
+	}
+	.saveView .tips {
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #000000;
+		text-align: center;
+		line-height: 34rpx;
 	}
 </style>

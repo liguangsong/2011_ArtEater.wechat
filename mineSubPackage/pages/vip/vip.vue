@@ -34,7 +34,7 @@
 							会员权益
 						</view>
 						<view class="tel">
-							全国统一客服电话 &nbsp; 4006406558
+							全国统一客服电话 &nbsp;4006406558
 						</view>
 					</view>
 					<view class="viewItem heijin">

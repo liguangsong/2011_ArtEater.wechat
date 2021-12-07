@@ -323,6 +323,7 @@
 		width: 136rpx;
 		height: 40rpx;
 		border-radius: 20rpx;
+		color: #ED3535;
 		border: 2rpx solid #ED3535;
 		
 	}
