@@ -1,5 +1,6 @@
 <template>
-	<TopNavbar title='食艺兽' paddingTop='248'>
+	<TopNavbar title='食艺兽'>
+		<view style='height: 134rpx'></view>
 		<view class="myPage">
 			<view class="boxView">
 				<view class="editForm" >
@@ -419,6 +420,14 @@
 		width: 100%;
 		height: 100%;
 	}
+	.u-form {
+		height: 682rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    align-content: space-between;
+    justify-content: space-between;
+	}
 	.inputItem {
 		height: 82rpx;
 		width: 100%;
@@ -449,8 +458,9 @@
 	.u-form-item {
 		padding: 0 !important;
 		display: block !important;
-		margin-bottom: 38rpx;
+		/* margin-bottom: 38rpx; */
 		height: 82rpx;
+		line-height: 82rpx;
 	}
 	.u-form-item--left {
 		margin-bottom: 0 !important;

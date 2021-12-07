@@ -47,7 +47,9 @@
 					</block>
 				</view>
 				<view class="title" v-else-if="questionDetail.type==4">
-					<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c===''?' ':c}}<text v-if="i<questionDetail.cinputs.length-1">({{i+1}})</text></block>
+					<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c===''?' ':c}}<text v-if="i<questionDetail.cinputs.length-1">
+					({{i+1}})
+					</text></block>
 				</view>
 				<view class="title" v-else>{{questionDetail.title}}</view>
 				<view class="options" v-if="questionDetail.type==1||questionDetail.type==2">
@@ -117,29 +119,14 @@
 						</view>
 					</view>
 				</view>
+			<view v-if="!isShowComments&&!hasBuyedComments" style='height:572rpx'></view>
 			</view>
-			<view v-if="hasSubmit||tab=='tab2'" style='height:572rpx'></view>
 		</view>
 		<view v-if="count > 0" class="actionView">	
 			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
 			<button v-if="hasSubmit && index < count" @click="handleNext" class="next">下一题</button>
 			<button v-if="hasSubmit && index == count" @click="handleHome" class="next">完成</button>
 		</view>
-		<!-- <u-popup v-model="isShowCommentBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
-			<view class="buylView" style="padding:74rpx 40rpx;">
-				<view class="title">{{dajxConfig.action}}</view>
-				<view class="price">¥{{dajxConfig.price}}</view>
-				<view class="tips">
-					您购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
-				</view>
-				<view class="tips">
-					购买后可在【个人中心-已购项目】中查看
-				</view>
-				<view class="btnActions">
-					<button @click="handleBuyCommentsBtnClick">确认购买</button>
-				</view>
-			</view>
-		</u-popup> -->
 	</view>
 </template>
 

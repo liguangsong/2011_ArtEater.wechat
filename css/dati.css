@@ -6,7 +6,7 @@
 		font-size: 26rpx;
 		color: #b1b1b1;
 		font-family: PingFangSC-Medium;
-		background-color: rgba(222, 208, 205, .39);
+		background-color: #efeae8;
 		width: 100%;
 		z-index: 100;
 	}
@@ -97,13 +97,14 @@
 		display: flex;
 		padding-left:36rpx;
 		padding-right:30rpx;
+		align-items: center;
 	}
 	.questionView .headView .red-block{
     width: 10rpx;
 		height: 24rpx;
 		position: relative;
 		margin-right: 8rpx;
-		margin-top: 5rpx;
+		/* margin-top: 5rpx; */
 	}
 	.questionView .headView .queType{
 		flex: 1;
@@ -254,7 +255,7 @@
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
 		border: 0;
-		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
+		/* box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2); */
 	}
 	.actionView button::after{
 		border: 0;
@@ -515,9 +516,8 @@
 		padding-top: 6rpx !important;
 	}
 	
-	.needbuy {
-		
-	position: fixed;
-	    z-index: 100;
-	    bottom: 0;
+	.needbuy {		
+		position: fixed;
+		z-index: 100;
+		bottom: 0;
 	}

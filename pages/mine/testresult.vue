@@ -555,7 +555,7 @@
 		left: 0;
 		right: 0;
 		padding: 16rpx 0;
-		background: #fff;
+		background: #f7f7f7;
 	}
 	.btnShare {
 		width: 690rpx;
@@ -571,16 +571,16 @@
 	}
 	
 	.btnPrev {
+		margin: 0 auto 24rpx;
 		width: 690rpx;
 		height: 92rpx;
-		line-height: 92rpx;
-		border: 2rpx solid #ff776f;
-		border-radius: 92rpx;
-		background-color: #ffffff;
 		border-radius: 46rpx;
-		color: #ff776f;
+		text-align: center;
+		border: 2rpx solid #D81E1F;
 		font-size: 34rpx;
-		font-family: PingFangSC-Medium;
-		margin: 0 auto 24rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #D81E1F;
+		line-height: 92rpx;
 	}
 </style>

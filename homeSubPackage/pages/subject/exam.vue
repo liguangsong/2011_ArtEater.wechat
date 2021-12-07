@@ -79,7 +79,9 @@
 					</block>
 				</view>
 				<view class="title" v-else-if="questionDetail.type==4">
-					<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c===''?' ':c}}<text v-if="i<questionDetail.cinputs.length-1">({{i+1}})</text></block>
+					<block v-for="(c,i) in questionDetail.cinputs" :key="i">{{c===''?' ':c}}<text v-if="i<questionDetail.cinputs.length-1">
+					({{i+1}})
+					</text></block>
 				</view>
 				<view class="title" v-else>{{questionDetail.title}}</view>
 				<view class="options" v-if="questionDetail.type==1||questionDetail.type==2">
@@ -94,7 +96,8 @@
 					</view>
 				</view>
 			</view>
-			
+			<view v-if="(hasSubmit||tab=='tab2')&&(!isShowComments&&!hasBuyedComment)" style='height: 572rpx'></view>
+			<!-- 是否吸底 -->
 			<view :class="'commentView ' + ((!isShowComments&&!hasBuyedComments)?'needbuy':'')" v-if="hasSubmit||tab=='tab2'">
 				<view class="bg" v-if="!isShowComments&&!hasBuyedComments">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg.png"></image>
@@ -153,7 +156,6 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="hasSubmit||tab=='tab2'" style='height:572rpx'></view>
 		</view>
 		<view v-if="tab == 'tab1' && count > 0" class="actionView">	
 			<button v-if="!hasSubmit" @click="handleSubmit" :class="canSubmit?'hasAnswer':'noAnswer'">确认提交</button>
@@ -210,6 +212,7 @@
 		},
 		data() {
 			return {
+				vip: false,
 				tab: 'tab1',
 				isOnload: true,
 				isShowTab: false,
@@ -242,6 +245,19 @@
 				percentH: 0,
 				percentM: 0,
 			}
+		},
+		onShow() {
+			var app = getApp();
+			var member = app.globalData.member;
+			// 判断是不是会员
+			if (member) {
+				if (member.memberType != 1) {
+					if (member.endTime > Date.now()) {
+						this.vip = true;
+					}
+				}
+			}
+			this.vip = true;
 		},
 		onLoad(options) {
 			var self = this
@@ -415,9 +431,15 @@
 						} else {
 							self.isShowComments = true
 						}
+						if (self.vip) {
+							self.isShowComments = true
+						}
 					})
 				} else {
 					self.isShowComments = false
+					if (self.vip) {
+						self.isShowComments = true
+					}
 				}
 			},
 			/*查询是否已购买本章节*/
@@ -469,7 +491,13 @@
 						if(res){
 							self.hasBuyedComments = true // 已经购买了答案解析
 						}
+						if (self.vip) {
+							self.isShowComments = true
+						}
 					})
+				}
+				if (self.vip) {
+					self.isShowComments = true
 				}
 			},
 			/* 加载科目下所有题目 */

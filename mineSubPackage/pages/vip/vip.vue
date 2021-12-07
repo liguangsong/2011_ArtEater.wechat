@@ -34,7 +34,7 @@
 							会员权益
 						</view>
 						<view class="tel">
-							客服电话/微信: 13811219735
+							全国统一客服电话 &nbsp; 4006406558
 						</view>
 					</view>
 					<view class="viewItem heijin">
@@ -450,11 +450,13 @@
 				</view>
 			</view>
 		</view>
+		<Modal@cancle='isShow=false' :isShow='isShow' :title='title' :submit='submit' :submitFn='submitFn'/>
 	</view>
 </template>
 
 <script>
 	import Navbar from '../../../components/navBar/navbar.vue'
+	import Modal from '@/components/modal/modal.vue'
 	import {
 		dateFormat,
 		GetRandomNum
@@ -462,6 +464,11 @@
 	export default {
 		data() {
 			return {
+				isShow: false,
+				title: '',
+				submit: '',
+				submitFn: '',
+				
 				showFixed: false,
 				list: null,
 				active: 0,
@@ -489,7 +496,7 @@
 			}
 		},
 		components: {
-			Navbar
+			Navbar, Modal
 		},
 		async onShow() {
 			uni.showLoading({
@@ -525,9 +532,6 @@
 			})
 			this.getMember();
 		},
-		// created() {
-		// 	this.getIntegral(0/100)
-		// },
 		computed: {
 			isMember() {
 				if (this.memberInfo && Date.now() < this.memberInfo.endTime) {
@@ -580,21 +584,23 @@
 				return year + '-' + month + '-' + day;
 			},
 			changeShowFixed(f) {
-				if (f == 'bool') {
-					this.active = this.active1;
-					setTimeout(()=>{
-						this.showFixed = true;
-					},300)
-					return
-				}
-				if (typeof(f) == 'number') {
-					this.active = f != -1 ? f : 0;
-					setTimeout(()=>{
-						this.showFixed = true;
-					},300)
-				} else {
-					this.showFixed = false;
-				}
+				// console.log('11111');
+				this.isShow = true;
+				// if (f == 'bool') {
+				// 	this.active = this.active1;
+				// 	setTimeout(()=>{
+				// 		this.showFixed = true;
+				// 	},300)
+				// 	return
+				// }
+				// if (typeof(f) == 'number') {
+				// 	this.active = f != -1 ? f : 0;
+				// 	setTimeout(()=>{
+				// 		this.showFixed = true;
+				// 	},300)
+				// } else {
+				// 	this.showFixed = false;
+				// }
 			},
 			touchstart(e) {
 				this.clientX = e.changedTouches[0].clientX;
