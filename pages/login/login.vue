@@ -505,4 +505,8 @@
 	.u-input__right-icon {
 		margin-top: 10rpx;
 	}
+	.u-input__input {
+		display: flex !important;
+		align-items: center !important;
+	}
 </style>

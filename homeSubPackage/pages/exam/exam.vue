@@ -156,11 +156,11 @@
 				}
 			})
 
-			uni.enableAlertBeforeUnload({
-				message: '当前还未完成考试，返回则默认提交考卷，是否继续退出？',
-				success: res => {},
-				fail: error => {}
-			})
+			// uni.enableAlertBeforeUnload({
+			// 	message: '当前还未完成考试，返回则默认提交考卷，是否继续退出？',
+			// 	success: res => {},
+			// 	fail: error => {}
+			// })
 			self.Parse.Config.get().then(_config => {
 				self.version = _config.get('version')
 			})
