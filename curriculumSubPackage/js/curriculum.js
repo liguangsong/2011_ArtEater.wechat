@@ -109,7 +109,7 @@ export default {
 		let res = await mainQuery.find();
 		if (res) {
 			// 获取上次学习的课程Id
-			let preId = await this.getPreLearn(res[0].id);
+			let preId = await this.getPreLearn(rootId);
 			res = res.map(v => {
 				v = v.toJSON();
 				if (preId && v.objectId == preId) {
@@ -155,7 +155,7 @@ export default {
 		let res = await mainQuery.find();
 		if (res) {
 			// 获取上次学习的课程Id
-			let preId = await this.getPreLearn(res[0].id);
+			let preId = await this.getPreLearn(rootId);
 			res = res.map(v => {
 				v = v.toJSON();
 				if (preId && v.objectId == preId) {
