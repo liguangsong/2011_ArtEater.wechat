@@ -167,14 +167,14 @@
 								const screenWidth = sysInfo.screenWidth*3; // 提高画质
 								var factor = screenWidth / 750;
 								let picWidth = 602;
-								let picHeight = 1210;
+								let picHeight = 1066;
 								self.screenHeight=  picHeight*factor 
 								const context = uni.createCanvasContext('mycanvas')
 								context.draw() // 先清空画布
 								context.fillRect(0, 0, 750 * factor, picHeight * factor)
-								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 1202*factor);
+								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 1066*factor);
 								// context.drawImage(bg.tempFilePath, 0, 0, bg.width, bg.height, 0, picHeight*factor-520, picWidth*factor, 400*factor);
-								context.drawImage(bg.tempFilePath, 0,0,1396,656, 0,(picHeight-485)*factor, 602 * factor,328 * factor);
+								context.drawImage(bg.tempFilePath, 0,0,1396,656, 0,(picHeight-328)*factor, 602 * factor,328 * factor);
 								context.setFillStyle('black')
 								self.roundRect(context, 462 * factor, 50 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
 								
