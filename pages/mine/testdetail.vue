@@ -427,7 +427,7 @@
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #000000;
-		line-height: 39rpx;
+		line-height: 40rpx;
 	}
 	.questionView .headView .countView{
 		/* width: 150rpx; */
