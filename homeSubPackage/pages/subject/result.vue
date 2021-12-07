@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<!-- <view>
 		<view class="resultView">
 			<view class="tips" style="font-weight: bold;">您的正确率为：</view>
 			<view class="scoreView">
@@ -9,7 +9,6 @@
 			<view class="tips">总耗时：{{minutes}}</view>
 		</view>
 		<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
-		<!-- <button @click="handleShare" class="btnShare">分享</button> -->
 		<view @click="handleShare" class="btnShare">
 			<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/icon_sharebg.png"></image>
 			<view class="title">分享</view>
@@ -24,11 +23,50 @@
 				</view>
 			</view>
 		</u-mask>
-	</view>
+	</view> -->
+
+<TopNavbar title='试题' paddingTop='-1' :tabbarBg='false'>
+		<view class='bg'>
+				<image class='bgimg' src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/success.png" mode=""></image>
+			<view class="resultView">
+				<view class="title-info tips">
+					<view class="left">
+						<view class="red-block"></view>
+					   您本次试题正确率：
+					</view>
+				</view>
+				<view class="time">总耗时：{{minutes}}</view>
+				<view class="scoreView">
+					<view class="score">{{score}}</view>
+					<view class="txt">%</view>
+				</view>
+				
+			</view>
+			<canvas canvas-id='mycanvas' :disable-scroll="true" class="canvas"></canvas>
+			<view class="btn">
+				<button @click="again" class="btnShare">再来一遍</button>
+				<view @click="handleShare" class="btnShare">
+					<view class="title">分享</view>
+				</view>
+				<button @click="handHomePage" class="btnPrev">返回</button>
+			</view>
+
+			<u-mask :show="isShowPicImg" @click="isShowPicImg = false">
+				<view class="warp">
+					<view class="rect">
+						<image @tap.stop v-if="sharePicImg" :src="sharePicImg" mode="aspectFit"
+							style="width: 450rpx; height: 800rpx;"></image>
+						<button class="download" @click="handleSaveImg">保存并分享</button>
+					</view>
+				</view>
+			</u-mask>
+		</view>
+	</TopNavbar>
 </template>
 
 <script>
 	// import config from 'static/config/index.js'
+	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
 			return {
@@ -43,7 +81,11 @@
 				score: ''
 			}
 		},
+		components: {
+			TopNavbar
+		},
 		onLoad(options) {
+			console.log(options,5555557777)
 			var self = this
 			// uni.getStorage({
 			// 	key:'userInfo',
@@ -122,6 +164,11 @@
 			},
 			createMinutes(seconds){
 				return Math.floor(seconds/60)+'分钟'+(seconds%60)+'秒'
+			},
+			again() {
+               uni.navigateBack({
+					delta: 1
+				})
 			},
 			/*返回首页*/
 			handHomePage(){
@@ -334,100 +381,131 @@
 </script>
 
 <style>
-	page{
-		background-color: #fbfbfb;
+.btn {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		left: 0;
+		z-index: 200;
 	}
-	.resultView{
-		padding-top: 112rpx;
+	.bg {
+		position: relative;
+	}
+	.title-info {
+		padding: 0;
+	}
+	.bgimg {
+		position: absolute;
+		top: 0;
+		z-index: 10;
+		height: 1114rpx;
+		width: 100%;
+	}
+	.resultView {
+		padding-top: 224rpx;
 		height: 482rpx;
-		/* border-bottom: 2rpx solid #f2f2f2; */
 		margin: 0 30rpx;
+		position: relative;
+		z-index: 100;
 	}
-	.resultView .tips{
-		padding-left: 78rpx;
-		font-size: 26rpx;
-		height: 42rpx;
-		line-height: 42rpx;
-		color: #352026;
-		font-family: PingFangSC-Medium;
+
+	.resultView .tips {
+		font-size: 28rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+		line-height: 40rpx;
 	}
-	.resultView .scoreView{
-		height: 224rpx;
+	.resultView .time {
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,0.5);
+		line-height: 28rpx;
+		margin-top: 8rpx;
+		margin-left: 18rpx;
+	}
+	
+	.resultView .scoreView {
+		margin: 278rpx auto 0;
 		text-align: center;
-		margin-bottom: 22rpx;
-		margin-top: 10rpx;
 	}
-	.resultView .scoreView .score{
-		height: 224rpx;
-		display: inline;
+
+	.resultView .scoreView .score {
 		font-size: 160rpx;
-		font-weight: bold;
-		color: #ff6867;
-		font-family: PingFangSC-Medium;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #D81E1F;
+		line-height: 224rpx;
+		display: inline-block;
 	}
-	.resultView .scoreView .txt{
+
+	.resultView .scoreView .txt {
 		display: inline;
-		font-size: 34rpx;
-		font-weight: bold;
-		color: #352026;
-		font-family: PingFangSC-Medium;
+		font-size: 38rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+		line-height: 52rpx;
 	}
-	.view1{
-		padding-top:44rpx;
+
+	.view1 {
+		padding-top: 44rpx;
 		padding-left: 4rpx;
 	}
-	.view1 .title{
+
+	.view1 .title {
 		padding-left: 40rpx;
 		font-size: 26rpx;
 		font-weight: bold;
 		color: #352026;
 		font-family: PingFangSC-Medium;
 	}
-	.view1 .rView{
+
+	.view1 .rView {
 		margin-top: 26rpx;
 	}
-	.view1 .rView .resultItem{
+
+	.view1 .rView .resultItem {
 		display: inline-block;
 		margin-left: 36rpx;
 		margin-top: 22rpx;
 		width: 82rpx;
-		height:82rpx;
-		line-height:82rpx;
+		height: 82rpx;
+		line-height: 82rpx;
 		text-align: center;
 		border-radius: 50%;
 		background-color: #fbfbfb;
 		font-size: 34rpx;
-		color: rgba(53,32,38,0.4);
+		color: rgba(53, 32, 38, 0.4);
 		font-family: PingFangSC-Medium;
 	}
-	.view1 .rView .resultItem.error{
+
+	.view1 .rView .resultItem.error {
 		background-color: #ffefef;
-		color: rgba(250,81,81,0.8);
+		color: rgba(250, 81, 81, 0.8);
 	}
-	.view1 .rView .resultItem.right{
+
+	.view1 .rView .resultItem.right {
 		background-color: #eaf1f4;
 		color: #3CC0DA;
 	}
-	.btnShare{
+
+	.btnShare {
 		position: relative;
 		height: 92rpx;
 		line-height: 92rpx;
 		text-align: center;
-		background-image: linear-gradient(1deg, 
-			#ffa394 0%, 
-			#ff9d83 10%, 
-			#ff6666 60%, 
-			#fc4c4c 89%, 
-			#f93131 100%);
+		background: #ED3535;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
 		border-radius: 46rpx;
 		color: #ffffff;
-		font-weight: bold;
 		font-size: 34rpx;
 		font-family: PingFangSC-Medium;
-		margin: 30rpx;
-		margin-top: 54rpx;
+		margin: 24rpx 30rpx 0;
 	}
-	.btnShare image{
+
+	.btnShare image {
 		position: absolute;
 		left: 0;
 		top: 0;
@@ -435,31 +513,37 @@
 		height: 100%;
 		border-radius: 46rpx;
 	}
-	.btnShare .title{
+
+	.btnShare .title {
 		position: absolute;
 		z-index: 1;
 		width: 100%;
 		text-align: center;
 	}
-	.btnShare::after{
+
+	.btnShare::after {
 		border: 0;
 	}
-	.btnPrev{
+
+	.btnPrev {
 		height: 92rpx;
 		line-height: 92rpx;
-		background-color: #ffd4d4;
+		background-color: #fff;
 		border-radius: 46rpx;
 		color: #ff6867;
-		font-weight: bold;
+		margin: 24rpx 30rpx 40rpx;
+		border: 2rpx solid #D81E1F;
 		font-size: 34rpx;
-		font-family: PingFangSC-Medium;
-		margin: 30rpx;
-		margin-top: 24rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #D81E1F;
 	}
-	.btnPrev::after{
+
+	.btnPrev::after {
 		border: 0;
 	}
-	.download{
+
+	.download {
 		height: 80rpx;
 		line-height: 80rpx;
 		border-radius: 94rpx;
@@ -470,12 +554,15 @@
 		border-radius: 92rpx;
 		background-color: #ffffff;
 	}
-	.canvas{
-		width:750rpx;margin:0 auto;
-		position:fixed;
-		left:1000px;
+
+	.canvas {
+		width: 750rpx;
+		margin: 0 auto;
+		position: fixed;
+		left: 1000px;
 		height: 1340rpx;
 	}
+
 	.warp {
 		display: flex;
 		align-items: center;
