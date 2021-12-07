@@ -405,6 +405,7 @@
 	}
 	.questionView{
 		margin-top: 42rpx;
+		background: #FAFAFA;
 		/* padding-bottom: 200rpx; */
 	}
 	.questionView .headView{
@@ -426,13 +427,13 @@
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #000000;
-		line-height: 40rpx;
+		line-height: 39rpx;
 	}
 	.questionView .headView .countView{
 		/* width: 150rpx; */
 		text-align: right;
 		display: inline-flex;
-		height: 30rpx;
+		height: 40rpx;
 		font-size: 20rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;

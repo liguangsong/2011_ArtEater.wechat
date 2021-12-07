@@ -602,6 +602,7 @@
 	.questionView{
 		padding: 0 36rpx;
 		margin-top: 42rpx;
+		background: #FAFAFA;
 		/* padding-bottom: 200rpx; */
 	}
 	.questionView .headView{
