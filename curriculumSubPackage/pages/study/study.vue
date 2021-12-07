@@ -40,9 +40,9 @@
 			<Timetable v-if='tabbar ' :list="timetableList"/>
 			<Details v-else :detail="curriculumInfo.introduce" :isVip="vip"/>
 		</view>
-		<view class="unlock" @click='gotoVip' v-if="!tabbar && vip">
+		<!-- <view class="unlock" @click='gotoVip' v-if="!tabbar && !vip">
 			立即解锁
-		</view>
+		</view> -->
 	</view>
 </template>
 

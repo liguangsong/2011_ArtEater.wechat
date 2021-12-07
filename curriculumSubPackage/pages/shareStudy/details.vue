@@ -12,9 +12,9 @@
 				<image src="../../../static/3.png"></image>
 			</view> -->
 		</view>
-		<view class="unlock" v-if='isVip' @click='gotoVip'>
+		<!-- <view class="unlock" v-if='isVip' @click='gotoVip'>
 			立即解锁
-		</view>
+		</view> 暂时隐掉 -->
 	</view>
 </template>
 
