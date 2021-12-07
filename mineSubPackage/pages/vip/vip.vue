@@ -584,23 +584,21 @@
 				return year + '-' + month + '-' + day;
 			},
 			changeShowFixed(f) {
-				// console.log('11111');
-				this.isShow = true;
-				// if (f == 'bool') {
-				// 	this.active = this.active1;
-				// 	setTimeout(()=>{
-				// 		this.showFixed = true;
-				// 	},300)
-				// 	return
-				// }
-				// if (typeof(f) == 'number') {
-				// 	this.active = f != -1 ? f : 0;
-				// 	setTimeout(()=>{
-				// 		this.showFixed = true;
-				// 	},300)
-				// } else {
-				// 	this.showFixed = false;
-				// }
+				if (f == 'bool') {
+					this.active = this.active1;
+					setTimeout(()=>{
+						this.showFixed = true;
+					},300)
+					return
+				}
+				if (typeof(f) == 'number') {
+					this.active = f != -1 ? f : 0;
+					setTimeout(()=>{
+						this.showFixed = true;
+					},300)
+				} else {
+					this.showFixed = false;
+				}
 			},
 			touchstart(e) {
 				this.clientX = e.changedTouches[0].clientX;
@@ -668,31 +666,46 @@
 				var baiyinPrice = this.list[2].promotionPrice || this.list[2].memberPrice;
 				var _this = this;
 				if (this.isChajia) {
-					uni.showModal({
-						title: '升级为黑金VIP会员',
-						confirmColor: '#ED3535',
-						confirmText: '继续开通',
-						success(res) {
-							// 升级为黑金
-							if (res.confirm) {
-								var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
-								var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-								cash = (n - baiyinPrice) / 365 * Math.abs(time - 365) * 100;
-								_this.payment(cash)
-							}
-						}
-					})
+					// uni.showModal({
+					// 	title: '升级为黑金VIP会员',
+					// 	confirmColor: '#ED3535',
+					// 	confirmText: '继续开通',
+					// 	success(res) {
+					// 		// 升级为黑金
+					// 		if (res.confirm) {
+					// 			var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+					// 			var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+					// 			cash = (n - baiyinPrice) / 365 * Math.abs(time - 365) * 100;
+					// 			_this.payment(cash)
+					// 		}
+					// 	}
+					// })
+					this.title = '升级为黑金VIP会员';
+					this.submit = '继续开通';
+					this.submitFn = function() {
+						var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+						var n = this.list[0].promotionPrice || this.list[0].memberPrice;
+						cash = (n - baiyinPrice) / 365 * Math.abs(time - 365) * 100;
+						this.payment(cash)
+					}
+					this.isShow = true;
 				} else {
-					uni.showModal({
-						title: '续费黑金VIP',
-						confirmColor: '#ED3535',
-						confirmText: '确定',
-						success(res) {
-							if (res.confirm) {
-								_this.payment(baiyinPrice * 100)
-							}
-						}
-					})
+					// uni.showModal({
+					// 	title: '续费黑金VIP',
+					// 	confirmColor: '#ED3535',
+					// 	confirmText: '确定',
+					// 	success(res) {
+					// 		if (res.confirm) {
+					// 			_this.payment(baiyinPrice * 100)
+					// 		}
+					// 	}
+					// })
+					this.title = '续费黑金VIP';
+					this.submit = '确定';
+					this.submitFn = function() {
+						this.payment(baiyinPrice * 100)
+					}
+					this.isShow = true;
 				}
 			},
 			// 铂金续费
@@ -706,31 +719,46 @@
 				var bojinPrice = this.list[1].promotionPrice || this.list[1].memberPrice;
 				var _this = this;
 				if (this.isChajia) {
-					uni.showModal({
-						title: '升级为黑金VIP会员',
-						confirmColor: '#ED3535',
-						confirmText: '继续开通',
-						success(res) {
-							// 升级为黑金
-							if (res.confirm) {
-								var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
-								var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-								cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
-								_this.payment(cash * 100)
-							}
-						}
-					})
+					// uni.showModal({
+					// 	title: '升级为黑金VIP会员',
+					// 	confirmColor: '#ED3535',
+					// 	confirmText: '继续开通',
+					// 	success(res) {
+					// 		// 升级为黑金
+					// 		if (res.confirm) {
+					// 			var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+					// 			var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+					// 			cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
+					// 			_this.payment(cash * 100)
+					// 		}
+					// 	}
+					// })
+					this.title = '升级为黑金VIP会员';
+					this.submit = '继续开通';
+					this.submitFn = function() {
+						var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+						var n = this.list[0].promotionPrice || this.list[0].memberPrice;
+						cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
+						this.payment(cash * 100)
+					}
+					this.isShow = true;
 				} else {
-					uni.showModal({
-						title: '续费铂金VIP',
-						confirmColor: '#ED3535',
-						confirmText: '确定',
-						success(res) {
-							if (res.confirm) {
-								_this.payment(bojinPrice * 100)
-							}
-						}
-					})
+					// uni.showModal({
+					// 	title: '续费铂金VIP',
+					// 	confirmColor: '#ED3535',
+					// 	confirmText: '确定',
+					// 	success(res) {
+					// 		if (res.confirm) {
+					// 			_this.payment(bojinPrice * 100)
+					// 		}
+					// 	}
+					// })
+					this.title = '续费铂金VIP';
+					this.submit = '确定';
+					this.submitFn = function() {
+						this.payment(bojinPrice * 100)
+					}
+					this.isShow = true;
 				}
 			},
 			// 黑金续费
@@ -740,17 +768,24 @@
 					this.showFixed = true;
 					return;
 				}
-				uni.showModal({
-					title: '续费黑金VIP',
-					confirmColor: '#ED3535',
-					confirmText: '确定',
-					success(res) {
-						if (res.confirm) {
-							var heijinPrice = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-							_this.payment(heijinPrice * 100)
-						}
-					}
-				})
+				// uni.showModal({
+				// 	title: '续费黑金VIP',
+				// 	confirmColor: '#ED3535',
+				// 	confirmText: '确定',
+				// 	success(res) {
+				// 		if (res.confirm) {
+				// 			var heijinPrice = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+				// 			_this.payment(heijinPrice * 100)
+				// 		}
+				// 	}
+				// })
+				this.title = '续费黑金';
+				this.submit = '确定';
+				this.submitFn = function() {
+					var heijinPrice = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+					this.payment(heijinPrice * 100)
+				}
+				this.isShow = true;
 			},
 
 			// 支付
@@ -805,11 +840,17 @@
 			},
 			// 支付失败
 			paymentFail() {
-				uni.showModal({
-					title: '开通失败',
-					confirmColor: '#ED3535',
-					confirmText: '确定',
-				})
+				// uni.showModal({
+				// 	title: '开通失败',
+				// 	confirmColor: '#ED3535',
+				// 	confirmText: '确定',
+				// })
+				this.title = '开通失败';
+				this.submit = '确定';
+				this.submitFn = function() {
+					this.isShow = false;
+				}
+				this.isShow = true;
 			},
 			// 获取积分与赠送积分
 			async getIntegral(cash) {
@@ -819,7 +860,7 @@
 					this.userInfo.score_all = (this.userInfo.score_all || 0) + parseInt(cash * config.attributes.shopScore);
 					this.user.set('score', this.userInfo.score);
 					this.user.set('score_all', this.userInfo.score_all);
-					console.log(this.userInfo);
+					// console.log(this.userInfo);
 					await this.user.save();
 					uni.setStorage({
 						key: 'userInfo',

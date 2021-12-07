@@ -24,7 +24,7 @@
 				<view style="display: flex;width: 100%;">
 					<view class="price">
 						<view class="pricebox">
-							减¥{{coupon.amount}}
+							¥{{coupon.amount}}
 						</view>
 					</view>
 					<view class="title" :style="{paddingTop:(coupon.state!=0?'54rpx':'40rpx')}">
@@ -308,7 +308,7 @@
 	.couponItem .content .radio {
 		flex: 0 1 202rpx;
 		text-align: left;
-		font-size: 22rpx;
+		font-size: 20rpx;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
 		color: #ff6867;
@@ -323,6 +323,7 @@
 		height: 40rpx;
 		border-radius: 20rpx;
 		border: 2rpx solid #ED3535;
+		
 	}
 
 	.couponItem .content.enable .radio {

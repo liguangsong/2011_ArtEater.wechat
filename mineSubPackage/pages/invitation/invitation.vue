@@ -349,7 +349,7 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background-color: #fff;
+		background-color: #f7f7f7;
 		z-index: 99999;
 	}
 	

@@ -181,6 +181,7 @@
 		margin-top: 8rpx;
 		font-size: 34rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
 	}
 	.tabbar {
 		z-index: 100000 !important;
