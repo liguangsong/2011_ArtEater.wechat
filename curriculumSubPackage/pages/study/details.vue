@@ -12,9 +12,6 @@
 				<image src="../../../static/3.png"></image>
 			</view> -->
 		</view>
-		<view class="unlock" v-if='!isVip' @click='gotoVip'>
-			立即解锁
-		</view>
 	</view>
 </template>
 
@@ -45,11 +42,7 @@
 		    }
 		},
 		methods:{
-			gotoVip() {
-				uni.navigateTo({
-					url:'/mineSubPackage/pages/vip/vip'
-				})
-			}
+			
 		}
 	}
 </script>
@@ -87,21 +80,5 @@
 		line-height: 40rpx;
 		font-size: 24rpx;
 	}
-	.unlock {
-		width: 690rpx;
-		height: 92rpx;
-		background: #ed3635;
-		box-shadow: 0rpx 4rpx 8rpx 0rpx rgba(0,0,0,0.2);
-		border-radius: 46rpx;
-		font-size: 34rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 500;
-		color: #FFFFFF;
-		line-height: 92rpx;
-		position: fixed;
-		bottom: 40rpx;
-		margin-left: 30rpx;
-		z-index: 1;
-		text-align: center;
-	}
+	
 </style>

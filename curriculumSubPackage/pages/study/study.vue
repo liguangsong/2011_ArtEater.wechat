@@ -40,6 +40,9 @@
 			<Timetable v-if='tabbar ' :list="timetableList"/>
 			<Details v-else :detail="curriculumInfo.introduce" :isVip="vip"/>
 		</view>
+		<view class="unlock" @click='gotoVip' v-if="!tabbar && vip">
+			立即解锁
+		</view>
 	</view>
 </template>
 
@@ -105,6 +108,11 @@
 					this.$emit('navEvent')
 				}
 				
+			},
+			gotoVip() {
+				uni.navigateTo({
+					url:'/mineSubPackage/pages/vip/vip'
+				})
 			},
 			// 获取详情
 			async getCurriculum() {
@@ -198,6 +206,9 @@
 		padding: 48rpx 0 18rpx;
 		font-size: 44rpx;
 		font-weight: 600;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 	.info {
 		font-size: 24rpx;
@@ -250,5 +261,22 @@
 		overflow-y: auto;
 		transform: translateY(-24rpx);
 		padding-top: 24rpx;
+	}
+	.unlock {
+		width: 690rpx;
+		height: 92rpx;
+		background: #ed3635;
+		box-shadow: 0rpx 4rpx 8rpx 0rpx rgba(0,0,0,0.2);
+		border-radius: 46rpx;
+		font-size: 34rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+		line-height: 92rpx;
+		position: fixed;
+		bottom: 40rpx;
+		margin-left: 30rpx;
+		z-index: 1;
+		text-align: center;
 	}
 </style>

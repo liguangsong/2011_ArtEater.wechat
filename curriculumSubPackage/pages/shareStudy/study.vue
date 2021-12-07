@@ -100,6 +100,11 @@
 			})
 		},
 		methods: {
+			back() {
+                uni.reLaunch({
+					url:'/pages/index/index'
+				});
+			},
 			// 获取详情
 			async getCurriculum() {
 				let res = await Curriculum.getHideCurriculum(this.item.objectId);
@@ -198,6 +203,9 @@
 		padding: 48rpx 0 18rpx;
 		font-size: 44rpx;
 		font-weight: 600;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 	.info {
 		font-size: 24rpx;
