@@ -633,6 +633,7 @@
 			handleTestClick(e) {
 				var self = this
 				var item = e.currentTarget.dataset.item
+				console.log(item.value,self.subjectId);
 				uni.navigateTo({
 					url: '/homeSubPackage/pages/important/exam?bsid=' + self.subjectId + '&sid=' + item.value,
 					success(res) {

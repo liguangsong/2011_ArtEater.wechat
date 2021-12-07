@@ -242,6 +242,7 @@
 				version: '',
 				percentH: 0,
 				percentM: 0,
+				bsid: '',
 			}
 		},
 		onShow() {
@@ -258,6 +259,8 @@
 			this.vip = true;
 		},
 		onLoad(options) {
+			console.log(options, '..........');
+			this.bsid = options.bsid;
 			var self = this
 			const eventChannel = this.getOpenerEventChannel()
 			eventChannel.on('subjectTree', function(tree){
@@ -1098,7 +1101,7 @@
 				if(this.subjectIndex==this.count){
 					var time = new Date() - self.beginTime
 					uni.redirectTo({
-						url:'./result?sid='+self.subjectDetail.id+'&important=1&time='+ parseInt(time/1000),
+						url:'./result?bisd='+self.bsid+'&sid='+self.subjectDetail.id+'&important=1&time='+ parseInt(time/1000),
 					})
 				} else {
 					this.subjectIndex = this.history.get('subjectIndex') + 1
