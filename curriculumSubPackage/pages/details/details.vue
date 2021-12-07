@@ -80,7 +80,7 @@
 				<view class="list">
 					<view class="item" v-for='(item,i) in timetableList' :key='i'
 						:class='{active: curriculumInfo.objectId==item.objectId}' @click="changeCurriculum(item)">
-						<view class="item-title">
+						<view class="item-title" :class="{'item-title-shot':curriculumInfo.objectId==item.objectId?true:false}">
 							<text>{{item.subjectName}}</text>
 						</view>
 						<view class="item-type">
@@ -768,6 +768,15 @@
 						border-bottom: 1px solid rgba(0, 0, 0, .05);
 						font-size: 24rpx;
 						color: rgba(0, 0, 0, .67);
+						.item-title{
+							max-width: 620rpx;
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+						}
+						.item-title-shot{
+							max-width: 516rpx;
+						}
 						text {
 							font-family: PingFangSC-Regular, PingFang SC;
 						}

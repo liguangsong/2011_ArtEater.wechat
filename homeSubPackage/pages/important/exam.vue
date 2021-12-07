@@ -255,7 +255,7 @@
 					}
 				}
 			}
-			this.vip = true;
+			// this.vip = true;
 		},
 		onLoad(options) {
 			var self = this
