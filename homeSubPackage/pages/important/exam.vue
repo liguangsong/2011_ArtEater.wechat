@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar>
+	<TopNavbar  bg='#FAFAFA'>
 	<view>
 		<view class="buytipsView" v-if="baseSubjectDetail.price>0 && !hasBuyed">
 			<view class="tipView" @click="handleSubjectBuy">

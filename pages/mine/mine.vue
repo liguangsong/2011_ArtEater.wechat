@@ -638,7 +638,7 @@
 					view {
 						height: 26rpx;
 						border-radius: 13rpx;
-						line-height: 30rpx;
+						line-height: 26rpx;
 						color: #fff;
 						letter-spacing: 0;
 						padding: 0 4rpx;

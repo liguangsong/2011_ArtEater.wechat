@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar bg='#fafafa'>
+	<TopNavbar bg='#FAFAFA'>
 		<template v-slot:time>
 			<view class="timeView">
 				考试剩余时间：<u-count-down color="#b1b1b1" font-size="26" separator="zh" separator-size="26"
