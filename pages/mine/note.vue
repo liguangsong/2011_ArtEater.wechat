@@ -872,6 +872,8 @@
 		height: 62rpx;
 		background-color: #ffe6e6!important;
 		border-radius: 31rpx;
+		display: flex;
+        align-items: center;
 	}
 	.btnComments::after{
 		border: 0;

@@ -775,6 +775,8 @@
 		background-color: #FFFFFF!important;
 		border-radius: 31rpx;
         font-family: PingFangSC-Regular, PingFang SC;
+		display: flex;
+        align-items: center;
 	}
 	.btnComments::after{
 		border: 0;

@@ -130,7 +130,7 @@
 								<view class="accuracy" style="margin: 0;">全民正确率：解锁试题解析可见</view>
 								<view  style="text-align: center;margin-top: 186rpx;">
 									<button class="btnComments" type="default" @click="handleBuyComments">
-										<image src="../../../static/icon/icon_lock.png" style="margin-top: -5rpx;width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
+										<image src="../../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
 										<view style="text-indent: 20rpx;display: inline-block;">解锁试题解析</view>
 									</button>
 								</view>
