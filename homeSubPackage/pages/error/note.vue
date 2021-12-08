@@ -63,7 +63,7 @@
 			</view>
 			<view :class="'commentView ' + ((!isShowComments&&!hasBuyedComments)?'needbuy':'')" v-if="hasSubmit">
 				<view class="bg" v-if="!isShowComments&&!hasBuyedComments">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg1.png"></image>
 				</view>
 				<view style="position: relative;padding: 60rpx 70rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
 					<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：

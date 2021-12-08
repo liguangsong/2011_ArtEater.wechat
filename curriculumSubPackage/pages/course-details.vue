@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		<view class="explain">
-			<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg.png" mode=""></image>
+			<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg1.png" mode=""></image>
 		</view>
 	</view>
 </template>

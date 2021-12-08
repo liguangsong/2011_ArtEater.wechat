@@ -96,11 +96,11 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="(hasSubmit||tab=='tab2')&&(!isShowComments&&!hasBuyedComment)" style='height: 572rpx'></view>
+			<!-- <view v-if="(hasSubmit||tab=='tab2')&&(!isShowComments&&!hasBuyedComment)" style='height: 572rpx'></view> -->
 			<!-- 是否吸底 -->
 			<view :class="'commentView ' + ((!isShowComments&&!hasBuyedComments)?'needbuy':'')" v-if="hasSubmit||tab=='tab2'">
 				<view class="bg" v-if="!isShowComments&&!hasBuyedComments">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/dajxbg1.png"></image>
 				</view>
 				<view style="position: relative;padding: 48rpx 60rpx;width: 100%;" :class="((!isShowComments&&!hasBuyedComments)?'':'htmlView')">
 					<view v-if="questionDetail.type==3||questionDetail.type==4" class="rightAnswer">正确答案：
