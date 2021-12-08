@@ -79,7 +79,7 @@
 								<view  style="text-align: center;margin-top: 120rpx;">
 									<button class="btnComments" type="default" @click="handleBuyComments">
 										<image src="../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
-										<view style="text-indent: 20rpx;display: inline-block;">解锁试题解析</view>
+										<view style="margin-top:1rpx;text-indent: 20rpx;display: inline-block;">解锁试题解析</view>
 									</button>
 								</view>
 							</view>
