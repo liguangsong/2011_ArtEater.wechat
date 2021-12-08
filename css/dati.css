@@ -281,7 +281,7 @@
 	}
 	.commentView.needbuy{
 		padding: 0;
-		position: absolute;
+		position: relative;
 		width: 702rpx;
 		left: 24rpx;
 		background-color: unset;
@@ -517,8 +517,8 @@
 		padding-top: 6rpx !important;
 	}
 	
-	/* .needbuy {		
+	.needbuy {		
 		position: fixed;
 		z-index: 100;
 		bottom: 0;
-	} */
+	}
