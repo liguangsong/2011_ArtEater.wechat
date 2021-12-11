@@ -602,5 +602,5 @@
 
 
 <style>
-	@import '@/css/dati.css'
+	@import '@/css/dati.css';
 </style>
