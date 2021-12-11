@@ -1,19 +1,13 @@
 <template>
 	<view class="list" v-if="list.length">
-	<!-- 		<view class="title" v-if="title">
+		<view class="title-info title" v-if="title || showMore">
+			<view class="left">
 				<view class="red-block"></view>
-			   {{title}}
+				{{title}}
 			</view>
-			<text class="more" v-if="showMore" @click="gotolist">查看更多 ></text> -->
-			
-			<view class="title-info title" v-if="title || showMore">
-				<view class="left" >
-					<view class="red-block"></view>
-				   {{title}}
-				</view>
-				<view class="more right" v-if="showMore" @click="gotolist">查看更多 ></view>
-			</view>
-			
+			<view class="more right" v-if="showMore" @click="gotolist">查看更多 ></view>
+		</view>
+
 		<view class="auditon">
 			<view class="item" v-for='(item,i) in list' :key='i' @click='jump(item)'>
 				<view class="image-info">
@@ -40,7 +34,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -49,12 +43,12 @@
 	export default {
 		name: 'audition',
 		props: {
-			title:{
-				type:String
+			title: {
+				type: String
 			},
-			showMore:{
-				type:Boolean,
-				default:false
+			showMore: {
+				type: Boolean,
+				default: false
 			},
 			list: {
 				type: Array,
@@ -63,78 +57,74 @@
 		},
 		data() {
 			return {
-				newsurfaces:[],
-			    surfaces:[]
+				newsurfaces: [],
+				surfaces: []
 			}
 		},
 
-		watch:{
+		watch: {
 			list: {
 				async handler() {
-					this.newsurfaces=[];
+					this.newsurfaces = [];
 					await this.getLearningFace();
-					this.list.forEach((v)=>{
-						 this.newsurfaces.push(this.surfaces[(Math.floor(Math.random()*this.surfaces.length+1)-1)]);
+					this.list.forEach((v) => {
+						this.newsurfaces.push(this.surfaces[(Math.floor(Math.random() * this.surfaces.length +
+							1) - 1)]);
 					})
 				},
-				deep:true,
-				immediate:true
+				deep: true,
+				immediate: true
 			}
 		},
 		methods: {
 			gotolist() {
-				this.$emit('learnCheckMore', {moduleName:this.title});
+				this.$emit('learnCheckMore', {
+					moduleName: this.title
+				});
 			},
 			async jump(item) {
 				this.$emit('learnChangeUrl', item)
 			},
 			async getLearningFace() {
-				let DefaultCover=new Parse.Query('DefaultCover');
-				    let count = await DefaultCover.count();
-					    DefaultCover.limit(count);
-						DefaultCover.equalTo('isUse',true);
-						DefaultCover.notEqualTo('surface',undefined)
-						DefaultCover.notEqualTo('surface',[])
-				   let res = await DefaultCover.find();
-				   if(res){
-					   	res=res.map(v=>{
-						   v=v.toJSON();
-						   return v.surface[0];
-					   });
-				   }
-					this.surfaces=res||[];
+				let DefaultCover = new Parse.Query('DefaultCover');
+				let count = await DefaultCover.count();
+				DefaultCover.limit(count);
+				DefaultCover.equalTo('isUse', true);
+				DefaultCover.notEqualTo('surface', undefined)
+				DefaultCover.notEqualTo('surface', [])
+				let res = await DefaultCover.find();
+				if (res) {
+					res = res.map(v => {
+						v = v.toJSON();
+						return v.surface[0];
+					});
+				}
+				this.surfaces = res || [];
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.list{
-		// font-family: PingFang;
+	.list {
 		position: relative;
-		.title{
-			// height: 40rpx;
-			// font-size: 28rpx;
-			// letter-spacing: 0rpx;
-			// font-weight: 500;
-			// color: #000000;
-			// padding-left: 30rpx;
+
+		.title {
 			margin: 12rpx 0 18rpx 0;
-			// display: flex;
-			// align-items: center;
 		}
-		.more{
-			// width: 80rpx;
+
+		.more {
 			font-size: 16rpx;
 			font-weight: 500;
 			color: #000000;
 			position: absolute;
-			top:10rpx;
+			top: 10rpx;
 			opacity: 0.4;
 			right: 50rpx;
 			z-index: 1;
 		}
 	}
+
 	.auditon {
 		display: flex;
 		flex-direction: row;
@@ -142,11 +132,13 @@
 		padding: 0rpx 30rpx 0rpx 30rpx;
 		justify-content: space-between;
 	}
+
 	.item {
 		width: 336rpx;
 		position: relative;
 		margin-bottom: 24rpx;
-		.icon-vip{
+
+		.icon-vip {
 			position: absolute;
 			right: 0;
 			top: -5rpx;
@@ -154,6 +146,7 @@
 			height: 28rpx;
 		}
 	}
+
 	.image-info {
 		width: 336rpx;
 		height: 176rpx;
@@ -163,6 +156,7 @@
 		border-radius: 20rpx;
 		margin-bottom: 8rpx;
 	}
+
 	.image-bottom-info {
 		width: 100%;
 		box-sizing: border-box;
@@ -173,31 +167,36 @@
 		font-size: 22rpx;
 		z-index: 1;
 	}
-	.opcity{
+
+	.opcity {
 		position: absolute;
 		bottom: 0;
 		width: 336rpx;
 		height: 32rpx;
 		background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.6) 100%);
 	}
+
 	.image-info .main-image {
 		width: 100%;
 		height: 176rpx;
 	}
+
 	.txt-info {
 		padding-left: 18rpx;
 	}
+
 	.txt-info .txt-title {
-	   white-space: nowrap;
-	   text-overflow: ellipsis;
-	   overflow: hidden;
-	   height: 34rpx;
-	   font-size: 24rpx;
-	   letter-spacing: 0rpx;
-	   font-weight: 500;
-	   color: #171717;
-	   line-height: 34rpx;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		height: 34rpx;
+		font-size: 24rpx;
+		letter-spacing: 0rpx;
+		font-weight: 500;
+		color: #171717;
+		line-height: 34rpx;
 	}
+
 	.txt-info .tag {
 		height: 22rpx;
 		font-size: 16rpx;
@@ -208,26 +207,28 @@
 		display: inherit;
 		line-height: 22rpx;
 	}
-	.view{
+
+	.view {
 		height: 24rpx;
 		font-size: 16rpx;
 		font-weight: 500;
 		color: #FFFFFF;
 		margin-left: 12rpx;
-		// line-height: 24rpx;
 		display: flex;
 		align-items: center;
-		.play-image{
+
+		.play-image {
 			width: 24rpx;
 			height: 24rpx;
-			// line-height: 24rpx;
 			vertical-align: middle;
 		}
+
 		image {
 			margin-top: -2rpx;
 		}
 	}
-	.time{
+
+	.time {
 		height: 24rpx;
 		font-size: 16rpx;
 		font-family: PingFangSC-Medium, PingFang SC;

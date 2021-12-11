@@ -40,9 +40,6 @@
 		formatRichText(html) { //控制小程序中图片大小
 			return Curriculum.formatRichText(html);
 		    }
-		},
-		methods:{
-			
 		}
 	}
 </script>

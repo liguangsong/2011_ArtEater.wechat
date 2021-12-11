@@ -18,7 +18,7 @@
 			@waiting='waitingFn'
 			@loadedmetadata="getVideoTime"
 		>
-			<view class="bottom-btn">
+			<view v-show='showControls' class="bottom-btn">
 				 <!-- v-show='showControls' -->
 				<text class="play" @click='playFn'>
 					{{play ? '暂停' : '播放'}}
@@ -128,6 +128,7 @@
 			},
 			// 视频播放触发
 			videoPlayFn() {
+				this.audio.pause()
 				this.$emit('changeLearn',true);
 				this.play = true;
 				if (this.warning) {
@@ -171,7 +172,9 @@
 			showControlsFn() {
 				clearTimeout(this.timer);
 				this.timer = setTimeout(() => {
-					this.showControls = false;
+					if (this.play) {
+						this.showControls = false;
+					}
 				}, 6000)
 			},
 			switchShowControlsFn() {

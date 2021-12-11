@@ -52,8 +52,7 @@
 			},
 			/*用户授权*/
 			handleGetuserinfo(e){
-				var self = this
-				// console.log('开始授权，openid:' + self.openid)
+				var self = this;
 				uni.showLoading()
 				let ores= uni.getStorageSync('openid');
 				if(ores){
@@ -295,7 +294,6 @@
 	}
 	.content .action .btn{
 		height: 78rpx;
-		/* width: 288rpx; */
 		flex: 0 1 50%;
 		line-height: 78rpx;
 		text-align: center;

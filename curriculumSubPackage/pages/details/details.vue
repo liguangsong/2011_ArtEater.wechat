@@ -47,8 +47,10 @@
 			</view>
 			<!-- 音频 -->
 			<view class="mp3" v-if="curriculumInfo.kind&&curriculumInfo.kind==2">
-				<k-audio :play.sync='play' :title='curriculumInfo.subjectName' :poster='curriculumInfo.portrait[0]'
-					:audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn">
+			<!-- 	<k-audio :play.sync='play' :title='curriculumInfo.subjectName' :poster='curriculumInfo.portrait[0]'
+					:audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn"> -->
+					<k-audio :title='curriculumInfo.subjectName' :poster='curriculumInfo.portrait[0]'
+						:audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn">
 				</k-audio>
 			</view>
 			<view class="br"></view>
@@ -128,7 +130,6 @@
 				recommendedList: [], //推荐课程
 				timetableRoot: {}, //
 				timetableList: [], //课表弹框数据
-				play: false,
 				vip: false,
 				lock: '../../../static/vip-lock.png',
 				unlock: '../../../static/vip-unlock.png',
@@ -159,14 +160,11 @@
 			this.objectId = options.objectId;
 			// 获取当前课程详情
 			this.getCurriculum();
-		
 		},
-
 		async created() {
 			let that = this;
 			uni.getSystemInfo({
 				success: (e) => {
-					console.log(e);
 					let statusBar = 0
 					let customBar = 0
 					statusBar = e.statusBarHeight
@@ -177,7 +175,6 @@
 					that.screenHeight = e.screenHeight;
 				}
 			})
-			
 			// 判断是不是会员
 			var app = getApp();
 			var member = app.globalData.member;
@@ -291,11 +288,13 @@
 					let q1 = uni.createSelectorQuery().in(this);
 					if (this.recommendedList.length) {
 						q1.select('.recommend').boundingClientRect(d => {
-							let h = uni.getSystemInfoSync().screenHeight - d.height;
-							if (h > data.height) {
-								this.infoTop = h;
-							} else {
-								this.infoTop = data.height;
+							if (d) {
+								let h = uni.getSystemInfoSync().screenHeight - d.height;
+								if (h > data.height) {
+									this.infoTop = h;
+								} else {
+									this.infoTop = data.height;
+								}
 							}
 						}).exec();	
 					}	
@@ -312,7 +311,6 @@
 				let res = await Curriculum.getAllTimetable(rootId);
 				res = res.filter(v => {
 					if (v.rootId === '0' && !v.kind) {
-
 						this.timetableRoot = v;
 					}
 					return (v.rootId && v.kind && v.kind != 4);
@@ -334,23 +332,6 @@
 					})
 				} else {
 					this.timetable = false;
-					this.$nextTick(() => {
-					this.curriculumInfo = item;
-						const query = uni.createSelectorQuery().in(this);
-						query.select('.header').boundingClientRect(data => {
-							this.htmlInfoTop = data.height;
-							let q1 = uni.createSelectorQuery().in(this);
-							q1.select('.recommend').boundingClientRect(d => {
-								let h = uni.getSystemInfoSync().screenHeight - d.height;
-								if (h > data.height) {
-									this.infoTop = h;
-								} else {
-									this.infoTop = data.height;
-								}
-							}).exec();			
-						}).exec();
-					})
-					
 					// 存储上次学习
 					await Curriculum.updatePreLearn(item['rootId'], item.objectId);
 					if (this.curriculumInfo.rootId) {
@@ -361,8 +342,27 @@
 							this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
 						})
 					}
+					
+					this.curriculumInfo = item;
+					this.$nextTick(() => {
+						const query = uni.createSelectorQuery().in(this);
+						query.select('.header').boundingClientRect(data => {
+							console.log(data, ';;;;;;;;;;;;');
+							this.htmlInfoTop = data.height;
+							let q1 = uni.createSelectorQuery().in(this);
+							q1.select('.recommend').boundingClientRect(d => {
+								if (d) {
+									let h = uni.getSystemInfoSync().screenHeight - d.height;
+									if (h > data.height) {
+										this.infoTop = h;
+									} else {
+										this.infoTop = data.height;
+									}
+								}
+							}).exec();			
+						}).exec();
+					})
 				}
-
 			},
 			//分享
 			share() {
@@ -397,7 +397,8 @@
 			timetablefn() {
 				this.timetable = true
 			}
-		}
+		},
+
 	}
 </script>
 
@@ -407,7 +408,7 @@
 		overflow: hidden;
 		background: #fff;
 	}
-
+	
 	.details {
 		position: relative;
 		background: #fff;
@@ -467,19 +468,6 @@
 							margin-right: 10rpx;
 						}
 					}
-
-			/* 		.btn>view {
-						display: flex;
-						width: 33.33%;
-						align-content: center;
-
-						text {
-							font-size: 20rpx;
-							font-family: PingFangSC-Regular, PingFang SC;
-							font-weight: 400;
-							color: rgba(23, 23, 23, 0.6);
-						}
-					} */
 
 					.btn {
 						width: 392rpx;

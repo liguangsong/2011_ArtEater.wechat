@@ -19,37 +19,39 @@
 				<view class="info-title">{{curriculumInfo.subjectName}}</view>
 				<view class="bottom">
 					<view class="teacher">
-						<image v-if="curriculumInfo.portrait&&curriculumInfo.portrait.length" :src="curriculumInfo.portrait[0]"></image>
+						<image v-if="curriculumInfo.portrait&&curriculumInfo.portrait.length"
+							:src="curriculumInfo.portrait[0]"></image>
 						<text>{{curriculumInfo.lecturerName}}</text>
 					</view>
 					<view class="btn">
-							<view class='btnitem' v-if="curriculumInfo.flag==1" @click='timetablefn'>
-								<view class="img">
-									<image src="../../static/icon_list.png"></image>
-								</view>
-								<text>课表</text>
+						<view class='btnitem' v-if="curriculumInfo.flag==1" @click='timetablefn'>
+							<view class="img">
+								<image src="../../static/icon_list.png"></image>
 							</view>
-							<view class="btnitem" v-else></view>
-							<view class='btnitem button' @click="share">
-								<!-- :style="{left: curriculumInfo.flag==1 ? '26rpx':'46rpx'}" -->
-								<view class="img">
-									<image src="../../../static/icon/icon_share.png"></image>
-								</view>
-								<!-- <text>分享</text> -->
-								<button type="default" :data-objectId='objectId' open-type='share'>分享</button>
+							<text>课表</text>
+						</view>
+						<view class="btnitem" v-else></view>
+						<view class='btnitem button' @click="share">
+							<!-- :style="{left: curriculumInfo.flag==1 ? '26rpx':'46rpx'}" -->
+							<view class="img">
+								<image src="../../../static/icon/icon_share.png"></image>
 							</view>
-							<view class='btnitem' @click="operateCollection(false)">
-								<view class="img">
-									<image :src="collectionStatus?active:unactive"></image>
-								</view>
-								<text class='collection'>{{collectionStatus?'已收藏':'收藏'}}</text>
+							<!-- <text>分享</text> -->
+							<button type="default" :data-objectId='objectId' open-type='share'>分享</button>
+						</view>
+						<view class='btnitem' @click="operateCollection(false)">
+							<view class="img">
+								<image :src="collectionStatus?active:unactive"></image>
 							</view>
+							<text class='collection'>{{collectionStatus?'已收藏':'收藏'}}</text>
 						</view>
 					</view>
+				</view>
 			</view>
 			<!-- 音频 -->
 			<view class="mp3" v-if="curriculumInfo.kind&&curriculumInfo.kind==2">
-				<k-audio :play.sync='play' :audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link' @changeLearn="changeLearn"></k-audio>
+				<k-audio :play.sync='play' :audioTimeTotal="curriculumInfo.duration" :src='curriculumInfo.link'
+					@changeLearn="changeLearn"></k-audio>
 			</view>
 			<view class="br"></view>
 		</view>
@@ -62,9 +64,9 @@
 			<view class="recommend-title">
 				推荐学习
 			</view>
-			<Item v-for='(item,i) in recommendedList' v-if='!item.hide' :key='i' :item='item' :vip='vip'/>
+			<Item v-for='(item,i) in recommendedList' v-if='!item.hide' :key='i' :item='item' :vip='vip' />
 		</view>
-		<view class="bg" @touchmove.stop.prevent="" v-if='timetable'  @click='timetable = false'></view>
+		<view class="bg" @touchmove.stop.prevent="" v-if='timetable' @click='timetable = false'></view>
 		<view class="timetable" :class='{"show-timetable": timetable}'>
 			<view class="content">
 				<view class="content-header">
@@ -77,17 +79,22 @@
 				</view>
 				<view class="list">
 					<template v-for='(item,i) in timetableList'>
-						<view class="item" v-if="shareType || !item.hide || !shareType&&item.hide&&item.objectId==objectId" :key='i' :class='{active: curriculumInfo.objectId==item.objectId}' @click="changeCurriculum(item)">
-							<view class="item-title" :class="{'item-title-shot':curriculumInfo.objectId==item.objectId?true:false}">
+						<view class="item"
+							v-if="shareType || !item.hide || !shareType&&item.hide&&item.objectId==objectId" :key='i'
+							:class='{active: curriculumInfo.objectId==item.objectId}' @click="changeCurriculum(item)">
+							<view class="item-title"
+								:class="{'item-title-shot':curriculumInfo.objectId==item.objectId?true:false}">
 								<text>{{item.subjectName}}</text>
 							</view>
 							<view class="item-type">
 								<text v-if='curriculumInfo.objectId==item.objectId'>当前课程</text>
-								<image :src="item.kind==1?'../../static/video.png':item.kind==2?'../../static/audio.png':''" mode=""></image>
+								<image
+									:src="item.kind==1?'../../static/video.png':item.kind==2?'../../static/audio.png':''"
+									mode=""></image>
 							</view>
-					    </view>
+						</view>
 					</template>
-					
+
 				</view>
 				<view class="close">
 					<view class="btn" @click='timetable = false'>
@@ -107,49 +114,50 @@
 	import Item from '@/pages/curriculum/item.vue'
 	export default {
 		components: {
-			kAudio, kVideo, Item
+			kAudio,
+			kVideo,
+			Item
 		},
 		data() {
 			return {
-				shareType:0,
+				shareType: 0,
 				tabbarheight: 0,
 				navbarheight: 0,
 				infoTop: 0,
-				collectionStatus:false,
-				active:"../../../static/icon/icon_collection_active.png",
-				unactive:"../../../static/icon/icon_collection.png",
-				timetable: false,	// 课表是否显示
-				curriculumInfo:{},//当前课程详情
-				recommendedList:[],//推荐课程
-				timetableRoot:{}, //
-				timetableList:[],//课表弹框数据
+				collectionStatus: false,
+				active: "../../../static/icon/icon_collection_active.png",
+				unactive: "../../../static/icon/icon_collection.png",
+				timetable: false, // 课表是否显示
+				curriculumInfo: {}, //当前课程详情
+				recommendedList: [], //推荐课程
+				timetableRoot: {}, //
+				timetableList: [], //课表弹框数据
 				play: false,
 				vip: false,
 				lock: '../../../static/vip-lock.png',
 				unlock: '../../../static/vip-unlock.png',
-				screenHeight:0,
-				allheight:0,
-				status:false
+				screenHeight: 0,
+				allheight: 0,
+				status: false
 			}
 		},
 		onLoad(options) {
-			// console.log(options);
-			this.curriculumInfo={};
-			this.objectId=options.objectId;
-			if(options.shareType){
-				this.shareType=options.shareType;
+			this.curriculumInfo = {};
+			this.objectId = options.objectId;
+			if (options.shareType) {
+				this.shareType = options.shareType;
 			}
 			// 获取当前课程详情
 			this.getCurriculum();
 		},
 		async onShow() {
-			let that=this;
+			let that = this;
 			uni.getSystemInfo({
-			    success: function (res) {
-			        that.screenHeight=res.screenHeight;
-			    }
+				success: function(res) {
+					that.screenHeight = res.screenHeight;
+				}
 			});
-			
+
 			var app = getApp();
 			var member = app.globalData.member;
 			// 判断是不是会员
@@ -186,44 +194,44 @@
 				}
 			}
 		},
-		 onPageScroll(res) {
-			 if(this.curriculumInfo.kind==3){
-                let that=this;
-				let scrollTop=res.scrollTop;
+		onPageScroll(res) {
+			if (this.curriculumInfo.kind == 3) {
+				let that = this;
+				let scrollTop = res.scrollTop;
 				let view = uni.createSelectorQuery().in(this).select(".details");
 				view.boundingClientRect(data => {
-				that.allheight=data.height;
+					that.allheight = data.height;
 				}).exec();
-				let param=scrollTop/(this.allheight-this.screenHeight);
-					if(param>=0.8 && !this.status){
-						this.status=true;
-						that.changeLearn(false);
-					}else if(param<0.8 && this.status){
-						this.status=false;
-						that.changeLearn(true);
-					}
-			 }
-		    },
-		//用户点击右上角分享朋友圈
-		onShareTimeline: function () {
-			return {
-		      title: '食艺兽',
-		      query: {
-		        key: value
-		      },
-		      imageUrl: ''
-		    }
+				let param = scrollTop / (this.allheight - this.screenHeight);
+				if (param >= 0.8 && !this.status) {
+					this.status = true;
+					that.changeLearn(false);
+				} else if (param < 0.8 && this.status) {
+					this.status = false;
+					that.changeLearn(true);
+				}
+			}
 		},
-		filters:{
-		/**
-		 * 处理富文本里的图片宽度自适应
-		 * 1.查找img标签有无style属性，如果没有，加上style
-		 * 2.所有标签style后追加 max-width:100% !important;
-		 * 4.去掉<br/>标签
-		 */
-		formatRichText(html) { //控制小程序中图片大小
-		   return Curriculum.formatRichText(html);
-		    }
+		//用户点击右上角分享朋友圈
+		onShareTimeline: function() {
+			return {
+				title: '食艺兽',
+				query: {
+					key: value
+				},
+				imageUrl: ''
+			}
+		},
+		filters: {
+			/**
+			 * 处理富文本里的图片宽度自适应
+			 * 1.查找img标签有无style属性，如果没有，加上style
+			 * 2.所有标签style后追加 max-width:100% !important;
+			 * 4.去掉<br/>标签
+			 */
+			formatRichText(html) { //控制小程序中图片大小
+				return Curriculum.formatRichText(html);
+			}
 		},
 		created() {
 			uni.getSystemInfo({
@@ -240,13 +248,13 @@
 		},
 		methods: {
 			async changeLearn(status) {
-				let res=await Utils.changeLearn(this.curriculumInfo.objectId,status);
+				let res = await Utils.changeLearn(this.curriculumInfo.objectId, status);
 			},
 			// 获取详情
 			async getCurriculum() {
 				let res = await Curriculum.getHideCurriculum(this.objectId);
 				let info = res[0];
-				this.curriculumInfo=info;
+				this.curriculumInfo = info;
 				if (info.rootId) {
 					var q = new this.Parse.Query('CoursesModule')
 					q.equalTo('objectId', info.rootId)
@@ -255,21 +263,21 @@
 						this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
 					})
 				}
-				if(info.flag==1){
+				if (info.flag == 1) {
 					// 存储上次学习
-				    await Curriculum.updatePreLearn(info['rootId'],info.objectId);
+					await Curriculum.updatePreLearn(info['rootId'], info.objectId);
 				}
-				if(info.kind==3){
+				if (info.kind == 3) {
 					this.changeLearn(true);
 				}
 				// 获取收藏状态
 				await this.operateCollection(true);
-				if(info.recommendCourse&&info.recommendCourse.length){
+				if (info.recommendCourse && info.recommendCourse.length) {
 					console.log('获取推荐课程');
 					//获取推荐课程
 					await this.getRecommended(info.recommendCourse);
 				}
-				if(info.rootId){
+				if (info.rootId) {
 					// 获取课表
 					await this.getAllTimetable(info.rootId);
 				}
@@ -280,38 +288,36 @@
 			},
 			//获取推荐课程
 			async getRecommended(ids) {
-					console.log('ids',ids);
-				  let res = await Curriculum.getRecommended(ids);
-					console.log('res', res);
-				  this.recommendedList = res;
+				let res = await Curriculum.getRecommended(ids);
+				this.recommendedList = res;
 			},
 			// 获取课表
 			async getAllTimetable(rootId) {
-				let res = await Curriculum.getAllTimetable_hide(rootId,false,this.shareType==1); //rootId=='0'true为分享的整个系列课程，false为扫码分享的系列课程中的单课程
-				   res = res.filter(v=>{
-				   if(v.rootId==='0' && !v.kind){
-					   
-					   this.timetableRoot=v;
-				   }
-				   return (v.rootId && v.kind && v.kind!=4);
-				   });
-				   this.timetableList=res;
+				let res = await Curriculum.getAllTimetable_hide(rootId, false, this.shareType ==
+				1); //rootId=='0'true为分享的整个系列课程，false为扫码分享的系列课程中的单课程
+				res = res.filter(v => {
+					if (v.rootId === '0' && !v.kind) {
+						this.timetableRoot = v;
+					}
+					return (v.rootId && v.kind && v.kind != 4);
+				});
+				this.timetableList = res;
 			},
 			// 切换课程时判断是否是vip课程
 			async changeCurriculum(item) {
 				let app = getApp();
 				let member = app.globalData.member;
-				let vip=false;
-				if(member && member.memberType!=2 && (member.endTime > Date.now())){
-                  vip=true;
+				let vip = false;
+				if (member && member.memberType != 2 && (member.endTime > Date.now())) {
+					vip = true;
 				}
-				if(item.vip && !vip){
+				if (item.vip && !vip) {
 					// 是vip课程则要跳转到vip中心买会员
 					uni.navigateTo({
-						url:'../../../mineSubPackage/pages/vip/vip'
+						url: '../../../mineSubPackage/pages/vip/vip'
 					})
-				}else{
-					this.curriculumInfo=item;
+				} else {
+					this.curriculumInfo = item;
 					this.timetable = false;
 					this.$nextTick(() => {
 						const query = uni.createSelectorQuery().in(this);
@@ -320,7 +326,7 @@
 						}).exec();
 					})
 					// 存储上次学习
-					await Curriculum.updatePreLearn(item['rootId'],item.objectId);
+					await Curriculum.updatePreLearn(item['rootId'], item.objectId);
 					if (this.curriculumInfo.rootId) {
 						var q = new this.Parse.Query('CoursesModule')
 						q.equalTo('objectId', this.curriculumInfo.rootId)
@@ -330,36 +336,36 @@
 						})
 					}
 				}
-				
+
 			},
 			//分享
 			share() {
 				uni.share({
-				    provider: "weixin",
-				    scene: "WXSceneSession",
-				    type: 1,
-				    summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
-				    success: function (res) {
-				        console.log("success:" + JSON.stringify(res));
-				    },
-				    fail: function (err) {
-				        console.log("fail:" + JSON.stringify(err));
-				    }
+					provider: "weixin",
+					scene: "WXSceneSession",
+					type: 1,
+					summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
+					success: function(res) {
+						console.log("success:" + JSON.stringify(res));
+					},
+					fail: function(err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
 				});
 			},
 			// 收藏操作
 			async operateCollection(init) {
-				if(init){
-					let res= await Curriculum.getCollectionstatus(this.curriculumInfo.objectId);
-					this.collectionStatus=res;
-				}else{
-					let res= await Curriculum.operateCollections(this.curriculumInfo.objectId);
-					this.collectionStatus=res
+				if (init) {
+					let res = await Curriculum.getCollectionstatus(this.curriculumInfo.objectId);
+					this.collectionStatus = res;
+				} else {
+					let res = await Curriculum.operateCollections(this.curriculumInfo.objectId);
+					this.collectionStatus = res
 				};
 			},
 			gohome() {
 				uni.reLaunch({
-					url:'/pages/index/index'
+					url: '/pages/index/index'
 				})
 			},
 			back() {
@@ -427,8 +433,8 @@
 					font-size: 20rpx;
 					height: 64rpx;
 					line-height: 64rpx;
-					color: rgba(23,23,23,.6);
-					
+					color: rgba(23, 23, 23, .6);
+
 					.teacher {
 						flex: 0 1 278rpx;
 						display: flex;
@@ -442,19 +448,6 @@
 						}
 					}
 
-			/* 		.btn>view {
-						display: flex;
-						width: 33.33%;
-						align-content: center;
-
-						text {
-							font-size: 20rpx;
-							font-family: PingFangSC-Regular, PingFang SC;
-							font-weight: 400;
-							color: rgba(23, 23, 23, 0.6);
-						}
-					} */
-
 					.btn {
 						width: 392rpx;
 						flex: 1 0 auto;
@@ -463,14 +456,14 @@
 						font-size: 20rpx;
 						font-weight: 400;
 						color: rgba(23, 23, 23, 0.6);
-						
+
 						.btnitem {
 							flex: 0 1 124rpx;
 							display: flex;
 							justify-content: flex-end;
 							position: relative;
 						}
-						
+
 						.img {
 							width: 64rpx;
 							height: 64rpx;
@@ -480,16 +473,19 @@
 							width: 64rpx;
 							height: 64rpx;
 						}
+
 						text {
 							display: inline-block;
 							width: 60rpx;
 						}
+
 						.button {
 							.img {
 								position: absolute;
 								left: 0;
 							}
 						}
+
 						button {
 							font-size: 20rpx;
 							height: 64rpx;
@@ -507,7 +503,7 @@
 							text-align: left;
 							text-decoration: none;
 							position: absolute;
-							
+
 							&:after {
 								border: none;
 							}
@@ -550,12 +546,13 @@
 			padding: 48rpx 30rpx;
 			background: rgba(0, 0, 0, 0.05);
 			display: block;
+
 			.recommend-title {
 				font-size: 28rpx;
 				font-weight: 500;
 				margin-bottom: 24rpx;
 				font-family: PingFangSC-Medium;
-				
+
 				&::before {
 					content: "";
 					display: inline-block;
@@ -610,7 +607,7 @@
 					font-size: 20rpx;
 					line-height: 48rpx;
 					align-items: center;
-					color: rgba(23,23,23,.6);
+					color: rgba(23, 23, 23, .6);
 
 					.img {
 						display: flex;
@@ -719,13 +716,13 @@
 					padding-left: 48rpx;
 					overflow-y: auto;
 					font-family: PingFangSC-Regular;
-					
+
 					.active {
 						font-size: 24rpx;
 						font-weight: 800;
 						font-family: PingFangSC-Semibold, PingFang SC;
-						color:rgba(0,0,0,.9) !important;
-						
+						color: rgba(0, 0, 0, .9) !important;
+
 						.item-type {
 							text {
 								font-size: 16rpx;
@@ -742,18 +739,22 @@
 						border-bottom: 1px solid rgba(0, 0, 0, .05);
 						font-size: 24rpx;
 						color: rgba(0, 0, 0, .67);
-						.item-title{
+
+						.item-title {
 							max-width: 620rpx;
 							white-space: nowrap;
 							overflow: hidden;
 							text-overflow: ellipsis;
 						}
-						.item-title-shot{
+
+						.item-title-shot {
 							max-width: 516rpx;
 						}
+
 						text {
 							font-family: PingFangSC-Regular, PingFang SC;
 						}
+
 						.item-type {
 							margin-right: 48rpx;
 

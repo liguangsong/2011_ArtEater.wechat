@@ -12,7 +12,7 @@
 							<view class="titleView">
 								<view class="title" @click="handleProductCheckedChange(product)">{{product.productName}}
 								</view>
-								
+
 								<view class="price" @click="handleProductCheckedChange(product)">¥{{product.price}}
 								</view>
 							</view>
@@ -36,7 +36,7 @@
 					</view>
 				</view>
 				<view class="recommendView" v-if="reCommandSubjects && reCommandSubjects.length>0">
-					
+
 					<view class="productItem" v-for="product in reCommandSubjects" :key="product.id">
 						<view class="iconView" @click="handleProductCheckedChange(product)">
 							<image v-if="product.checked==true" src="../../static/icon/icon_check_checked.png"></image>
@@ -46,7 +46,7 @@
 							<view class="titleView">
 								<view class="title" @click="handleProductCheckedChange(product)">{{product.productName}}
 								</view>
-								
+
 								<view class="price" @click="handleProductCheckedChange(product)">¥{{product.price}}
 								</view>
 							</view>
@@ -68,60 +68,59 @@
 			</view>
 
 			<view class="buyConfirmView">
-					<view class="couponItem">
-						<view class="left">优惠券</view>
-						<view class="right" @click="handleChooseCoupon">
-							<text v-if="couponAmount>0">-{{couponAmount}}</text>
-							<text v-else-if="couponCount > 0">去选择优惠券</text>
-							<text v-else>暂无优惠券</text>
-						</view>
-						<view class="icon">
-							<u-icon name="arrow-right" color="#ccc" style="opacity:0.4" size="26"></u-icon>
-						</view>
+				<view class="couponItem">
+					<view class="left">优惠券</view>
+					<view class="right" @click="handleChooseCoupon">
+						<text v-if="couponAmount>0">-{{couponAmount}}</text>
+						<text v-else-if="couponCount > 0">去选择优惠券</text>
+						<text v-else>暂无优惠券</text>
 					</view>
-					<view style='border:none' class="couponItem">
-						<view class="left">可花费{{canScore}}积分抵现¥{{scoreCanAmount?scoreCanAmount:0}}元</view>
-						<view style='margin-right: 78rpx;' class="right" @click="handleChangeRadio">
-							<image v-if="!isUseScore" src="../../static/icon/icon_answer_nocheck.png"></image>
-							<image v-else src="../../static/icon/icon_answer_checked.png"></image>
-						</view>
-					</view>
-					<view class="payment">
-						<view class='payment-info'>
-							<view>
-								<view class="youhui" v-if="discountPrice > 0">已优惠：¥{{discountPrice}}</view>
-								<text class="youhui">已优惠：¥{{discountPrice}}</text>
-								<text class="heji">
-									合计：
-								</text>
-								<text class='fuhao'>¥</text>
-								<text class="price">{{cash}}</text>
-							</view>
-							
-							<view class="shuoming" @click="isShowBuyTips = true">查看支付说明</view>
-						
-						
-						</view>
-						<view class="btnView">
-							<button class="btnPay" @click="handleSubmit">确认支付</button>
-					</view>
+					<view class="icon">
+						<u-icon name="arrow-right" color="#ccc" style="opacity:0.4" size="26"></u-icon>
 					</view>
 				</view>
-			
-			
+				<view style='border:none' class="couponItem">
+					<view class="left">可花费{{canScore}}积分抵现¥{{scoreCanAmount?scoreCanAmount:0}}元</view>
+					<view style='margin-right: 78rpx;' class="right" @click="handleChangeRadio">
+						<image v-if="!isUseScore" src="../../static/icon/icon_answer_nocheck.png"></image>
+						<image v-else src="../../static/icon/icon_answer_checked.png"></image>
+					</view>
+				</view>
+				<view class="payment">
+					<view class='payment-info'>
+						<view>
+							<view class="youhui" v-if="discountPrice > 0">已优惠：¥{{discountPrice}}</view>
+							<text class="youhui">已优惠：¥{{discountPrice}}</text>
+							<text class="heji">
+								合计：
+							</text>
+							<text class='fuhao'>¥</text>
+							<text class="price">{{cash}}</text>
+						</view>
+
+						<view class="shuoming" @click="isShowBuyTips = true">查看支付说明</view>
+
+
+					</view>
+					<view class="btnView">
+						<button class="btnPay" @click="handleSubmit">确认支付</button>
+					</view>
+				</view>
+			</view>
+
+
 			<!--购买须知-->
-			<u-popup v-model="isShowBuyTips" width="578rpx" :closeable="false" mode="center"
-				border-radius="24">
+			<u-popup v-model="isShowBuyTips" width="578rpx" :closeable="false" mode="center" border-radius="24">
 				<view class="buylView">
 					<view style='padding: 48rpx 48rpx 128rpx;'>
 						<view class="title">
 							购买说明
 						</view>
 						<view class="tips">
-							·您购买的商品为线上虚拟内容服务，购买后不支持退订、转让 
+							·您购买的商品为线上虚拟内容服务，购买后不支持退订、转让
 						</view>
 						<view class="tips">
-							·本服务有效期为一年，一年内不限使用次数 
+							·本服务有效期为一年，一年内不限使用次数
 						</view>
 						<view class="tips">
 							·购买后可在[我的-已购买项目]中查看
@@ -685,10 +684,6 @@
 					}
 					var user = self.Parse.User.current()
 					var cash = self.cash * 100
-					// --------------------------------------------
-					cash = 0
-					
-					// ----------------------------------------------------
 					if (cash == 0) {
 						var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5)
 						// uni.setStorage({
@@ -762,7 +757,6 @@
 					}, 500)
 				}, (error) => {
 					uni.hideLoading()
-					console.log(error)
 				})
 				let _score_remove = parseFloat((self.scoreAmount * self.config.get('scoreMoneyPercent')).toFixed(
 					1)) // 需要扣除的积分
@@ -826,89 +820,93 @@
 		width: 100%;
 		overflow-y: auto;
 	}
+
 	.buyView {
 		width: 690rpx;
 		margin: 0 auto;
 		border-radius: 24rpx;
 		background: #fff;
 		padding-left: 28rpx;
-		box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.06);
+		box-shadow: 0 4rpx 10rpx 0 rgba(0, 0, 0, 0.06);
 	}
-	.recommendView {
-		
-	}
+
+	.recommendView {}
+
 	.productItem {
 		height: 148rpx;
-		border-bottom: 2rpx solid rgba(0,0,0,.06);
+		border-bottom: 2rpx solid rgba(0, 0, 0, .06);
 		display: flex;
 		justify-content: space-between;
 	}
+
 	.buyView view:last-child {
 		border: none;
 	}
+
 	.productItem .iconView {
 		flex: 0 1 60rpx;
 		height: 100%;
 	}
+
 	.productItem .iconView image {
 		width: 32rpx;
 		height: 32rpx;
 		margin-top: 58rpx;
 	}
-	
+
 	image {
 		width: 32rpx;
 		height: 32rpx;
 	}
 
-	
+
 
 	.contentView {
-		padding-left: 
+		padding-left:
 	}
-	
+
 	.myView {
 		overflow-y: auto;
 	}
-	
+
 	.myView .buyView {
 		padding-left: 30rpx;
 	}
-	
+
 	.myView .productItem {
 		display: flex;
 		height: 148rpx;
 		border-bottom: 2rpx solid rgba(0, 0, 0, .06);
 	}
-	
+
 	.myView .iconView {
 		flex: 0 1 70rpx;
 	}
-	
+
 	.myView .iconView image {
 		width: 32rpx;
 		height: 34rpx;
 		margin-top: 56rpx;
 	}
-	
+
 	.myView .contentView {
 		padding-top: 32rpx;
 		padding-right: 78rpx;
 		flex: 1;
 	}
-	
+
 	.myView .contentView .titleView {
 		display: flex;
 		justify-content: space-between;
 	}
-	
+
 	.myView .contentView .titleView .title {
 		font-size: 32rpx;
 		font-weight: 500;
 		color: rgba(0, 0, 0, .9);
 		line-height: 44rpx;
 	}
-	
+
 	.myView .contentView .titleView .price {
 		font-size: 34rrpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
@@ -916,7 +914,7 @@
 		color: #ED3535;
 		line-height: 48rpx;
 	}
-	
+
 	.myView .contentView .titleView .comments {
 		font-size: 20rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
@@ -925,7 +923,7 @@
 		color: rgba(0, 0, 0, .8);
 		text-decoration: underline;
 	}
-	
+
 	.myView .contentView .titleView .intro {
 		font-size: 20rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
@@ -933,7 +931,7 @@
 		color: rgba(0, 0, 0, .5);
 		line-height: 28rpx;
 	}
-	
+
 	.productItem .contentView .titleView .price {
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
@@ -942,7 +940,7 @@
 		letter-spacing: 0rpx;
 		color: #ed3535;
 	}
-	
+
 	.productItem .contentView .titleView .oPrice {
 		font-family: PingFangSC-Medium;
 		/* height: 36rpx; */
@@ -955,7 +953,7 @@
 		text-decoration: line-through;
 		padding-left: 5rpx;
 	}
-	
+
 	.productItem .contentView .titleView .intro {
 		width: 104rpx;
 		font-size: 20rpx;
@@ -964,252 +962,15 @@
 		flex: 1;
 		text-align: right;
 	}
-	
+
 	.recommendView {
 		padding-left: 58rpx;
 	}
+
 	.recommendView view:last-child {
 		border: none;
 	}
-	/* .buyView,
-	.recommendView {
-		padding: 20rpx 0;
-		padding-top: 0;
-	}
 
-	.recommendView {
-		background-color: #ffffff;
-		box-shadow: 0rpx 8rpx 16rpx 0rpx rgba(238, 160, 160, 0.05);
-		border-radius: 40rpx;
-	}
-
-	.recommendView .headView {
-		height: 84rpx;
-		line-height: 84rpx;
-		margin-left: 10rpx;
-		margin-right: 10rpx;
-		border-bottom: 2rpx solid #f4f4f4;
-	}
-
-	.recommendView .headView .head {
-		height: 84rpx;
-		line-height: 84rpx;
-		color: #ff9d83;
-		font-size: 26rpx;
-		padding-left: 8rpx;
-		font-family: PingFangSC-Medium;
-	}
-
-	.productItem {
-		display: flex;
-		padding: 24rpx 0;
-		border-bottom: 2rpx solid #f4f4f4;
-		margin: 0 10rpx;
-	}
-
-	.buyView .productItem:last-child,
-	.recommendView .productItem:last-child {
-		border: 0;
-	}
-
-	.productItem .iconView {
-		width: 62rpx;
-		text-align: center;
-		height: 48rpx;
-		line-height: 48rpx;
-	}
-
-	.productItem .iconView image {
-		width: 32rpx;
-		height: 32rpx;
-		display: inline-block;
-		vertical-align: middle;
-	}
-
-	.productItem .contentView {
-		flex: 1;
-	}
-
-	.productItem .contentView .titleView {
-		display: flex;
-		line-height: 48rpx;
-		padding-right: 18rpx;
-	}
-
-	.productItem .contentView .titleView .title {
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: #1c1c1c;
-		flex: 1;
-	}
-
-	.productItem .contentView .titleView .comments {
-		width: 104rpx;
-		font-size: 26rpx;
-		font-family: PingFangSC-Medium;
-		color: #1c1c1c;
-	}
-
-	.productItem .contentView .titleView .price {
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: #ed3535;
-	}
-
-	.productItem .contentView .titleView .oPrice {
-		font-family: PingFangSC-Medium;
-		font-family: PingFangSC-Regular;
-		font-size: 26rpx;
-		font-weight: normal;
-		font-stretch: normal;
-		letter-spacing: 0rpx;
-		color: rgba(53, 32, 38, 0.3);
-		text-decoration: line-through;
-		padding-left: 5rpx;
-	}
-
-	.productItem .contentView .titleView .intro {
-		width: 104rpx;
-		font-size: 22rpx;
-		font-family: PingFangSC-Medium;
-		color: rgba(53, 32, 38, 0.4);
-		flex: 1;
-		text-align: right;
-	}*/
-
-	/* .buyConfirmView {
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-		padding: 0 30rpx;
-	}
-
-	.buyConfirmView .couponItem {
-		display: flex;
-		height: 70rpx;
-		line-height: 70rpx;
-		border-top: 2rpx solid #f4f4f4;
-	}
-
-	.buyConfirmView .couponItem .left {
-		text-align: left;
-		font-size: 30rpx;
-		color: #212121;
-		font-family: PingFangSC-Medium;
-		width: 500rpx;
-	}
-
-	.buyConfirmView .couponItem .right {
-		flex: 1;
-		text-align: right;
-		font-size: 22rpx;
-		color: rgba(53, 32, 38, 0.4);
-		font-family: PingFangSC-Medium;
-	}
-
-	.buyConfirmView .couponItem .right image {
-		text-align: right;
-		width: 32rpx;
-		height: 32rpx;
-		display: inline-block;
-		vertical-align: middle;
-	}
-
-	.buyConfirmView .couponItem .icon {
-		width: 50rpx;
-		text-align: right;
-	}
-
-	.buyConfirmView .couponItem .heji {
-		flex: 1;
-		font-size: 38rpx;
-		color: #212121;
-		font-family: PingFangSC-Medium;
-	}
-
-	.buyConfirmView .couponItem .heji .price {
-		color: #ed3535;
-		display: inline;
-	}
-
-	.buyConfirmView .couponItem .shuoming {
-		font-size: #26rpx;
-		color: #1c1c1c;
-		font-family: PingFangSC-Medium;
-	}
-
-	.buyConfirmView .youhui {
-		color: rgba(33, 33, 33, 0.4);
-		font-size: 26rpx;
-		font-family: PingFangSC-Medium;
-		position: relative;
-		top: -10rpx;
-	}
-
-	.btnView {
-		padding-top: 22rpx;
-		padding-bottom: 104rpx;
-	}
-
-	.btnPay {
-		width: 690rpx;
-		height: 92rpx;
-		line-height: 92rpx;
-		text-align: center;
-		background-color: #ed3535;
-		border-radius: 46rpx;
-		color: #ffffff;
-		font-size: 34rpx;
-		font-family: PingFangSC-Medium;
-	}
-
-	.buylView {
-		width: 100%;
-	} 
-
-	.buylView .title {
-		font-size: 30rpx;
-		font-family: PingFangSC-Medium;
-		color: #352026;
-	}
-
-	.buylView .price {
-		font-size: 34rpx;
-		margin-top: 12rpx;
-		font-family: PingFangSC-Medium;
-		color: #ed3535;
-	}
-
-	.buylView .tips {
-		font-size: 26rpx;
-		margin-top: 26rpx;
-		font-family: PingFangSC-Medium;
-		color: rgba(53, 32, 38, 0.4);
-	}
-
-	.buylView .btnActions {
-		margin-top: 34rpx;
-	}
-
-	.buylView .btnActions button {
-		width: 100%;
-		height: 48rpx;
-		line-height: 48rpx;
-		background-color: #ffffff;
-		color: #352026;
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-	}
-
-	.buylView .btnActions button::after {
-		border: 0;
-	} */
 	.buyConfirmView {
 		position: fixed;
 		bottom: 0;
@@ -1220,7 +981,7 @@
 		border-top-right-radius: 24rpx;
 		box-shadow: 0 -4rpx 8rpx 0 rgba(0, 0, 0, 0.04);
 	}
-	
+
 	.buyConfirmView .couponItem {
 		width: 100%;
 		height: 84rpx;
@@ -1229,7 +990,7 @@
 		display: flex;
 		align-items: center;
 	}
-	
+
 	.buyConfirmView .couponItem .left {
 		font-size: 24rpx;
 		font-weight: 500;
@@ -1237,7 +998,7 @@
 		line-height: 34rpx;
 		flex: 1;
 	}
-	
+
 	.buyConfirmView .couponItem .right {
 		margin-right: 24rpx;
 		font-size: 20rpx;
@@ -1246,22 +1007,22 @@
 		color: rgba(53, 32, 38, .39);
 		line-height: 28rpx;
 	}
-	
+
 	.buyConfirmView .couponItem .right image {
 		width: 32rpx;
 		height: 32rpx;
 	}
-	
+
 	.buyConfirmView .couponItem .icon {
 		margin-right: 78rpx;
 	}
-	
+
 	.buyConfirmView .payment {
 		height: auto;
 		border-top: 2rpx solid rgba(0, 0, 0, .06);
 		display: flex;
 	}
-	
+
 	.payment .payment-info {
 		display: flex;
 		flex: 1;
@@ -1269,19 +1030,22 @@
 		padding-left: 30rpx;
 		padding-top: 14rpx;
 	}
+
 	.payment .payment-info .youhui {
 		font-size: 20rpx;
 		font-weight: 500;
-		color: rgba(0,0,0,.4);
+		color: rgba(0, 0, 0, .4);
 		line-height: 28rpx;
 	}
+
 	.payment .payment-info .heji {
 		font-size: 20rpx;
 		font-weight: 500;
-		color: rgba(0,0,0,.8);
+		color: rgba(0, 0, 0, .8);
 		line-height: 28rpx;
 		margin-left: 6rpx;
 	}
+
 	.payment .payment-info .price {
 		font-size: 44rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
@@ -1289,19 +1053,23 @@
 		color: #ED3535;
 		line-height: 60rpx;
 	}
+
 	.payment .payment-info .fuhao {
 		color: rgba(237, 53, 53, 1);
 	}
+
 	.payment .payment-info .shuoming {
 		font-size: 20rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
-		color: rgba(0,0,0,.8);
+		color: rgba(0, 0, 0, .8);
 		line-height: 28rpx;
 	}
+
 	.btnView {
 		padding: 24rpx 26rpx 0 30rpx;
 	}
+
 	.buylView .title {
 		font-size: 28rpx;
 		font-weight: 500;
@@ -1310,6 +1078,7 @@
 		margin-bottom: 20rpx;
 		text-align: center;
 	}
+
 	.buylView .tips {
 		font-size: 24rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
@@ -1317,7 +1086,7 @@
 		color: #000000;
 		line-height: 34rpx;
 	}
-	
+
 	.btnPay {
 		width: 332rpx;
 		height: 86rpx;

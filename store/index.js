@@ -8,7 +8,6 @@ const store = new Vuex.Store({
     mutations: {
 		// 设置点击建议按钮后的建议信息res
 		setMineDot(state,info) {
-			console.log(info,7878)
 			state.mine=info;
 		}
 	},

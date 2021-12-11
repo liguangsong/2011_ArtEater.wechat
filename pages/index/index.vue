@@ -473,7 +473,6 @@
 			//正在学习
 			async getLearning() {
 				let res = await Curriculum.getLearning();
-				// console.log(res, 4567865)
 				this.studyList = res;
 				this.$nextTick(()=>{
 					if(this.studyList.length>2){
@@ -486,7 +485,6 @@
 			//获取模块
 			async getModules() {
 				let res = await Curriculum.getModule();
-				console.log(JSON.parse(JSON.stringify(res)), 89989999)
 				this.moduleList = res;
 			},
 			/* 登录完成 */
@@ -544,17 +542,6 @@
 					this.toUrl = '/homeSubPackage/pages/error/index'
 				}
 			},
-			/*重点题库*/
-			// handleImportant(member) {
-			// 		if (this.zdtkConfig.get('isNeedPay') == 1 && this.hasBuyedZDTK) { // 需要购买，但是没买
-			// 			// this.isShowImportBuy = true
-			// 			console.log(999999);
-			// 			uni.setStorage({
-			// 				key: 'tiku',
-			// 				data: true,
-			// 			})
-			// 		}
-			// },
 			handleImportantClick() {
 				let app = getApp()
 				if (this.userInfo && this.userInfo.openid) {
@@ -771,7 +758,6 @@
 						uni.navigateTo({
 							url: _item.src
 						})
-						console.log('2' + _item.src)
 					}
 				}
 			}

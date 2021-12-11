@@ -15,6 +15,7 @@ Vue.prototype.Parse = parse
 Vue.BaseConfig = config
 Vue.prototype.innerAudioContext = null
 Vue.config.productionTip = false
+Vue.prototype.audio = uni.getBackgroundAudioManager()
 
 App.mpType = 'app'
 

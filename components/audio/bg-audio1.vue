@@ -9,7 +9,8 @@
 			<view class="audio-time-info">
 				<text class="audio-time">{{format(current)}}</text>
 				<slider class="audio-slider" :block-size="12" block-color="#D81E1F" activeColor="#D81E1F"
-					:value="current" :max="duration" @change="change" @changing="changing" />
+					:value="current" :max="duration" @change="seek=true,clickSeek($event.detail.value)"
+					@changing="seek=true,current=$event.detail.value" />
 				<text class="audio-time">{{audioTimeTotal}}</text>
 			</view>
 		</view>
@@ -20,185 +21,154 @@
 	export default {
 		data() {
 			return {
+				audio: uni.getBackgroundAudioManager(),
 				current: 0, //当前进度(s)
 				duration: 0, //总时长(s)
 				paused: true, //是否处于暂停状态
 				loading: false, //是否处于读取状态
 				seek: false, //是否处于拖动状态
-				sameSrc: true, // 是否播放当前页面的音频,
-				audioSrc: null,
+				current_tmp: 0, //储存current,
+				// isPlay: true,
+				sameSrc: false, // 前后两次的src是否相等
 			}
 		},
 		props: {
 			src: String, //音频链接
 			title: String, //标题
+			autoplay: Boolean, //是否自动播放
 			poster: String, // 背景图片
 			audioTimeTotal: {
 				type: String, // 时长
 				default: "00:00"
 			}
 		},
-		created() {
-			this.init()
-		},
 		methods: {
-			init() {
-				let oldSrc = uni.getStorageSync('mp3Src');
-				if (oldSrc == this.src) {
-					this.paused = false;
-				} else {
-					this.current = 0;
-				}
-				// 是否遵循系统静音开关
-				this.audio.obeyMuteSwitch = false;
-				this.audio.title = this.title || '暂无标题';
-				this.audio.coverImgUrl = this.poster;
-				this.audio.src = this.src;
-				// 重要 缺失 音频进入可以播放状态
-				this.audio.onCanplay(() => {
-					this.$emit('changeLearn', true)
-				})
-				//音频播放事件
-				this.audio.onPlay(() => {
-					var _this = this;
-					uni.setStorage({
-						key: 'mp3Src',
-						data: _this.src
-					})
-					// uni.setStorage({
-					// 	key: 'paused',
-					// 	data: true
-					// })
-					this.paused = false;
-					this.loading = false;
-				})
-				//音频暂停事件
-				this.audio.onPause(() => {
-					// var _this = this;
-					// uni.setStorage({
-					// 	key: 'paused',
-					// 	data: false
-					// })
-					// uni.setStorage({
-					// 	key: 'current',
-					// 	data: _this.current
-					// })
-					this.paused = true
-				})
-				//音频结束事件
-				this.audio.onEnded(() => {
-					this.paused = true
-					this.current = 0;
-					var _this = this;
-					uni.setStorage({
-						key: 'mp3Src',
-						data: null
-					})
-					// uni.setStorage({
-					// 	key: 'paused',
-					// 	data: false
-					// })
-					// uni.setStorage({
-					// 	key: 'current',
-					// 	data: 0
-					// })
-				})
-				//音频进度更新事件
-				this.audio.onTimeUpdate(() => {
-					if (this.sameSrc) {
-						if (!this.seek) {
-							this.current = this.audio.currentTime
-						}
-						if (this.audio.duration) {
-							this.duration = this.audio.duration
-						}
-					}
-				})
-			},
-			// 比较src
-			contrastSrc() {
-				// oldSrc && paused 则表示有音频在播放
-				let oldSrc = uni.getStorageSync('mp3Src');
-				let paused = uni.getStorageSync('paused');
-				if (oldSrc) {
-					let current = uni.getStorageSync('current');
-					if (paused) {
-						if (oldSrc === this.src) {
-							// this.current = current;
-							this.sameSrc = true;
-							this.paused = false;
-						} else {
-							this.current = 0;
-							this.sameSrc = false;
-							this.paused = true;
-						}
-					} else {
-						if (oldSrc === this.src) {
-							this.current = current;
-							this.sameSrc = true;
-							this.paused = true;
-						} else {
-							this.current = 0;
-							this.sameSrc = false;
-							this.paused = true;
-						}
-					}
-				} else {
-					this.current = 0;
-					this.paused = true;
-					this.sameSrc = true;
-				}
-
-			},
 			oncePlay() {
-
-				// let oldSrc = uni.getStorageSync('mp3Src');
-				// let paused = uni.getStorageSync('paused');
-				// console.log(this.src , oldSrc, this.sameSrc);
-				// if (this.src != oldSrc) {
-				// 	this.init();
-				// 	this.audio.title = this.title || '暂无标题';
-				// 	this.audio.coverImgUrl = this.poster;
-				// 	this.sameSrc = true;
+				// if (this.isPlay) {
+					this.audio.src = this.src;
+					// this.isPlay = false;
 				// }
 				this.paused ? this.clickPlay() : this.clickPaused()
 			},
+			createAudio() {
+				this.audio.title = this.title || '暂无标题';
+				this.audio.coverImgUrl = this.poster;
+			},
+			//格式化时长
+			format(num) {
+				return '0'.repeat(2 - String(Math.floor(num / 60)).length) + Math.floor(num / 60) + ':' + '0'.repeat(2 - String(Math.floor(num % 60)).length) + Math.floor(num % 60)
+			},
+			//点击进度条按钮
+			clickSeek(val) {
+				this.current = val
+				this.audio.seek(val)
+			},
 			//点击播放按钮
 			clickPlay() {
-				// this.audio.seek(this.current)
+				var _this = this;
+				uni.setStorage({
+					key: 'mp3Src',
+					data: _this.src
+				})
 				this.audio.play()
 			},
 			//点击暂停按钮
 			clickPaused() {
+				uni.setStorage({
+					key: 'mp3Src',
+					data: null
+				})
 				this.audio.pause()
 			},
-			//格式化时长
-			format(num) {
-				return '0'.repeat(2 - String(Math.floor(num / 60)).length) + Math.floor(num / 60) + ':' + '0'.repeat(2 -
-					String(Math.floor(num % 60)).length) + Math.floor(num % 60)
-			},
-			change(e) {
-				this.audio.pause()
-				this.audio.seek(e.detail.value)
-				this.audio.play()
-				setTimeout(() => {
-					this.audio.play()
-					this.current = e.detail.value;
-					this.seek = false;
-				}, 500)
-			},
-			changing(e) {
-				// this.audio.pause()
-				this.seek = true;
-				this.current = e.detail.value;
+			// 比较src
+			// contrastSrc(src, oldSrc) {
+			// 	if (src != oldSrc) {
+			// 		this.sameSrc = true;
+			// 	}
+			// }
+		},
+
+		created() {
+			let oldSrc = uni.getStorageSync('mp3Src');
+			if (oldSrc && oldSrc !== this.src) {
+				this.sameSrc = true;
 			}
+			if (this.src) {
+				this.createAudio(this.src);
+			}
+			// 是否遵循系统静音开关
+			this.audio.obeyMuteSwitch = false
+			//音频播放事件
+			this.audio.onPlay(() => {
+				if (this.sameSrc) {
+					this.paused = false;
+					this.loading = false;
+				} else {
+					this.paused = true;
+					this.loading = true;
+				}
+			})
+			// 重要 缺失 音频进入可以播放状态
+			this.audio.onCanplay(() => {
+				this.$emit('changeLearn', true)
+			})
+			//音频进度更新事件
+			this.audio.onTimeUpdate(() => {
+				/* 
+				判断是否点击过进度条，若点击过，则不要对当前进度条时间current赋currentTime的值
+				因为音频进度更新事件运行频率过快，两个时间会引起冲突，
+				因此需要通过设置开关，判断seek真假，若seek为假则未点击进度条，若seek为真则跳过此次赋值并修改seek值重置为假
+				*/
+				if (!this.sameSrc) {
+					if (!this.seek) {
+						this.current = this.audio.currentTime
+					} else {
+						this.seek = false
+					}
+					if (!this.duration) {
+						this.duration = this.audio.duration
+					} 
+				} else {
+					this.current = 0;
+				}
+			
+			})
+			//音频暂停事件
+			this.audio.onPause(() => {
+				// console.log("暂停")
+				this.paused = true
+			})
+			//音频结束事件
+			this.audio.onEnded(() => {
+				// this.isPlay = true;
+				if (!this.continue) {
+					this.paused = true
+					this.current = 0
+				}
+				uni.setStorage({
+					key: 'mp3Src',
+					data: null
+				})
+			})
+			//音频完成更改进度事件
+			this.audio.onSeeked(() => {
+				this.current = this.audio.currentTime
+			})
+			// 拖动事件
+			this.audio.onSeeking(() => {
+				this.current = this.audio.currentTime
+			})
 		},
 		watch: {
-			src() {
-				this.audio.title = this.title || '暂无标题';
-				this.audio.coverImgUrl = this.poster;
-				this.audio.src = this.src;
-				this.current = 0;
+			src(src) {
+				let oldSrc = uni.getStorageSync('mp3Src');
+				if (oldSrc && oldSrc !== this.src) {
+					this.sameSrc = true;
+				}
+				// this.createAudio(src)
+				// if (old || this.autoplay) {
+				// 	this.clickPlay()
+				// }
 			}
 		}
 	}

@@ -140,7 +140,7 @@
 				}
 			},
 			async getAllTimetable(objectId) {
-				this.timetableList=[]
+				// this.timetableList=[]
 				let res = await Curriculum.getAllTimetable(objectId,true);
 				if(res[0].children&&res[0].children.length){
 					this.timetableList=res[0].children.filter(item => item.has_down_level);
