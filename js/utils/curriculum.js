@@ -67,7 +67,6 @@ export default {
 			if(res){
 				let ids=res.get('ids');
 				if(ids){
-					console.log(ids,66666)
 					 curriculum.containedIn('objectId',ids);
 					 curriculum.notEqualTo('hide',true);
 					let  course=await curriculum.find();
@@ -119,7 +118,6 @@ export default {
 				ids=[id]
 			}
 			res.set('ids',ids);
-			console.log(ids,1212121+'qqqqq');
 			await res.save()
 		}else{
 			newLearning.set('openId',openid);

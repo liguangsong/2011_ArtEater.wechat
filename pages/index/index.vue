@@ -20,32 +20,43 @@
 			</template>
 			<template v-slot:other>
 				<!--导航 start-->
+				<view class='scrollx'>
+					<u-notice-bar mode="horizontal" :list="list"></u-notice-bar>
+				</view>
 				<view class="navSection">
 					<view class="innerSection">
-							<view class="nav-box">
+						<view class="nav-box">
 							<view class="navItem" @click="handleAuditionClick">
 								<view class="img">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E8%AF%BE%E7%A8%8B%E8%AF%95%E5%90%AC.png"></image>
+									<image
+										src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E8%AF%BE%E7%A8%8B%E8%AF%95%E5%90%AC.png">
+									</image>
 								</view>
 								<view class="title">免费试听</view>
 							</view>
 							<view class="navItem" @click="handleImportantClick">
 								<view class="img">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93.png"></image>
+									<image
+										src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93.png">
+									</image>
 									<!-- <image src="../../static/svg/tiku.svg"></image> -->
 								</view>
 								<view class="title">重点题库</view>
 							</view>
 							<view class="navItem" @click="handleExamClick">
 								<view class="img">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7.png"></image>
+									<image
+										src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7.png">
+									</image>
 									<!-- <text class="badge">12待添加数字</text> -->
 								</view>
 								<view class="title">模拟试卷</view>
 							</view>
 							<view class="navItem" @click="handleNoteClick">
 								<view class="img">
-									<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E9%94%99%E9%A2%98%E9%9B%86.png"></image>
+									<image
+										src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E9%94%99%E9%A2%98%E9%9B%86.png">
+									</image>
 								</view>
 								<view class="title">错题集</view>
 							</view>
@@ -125,57 +136,69 @@
 					</view>
 				</u-popup>
 				<!--购买重点题库 end-->
-				
-				
+
+
 			</template>
 
 		</Navbar>
-        <login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl"></login>
+		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl"></login>
 		<!--轮播 end-->
 		<!-- <u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true"
 			:zoom="false" @click="handleStep"> -->
-		<view class='mask'  @click="handleStep" v-if='isShowTips'>
+		<view class='mask' @click="handleStep" v-if='isShowTips'>
 			<view v-if="step==8" class="step bottom">
 				<view class="navItem" style="right:4rpx">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%A2%98%E5%BA%93.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%A2%98%E5%BA%93.png"
+						:style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
 				</view>
 			</view>
 			<view v-if="step==7" class="step bottom" style="left:4rpx">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E8%AF%BE%E7%A8%8B.png" :style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E8%AF%BE%E7%A8%8B.png"
+						:style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
 				</view>
 			</view>
 			<view v-if="step==6" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E7%A7%91%E6%8A%80%E6%96%87%E8%89%BA%E5%B8%B8%E8%AF%86.png"></image>
+					<image
+						src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E7%A7%91%E6%8A%80%E6%96%87%E8%89%BA%E5%B8%B8%E8%AF%86.png">
+					</image>
 				</view>
 			</view>
 			<view v-if="step==2" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93.png"></image>
+					<image
+						src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93.png">
+					</image>
 				</view>
 			</view>
 			<view v-if="step==1" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%85%8D%E8%B4%B9%E8%AF%95%E5%90%AC.png"></image>
+					<image
+						src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%85%8D%E8%B4%B9%E8%AF%95%E5%90%AC.png">
+					</image>
 				</view>
 			</view>
 			<view v-if="step==4" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%94%99%E9%A2%98%E9%9B%86.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%94%99%E9%A2%98%E9%9B%86.png">
+					</image>
 				</view>
 			</view>
 			<view v-if="step==3" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7.png"></image>
+					<image
+						src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7.png">
+					</image>
 				</view>
 			</view>
 			<view v-if="step==5" class="step top">
 				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E4%B8%89%E5%90%88%E4%B8%80.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E4%B8%89%E5%90%88%E4%B8%80.png">
+					</image>
 				</view>
 			</view>
-		<!-- </u-mask> -->
+			<!-- </u-mask> -->
 		</view>
 		<view-tabbar :current="0" @tabbarChange="tabbarChange"></view-tabbar>
 	</view>
@@ -199,8 +222,8 @@
 		},
 		data() {
 			return {
-				tabbarPdBtm:0,
-				showLearningMore:false,
+				tabbarPdBtm: 0,
+				showLearningMore: false,
 				relationId: '',
 				fontColor: 'rgb(255,255,255)',
 				pdbtm: 0, //兼容iphonexr+
@@ -227,7 +250,13 @@
 				couponCount: 0,
 				studyList: [],
 				moduleList: [], //动态模块
-				height: 0
+				height: 0,
+				list: [
+									'寒雨连江夜入吴',
+									'平明送客楚山孤',
+									'洛阳亲友如相问',
+									'一片冰心在玉壶'
+								]
 			}
 		},
 		mounted() {
@@ -237,7 +266,7 @@
 					_this.height = res.windowHeight;
 				}
 			})
-			
+
 		},
 		async onShow() {
 			uni.hideTabBar({
@@ -251,8 +280,8 @@
 				this.msgCount = res.msgCount;
 				this.couponCount = res.couponCount;
 				// //获取本地正在学习的课程
-				this.getLearning();	
-				
+				this.getLearning();
+
 				// 判断是不是会员
 				if (member) {
 					if (member.memberType != 2) {
@@ -267,12 +296,12 @@
 							results.save();
 						}
 					}
-					
+
 				} else {
 					await this.getMember();
 				}
 			}
-			
+
 			this.bindConfig();
 			//获取所有的模块
 			this.getModules();
@@ -312,8 +341,8 @@
 			recommendQuery.find().then(recommends => {
 				self.recommends = recommends
 			})
-			
-			
+
+
 		},
 		methods: {
 			async getMember() {
@@ -355,7 +384,9 @@
 			async learnChangeUrl(item) {
 				let vip = await this.checkVip();
 				//配置url
-				let toUrl = await Curriculum.configUrl({course: item}, vip);
+				let toUrl = await Curriculum.configUrl({
+					course: item
+				}, vip);
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						uni.navigateTo({
@@ -366,13 +397,13 @@
 							url: '/pages/login/login'
 						})
 					}
-				} 
+				}
 			},
 			async changeUrl(item) {
 				let vip = await this.checkVip();
 				//配置url
 				let toUrl = await Curriculum.configUrl(item, vip);
-				
+
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						// 记录点击量
@@ -402,7 +433,8 @@
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						uni.navigateTo({
-							url: '/homeSubPackage/pages/curriculumList/curriculumList?&moduleName=' + params.moduleName
+							url: '/homeSubPackage/pages/curriculumList/curriculumList?&moduleName=' + params
+								.moduleName
 						})
 					} else {
 						uni.reLaunch({
@@ -466,7 +498,7 @@
 					self.zdtkConfig = app.globalData.zdtkConfig
 					self.mnksConfig = app.globalData.mnksConfig
 					self.bindOrder()
-					
+
 					// self.handleImportant()
 				})
 			},
@@ -474,11 +506,11 @@
 			async getLearning() {
 				let res = await Curriculum.getLearning();
 				this.studyList = res;
-				this.$nextTick(()=>{
-					if(this.studyList.length>2){
-						this.showLearningMore=true;
-					}else{
-						this.showLearningMore=false;
+				this.$nextTick(() => {
+					if (this.studyList.length > 2) {
+						this.showLearningMore = true;
+					} else {
+						this.showLearningMore = false;
 					}
 				})
 			},
@@ -548,7 +580,7 @@
 					var member = app.globalData.member;
 					if (this.userInfo.phone) { // 已绑定手机号
 						if (member) {
-							
+
 							if (member.memberType == 0 || member.memberType == 1) {
 								uni.navigateTo({
 									url: '/homeSubPackage/pages/important/index'
@@ -559,7 +591,8 @@
 						if (this.zdtkConfig.get('isNeedPay') == 1 && !this.hasBuyedZDTK) { // 需要购买，但是没买
 							// this.isShowImportBuy = true
 							uni.navigateTo({
-								url: '/pages/buy/buy?subjectId=' + this.zdtkConfig.id,
+								// url: '/pages/buy/buy?subjectId=' + this.zdtkConfig.id,
+								url: '/mineSubPackage/pages/vip/vip',
 								event: {
 									reloadOrder: function(data) {
 										self.bindOrder()
@@ -588,7 +621,7 @@
 					var member = app.globalData.member;
 					if (this.userInfo.phone) {
 						if (member) {
-							
+
 							if (member.memberType == 0 || member.memberType == 1) {
 								uni.navigateTo({
 									url: '/homeSubPackage/pages/exam/index'
@@ -599,7 +632,8 @@
 						if (this.mnksConfig.get('isNeedPay') == 1 && !this.hasBuyedMNKS) { // 需要购买，但是没买
 							// this.isShowTestBuy = true
 							uni.navigateTo({
-								url: '/pages/buy/buy?subjectId=' + this.mnksConfig.id,
+								// url: '/pages/buy/buy?subjectId=' + this.mnksConfig.id,
+								url: '/mineSubPackage/pages/vip/vip',
 								event: {
 									reloadOrder: function(data) {
 										self.bindOrder()
@@ -769,7 +803,11 @@
 	page {
 		overflow: hidden;
 	}
-
+	.scrollx {
+		width: 100%;
+		height: 86rpx;
+		z-index: 10000;
+	}
 	.myPage {
 		background-color: #F7F7F7;
 	}
@@ -779,7 +817,7 @@
 		line-height: 36rpx;
 		text-align: center;
 	}
-	
+
 	.swiperItem {
 		vertical-align: middle;
 	}
@@ -792,7 +830,7 @@
 	}
 
 	.navSection {
-		
+
 		background: url(../../static/home_questions_bg.png) no-repeat;
 		background-size: cover;
 		margin: 0 auto;
@@ -800,17 +838,20 @@
 		position: relative;
 		top: -30rpx;
 		margin-bottom: -30rpx;
-		.innerSection{
+
+		.innerSection {
 			display: flex;
 			width: 690rpx;
 			margin: auto;
 		}
+
 		.nav-box {
 			width: 50%;
 			height: 364rpx;
 			display: flex;
 			flex-flow: row wrap;
 			justify-content: space-around;
+
 			.navItem {
 				// flex: 1;
 				width: 50%;
@@ -828,6 +869,7 @@
 				padding-top: 12rpx;
 			}
 		}
+
 		.nav-box::after {
 			content: "";
 			flex-grow: 4;
@@ -1096,15 +1138,17 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background: rgba(0,0,0,0.7);
+		background: rgba(0, 0, 0, 0.7);
 		z-index: 10000;
 	}
+
 	.step {
 		position: absolute;
 		top: 0;
 		bottom: 0;
 		z-index: 9999;
 	}
+
 	.step .navItem {
 		flex: 1;
 		width: 100%;

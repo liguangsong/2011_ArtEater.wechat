@@ -1,5 +1,5 @@
 <template>
-	<view class="video-box" @click='switchShowControlsFn'>
+	<view class="video-box" 
 		<video
 			id='myvideo'
 			:src="src"
@@ -11,6 +11,7 @@
 			:enable-progress-gesture='true'
 			:show-fullscreen-btn='true'
 			:vslide-gesture='true'
+			@click='switchShowControlsFn'
 			@play='videoPlayFn'
 			@pause='videoPauseFn'
 			@timeupdate='timeupdateFn'
@@ -25,7 +26,7 @@
 				</text>
 				<view class="slider">
 					<text>{{videoTimeUpdate}}</text>
-					<slider :value='sliderVal' :max='videoTime' @changing='_seeking' @change='_seek' block-size='12' />
+					<slider :value='sliderVal' :max='videoTime' @change='_seek' block-size='12' />
 					<text>{{videoTimeTotal}}</text>
 				</view>
 				<text class='speed' @click='speedFn'>
@@ -35,11 +36,11 @@
 					{{fullScreen ? '取消全屏': '全屏'}}
 				</text>
 			</view>
-			<view class="warning" v-if='warning'>
+			<view class="warning" v-show='warning'>
 				视频正在缓冲，请等待...
 			</view>
 		</video>
-	
+		
 	</view>
 </template>
 
@@ -65,6 +66,7 @@
 				sliderVal: 0,
 				showControls: false,
 				timer: null,
+				cover: false
 			}
 		},
 		created() {
@@ -142,8 +144,8 @@
 			},
 			// 视频播放中触发
 			timeupdateFn(e) {
+				this.warning = false;
 				if (this.sliderVal != Math.floor(e.detail.currentTime)) {	
-					console.log(this.sliderVal);
 					this.sliderVal = Math.floor(e.detail.currentTime);
 					this.videoTimeUpdate = this.sToHs(e.detail.currentTime * 1000);
 				}
@@ -152,6 +154,7 @@
 			endedFn() {
 				this.$emit('changeLearn',false);
 				this.play = false;
+				this.warning= false;
 			},
 			// 缓冲时触发
 			waitingFn() {
@@ -161,13 +164,16 @@
 			},
 			// 拖动滑块
 			_seeking(e) {
-				this.videoContext.seek(e.detail.value);
+				
+				// this.videoContext.seek(e.detail.value);
 			},
 			// 滑块拖动结束
 			_seek(e) {
+				this.warning = true;
+				this.sliderVal = e.detail.value;
+				this.videoTimeUpdate = this.sToHs(e.detail.value * 1000);
 				this.videoContext.seek(e.detail.value);
 				this.showControlsFn();
-				this.videoContext.play();
 			},
 			showControlsFn() {
 				clearTimeout(this.timer);
@@ -237,10 +243,15 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		display: none;
+		display: flex;
 		justify-content: center;
 		align-items: center;
 		color: #fff;
 		background: rgba(0,0,0,0.2);
+	}
+	.cover {
+		display: flex;
+		width: 100%;
+		height: 100%;
 	}
 </style>

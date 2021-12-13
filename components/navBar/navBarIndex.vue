@@ -8,13 +8,15 @@
 					<view class="icon" v-if='icon' @click='back'>
 						<u-icon :name="iconName" :color="iconColor" :size="iconSize"></u-icon>
 					</view>
-					<!-- :class='{shadow: opacity <= 1}' -->
 					<view class="title"
 						:style='{textShadow: textShadow, color: fontColor, textAlign: align, paddingLeft: icon ? 0 : titleLeft}'>
 						<text>{{title}}</text>
 					</view>
 				</view>
-			</view>
+<!-- 				<view v-show='showScrollX' class='scrollx' :style='{top: tabbarheight + "rpx" }'>
+					<u-notice-bar mode="vertical" :list="list"></u-notice-bar>
+				</view>
+ -->			</view>
 		</view>
 		<slot name='other'></slot>
 	</scroll-view>
@@ -86,7 +88,14 @@
 				tabbarheight: 0,
 				navbarheight: 0,
 				opacity: 0,
-				textShadow: '0 2rpx 4rpx rgba(0,0,0,.5)'
+				textShadow: '0 2rpx 4rpx rgba(0,0,0,.5)',
+				showScrollX: false,
+				list: [
+									'寒雨连江夜入吴',
+									'平明送客楚山孤',
+									'洛阳亲友如相问',
+									'一片冰心在玉壶'
+								]
 			}
 		},
 		created() {
@@ -116,7 +125,6 @@
 						scrollTop,
 						deltaY
 					} = e.detail;
-					console.log(data.height);
 					//开始颜色变化
 					//计算色值
 					let settingColor = that.topColor - ((that.topColor - that.bottomColor) * (scrollTop - that
@@ -126,6 +134,7 @@
 					that.$parent.fontColor = colorValue;
 					var h = Math.abs(data.top) / (data.height-20);
 					that.opacity = h;
+					// that.showScrollX = h > 1 ? true : false
 					let x = 1 - h < 0 ? 0 : 1 - h > 0.5 ? 0.5 : 1 - h;
 					that.textShadow = '0 2rpx 4rpx rgba(0,0,0,'+x+')';
 				}).exec();
@@ -180,5 +189,12 @@
 		top: 0;
 		width: 100%;
 		height: 100%;
+	}
+	.scrollx {
+		position: fixed;
+		/* height: 100rpx; */
+		width: 100%;
+		z-index: 10000;
+		background: red;
 	}
 </style>

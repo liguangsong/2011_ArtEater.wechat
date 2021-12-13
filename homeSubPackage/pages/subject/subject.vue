@@ -803,7 +803,8 @@
 					}
 					var self = this
 					uni.navigateTo({
-						url: '/pages/buy/buy?subjectId=' + this.subjectDetail.id,
+						// url: '/pages/buy/buy?subjectId=' + this.subjectDetail.id,
+						url: '/mineSubPackage/pages/vip/vip',
 						event: {
 							reloadOrder: function(data) {
 								self.bindOrder()

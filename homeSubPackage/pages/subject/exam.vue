@@ -458,7 +458,8 @@
 			handleSubjectBuy(){
 				var self = this
 				uni.navigateTo({
-					url:'/pages/buy/buy?subjectId=' + this.baseSubjectId,
+					// url:'/pages/buy/buy?subjectId=' + this.baseSubjectId,
+					url: '/mineSubPackage/pages/vip/vip',
 					event:{
 						reloadOrder: function(data){
 							self.bindOrder()
@@ -469,7 +470,8 @@
 			handleBuyComments(){
 				var self = this
 				uni.navigateTo({
-					url:'/pages/buy/buy?subjectId=' + this.dajxConfig.id,
+					// url:'/pages/buy/buy?subjectId=' + this.dajxConfig.id,
+					url: '/mineSubPackage/pages/vip/vip',
 					event:{
 						reloadOrder: function(data){
 							self.bindCommentsOrder()
