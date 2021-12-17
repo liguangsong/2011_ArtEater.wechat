@@ -22,15 +22,47 @@
 									:style="{'color':(form.phone=='点击获取手机号'?'#ff7767':'#352026')}">{{form.phone}}</button>
 							</view>
 						</u-form-item>
-
-
+						<u-form-item prop="realname" >
+							<view class="inputItem">
+								<u-input border='none' placeholder-style="font-size:24rpx;color:rgba(0,0,0,0.4)"
+									v-model="form.realname" maxlength='10' placeholder="请输入真实姓名" />
+							</view>
+						</u-form-item>
+						<u-form-item prop="areaTxt">
+							<view class="inputItem">
+								
+								<u-input border='none' placeholder-style="font-size:24rpx;color:rgba(0,0,0,0.4)" v-model="form.areaTxt"
+								 :disabled="true" maxlength='30' placeholder="请选择所在地区"
+									@click="bindOpenArea" />
+							</view>
+						</u-form-item>
+						<u-form-item prop="speciality">
+							<view class="inputItem">
+								
+								<u-input border='none' placeholder-style="font-size:24rpx;color:rgba(0,0,0,0.4)"
+									v-model="form.speciality" :disabled="true" maxlength='20'
+									placeholder="请选择报考专业" @click="isShowSpeciality=true" />
+							</view>
+						</u-form-item>
+						<u-form-item :label-width="150" prop="university">
+							<view class="inputItem">
+								
+								<u-input border='none' placeholder-style="font-size:24rpx;color:rgba(0,0,0,0.4)"
+									v-model="form.university" :disabled="true" maxlength='30'
+									placeholder="请选择目标院校" @click="isShowUniversity=true" />
+							</view>
+						</u-form-item>
 					</u-form>
 					<view style='height: 500rpx;'></view>
 				</view>
-
+				<image class='writebg' src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/writeinfo.png" mode=""></image>
 			</view>
 		</view>
-
+		<u-select v-model="isShowArea" mode="mutil-column-auto" confirm-color="#352026"
+			value-name="code" label-name="name" :list="provices" @confirm="confirm"></u-select>
+		<checkspecialitys @changeSpecialitys='changeSpecialitys' :visiable="isShowSpeciality" :list="specialitys" :val='form.speciality' />
+		<checkunivercity :visiable="isShowUniversity" @cancle="handleCancel"
+			@complate="handleComplate" :value="form.university" @changeVisiable='isShowUniversity = false'></checkunivercity>
 		<view class="btnView" v-if='opacity'>
 			<image class="btnSubmit" @click="submit" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/journey.png" mode=""></image>
 		</view>
@@ -47,7 +79,8 @@
 	import provice from '../../js/provinces.js'
 	import cities from '../../js/cities.js'
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
-
+	import checkunivercity from '@/components/checkunivercity/checkunivercity.vue'
+	import checkspecialitys from '@/components/checkunivercity/checkspecialitys.vue'
 	export default {
 		data() {
 			return {
@@ -73,7 +106,31 @@
 				isShowArea: false,
 				isShowSpeciality: false,
 				isShowUniversity: false,
-		
+				specialitys: [{
+						code: '美术学',
+						name: '美术学'
+					},
+					{
+						code: '艺术史论',
+						name: '艺术史论'
+					},
+					{
+						code: '实验艺术',
+						name: '实验艺术'
+					},
+					{
+						code: '艺术学理论',
+						name: '艺术学理论'
+					},
+					{
+						code: '艺术与设计管理（中法）',
+						name: '艺术与设计管理（中法）'
+					},
+					{
+						code: '艺术品保护与修复',
+						name: '艺术品保护与修复'
+					}
+				],
 				provices: provice,
 				cities: cities,
 				avatarUrl: '',
@@ -89,14 +146,63 @@
 					areaVaue: '',
 					area: []
 				},
-
+				rules: {
+					realname: [{
+						required: true,
+						message: '请输入真实姓名',
+						trigger: ['change', 'blur']
+					}],
+					phone: [{
+							required: true,
+							message: '请输入手机号码',
+							trigger: ['change', 'blur']
+						},
+						{
+							validator: (rule, value, callback) => {
+								return this.$u.test.mobile(value);
+							},
+							message: '手机号码不正确',
+							trigger: ['change', 'blur'],
+						}
+					],
+					speciality: [{
+						required: true,
+						message: '请输入报考专业',
+						trigger: ['change', 'blur']
+					}],
+					university: [{
+						trigger: ['change', 'blur'],
+						validator: (rule, value, callback) => {
+							if (!value || value.length == 0) {
+								callback(new Error('请选择目标院校'));
+							} else {
+								callback();
+							}
+						}
+					}],
+					areaTxt: [{
+							required: true,
+							message: '请选择所在地区',
+							trigger: ['change', 'blur']
+						},
+						{
+							validator: (rule, value, callback) => {
+								if (!value || value == '请选择所在地区') {
+									callback(new Error('请选择所在地区'));
+								} else {
+									callback();
+								}
+							}
+						}
+					]
+				},
 				userInfo: {},
-
+				canIUse: uni.canIUse('button.open-type.getUserInfo'),
 				// opacity: false
 			}
 		},
 		components: {
-			TopNavbar
+			TopNavbar, checkunivercity, checkspecialitys
 		},
 		computed: {
 			opacity() {
@@ -135,7 +241,41 @@
 			this.$refs.uForm.setRules(this.rules);
 		},
 		methods: {
-			handleGetuserinfo({detail}) {
+			changeSpecialitys(e) {
+				if (e) {
+					this.form.speciality = e;
+					var user = this.Parse.User.current()
+					user.set("speciality", this.form.speciality);
+					user.save().then(res=>{
+						uni.setStorage({
+							key:'userInfo',
+							data: res
+						})
+					})
+					this.isShowSpeciality = false;
+				} else {
+					this.isShowSpeciality = false;
+				}
+			},
+			handleCancel() {
+				this.isShowUniversity = false
+			},
+			/*完成选择*/
+			handleComplate(codes) {
+				this.form.university = codes
+				this.isShowUniversity = false
+				var user = this.Parse.User.current()
+				user.set("university", this.form.university);
+				user.save().then(res => {
+					uni.setStorage({
+						key: 'userInfo',
+						data: res
+					})
+				})
+			},
+			handleGetuserinfo({
+				detail
+			}) {
 				var self = this
 				// 获取用户信息
 				uni.getSetting({
@@ -174,6 +314,73 @@
 					}
 				})
 			},
+			/*获取手机号码*/
+			handleGetPhoneNumber(e) {
+				var self = this
+				var _config = config
+				var pc = new WXBizDataCrypt(_config.AppId, self.sessionKey)
+				var data = pc.decryptData(e.detail.encryptedData, e.detail.iv)
+				self.form.phone = data.phoneNumber
+			},
+			/*选择地区*/
+			bindOpenArea() {
+				this.isShowArea = true
+				this.provices.forEach((item) => {
+					item.children = this.cities[item.code]
+				})
+			},
+			/*选择地区*/
+			confirm(array) {
+				this.form.areaTxt = array[0].label + '/' + array[1].label
+				this.form.areaVaue = array[0].value + '/' + array[1].value
+				this.form.area = array
+			},
+			/*选择专业*/
+			spConfirm(array) {
+				this.form.speciality = array[0].label
+			},
+			/* 选择目标院校 */
+			unConfirm(array) {
+				this.form.university = array[0].label
+			},
+			submit() {
+				var self = this
+				self.$refs.uForm.validate(valid => {
+					if (valid) {
+						var user = self.Parse.User.current();
+						user.set("realname", self.form.realname);
+						user.set("phone", self.form.phone);
+						user.set("speciality", self.form.speciality);
+						user.set("university", self.form.university);
+						user.set("proviceId", self.form.area[0].value);
+						user.set("proviceName", self.form.area[0].label);
+						user.set("cityId", self.form.area[1].value);
+						user.set("cityName", self.form.area[1].label);
+						user.save().then((ruser) => {
+							uni.setStorage({
+								key: 'userInfo',
+								data: ruser
+							})
+							if (!self.q) {
+								uni.reLaunch({
+									url: '/pages/index/index'
+								})
+							} else {
+								uni.navigateBack({
+									delta: -1
+								})
+							}
+
+							const eventChannel = self.getOpenerEventChannel()
+							eventChannel.emit('back', {});
+						}, (error) => {
+							console.log("Error: " + error.code + " " + error.message);
+						});
+					} else {
+						console.log('验证失败');
+					}
+				});
+			}
 		}
 	}
 </script>

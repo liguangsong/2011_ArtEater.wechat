@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='选择优惠券' bg='#f7f7f7'>
+	<TopNavbar title='选择优惠券' paddingTop="204" bg='#f7f7f7'>
 		<view style="text-align: center;padding-bottom: 200rpx;">
 			<view class="noChooseItem" @click="handleCheckCoupon(null)">
 				<view class="title">暂不使用优惠券</view>
@@ -13,9 +13,6 @@
 					<image src="../../static/couponbg.png"></image>
 				</view>
 				<view class="content">
-					<view class="type">
-						通用型优惠券
-					</view>
 					<view class="price">¥{{coupon.amount}}</view>
 					<view class="title">
 						<view class="name">{{coupon.couponName}}</view>
@@ -23,8 +20,8 @@
 						<view class="date">使用范围：{{coupon.tipName}}</view>
 					</view>
 					<view class="radio">
-						<image v-if="coupon.state == 1" src="../../static/icon/icon_answer_checked.png"></image>
-						<image v-else src="../../static/icon/icon_answer_nocheck.png"></image>
+						<image v-if="coupon.state == 1" src="../../static/icon/icon_answer_errpr.png"></image>
+						<image v-else src="../../static/icon/icon_answer_errorn.png"></image>
 					</view>
 				</view>
 			</view>
@@ -141,7 +138,7 @@
 		background-color: #ffffff;
 		border-radius: 20rpx;
 		display: inline-flex;
-		margin-top: 30rpx;
+		margin-top: 18rpx;
 		margin-bottom: 12rpx;
 	}
 
@@ -152,7 +149,7 @@
 		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		color: rgba(153, 93, 5, .8);
+		color: #352026;
 		text-align: left;
 	}
 
@@ -169,7 +166,6 @@
 		height: 32rpx;
 		display: inline-block;
 		vertical-align: middle;
-		opacity: .5;
 	}
 
 	.couponItem {
@@ -197,28 +193,16 @@
 		z-index: 100;
 		width: 100%;
 	}
-	.couponItem .type {
-		width: 46rpx;
-		margin-left: 30rpx;
-		font-size: 20rpx;
-		font-weight: 500;
-		color: #995D05;
-		line-height: 22rpx;
-		display: flex;
-		align-items: center;
-		padding: 0 10rpx;
-	}
+
 	.couponItem .price {
-		width: 140rpx;
+		width: 210rpx;
+		padding-right: 8rpx;
+		padding-top: 52rpx;
 		font-size: 38rpx;
+		font-weight: normal;
 		font-stretch: normal;
 		letter-spacing: 0rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #995D05;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		color: #ed3535;
 	}
 
 	.couponItem .title {
@@ -230,7 +214,6 @@
 		color: #352026;
 		text-align: left;
 		padding-top: 28rpx;
-		margin-left: 40rpx;
 	}
 
 	.couponItem .title .name {
@@ -239,7 +222,7 @@
 		font-size: 28rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
-		color: #995D05;
+		color: #000000;
 		line-height: 40rpx;
 	}
 
@@ -247,7 +230,7 @@
 		font-size: 20rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
-		color: rgba(153, 93, 5, .59);
+		color: rgba(0, 0, 0, .5);
 		line-height: 28rpx;
 	}
 

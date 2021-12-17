@@ -20,10 +20,6 @@
 			</template>
 			<template v-slot:other>
 				<!--导航 start-->
-				<!-- <view class='scrollx' v-if='!isShowTips'>
-					<u-notice-bar mode="horizontal" duration='3000' :list="list" :is-circular='false' @click='noticeBar'></u-notice-bar>
-				</view> -->
-				
 				<view class="navSection">
 					<view class="innerSection">
 						<view class="nav-box">
@@ -74,7 +70,9 @@
 						</view>
 					</view>
 				</view>
-
+				<view class='scrollx' v-if='!isShowTips'>
+					<u-notice-bar mode="horizontal" duration='3000' :list="list" :is-circular='false' @click='noticeBar'></u-notice-bar>
+				</view>
 				<audition-learning v-if="studyList.length" title="正在学习" :showMore="showLearningMore"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
 				</audition-learning>
@@ -83,9 +81,14 @@
 					:showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index"
 					@changeUrl="changeUrl" @checkMore="checkMore"></audition>
 				<!--精品推荐 start-->
-			<!-- 	<view class="groupView" style="margin-top: 24rpx;">
-					<view class="headView">
-						<view class="title">推荐</view>
+			
+				
+				<view class="groupView" style="margin-top: 24rpx;">
+					<view class="title-info">
+						<view class="left" v-if="title">
+							<view class="red-block"></view>
+							推荐
+						</view>
 					</view>
 					<view class="newsView">
 						<view class="newsItem" v-for="item in recommends" @click="handleToOtherMiniApp"
@@ -99,7 +102,7 @@
 							</view>
 						</view>
 					</view>
-				</view> -->
+				</view>
 				<!--精品推荐 end-->
 				<!--购买重点题库 start-->
 				<view style='height:20rpx'></view>
@@ -1049,56 +1052,53 @@
 	}
 
 	.newsView .newsItem {
-		/* background-color: #ffffff; */
-		border-radius: 30rpx;
-		margin: 18rpx 0;
 		display: flex;
+		padding: 22rpx 0 24rpx;
 		width: 690rpx;
-		height: 214rpx;
-		padding: 25rpx;
-		background-color: #ffffff;
-		box-shadow: 0rpx 16rpx 44rpx 0rpx rgba(226, 171, 166, 0.21);
-		border-radius: 40rpx;
+		height: 196rpx;
+		border-bottom: 1px solid rgba(0,0,0,.06);
 	}
 
 	.newsView .newsItem .imgView {
-		width: 208rpx;
-		height: 164rpx;
-		line-height: 164rpx;
-		text-align: center;
+		width: 220rpx;
+		height: 150rpx;
 	}
 
 	.newsView .newsItem .imgView image {
-		width: 208rpx;
-		height: 164rpx;
-		margin: auto;
+		width: 220rpx;
+		height: 150rpx;
 		display: inline-block;
 		vertical-align: middle;
-		border-radius: 10rpx;
+		border-radius: 16rpx;
 	}
 
 	.newsView .newsItem .conView {
 		flex: 1;
-		padding: 10rpx 0 0 25rpx;
+		padding: 10rpx 0 0 20rpx;
 	}
 
 	.newsView .newsItem .conView .title {
-		font-family: PingFangSC-Medium;
-		font-size: 34rpx;
-		color: #352026;
-		font-weight: bold;
 		word-break: break-all;
 		text-overflow: ellipsis;
 		overflow: hidden;
 		display: -webkit-box;
 		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
+		
+		font-size: 24rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: rrgba(0,0,0,.8);
+		line-height: 34rpx;
 	}
 
 	.newsView .newsItem .conView .content {
 		font-family: PingFangSC-Medium;
 		font-size: 30rpx;
 		color: #352026;
+	}
+	.newsView .newsItem:last-child {
+		border-bottom: none;
 	}
 
 	.buylView {
@@ -1188,5 +1188,14 @@
 	.u-badge {
 		min-width: 32rpx;
 		min-height: 32rpx;
+	}
+	/deep/ .u-type-warning-light-bg {
+		background: rgba(237, 231, 230, 1) !important;
+	}
+	/deep/ .u-news-item {
+		color: rgba(0, 0, 0, 0.37);
+	}
+	/deep/ .u-icon__icon--warning.data-v-172979f2 {
+	  color: rgba(0, 0, 0, 0.37);
 	}
 </style>

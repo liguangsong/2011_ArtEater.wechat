@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='意见反馈' paddingTop="224">
+	<TopNavbar title='意见反馈'>
 	<view style="padding: 0 30rpx;">
 		<u-form :model="form" label-position="top" :border-bottom="false" ref="uForm" :rules="rules">
 			<u-form-item :label-width="150" :border-bottom="false" prop="content">
@@ -10,6 +10,9 @@
 					placeholder="请在输入框内写下您的意见反馈" />
 			</u-form-item>
 		</u-form>
+		<view class="message">
+			消息回复请在消息中心查看
+		</view>
 		<view style="text-align: center;margin-top: 40rpx;">
 			<button class="btnSubmit" @click="submit">确认提交</button>
 		</view>
@@ -94,5 +97,13 @@
 		background: #ED3535;
 		box-shadow: 0 4rpx 8rpx 0 rgba(0,0,0,0.2);
 		border-radius: 46rpx;
+	}
+	.message {
+		font-size: 22rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,.29);
+		line-height: 32rpx;
+		padding-left: 30rpx;
 	}
 </style>
