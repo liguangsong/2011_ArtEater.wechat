@@ -17,9 +17,9 @@
 				<image v-if="sub.subject_name=='外国美术史'" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%A4%96%E5%9B%BD%E7%BE%8E%E6%9C%AF%E5%8F%B2-%E6%A0%87%E9%A2%98%E5%9B%BE1.jpg" mode=""></image>
 
 				<image v-if="sub.subject_name=='美术鉴赏'" src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E7%BE%8E%E6%9C%AF%E9%89%B4%E8%B5%8F-%E6%A0%87%E9%A2%98%E5%9B%BE1.jpg" mode=""></image>
-				<!-- <view class="lock">
+				<view class="lock" v-if='!buy'>
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%94%81%E5%AE%9Aicon.png"></image>
-				</view> -->
+				</view>
 			</view>
 			<view class="progress">
 				<u-line-progress :percent="sub.progress*100/sub.childrenCount" :show-percent="false" height="10"></u-line-progress>
@@ -39,11 +39,19 @@
 			return {
 				count: 0,
 				subjects:[],
-				subjectProgress:[]
+				subjectProgress:[],
+				buy: false,
 			}
 		},
 		components: {
 			TopNavbar
+		},
+		onLoad(options) {
+			if (options.buy == 'false') {
+				this.buy = false;
+			} else {
+				this.buy = true
+			}
 		},
 		onShow() {
 			var self = this
@@ -61,6 +69,13 @@
 					})
 				}
 			})
+			let app = getApp()
+			var member = app.globalData.member;
+			if (member) {
+				if (member.memberType == 0 || member.memberType == 2) {
+					this.buy = true
+				}
+			}
 		},
 
 		methods: {
@@ -114,10 +129,18 @@
 				return treeValue
 			},
 			handleSubjectClick(e){
-				var item = e.currentTarget.dataset.item
-				uni.navigateTo({
-					url:'/homeSubPackage/pages/important/subject?sid='+item.id
-				})
+				if (this.buy) {
+					var item = e.currentTarget.dataset.item
+					uni.navigateTo({
+						url:'/homeSubPackage/pages/important/subject?sid='+item.id
+					})
+					
+				} else {
+					uni.navigateTo({
+						url: '/mineSubPackage/pages/vip/vip'
+					})
+				}
+				
 			},
 			
 			/*查看科目下题目数量*/

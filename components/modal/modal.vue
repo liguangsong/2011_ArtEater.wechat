@@ -31,14 +31,17 @@
 			submit: {
 				type: String,
 			},
-			submitFn: {
-				type: Object,
-			}
+			// submitFn: {
+			// 	type: Object,
+			// }
 		},
 		methods: {
 			handleCancle(){
 				this.$emit('cancle')
 			},
+			submitFn() {
+				this.$emit('submitFn')
+			}
 		}
 	}
 </script>

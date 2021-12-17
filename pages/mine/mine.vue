@@ -88,7 +88,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="actionItem" @click="handleOrderClick">
+				<!-- <view class="actionItem" @click="handleOrderClick">
 					<view class="licon">
 						<image src="../../static/mine/mine_huiyuan.png"></image>
 					</view>
@@ -100,7 +100,7 @@
 							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
 						</view>
 					</view>
-				</view>
+				</view> -->
 				<view class="actionItem" @click="handleCouponClick">
 					<view class="licon">
 						<image src="../../static/mine/mine_youhui.png"></image>

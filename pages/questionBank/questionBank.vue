@@ -15,9 +15,9 @@
 			<view v-else :style="{'padding-bottom':pdbtm+'rpx'}">
 				<view style='height:20rpx;'></view>
 				<Item v-for='(item, i) in subjects' :n='n' :item='item' :uid='item.objectId' :img='arr[i]' :key='i' :vip='vip'/>
-				<view class="class" @click='navto'>
+				<!-- <view class="class" @click='navto'>
 					信息页面
-				</view>
+				</view> -->
 			</view>
 		</TopNavbar>
 		<view-tabbar :current="2" @tabbarChange="tabbarChange"></view-tabbar>

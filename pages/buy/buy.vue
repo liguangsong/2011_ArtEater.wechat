@@ -235,7 +235,6 @@
 		methods: {
 			/* 加载科目 */
 			async bindSubjects(buyedSubjectIds) {
-				console.log('1')
 				var self = this
 				var query = new self.Parse.Query('Subjects')
 				query.equalTo('parent_ID', '0')
@@ -684,6 +683,9 @@
 					}
 					var user = self.Parse.User.current()
 					var cash = self.cash * 100
+					// --------------
+					// cash = 0;
+					// --------------
 					if (cash == 0) {
 						var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5)
 						// uni.setStorage({

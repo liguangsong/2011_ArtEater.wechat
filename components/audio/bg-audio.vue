@@ -87,13 +87,13 @@
 				})
 				//音频结束事件
 				this.audio.onEnded(() => {
-					this.paused = true
+					this.paused = true;
 					this.current = 0;
-					var _this = this;
 					uni.setStorage({
 						key: 'mp3Src',
 						data: null
 					})
+					// this.init()
 					// uni.setStorage({
 					// 	key: 'paused',
 					// 	data: false
@@ -165,7 +165,9 @@
 			},
 			//点击播放按钮
 			clickPlay() {
-				// this.audio.seek(this.current)
+				if (this.audio.src == '') {
+					this.init()
+				}
 				this.audio.play()
 			},
 			//点击暂停按钮

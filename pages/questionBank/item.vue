@@ -103,18 +103,21 @@
 			},
 			// 解锁
 			unlock() {
-				uni.showModal({
-					title: '解锁付费内容',
-					confirmColor: '#ED3535',
-					confirmText: '立即解锁',
-					content: '考纲三大板块中国美术史、\n外国美术史、艺术概论组合题库包，\n1800道题覆盖所有基础知识点',
-					success(res) {
-						if (res.confirm) {
-							uni.navigateTo({
-								url: '/mineSubPackage/pages/vip/vip'
-							})
-						}
-					}
+				// uni.showModal({
+				// 	title: '解锁付费内容',
+				// 	confirmColor: '#ED3535',
+				// 	confirmText: '立即解锁',
+				// 	content: '考纲三大板块中国美术史、\n外国美术史、艺术概论组合题库包，\n1800道题覆盖所有基础知识点',
+				// 	success(res) {
+				// 		if (res.confirm) {
+				// 			uni.navigateTo({
+				// 				url: '/mineSubPackage/pages/vip/vip'
+				// 			})
+				// 		}
+				// 	}
+				// })
+				uni.navigateTo({
+					url: '/mineSubPackage/pages/vip/vip'
 				})
 			},
 			/*加载科目详情*/

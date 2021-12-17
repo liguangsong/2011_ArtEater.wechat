@@ -20,9 +20,10 @@
 			</template>
 			<template v-slot:other>
 				<!--导航 start-->
-				<view class='scrollx'>
-					<u-notice-bar mode="horizontal" :list="list"></u-notice-bar>
-				</view>
+				<!-- <view class='scrollx' v-if='!isShowTips'>
+					<u-notice-bar mode="horizontal" duration='3000' :list="list" :is-circular='false' @click='noticeBar'></u-notice-bar>
+				</view> -->
+				
 				<view class="navSection">
 					<view class="innerSection">
 						<view class="nav-box">
@@ -82,7 +83,7 @@
 					:showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index"
 					@changeUrl="changeUrl" @checkMore="checkMore"></audition>
 				<!--精品推荐 start-->
-				<!-- <view class="groupView" style="margin-top: 24rpx;">
+			<!-- 	<view class="groupView" style="margin-top: 24rpx;">
 					<view class="headView">
 						<view class="title">推荐</view>
 					</view>
@@ -136,7 +137,6 @@
 					</view>
 				</u-popup>
 				<!--购买重点题库 end-->
-
 
 			</template>
 
@@ -252,11 +252,9 @@
 				moduleList: [], //动态模块
 				height: 0,
 				list: [
-									'寒雨连江夜入吴',
-									'平明送客楚山孤',
-									'洛阳亲友如相问',
-									'一片冰心在玉壶'
-								]
+					'寒雨连江夜入吴',
+					'平明送客楚山孤'
+				]
 			}
 		},
 		mounted() {
@@ -345,6 +343,13 @@
 
 		},
 		methods: {
+			// 点击公告栏内容
+			noticeBar(a,b) {
+				let _this = this;
+				uni.navigateTo({
+					url: '/pages/index/notice?title=' + _this.list[a]
+				})
+			},
 			async getMember() {
 				var r = uni.getStorageSync('userInfo');
 				if (!r) {
@@ -580,28 +585,31 @@
 					var member = app.globalData.member;
 					if (this.userInfo.phone) { // 已绑定手机号
 						if (member) {
-
-							if (member.memberType == 0 || member.memberType == 1) {
+							if (member.memberType == 0 || member.memberType == 2) {
 								uni.navigateTo({
-									url: '/homeSubPackage/pages/important/index'
+									url: '/homeSubPackage/pages/important/index?buy='+true
 								})
 								return;
 							}
 						}
+						
 						if (this.zdtkConfig.get('isNeedPay') == 1 && !this.hasBuyedZDTK) { // 需要购买，但是没买
 							// this.isShowImportBuy = true
+							// uni.navigateTo({
+							// 	// url: '/pages/buy/buy?subjectId=' + this.zdtkConfig.id,
+							// 	url: '/mineSubPackage/pages/vip/vip',
+							// 	event: {
+							// 		reloadOrder: function(data) {
+							// 			self.bindOrder()
+							// 		}
+							// 	}
+							// })
 							uni.navigateTo({
-								// url: '/pages/buy/buy?subjectId=' + this.zdtkConfig.id,
-								url: '/mineSubPackage/pages/vip/vip',
-								event: {
-									reloadOrder: function(data) {
-										self.bindOrder()
-									}
-								}
+								url: '/homeSubPackage/pages/important/index?buy='+false
 							})
 						} else {
 							uni.navigateTo({
-								url: '/homeSubPackage/pages/important/index'
+								url: '/homeSubPackage/pages/important/index?buy='+true
 							})
 						}
 					} else { // 未绑定手机号，跳转至绑定页

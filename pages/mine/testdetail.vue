@@ -65,7 +65,7 @@
 						</view>
 						<view v-else>
 							<view v-if="!hasBuyedComments">
-								<view class="accuracy" style="margin: 0;">全民正确率：解锁试题解析可见</view>
+								<view class="accuracy" style="margin: 0;">全民正确率：黑金VIP、白银VIP会员可见</view>
 								<view  style="text-align: center;margin-top: 120rpx;">
 									<button class="btnComments" type="default" @click="handleBuyComments">
 										<image src="../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>

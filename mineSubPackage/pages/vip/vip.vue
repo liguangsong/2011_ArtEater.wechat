@@ -450,7 +450,7 @@
 				</view>
 			</view>
 		</view>
-		<Modal @cancle='isShow=false' :isShow='isShow' :title='title' :submit='submit' :submitFn='submitFn'/>
+		<Modal @cancle='isShow=false' :isShow='isShow' :title='title' :submit='submit' @submitFn='submitFn'/>
 	</view>
 </template>
 
@@ -641,19 +641,31 @@
 			// 不是会员第一次进行购买
 			firstBuy() {
 				let _this = this;
+				if (this.active==undefined) {
+					this.active=0
+				}
 				let str = `开通${this.active==0?'黑金VIP':this.active==1?'铂金VIP':'白银VIP'}`;
-				uni.showModal({
-					title: str,
-					confirmColor: '#ED3535',
-					confirmText: '确定',
-					success(res) {
-						if (res.confirm) {
-							_this.showFixed = true;
-							var cash = _this.list[_this.active].promotionPrice || _this.list[_this.active].memberPrice;
-							_this.payment(cash * 100)
-						}
-					}
-				})
+				// uni.showModal({
+				// 	title: str,
+				// 	confirmColor: '#ED3535',
+				// 	confirmText: '确定',
+				// 	success(res) {
+				// 		if (res.confirm) {
+				// 			_this.showFixed = true;
+				// 			var cash = _this.list[_this.active].promotionPrice || _this.list[_this.active].memberPrice;
+				// 			_this.payment(cash * 100)
+				// 		}
+				// 	}
+				// })
+				this.title = str;
+				this.submit = '确定';
+				this.submitFn = () => {
+					_this.isShow = false;
+					_this.showFixed = true;
+					var cash = _this.list[_this.active].promotionPrice || _this.list[_this.active].memberPrice;
+					_this.payment(cash * 100)
+				}
+				this.isShow = true;
 			},
 			// 白银续费
 			baiyinRenew() {
@@ -682,10 +694,12 @@
 					// })
 					this.title = '升级为黑金VIP会员';
 					this.submit = '继续开通';
-					this.submitFn = function() {
+					this.submitFn = () => {
 						var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 						var n = this.list[0].promotionPrice || this.list[0].memberPrice;
 						cash = (n - baiyinPrice) / 365 * Math.abs(time - 365) * 100;
+						this.isShow = false;
+						this.showFixed = false;
 						this.payment(cash)
 					}
 					this.isShow = true;
@@ -702,7 +716,9 @@
 					// })
 					this.title = '续费黑金VIP';
 					this.submit = '确定';
-					this.submitFn = function() {
+					this.submitFn = () => {
+						this.isShow = false;
+						this.showFixed = false;
 						this.payment(baiyinPrice * 100)
 					}
 					this.isShow = true;
@@ -735,11 +751,13 @@
 					// })
 					this.title = '升级为黑金VIP会员';
 					this.submit = '继续开通';
-					this.submitFn = function() {
-						var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
-						var n = this.list[0].promotionPrice || this.list[0].memberPrice;
+					this.submitFn = () => {
+						this.isShow = false;
+						this.showFixed = false;
+						var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+						var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
 						cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
-						this.payment(cash * 100)
+						_this.payment(cash * 100)
 					}
 					this.isShow = true;
 				} else {
@@ -755,7 +773,9 @@
 					// })
 					this.title = '续费铂金VIP';
 					this.submit = '确定';
-					this.submitFn = function() {
+					this.submitFn = () => {
+						this.isShow = false;
+						this.showFixed = false;
 						this.payment(bojinPrice * 100)
 					}
 					this.isShow = true;
@@ -781,7 +801,9 @@
 				// })
 				this.title = '续费黑金';
 				this.submit = '确定';
-				this.submitFn = function() {
+				this.submitFn = () => {
+					this.isShow = false;
+					this.showFixed = false;
 					var heijinPrice = _this.list[0].promotionPrice || _this.list[0].memberPrice;
 					this.payment(heijinPrice * 100)
 				}
@@ -824,16 +846,25 @@
 			// 支付成功
 			async paymentSuccess(tradeId, cash) {
 				var _this = this;
-				uni.showModal({
-					title: '开通成功',
-					confirmColor: '#ED3535',
-					confirmText: '确定',
-					success(res) {
-						if (res.confirm) {
-							_this.showFixed = false;
-						}
-					}
-				})
+				
+				// uni.showModal({
+				// 	title: '开通成功',
+				// 	confirmColor: '#ED3535',
+				// 	confirmText: '确定',
+				// 	success(res) {
+				// 		if (res.confirm) {
+				// 			_this.showFixed = false;
+				// 		}
+				// 	}
+				// })
+				this.title = '开通成功';
+				this.submit = '确定';
+				this.submitFn = () => {
+					this.isShow = false;
+					this.showFixed = false;
+				}
+				this.isShow = true;
+				
 				await _this.getIntegral(cash / 100);
 				_this.createOrder(tradeId);
 				_this.createMember(tradeId);
@@ -847,7 +878,7 @@
 				// })
 				this.title = '开通失败';
 				this.submit = '确定';
-				this.submitFn = function() {
+				this.submitFn = () => {
 					this.isShow = false;
 				}
 				this.isShow = true;

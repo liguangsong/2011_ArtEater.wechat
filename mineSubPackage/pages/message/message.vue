@@ -7,8 +7,12 @@
 			<button v-else class="read">全部已读</button>
 		</view>
 		<view class="msgItem u-badge-wrap" v-for="msg in msgList" @click="handleMsgClick" :data-item="msg">
-			<view class="conImg">
+			<!-- <view class="conImg">
 				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/coupon2.png"></image>
+			</view> -->
+			<view class="conImg">
+				<image v-if='msg.surface[0]' :src="msg.surface[0]"></image>
+				<image v-else src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/coupon2.png"></image>
 			</view>
 			<view style='display: flex; flex: 1;border-bottom: 2rpx solid rgba(0,0,0,.06);'>
 				<view class="conView">
@@ -84,6 +88,7 @@
 					msgQuery.skip((this.page - 1) * this.pageSize)
 					msgQuery.limit(this.pageSize)
 					msgQuery.find().then(mres=>{
+						console.log(mres, 'mres');
 						if(mres.length > 0) {
 							mres.forEach((item)=>{
 								item.set('msgid', item.id)

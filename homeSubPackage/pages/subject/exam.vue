@@ -4,7 +4,7 @@
 		<view class="buytipsView" v-if="baseSubjectDetail.price>0 && !hasBuyed">
 			<view class="tipView" @click="handleSubjectBuy">
 				<view class="txt">
-					本章为免费内容，学习更多知识，请点击购买全部章节
+					本章为免费内容，学习更多知识，请点击开通⻝艺兽⼤会员
 				</view>
 				<view class="icon">
 					<u-icon name="arrow-right" color="rgba(0, 0, 0, 0.37)" size="24"></u-icon>
@@ -127,7 +127,7 @@
 						</view>
 						<view v-else>
 							<view v-if="!hasBuyedComments">
-								<view class="accuracy" style="margin: 0;">全民正确率：解锁试题解析可见</view>
+								<view class="accuracy" style="margin: 0;">全民正确率：黑金VIP、白银VIP会员可见</view>
 								<view  style="text-align: center;margin-top: 186rpx;">
 									<button class="btnComments" type="default" @click="handleBuyComments">
 										<image src="../../../static/icon/icon_lock.png" style="width: 32rpx;height: 32rpx;display: inline-block;vertical-align: middle;"></image>
@@ -284,7 +284,6 @@
 			})
 			uni.getSystemInfo({
 			  success: res => {
-				console.log(res)
 				self.screenWidth = res.screenWidth
 			  }
 			})
@@ -414,7 +413,9 @@
 				var self = this
 				var query = new this.Parse.Query("Subjects")
 				query.get(this.baseSubjectId).then(res=>{
+					console.log(res, 'res');
 					self.baseSubjectDetail = res
+					console.log(self.baseSubjectDetail, 'self.baseSubjectDetail');
 				})
 			},
 			/* 判断当前是否显示答案解析 */
@@ -451,6 +452,9 @@
 				query.equalTo('state', 1)
 				query.first().then(res=>{
 					if(res){
+						self.hasBuyed = true
+					}
+					if (self.vip) {
 						self.hasBuyed = true
 					}
 				})

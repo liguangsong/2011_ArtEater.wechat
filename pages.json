@@ -12,6 +12,13 @@
 			}
 		},
 		{
+			"path": "pages/index/notice",
+			"style": {
+				"navigationBarBackgroundColor": "#fbfbfa",
+				"navigationBarTitleText": "公告栏"
+			}
+		},
+		{
 			"path": "pages/index/lunch",
 			"style": {
 				"navigationBarTitleText": "食艺兽",
