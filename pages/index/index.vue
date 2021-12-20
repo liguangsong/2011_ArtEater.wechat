@@ -148,6 +148,9 @@
 		<!--轮播 end-->
 		<!-- <u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true"
 			:zoom="false" @click="handleStep"> -->
+		<view class='mask mask_collection' @click="handleShowCollection" v-if='isShowCollection'>
+			<image src="../../static/collection.png" mode=""></image>
+		</view>
 		<view class='mask' @click="handleStep" v-if='isShowTips'>
 			<view v-if="step==8" class="step bottom">
 				<view class="navItem" style="right:4rpx">
@@ -234,6 +237,7 @@
 				userInfo: {},
 				isShowLogin: false,
 				isShowTips: false,
+				isShowCollection: false,
 				step: 1,
 				toUrl: '',
 				toAction: '',
@@ -321,6 +325,12 @@
 				},
 				fail() {
 					self.isShowTips = true
+				}
+			})
+			uni.getStorage({
+				key: 'collection',
+				success: (res) => {
+					self.isShowCollection = res.data
 				}
 			})
 			const Subjects = this.Parse.Object.extend("Subjects")
@@ -788,8 +798,20 @@
 						key: 'hasHomeTiped',
 						data: true
 					})
+					uni.setStorage({
+						key: 'collection',
+						data: true
+					})
 					this.isShowTips = false
 				}
+			},
+			// 显示收藏小程序
+			handleShowCollection() {
+				this.isShowCollection = false;
+				uni.setStorage({
+					key: 'collection',
+					data: false
+				})
 			},
 			/*点击banner图*/
 			handleBannerClick(e) {
@@ -1139,7 +1161,10 @@
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
 	}
-
+	.mask_collection image {
+		width: 100%;
+		height: 100%;
+	}
 	.mask {
 		position: fixed;
 		top: 0;
