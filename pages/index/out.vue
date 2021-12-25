@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<!-- <web-view src="https://www.arteater.cn/">111</web-view> -->
-		<web-view src="http://lishaokai.cn">111</web-view>
+		<!-- <web-view src="http://lishaokai.cn">111</web-view> -->
 	</view>
 </template>
 

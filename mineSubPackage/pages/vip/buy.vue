@@ -147,6 +147,7 @@
 			TopNavbar, Modal
 		},
 		onLoad(options) {
+			console.log(options);
 			// this.list = JSON.parse(options.obj);
 			this.list = [{
 				price: 999,
@@ -158,6 +159,7 @@
 			
 		},
 		async created() {
+			// console.log(999);
 			this.user = this.Parse.User.current();
 			var query = new this.Parse.Query('MemberType');
 			var ls = await query.find();
@@ -222,8 +224,7 @@
 			// 支付
 			payment(cash) {
 				
-				this.checkSendMessage()
-				return
+				
 				cash = 0;
 				var _this = this;
 				if (cash == 0) {
@@ -266,6 +267,8 @@
 						await record.save()
 					})
 				}
+				this.checkSendMessage()
+				// return
 				await this.getIntegral(cash / 100);
 				this.createOrder(tradeId);
 				this.createMember(tradeId);
