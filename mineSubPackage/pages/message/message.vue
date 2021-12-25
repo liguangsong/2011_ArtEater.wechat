@@ -83,12 +83,41 @@
 					if(res){
 						self.readHistory = res
 					}
+					var msgQuery1 = new this.Parse.Query("Opinions")
+					msgQuery1.equalTo('openid', self.userInfo.openid)
+					msgQuery1.notEqualTo('message', '')
+					msgQuery1.descending('createdAt')
+					msgQuery1.skip((this.page - 1) * this.pageSize)
+					msgQuery1.limit(this.pageSize)
+					msgQuery1.find().then(mres=>{
+						if(mres.length > 0) {
+							mres.forEach((item)=>{
+								item.set('msgid', item.id)
+								if(res&&res.get('MessageIds').indexOf(item.id)!=-1) {
+									item.set('isRead', 1)
+								} else {
+									item.set('isRead', 0)
+									self.notReadCount += 1
+								}
+								item.set('CreateTime', dateFormat(item.createdAt,'yyyy-MM-dd'))
+							})
+							self.status = 'loadmore'
+							mres = JSON.parse(JSON.stringify(mres));
+							mres.forEach(item => {
+								item.title = item.content
+								item.content = item.message;
+							})
+							self.msgList = self.msgList.concat(mres)
+						} else {
+							self.status = 'nomore'
+						}
+					})
+					
 					var msgQuery = new this.Parse.Query("Message")
 					msgQuery.descending('createdAt')
 					msgQuery.skip((this.page - 1) * this.pageSize)
 					msgQuery.limit(this.pageSize)
 					msgQuery.find().then(mres=>{
-						console.log(mres, 'mres');
 						if(mres.length > 0) {
 							mres.forEach((item)=>{
 								item.set('msgid', item.id)
@@ -102,11 +131,13 @@
 							})
 							self.status = 'loadmore'
 							self.msgList = self.msgList.concat(mres)
-							console.log(self.msgList );
+							console.log(self.msgList);
 						} else {
 							self.status = 'nomore'
 						}
 					})
+					
+					
 				})
 			},
 			/*点击消息查看详情*/
@@ -181,6 +212,7 @@
 <style>
 	.myPage{
 		width: 100%;
+		height: 100%;
 		overflow-x: hidden;
 		padding-left: 30rpx;
 	}

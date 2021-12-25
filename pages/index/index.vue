@@ -149,7 +149,7 @@
 		<!-- <u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true"
 			:zoom="false" @click="handleStep"> -->
 		<view class='mask mask_collection' @click="handleShowCollection" v-if='isShowCollection'>
-			<image src="../../static/collection.png" mode=""></image>
+			<image src="../../static/collection.png" mode='aspectFit'></image>
 		</view>
 		<view class='mask' @click="handleStep" v-if='isShowTips'>
 			<view v-if="step==8" class="step bottom">
@@ -258,10 +258,9 @@
 				studyList: [],
 				moduleList: [], //动态模块
 				height: 0,
-				list: [
-					'寒雨连江夜入吴',
-					'平明送客楚山孤'
-				]
+				list: ['111','222'],
+				notice: [],	// 公告
+				noticeTitleArr: [],	// 公告标题
 			}
 		},
 		mounted() {
@@ -311,8 +310,31 @@
 			//获取所有的模块
 			this.getModules();
 			// this.getLearning()
+			this.getNotice()
 		},
-		onLoad() {
+		onLoad(options) {
+			// var query1 = new this.Parse.Query(this.Parse.User)
+			// query1.first().then(u=>{
+			// 	console.log(u, ';;;;;;;;;');
+			// })
+			// .catch(r=>{
+			// 	console.log(3,r);
+			// })
+			if (options && options.code) {
+				
+				uni.setStorage({
+					key: 'parentOpenId',
+					data: options.code,
+				})
+			}
+			// let query = new self.Parse.Query(User);
+			// query.equalTo('openid', options.code)
+			// query.first().then(user=>{
+			// 	user.set('childNum', ress.data)
+			// 	user.save()
+			// })
+			
+			
 			var self = this
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
@@ -333,6 +355,7 @@
 					self.isShowCollection = res.data
 				}
 			})
+			
 			const Subjects = this.Parse.Object.extend("Subjects")
 			const query = new this.Parse.Query('Subjects')
 
@@ -356,12 +379,35 @@
 
 		},
 		methods: {
+			// 获取公告栏内容
+			getNotice() {
+				let _this = this;
+				var query = new this.Parse.Query('BulletinBoard');
+				query.equalTo("isShow", true);
+				query.find().then(data=>{
+					if (data) {
+						data = JSON.parse(JSON.stringify(data));
+						_this.notice = data;
+						data.forEach(item => {
+							_this.noticeTitleArr.push(item.bulletinName)
+						})
+					}
+				})
+			},
 			// 点击公告栏内容
 			noticeBar(a,b) {
 				let _this = this;
+				// console.log(a,b);
+				// uni.navigateTo({
+				// 	url: '/pages/index/notice?title=' + _this.list[a]
+				// })
+				// console.log(123);
 				uni.navigateTo({
-					url: '/pages/index/notice?title=' + _this.list[a]
+					url: '/pages/index/out?' + _this.list[a]
 				})
+				// location.href = 'http://lishaokai.cn'
+				
+				
 			},
 			async getMember() {
 				var r = uni.getStorageSync('userInfo');
@@ -1065,10 +1111,6 @@
 		/* font-weight: bold; */
 	}
 
-	.groupView .subjectView .subjectItem:nth-child(n+2) {
-		/* margin-top: 12rpx; */
-	}
-
 	.newsView {
 		padding: 0 30rpx;
 	}
@@ -1162,8 +1204,10 @@
 		font-size: 34rpx;
 	}
 	.mask_collection image {
-		width: 100%;
-		height: 100%;
+		position: absolute;
+		// width: 100%;
+		height: calc(100vh - 100rpx);
+		bottom: 0;
 	}
 	.mask {
 		position: fixed;

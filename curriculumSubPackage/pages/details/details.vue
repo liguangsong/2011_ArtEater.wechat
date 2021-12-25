@@ -63,7 +63,7 @@
 		<!-- 推荐学习 -->
 		<view class="recommend" v-if='recommendedList.length'>
 			<view class="recommend-title">
-				推荐学习
+				推荐课程
 			</view>
 			<Item v-for='(item,i) in recommendedList' v-if='!item.hide' :key='i' :item='item' :vip='vip' />
 		</view>

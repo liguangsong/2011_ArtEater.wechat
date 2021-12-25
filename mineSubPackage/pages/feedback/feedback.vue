@@ -64,6 +64,7 @@
 						opinion.set("phone", self.userInfo.phone);
 						opinion.set("openid", self.userInfo.openid);
 						opinion.set("content", self.form.content);
+						opinion.set("message", '');
 						opinion.save().then(res => {
 							self.form.content = ''
 							uni.showToast({

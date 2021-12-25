@@ -24,6 +24,38 @@
 				translateY: 'translateY(0)'
 			}
 		},
+		created() {
+			
+			// let self = this;
+			// let query2 = new this.Parse.Query('User');
+			// query2.equalTo('openid', 'o-ZjI5VT7BOGSD3kXtUnV7wFZh4I')
+			// query2.first().then(user=>{
+			// 	user = JSON.parse(JSON.stringify(user))
+			// 	let q = new self.Parse.Query('PullNew');
+			// 	q.equalTo('openid', 'o-ZjI5VT7BOGSD3kXtUnV7wFZh4I')
+			// 	q.first().then(r=>{
+			// 		if (r) {
+			// 			// 修改
+			// 			let query3 = new self.Parse.Query('PullNew');
+			// 			query3.equalTo('openid', 'o-ZjI5VT7BOGSD3kXtUnV7wFZh4I')
+			// 			query3.first().then(r1=>{
+			// 				r1.set('recruits', Array.from(new Set(['555', 666, ...r1.attributes.recruits])))
+			// 				r1.save()
+			// 			})
+			// 		} else {
+			// 			// 创建
+			// 			let Extend = self.Parse.Object.extend("PullNew");
+			// 			let extend = new Extend();
+			// 			extend.set('openid', 'o-ZjI5VT7BOGSD3kXtUnV7wFZh4I');
+			// 			extend.set('nickName', user.nickName);
+			// 			extend.set('phone', user.phone);
+			// 			extend.set('buyNum', 0);
+			// 			extend.set('recruits',['o-ZjI5VT7BOGSD3kXtUnV7wFZh4I'])
+			// 			extend.save()
+			// 		}
+			// 	})
+			// })
+		},
 		onLoad(options) {
 			var self = this
 			uni.getSystemInfo({
@@ -33,11 +65,11 @@
 					self.screenHeight = res.windowHeight * factor - (self.top + self.height)*factor - uni.upx2px(56)*factor;
 				}
 			})
-			timer = setTimeout(function(){
-				uni.reLaunch({
-					url:'./index'
-				})
-			}, 3000)
+			// timer = setTimeout(function(){
+			// 	uni.reLaunch({
+			// 		url:'./index'
+			// 	})
+			// }, 3000)
 			const scene = decodeURIComponent(options.scene)
 			// console.log("scene:" + scene)
 			if(scene){

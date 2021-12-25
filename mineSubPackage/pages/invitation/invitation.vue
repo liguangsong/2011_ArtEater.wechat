@@ -45,7 +45,7 @@
 				rightCount: 0,
 				percent: '0',
 				complateCount: 0,
-				
+				maskData: null
 			}
 		},
 		components: {
@@ -96,21 +96,77 @@
 								self.rightCount = count
 							})
 							self.percent = (self.rightCount*100/self.allCount).toFixed(2)
-							self.handleBuild()
+							// self.handleBuild()
+							self.getData()
 						},
-						fail: (error) => {
-							uni.showToast({
-								icon: 'none',
-								title: '生成二维码失败',
-								duration: 2000
-							})
-							console.log(error)
-						}
+						// fail: (error) => {
+						// 	uni.showToast({
+						// 		icon: 'none',
+						// 		title: '生成二维码失败',
+						// 		duration: 2000
+						// 	})
+						// }
 					});
+				
 				}
 			})
 		},
 		methods: {
+			getData(e) {
+				//获取accessToken
+				let that = this;
+				const APP_ID = 'wx8bef88e5b3f056be'; // 小程序appid
+				const APP_SECRET = 'b5d651459568855faa3b6a43faba3d6e'; // 小程序app_secret
+				let access_token = '';
+				uni.request({
+					url: "https://api.weixin.qq.com/cgi-bin/token", //固定链接，不用改
+					data: {
+						grant_type: 'client_credential',
+						appid: APP_ID,
+						secret: APP_SECRET
+					},
+					success: function(res) {
+						console.log('获取accessToken', res)
+						access_token = res.data.access_token;
+						// 接口B：适用于需要的码数量极多的业务场景 生成的是小程序码
+						that.getQrCode(access_token);
+					}
+				})
+			},
+			//获取二维码
+			getQrCode(access_token) {
+				var that = this;
+				uni.request({
+					url: "https://api.weixin.qq.com/wxa/getwxacode?access_token=" +
+						access_token, //固定链接，不用改
+					method: 'POST',
+					responseType: 'arraybuffer', //设置响应类型
+					data: {
+						path: 'pages/index/index?code=' + that.userInfo.openid, // 必须是已经发布的小程序存在的页面（否则报错）
+						width: 298,
+						is_hyaline: true,
+						auto_color: false, // 自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
+						line_color: {
+							"r": "0",
+							"g": "0",
+							"b": "0"
+						} // auto_color 为 false 时生效，使用 rgb 设置颜色
+					},
+					success: function(res) {
+						// console.log('获取二维码', res)
+						that.maskData = "data:image/PNG;BASE64," + uni.arrayBufferToBase64(res
+							.data);
+						that.handleBuild()
+					},
+					fail: (error) => {
+						uni.showToast({
+							icon: 'none',
+							title: '生成二维码失败',
+							duration: 2000
+						})
+					}
+				})
+			},
 			/**
 			 * 画一个圆角矩形
 			 */
@@ -178,7 +234,7 @@
 				await uni.downloadFile({
 					url: self.userInfo.avatarUrl,
 					success (headRes) {
-						uni.downloadFile({url: self.qrcode, success (qrcodeRes) {
+						// uni.downloadFile({url: self.qrcode, success (qrcodeRes) {
 							uni.downloadFile({url: 'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%88%86%E4%BA%AB%E8%83%8C%E6%9D%BF.png', success (bg) {
 							uni.downloadFile({url: self.sharePicImg, success (bgRes) {	
 								const sysInfo = uni.getSystemInfoSync();
@@ -191,15 +247,14 @@
 								context.draw() // 先清空画布
 								context.fillRect(0, 0, 750 * factor, picHeight * factor)
 								context.drawImage(bgRes.tempFilePath, 0, 0, bgRes.width, bgRes.height, 0 , 0, picWidth*factor, 1066*factor);
-								// context.drawImage(bg.tempFilePath, 0, 0, bg.width, bg.height, 0, picHeight*factor-520, picWidth*factor, 400*factor);
 								context.drawImage(bg.tempFilePath, 0,0,1396,656, 0,(picHeight-328)*factor, 602 * factor,328 * factor);
-								context.setFillStyle('black')
+								// context.setFillStyle('black')
 								self.roundRect(context, 462 * factor, 50 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
 								
 								// 绘制二维码
-								context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 52 * factor, 98 * factor,98 * factor);
+								// context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 52 * factor, 98 * factor,98 * factor);
+								context.drawImage(self.maskData, 466 * factor, 52 * factor, 98 * factor,98 * factor);
 								// 绘制头像外层圆形框
-								// console.log(factor, 'factor[[[[]]]]');
 								self.headFill(context, '',  90 * factor, 260 * factor, 720 * factor) // 绘制头像外层框
 								self.headPic(context, '',  90 * factor, 260 * factor, 720 * factor) // 绘制头像外层框
 								
@@ -213,13 +268,7 @@
 								context.setFillStyle('#000')
 								let user = self.userInfo.nickName
 								const m3 = context.measureText(user)
-								// const m3 = context.measureText('我是帅是帅我是帅')
-								// console.log('m3', m3, factor, user);
-								// context.fillText(user, 275 * factor, 856 * factor )
-								// context.fillText('我是帅', 100 * factor  + ((200 - (m3.width / factor)) / 2 * factor) + (m3.width), 840*factor )
 								context.fillText(user, (picWidth/2)*factor-(m3.width/2), 850*factor )
-								
-								
 								
 								// 已学习时间
 								context.setFontSize(20 * factor)
@@ -269,7 +318,8 @@
 								context.setFontSize(54*factor)
 								context.setFillStyle('rgba(237, 53, 53, 1)')
 								context.font = 'normal bold ' + parseInt(54 * factor) + 'px Arial, Helvetica, sans-serif'
-								let percent = parseInt(self.percent) + ''
+								let percent = parseInt(self.percent) + '';
+								percent = percent == 'NaN' ? '100' : percent;
 								const m7 = context.measureText(percent)
 								context.fillText(percent, 400* factor + (200 - m7.width / factor) / 2 * factor, 966 * factor )
 								// %
@@ -302,7 +352,7 @@
 								})
 							}})
 							}})
-						}})
+						// }})
 					}
 				})
 			},
@@ -312,7 +362,7 @@
 				uni.saveImageToPhotosAlbum({
 					filePath: self.sharePicImg,
 					success(res) {
-						console.log(res);
+						// console.log(res);
 						self.isShowTips=true;
 						// uni.showModal({
 						// 	title: '图片保存成功',

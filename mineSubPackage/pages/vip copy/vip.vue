@@ -645,14 +645,31 @@
 					this.active=0
 				}
 				let str = `开通${this.active==0?'黑金VIP':this.active==1?'铂金VIP':'白银VIP'}`;
-				let cash = _this.list[_this.active].promotionPrice || _this.list[_this.active].memberPrice;
-				let obj = [{
-					price: cash,
-					title: str,
-					type: _this.active
-				}]
+				// uni.showModal({
+				// 	title: str,
+				// 	confirmColor: '#ED3535',
+				// 	confirmText: '确定',
+				// 	success(res) {
+				// 		if (res.confirm) {
+				// 			_this.showFixed = true;
+				// 			var cash = _this.list[_this.active].promotionPrice || _this.list[_this.active].memberPrice;
+				// 			_this.payment(cash * 100)
+				// 		}
+				// 	}
+				// })
+				
+				// this.title = str;
+				// this.submit = '确定';
+				// this.submitFn = () => {
+				// 	_this.isShow = false;
+				// 	_this.showFixed = true;
+				// 	var cash = _this.list[_this.active].promotionPrice || _this.list[_this.active].memberPrice;
+				// 	_this.payment(cash * 100)
+				// }
+				// this.isShow = true;
+				
 				uni.navigateTo({
-					url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
+					url: '/mineSubPackage/pages/vip/buy'
 				})
 			},
 			// 白银续费
@@ -666,27 +683,59 @@
 				var baiyinPrice = this.list[2].promotionPrice || this.list[2].memberPrice;
 				var _this = this;
 				if (this.isChajia) {
-
-					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
-					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					cash = (n - baiyinPrice) / 365 * Math.abs(time - 365) * 100;
-
-					let obj = [{
-						price: cash,
-						title: '升级为黑金VIP会员',
-						type: 0
-					}]
+					// uni.showModal({
+					// 	title: '升级为黑金VIP会员',
+					// 	confirmColor: '#ED3535',
+					// 	confirmText: '继续开通',
+					// 	success(res) {
+					// 		// 升级为黑金
+					// 		if (res.confirm) {
+					// 			var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+					// 			var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+					// 			cash = (n - baiyinPrice) / 365 * Math.abs(time - 365) * 100;
+					// 			_this.payment(cash)
+					// 		}
+					// 	}
+					// })
+					
+					// this.title = '升级为黑金VIP会员';
+					// this.submit = '继续开通';
+					// this.submitFn = () => {
+					// 	var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+					// 	var n = this.list[0].promotionPrice || this.list[0].memberPrice;
+					// 	cash = (n - baiyinPrice) / 365 * Math.abs(time - 365) * 100;
+					// 	this.isShow = false;
+					// 	this.showFixed = false;
+					// 	this.payment(cash)
+					// }
+					// this.isShow = true;
+					
 					uni.navigateTo({
-						url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
+						url: '/mineSubPackage/pages/vip/buy'
 					})
 				} else {
-					let obj = [{
-						price: baiyinPrice,
-						title: '续费白银VIP',
-						type: 2
-					}]
+					// uni.showModal({
+					// 	title: '续费黑金VIP',
+					// 	confirmColor: '#ED3535',
+					// 	confirmText: '确定',
+					// 	success(res) {
+					// 		if (res.confirm) {
+					// 			_this.payment(baiyinPrice * 100)
+					// 		}
+					// 	}
+					// })
+					
+					// this.title = '续费黑金VIP';
+					// this.submit = '确定';
+					// this.submitFn = () => {
+					// 	this.isShow = false;
+					// 	this.showFixed = false;
+					// 	this.payment(baiyinPrice * 100)
+					// }
+					// this.isShow = true;
+					
 					uni.navigateTo({
-						url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
+						url: '/mineSubPackage/pages/vip/buy'
 					})
 				}
 			},
@@ -701,28 +750,59 @@
 				var bojinPrice = this.list[1].promotionPrice || this.list[1].memberPrice;
 				var _this = this;
 				if (this.isChajia) {
+					// uni.showModal({
+					// 	title: '升级为黑金VIP会员',
+					// 	confirmColor: '#ED3535',
+					// 	confirmText: '继续开通',
+					// 	success(res) {
+					// 		// 升级为黑金
+					// 		if (res.confirm) {
+					// 			var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+					// 			var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+					// 			cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
+					// 			_this.payment(cash * 100)
+					// 		}
+					// 	}
+					// })
 					
-					var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
-					var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-					cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
+					// this.title = '升级为黑金VIP会员';
+					// this.submit = '继续开通';
+					// this.submitFn = () => {
+					// 	this.isShow = false;
+					// 	this.showFixed = false;
+					// 	var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
+					// 	var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+					// 	cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
+					// 	_this.payment(cash * 100)
+					// }
+					// this.isShow = true;
 					
-					let obj = [{
-						price: cash,
-						title: '升级为黑金VIP会员',
-						type: 0
-					}]
 					uni.navigateTo({
-						url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
+						url: '/mineSubPackage/pages/vip/buy'
 					})
 				} else {
+					// uni.showModal({
+					// 	title: '续费铂金VIP',
+					// 	confirmColor: '#ED3535',
+					// 	confirmText: '确定',
+					// 	success(res) {
+					// 		if (res.confirm) {
+					// 			_this.payment(bojinPrice * 100)
+					// 		}
+					// 	}
+					// })
 					
-					let obj = [{
-						price: bojinPrice,
-						title: '续费铂金VIP',
-						type: 1
-					}]
+					// this.title = '续费铂金VIP';
+					// this.submit = '确定';
+					// this.submitFn = () => {
+					// 	this.isShow = false;
+					// 	this.showFixed = false;
+					// 	this.payment(bojinPrice * 100)
+					// }
+					// this.isShow = true;
+					
 					uni.navigateTo({
-						url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
+						url: '/mineSubPackage/pages/vip/buy'
 					})
 				}
 			},
@@ -733,16 +813,30 @@
 					this.showFixed = true;
 					return;
 				}
-
-					var heijinPrice = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-
-				let obj = [{
-					price: heijinPrice,
-					title: '续费黑金VIP',
-					type: 0
-				}]
+				// uni.showModal({
+				// 	title: '续费黑金VIP',
+				// 	confirmColor: '#ED3535',
+				// 	confirmText: '确定',
+				// 	success(res) {
+				// 		if (res.confirm) {
+				// 			var heijinPrice = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+				// 			_this.payment(heijinPrice * 100)
+				// 		}
+				// 	}
+				// })
+				
+				// this.title = '续费黑金';
+				// this.submit = '确定';
+				// this.submitFn = () => {
+				// 	this.isShow = false;
+				// 	this.showFixed = false;
+				// 	var heijinPrice = _this.list[0].promotionPrice || _this.list[0].memberPrice;
+				// 	this.payment(heijinPrice * 100)
+				// }
+				// this.isShow = true;
+				
 				uni.navigateTo({
-					url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
+					url: '/mineSubPackage/pages/vip/buy'
 				})
 			},
 
@@ -780,116 +874,149 @@
 
 			},
 			// 支付成功
-			// async paymentSuccess(tradeId, cash) {
-			// 	var _this = this;
-
-			// 	this.title = '开通成功';
-			// 	this.submit = '确定';
-			// 	this.submitFn = () => {
-			// 		this.isShow = false;
-			// 		this.showFixed = false;
-			// 	}
-			// 	this.isShow = true;
+			async paymentSuccess(tradeId, cash) {
+				var _this = this;
 				
-			// 	await _this.getIntegral(cash / 100);
-			// 	_this.createOrder(tradeId);
-			// 	_this.createMember(tradeId);
-			// },
+				// uni.showModal({
+				// 	title: '开通成功',
+				// 	confirmColor: '#ED3535',
+				// 	confirmText: '确定',
+				// 	success(res) {
+				// 		if (res.confirm) {
+				// 			_this.showFixed = false;
+				// 		}
+				// 	}
+				// })
+				this.title = '开通成功';
+				this.submit = '确定';
+				this.submitFn = () => {
+					this.isShow = false;
+					this.showFixed = false;
+				}
+				this.isShow = true;
+				
+				await _this.getIntegral(cash / 100);
+				_this.createOrder(tradeId);
+				_this.createMember(tradeId);
+			},
 			// 支付失败
-			// paymentFail() {
-			// 	this.title = '开通失败';
-			// 	this.submit = '确定';
-			// 	this.submitFn = () => {
-			// 		this.isShow = false;
-			// 	}
-			// 	this.isShow = true;
-			// },
+			paymentFail() {
+				// uni.showModal({
+				// 	title: '开通失败',
+				// 	confirmColor: '#ED3535',
+				// 	confirmText: '确定',
+				// })
+				this.title = '开通失败';
+				this.submit = '确定';
+				this.submitFn = () => {
+					this.isShow = false;
+				}
+				this.isShow = true;
+			},
 			// 获取积分与赠送积分
-			// async getIntegral(cash) {
-			// 	// cash = 10000;
-			// 	await this.Parse.Config.get().then(async config => {
-			// 		this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes.shopScore);
-			// 		this.userInfo.score_all = (this.userInfo.score_all || 0) + parseInt(cash * config.attributes.shopScore);
-			// 		this.user.set('score', this.userInfo.score);
-			// 		this.user.set('score_all', this.userInfo.score_all);
-			// 		await this.user.save();
-			// 		uni.setStorage({
-			// 			key: 'userInfo',
-			// 			data: this.userInfo
-			// 		})
-			// 	})
-			// },
+			async getIntegral(cash) {
+				// cash = 10000;
+				await this.Parse.Config.get().then(async config => {
+					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes.shopScore);
+					this.userInfo.score_all = (this.userInfo.score_all || 0) + parseInt(cash * config.attributes.shopScore);
+					this.user.set('score', this.userInfo.score);
+					this.user.set('score_all', this.userInfo.score_all);
+					// console.log(this.userInfo);
+					await this.user.save();
+					uni.setStorage({
+						key: 'userInfo',
+						data: this.userInfo
+					})
+				})
+			},
 			// 创建订单
-			// createOrder(tradeId) {
-			// 	var _this = this;
-			// 	var item = this.list[this.active];
-			// 	var dbOrder = this.Parse.Object.extend("Order")
-			// 	var order = new dbOrder()
-			// 	order.set('orderNo', tradeId)
-			// 	order.set("subjectId", item.objectId)
-			// 	order.set("subjectName", item.memberName)
-			// 	order.set("price", item.promotionPrice || item.memberPrice)
-			// 	order.set("cash", item.promotionPrice || item.memberPrice)
-			// 	order.set('couponAmount', 0)
-			// 	order.set('scoreAmount', this.userInfo.score)
-			// 	order.set('couponId', '')
-			// 	order.set("openId", this.userInfo.openid)
-			// 	order.set("state", 1)
-			// 	order.set("wechatPayOrderId", '') // 支付流水号
-			// 	order.save()
-			// },
+			createOrder(tradeId) {
+				var _this = this;
+				var item = this.list[this.active];
+				var dbOrder = this.Parse.Object.extend("Order")
+				var order = new dbOrder()
+				order.set('orderNo', tradeId)
+				order.set("subjectId", item.objectId)
+				order.set("subjectName", item.memberName)
+				order.set("price", item.promotionPrice || item.memberPrice)
+				order.set("cash", item.promotionPrice || item.memberPrice)
+				order.set('couponAmount', 0)
+				order.set('scoreAmount', this.userInfo.score)
+				order.set('couponId', '')
+				order.set("openId", this.userInfo.openid)
+				order.set("state", 1)
+				order.set("wechatPayOrderId", '') // 支付流水号
+				order.save().then(_order => {
+					// uni.showModal({
+					// 	content: '恭喜，购买成功',
+					// 	showCancel: false,
+					// 	success() {
+					// 		_this.showFixed = false;
+					// 	}
+					// })
+				}, (error) => {
+					// uni.showModal({
+					// 	content: '购买失败',
+					// 	showCancel: false
+					// })
+					uni.showToast({
+						title:'开通失败'
+					})
+				})
+			},
 			// 创建会员
-			// async createMember(tradeId) {
-			// 	if (this.member) {
-			// 		var arr = this.memberInfo.orderArr;
-			// 		arr.push(tradeId);
-			// 		this.member.set('orderArr', arr);
-			// 		this.member.set('status', 1)
-			// 		if (this.memberInfo.memberType == 0) {
-			// 			this.member.set('memberType', '0');
-			// 		}
-			// 		if (this.memberInfo.memberType == 1) {
-			// 			if (this.active == 1) {
-			// 				this.member.set('memberType', '1');
-			// 			} else {
-			// 				this.member.set('memberType', '0');
-			// 			}
-			// 		}
-			// 		if (this.memberInfo.memberType == 2) {
-			// 			if (this.active == 2) {
-			// 				this.member.set('memberType', '2');
-			// 			} else {
-			// 				this.member.set('memberType', '0');
-			// 			}
-			// 		}
-			// 		if (this.memberInfo.memberType = '') {
-			// 			this.member.set('endTime', this.getTime(12))
-			// 		} else {
-			// 			this.member.set('endTime', this.getTime(12) + Number(this.memberInfo.endTime) - Date.now())
-			// 		}
-			// 		await this.member.save();
-			// 	} else {
-			// 		// 初次创建
-			// 		var item = this.list[this.active];
-			// 		var memberType = item.surfaceId - 1 + '';
-			// 		var Member = this.Parse.Object.extend("MemberList");
-			// 		var member = new Member();
-			// 		member.set("openId", this.userInfo.openid);
-			// 		member.set('orderArr', [tradeId]);
-			// 		member.set('endTime', this.getTime(12))
-			// 		member.set('memberType', memberType)
-			// 		member.set('status', 1)
-			// 		await member.save();
-			// 	}
-			// 	this.getMember();
-			// 	let app = getApp();
-			// 	var query = new this.Parse.Query('MemberList');
-			// 	query.equalTo("openId", this.userInfo.openid);
-			// 	var results = await query.first();
-			// 	if (results) {
-			// 		app.globalData.member = JSON.parse(JSON.stringify(results));
-			// 	}
-			// }
+			async createMember(tradeId) {
+				if (this.member) {
+					var arr = this.memberInfo.orderArr;
+					arr.push(tradeId);
+					this.member.set('orderArr', arr);
+					this.member.set('status', 1)
+					if (this.memberInfo.memberType == 0) {
+						this.member.set('memberType', '0');
+					}
+					if (this.memberInfo.memberType == 1) {
+						if (this.active == 1) {
+							this.member.set('memberType', '1');
+						} else {
+							this.member.set('memberType', '0');
+						}
+					}
+					if (this.memberInfo.memberType == 2) {
+						if (this.active == 2) {
+							this.member.set('memberType', '2');
+						} else {
+							this.member.set('memberType', '0');
+						}
+					}
+					if (this.memberInfo.memberType = '') {
+						this.member.set('endTime', this.getTime(12))
+					} else {
+						this.member.set('endTime', this.getTime(12) + Number(this.memberInfo.endTime) - Date.now())
+					}
+					await this.member.save();
+				} else {
+					// 初次创建
+					var item = this.list[this.active];
+					var memberType = item.surfaceId - 1 + '';
+					var Member = this.Parse.Object.extend("MemberList");
+					var member = new Member();
+					member.set("openId", this.userInfo.openid);
+					member.set('orderArr', [tradeId]);
+					member.set('endTime', this.getTime(12))
+					member.set('memberType', memberType)
+					member.set('status', 1)
+					await member.save();
+				}
+				this.getMember();
+				let app = getApp();
+				var query = new this.Parse.Query('MemberList');
+				query.equalTo("openId", this.userInfo.openid);
+				var results = await query.first();
+				// console.log(12345,results);
+				if (results) {
+					app.globalData.member = JSON.parse(JSON.stringify(results));
+				}
+			}
 		}
 	}
 </script>

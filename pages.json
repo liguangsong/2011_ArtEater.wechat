@@ -12,6 +12,13 @@
 			}
 		},
 		{
+			"path": "pages/index/out",
+			"style": {
+				"navigationBarBackgroundColor": "#fbfbfa",
+				"navigationBarTitleText": "食艺兽"
+			}
+		},
+		{
 			"path": "pages/index/notice",
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
@@ -365,6 +372,22 @@
 					"path": "pages/vip/vip",
 					"style": {
 						"navigationBarTitleText": "开通会员",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/vip/buy",
+					"style": {
+						"navigationBarTitleText": "开通会员",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/vip/choosecoupon",
+					"style": {
+						"navigationBarTitleText": "选择优惠券",
 						"enablePullDownRefresh": false,
 						"navigationStyle": "custom"
 					}

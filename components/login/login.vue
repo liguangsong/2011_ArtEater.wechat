@@ -150,78 +150,198 @@
 					ruser.setACL(postACL);
 					ruser.save().then(res=>{
 						self.Parse.User.logIn(self.openid,self.openid).then(lres=>{
+							// console.log(lres,'lres');
+							// 如果通过别人的二维码进来进行注册，则设置自己parentOpenId为对方的openid
+							lres = JSON.parse(JSON.stringify(lres))
 							uni.setStorage({
 								key:'userInfo',
 								data: lres
 							})
-							// 赠送优惠券
-							var CouponRecords = self.Parse.Object.extend("CouponRecord");
-							var query = new self.Parse.Query("CouponInfo");
-							query.greaterThan('useEndTime', new Date())
-							query.find().then(coupons=>{
-								coupons.forEach(couponInfo=>{
-									var query1 = new self.Parse.Query("CouponRecord");
-									debugger
-									query1.equalTo('couponId', couponInfo.id)
-									query1.equalTo('mode', 'all')
-									query1.first().then(record=>{
-										if(record) { // 已全部发送
-											var couponRecord = new CouponRecords();
-											couponRecord.set("couponName", couponInfo.get('couponName'));
-											couponRecord.set("amount", parseFloat(couponInfo.get('amount')));
-											couponRecord.set("useEndTime", couponInfo.get('useEndTime'));
-											couponRecord.set("tipName", couponInfo.get('tipName'));
-											couponRecord.set("tipContent", couponInfo.get('tipContent'));
-											couponRecord.set("openid", self.openid);
-											couponRecord.set("mode", 'all');
-											couponRecord.set("productType", couponInfo.get('productType'));
-											couponRecord.set("state", 0);
-											couponRecord.set("orderNo", '');
-											couponRecord.set("useTime", new Date());
-											couponRecord.save()
-										}
-									})
-								})
-							})
-							// 赠送邀请人积分
+							
 							uni.getStorage({
-								key:'invitation',
-								success(invitation) {
-									console.log("邀请人:"+invitation.data+'_end')
-									if(invitation.data){ // 如果是被人邀请的，给邀请人送积分
-										self.Parse.Config.get().then(config=>{
-											var shareScore = config.get('shareScore')
-											console.log("邀请人获得积分:"+ shareScore+"_end")
-											if(shareScore > 0) {
-												var ScoreRecords = self.Parse.Object.extend("ScoreRecord")
-												var scoreRecord = new ScoreRecords()
-												scoreRecord.set('openid', invitation.data)
-												scoreRecord.set('channel', 'share')
-												scoreRecord.set('score', shareScore)
-												scoreRecord.save()
-												
-												// 修改用户积分
-												var userQuery = new self.Parse.Query(self.Parse.User)
-												userQuery.equalTo('openid', invitation.data)
-												userQuery.first().then(_user=>{
-													if(_user){
-														let score = _user.get('score')
-														if(!_user.get('score_all') || _user.get('score_all')==0){
-															_user.set('score_all', score + shareScore)
-														} else {
-															_user.set('score_all', _user.get('score_all') + shareScore)
-														}
-														_user.set('score', score + shareScore)
-														_user.save(null,  { useMasterKey: true }).then(()=>{
-															console.log('赠送积分成功')
-														})
-													}
+								key: 'parentOpenId',
+								success(ress) {
+									lres.parentOpenId = ress.data
+									uni.setStorage({
+										key:'userInfo',
+										data: lres
+									})
+									console.log(lres);
+									let query1 = new self.Parse.Query(self.Parse.User);
+									query1.equalTo('openid', lres.openid)
+									query1.first().then(user=>{
+										user.set('parentOpenId', ress.data)
+										user.save()
+									})
+									
+									let query2 = new self.Parse.Query('User');
+									query2.equalTo('openid', ress.data)
+									query2.first().then(user=>{
+										user = JSON.parse(JSON.stringify(user))
+										let q = new self.Parse.Query('PullNew');
+										q.equalTo('openid', ress.data)
+										q.first().then(r=>{
+											if (r) {
+												// 修改
+												let query3 = new self.Parse.Query('PullNew');
+												query3.equalTo('openid', ress.data)
+												query3.first().then(r1=>{
+													r1.set('recruits', Array.from(new Set([lres.openid, ...r1.recruits])))
+													r1.save()
 												})
+											} else {
+												// 创建
+												let Extend = self.Parse.Object.extend("PullNew");
+												let extend = new Extend();
+												extend.set('openid', ress.data);
+												extend.set('nickName', user.nickName);
+												extend.set('phone', user.phone);
+												extend.set('buyNum', 0);
+												extend.set('recruits',[ress.data])
+												extend.save()
+											}
+										})
+									})
+								}
+							})
+							
+							
+							// 判断需不需要发送优惠券
+							let couponInfo = new self.Parse.Query('NewCouponInfo');
+							couponInfo.equalTo('couponType', 'automaticallySend')
+							couponInfo.find().then(coupon=>{
+								coupon = JSON.parse(JSON.stringify(coupon))
+								coupon.forEach(item => {
+									if (Date.now() > new Date(item.useEndTime)) {
+										return ;
+									}
+									if (item.couponRange == 'newUser') {
+										var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
+										var couponRecord = new NewCouponRecord()
+										couponRecord.set('openid', lres.openid)
+										couponRecord.set("couponName", '通用类优惠券')
+										couponRecord.set("mode", 'all')
+										couponRecord.set("amount", item.amount)
+										couponRecord.set("state", 0)
+										couponRecord.set("couponRange", 'all')
+										couponRecord.set("useEndTime", item.useEndTime)
+										couponRecord.set("useTime", new Date())
+										couponRecord.set("couponType", 'automaticallySend')
+										couponRecord.save()
+										
+										var Opinions = self.Parse.Object.extend("Opinions")
+										var opinions = new Opinions()
+										opinions.set('openid', lres.openid)
+										opinions.set("content", '送优惠券啦')
+										opinions.set("message", '注册送优惠券啦')
+										opinions.save()
+									}
+									if (item.couponRange == 'pullNewUser') {
+										uni.getStorage({
+											key: 'userInfo',
+											success(data) {
+												
+												var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
+												var couponRecord = new NewCouponRecord()
+												couponRecord.set('openid', data.data.parentOpenId)
+												couponRecord.set("couponName", '通用类优惠券')
+												couponRecord.set("mode", 'all')
+												couponRecord.set("amount", item.amount)
+												couponRecord.set("state", 0)
+												couponRecord.set("couponRange", 'all')
+												couponRecord.set("useEndTime", item.useEndTime)
+												couponRecord.set("useTime", new Date())
+												couponRecord.set("couponType", 'automaticallySend')
+												couponRecord.save()
+												
+												var Opinions = self.Parse.Object.extend("Opinions")
+												var opinions = new Opinions()
+												opinions.set('openid', data.data.parentOpenId)
+												opinions.set("content", '拉新注册')
+												opinions.set("message", '有人通过你的二维码进行注册啦')
+												opinions.save()
+												
 											}
 										})
 									}
-								}
+								})
 							})
+							
+							
+							
+							
+							
+							
+							// 赠送优惠券
+							// var CouponRecords = self.Parse.Object.extend("CouponRecord");
+							// var query = new self.Parse.Query("CouponInfo");
+							// query.greaterThan('useEndTime', new Date())
+							// query.find().then(coupons=>{
+							// 	coupons.forEach(couponInfo=>{
+							// 		var query1 = new self.Parse.Query("CouponRecord");
+							// 		// debugger
+							// 		query1.equalTo('couponId', couponInfo.id)
+							// 		query1.equalTo('mode', 'all')
+							// 		query1.first().then(record=>{
+							// 			if(record) { // 已全部发送
+							// 				var couponRecord = new CouponRecords();
+							// 				couponRecord.set("couponName", couponInfo.get('couponName'));
+							// 				couponRecord.set("amount", parseFloat(couponInfo.get('amount')));
+							// 				couponRecord.set("useEndTime", couponInfo.get('useEndTime'));
+							// 				couponRecord.set("tipName", couponInfo.get('tipName'));
+							// 				couponRecord.set("tipContent", couponInfo.get('tipContent'));
+							// 				couponRecord.set("openid", self.openid);
+							// 				couponRecord.set("mode", 'all');
+							// 				couponRecord.set("productType", couponInfo.get('productType'));
+							// 				couponRecord.set("state", 0);
+							// 				couponRecord.set("orderNo", '');
+							// 				couponRecord.set("useTime", new Date());
+							// 				couponRecord.save()
+							// 			}
+							// 		})
+							// 	})
+							// })
+							// 赠送邀请人积分
+							// uni.getStorage({
+							// 	key:'invitation',
+							// 	success(invitation) {
+							// 		console.log("邀请人:"+invitation.data+'_end')
+							// 		if(invitation.data){ // 如果是被人邀请的，给邀请人送积分
+							// 			self.Parse.Config.get().then(config=>{
+							// 				var shareScore = config.get('shareScore')
+							// 				console.log("邀请人获得积分:"+ shareScore+"_end")
+							// 				if(shareScore > 0) {
+							// 					var ScoreRecords = self.Parse.Object.extend("ScoreRecord")
+							// 					var scoreRecord = new ScoreRecords()
+							// 					scoreRecord.set('openid', invitation.data)
+							// 					scoreRecord.set('channel', 'share')
+							// 					scoreRecord.set('score', shareScore)
+							// 					scoreRecord.save()
+												
+							// 					// 修改用户积分
+							// 					var userQuery = new self.Parse.Query(self.Parse.User)
+							// 					userQuery.equalTo('openid', invitation.data)
+							// 					userQuery.first().then(_user=>{
+							// 						if(_user){
+							// 							let score = _user.get('score')
+							// 							if(!_user.get('score_all') || _user.get('score_all')==0){
+							// 								_user.set('score_all', score + shareScore)
+							// 							} else {
+							// 								_user.set('score_all', _user.get('score_all') + shareScore)
+							// 							}
+							// 							_user.set('score', score + shareScore)
+							// 							_user.save(null,  { useMasterKey: true }).then(()=>{
+							// 								console.log('赠送积分成功')
+							// 							})
+							// 						}
+							// 					})
+							// 				}
+							// 			})
+							// 		}
+							// 	}
+							// })
+							
+							
 							uni.reLaunch({
 								url: '/pages/login/login',
 								events:{
