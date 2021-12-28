@@ -27,9 +27,9 @@
 				type:Boolean
 			},
 		},
-		created() {
-			console.log(this.isVip,'///////------');
-		},
+		// created() {
+		// 	console.log(this.isVip,'///////------');
+		// },
 		filters:{
 		/**
 		 * 处理富文本里的图片宽度自适应

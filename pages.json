@@ -15,14 +15,16 @@
 			"path": "pages/index/out",
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
-				"navigationBarTitleText": "食艺兽"
+				"navigationBarTitleText": "食艺兽",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/index/notice",
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
-				"navigationBarTitleText": "公告栏"
+				"navigationBarTitleText": "公告栏",
+				"navigationStyle":"custom"
 			}
 		},
 		{

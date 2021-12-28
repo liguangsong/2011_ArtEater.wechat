@@ -360,7 +360,7 @@
 			<view class="bg" @touchmove.stop.prevent="" @click='changeShowFixed'></view>
 			<view class="fixed-bottom">
 				<view>
-					<view v-if='memberInfo'>
+					<view v-if='isMember'>
 						<view v-if='memberInfo.memberType == 0' @click='heijinRenew'>
 							<text>续费黑金VIP</text>
 							<text>即刻畅享</text>
@@ -435,9 +435,9 @@
 					</view>
 				</view>
 			 <!-- v-if='isChajia' -->
-				<view class="buchajia" v-if='isChajia'>
+				<view class="buchajia" v-if='isMember && isChajia'>
 					<view class="icon"></view>
-					<text>您原会员服务的剩余时⻓可⽤于抵扣，\n只需要⽀付{{cash}}元即可升级为⿊⾦VIP！\n升级后会员服务周期为{{cashTime1}}至{{cashTime2}}</text>
+					<text>您原会员服务的剩余时⻓可⽤于抵扣，\n只需要⽀付{{parseInt(cash)}}元即可升级为⿊⾦VIP！\n升级后会员服务周期为{{cashTime1}}至{{cashTime2}}</text>
 				</view>
 				<view class="buy-info" :style='{height: isChajia ? "250rpx" : "360rpx"}'>
 					<view class="buy-title">购买说明</view>
@@ -541,22 +541,26 @@
 				}
 			},
 			isChajia() {
-				if (this.memberInfo && this.memberInfo.memberType == 1 && this.active != 1) {
+				if (this.isMember && this.memberInfo.memberType == 1 && this.active != 1) {
 					// 现在白银的价格
 					var baiyinPrice = this.list[1].promotionPrice || this.list[1].memberPrice;
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					this.cash = (n - baiyinPrice) / 365 * (Math.abs(time - 365) || 365);
+					let t = Math.round(time/365);
+					t = parseInt((t-1) * n) - (t-1)*baiyinPrice
+					this.cash = parseInt((n - baiyinPrice) / 365 * (Math.abs(time - 365) || 365)) + t;
 					this.cashTime1 = this.getDateTime();
 					this.cashTime2 = this.getDateTime(this.memberInfo.endTime)
 					return true;
 				}
-				if (this.memberInfo && this.memberInfo.memberType == 2 && this.active != 2) {
+				if (this.isMember && this.memberInfo.memberType == 2 && this.active != 2) {
 					// 现在白银的价格
 					var bojinPrice = this.list[2].promotionPrice || this.list[2].memberPrice;
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					this.cash = (n - bojinPrice) / 365 * (Math.abs(time - 365) || 365);
+					let t = Math.round(time/365);
+					t = parseInt((t-1) * n) - (t-1)*bojinPrice
+					this.cash = (n - bojinPrice) / 365 * (Math.abs(time - 365) || 365) + t;
 					this.cashTime1 = this.getDateTime();
 					this.cashTime2 = this.getDateTime(this.memberInfo.endTime)
 					return true;
@@ -669,7 +673,9 @@
 
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					cash = (n - baiyinPrice) / 365 * Math.abs(time - 365) * 100;
+					let t = Math.round(time/365);
+					t = parseInt((t-1) * n ) - (t-1)*baiyinPrice
+					cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time - 365)) * 100 + parseInt(t * 100)
 
 					let obj = [{
 						price: cash,
@@ -704,7 +710,9 @@
 					
 					var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-					cash = (n - bojinPrice) / 365 * Math.abs(time - 365);
+					let t = Math.round(time/365);
+					t = parseInt((t-1) * n ) - (t-1)*baiyinPrice
+					cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time - 365)) * 100 + parseInt(t * 100);
 					
 					let obj = [{
 						price: cash,

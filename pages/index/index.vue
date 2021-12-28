@@ -71,7 +71,7 @@
 					</view>
 				</view>
 				<view class='scrollx' v-if='!isShowTips'>
-					<u-notice-bar mode="horizontal" duration='3000' :list="list" :is-circular='false' @click='noticeBar'></u-notice-bar>
+					<u-notice-bar mode="horizontal" duration='3000' :list="noticeTitleArr" :is-circular='false' @click='noticeBar'></u-notice-bar>
 				</view>
 				<audition-learning v-if="studyList.length" title="正在学习" :showMore="showLearningMore"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
@@ -258,7 +258,6 @@
 				studyList: [],
 				moduleList: [], //动态模块
 				height: 0,
-				list: ['111','222'],
 				notice: [],	// 公告
 				noticeTitleArr: [],	// 公告标题
 			}
@@ -313,13 +312,8 @@
 			this.getNotice()
 		},
 		onLoad(options) {
-			// var query1 = new this.Parse.Query(this.Parse.User)
-			// query1.first().then(u=>{
-			// 	console.log(u, ';;;;;;;;;');
-			// })
-			// .catch(r=>{
-			// 	console.log(3,r);
-			// })
+			
+			// 是不是通过别人的二维码进来的
 			if (options && options.code) {
 				
 				uni.setStorage({
@@ -327,12 +321,6 @@
 					data: options.code,
 				})
 			}
-			// let query = new self.Parse.Query(User);
-			// query.equalTo('openid', options.code)
-			// query.first().then(user=>{
-			// 	user.set('childNum', ress.data)
-			// 	user.save()
-			// })
 			
 			
 			var self = this
@@ -395,17 +383,18 @@
 				})
 			},
 			// 点击公告栏内容
-			noticeBar(a,b) {
+			noticeBar(i) {
 				let _this = this;
-				// console.log(a,b);
-				// uni.navigateTo({
-				// 	url: '/pages/index/notice?title=' + _this.list[a]
-				// })
-				// console.log(123);
-				uni.navigateTo({
-					url: '/pages/index/out?' + _this.list[a]
-				})
-				// location.href = 'http://lishaokai.cn'
+				if (this.notice[i].type == 1) {
+					uni.navigateTo({
+						url: '/pages/index/notice?objectId=' + _this.notice[i].objectId
+					})
+				} else {
+					let path = _this.notice[i].link.split('?')
+					uni.navigateTo({
+						url: '/pages/index/out?' + path[1]
+					})
+				}
 				
 				
 			},
