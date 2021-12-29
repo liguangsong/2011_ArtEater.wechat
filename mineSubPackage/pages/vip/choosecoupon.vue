@@ -57,6 +57,9 @@
 			TopNavbar
 		},
 		onLoad(options) {
+			if (options.chooseCoupon) {
+				this.checkCoupon = JSON.parse(options.chooseCoupon)
+			}
 			var self = this
 			uni.getStorage({
 				key: 'openid',
@@ -92,6 +95,10 @@
 						}
 					})
 					arr.forEach(item => {
+						if (this.checkCoupon && item.objectId == this.checkCoupon.objectId) {
+							item.state = 1
+						}
+						
 						item.useEndDate = new Date(item.useEndTime.iso).toLocaleDateString().replace(/\//g,'-')
 						switch (item.couponRange) {
 							case 'all':
@@ -105,6 +112,7 @@
 						}
 					})
 					self.coupons = arr;
+					// console.log(arr, 'arr');
 				})
 			},
 			/* 选择优惠券 */

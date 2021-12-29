@@ -269,7 +269,6 @@
 					_this.height = res.windowHeight;
 				}
 			})
-
 		},
 		async onShow() {
 			uni.hideTabBar({
@@ -314,13 +313,12 @@
 		onLoad(options) {
 			
 			// 是不是通过别人的二维码进来的
-			if (options && options.code) {
-				
-				uni.setStorage({
-					key: 'parentOpenId',
-					data: options.code,
-				})
-			}
+			// if (options && options.code) {
+			// 	uni.setStorage({
+			// 		key: 'parentOpenId',
+			// 		data: options.code,
+			// 	})
+			// }
 			
 			
 			var self = this

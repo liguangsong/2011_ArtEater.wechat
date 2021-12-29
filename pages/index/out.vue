@@ -1,12 +1,10 @@
 <template>
 	<view class="vip" :style='{overflow: showFixed ? "auto" : "hidden"}'>
 		<Navbar align='center' surplusHeight='70' navbarBg='#1A1512'  title='会员中心'>
-			<!-- <view style='background: red; height: 300rpx'></view>
-			<view style='background: blue; height: 300rpx'></view>
-			<view style='background: red; height: 300rpx'></view>
-			<view style='background: blue; height: 300rpx'></view>
-			<view style='background: red; height: 300rpx'></view> -->
-			<!-- <rich-text class='regular ql-editor' :nodes='detail | formatRichText'></rich-text> -->
+			<view>
+				<rich-text class='regular ql-editor' :nodes='pagesInfo | formatRichText'></rich-text>
+				<view style='height: 140rpx'></view>
+			</view>
 		</Navbar>
 		<view class="fixed" :class='{leval: showFixed}'>
 			<view class="bg" @touchmove.stop.prevent="" @click='changeShowFixed'></view>
@@ -49,7 +47,7 @@
 				<view class="openbox"  @touchstart='touchstart' @touchend='touchend'>
 					<view class="list" :style='{left: active==0 ? "20rpx" : active==1 ? "-552rpx":"-1120rpx"}'>
 						<view class="item" v-for='(item,i) in list' :keys='item.id'
-							:class='{heijin: item.surfaceId == 1, bojin: item.surfaceId == 2, baiyin: item.surfaceId == 3}' @click='active = i'>
+							:class='{heijin: item.surfaceId == 1, bojin: item.surfaceId == 2, baiyin: item.surfaceId == 3}' @click='changeActive(i)'>
 							<view class="img">
 								<image class='imgbg' :src="imgArr[i]"></image>
 							</view>
@@ -77,7 +75,7 @@
 				</view>
 			</view>
 		</view>
-		<Modal @cancle='isShow = false' :isShow='isShow' :title='title' :submit='submit' @submitFn='submitFn'/>
+		<Modal @cancle='changeIsShow' :isShow='isShow' :title='title' :submit='submit' @submitFn='submitFn'/>
 		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate"></login>
 	</view>
 </template>
@@ -103,7 +101,7 @@
 				userInfo: null,	 // 有没有用户信息
 				pagesInfo: null, // 页面信息
 				isShowLogin: false,	// 是否授权
-				showFixed: true,
+				showFixed: false,
 				options: false, // 是否渠道进来
 				parentData: null, // 渠道通过谁进来的
 				list: null,
@@ -128,8 +126,14 @@
 		components: {
 			Navbar, Modal, login
 		},
+		filters: {
+			formatRichText(html) { //控制小程序中图片大小
+				return Curriculum.formatRichText(html);
+			}
+		},
 		onLoad(options) {
 			options = {id: "XJOZt5lEvT", ids: "1"}
+			// console.log(options);
 			// options = {id: "U94UDo1cGE"}
 			if (options.ids) {
 				this.options = options
@@ -147,6 +151,7 @@
 			} else {
 				this.isShowLogin = true
 			}
+			this.user = this.Parse.User.current();
 		},
 		computed: {
 			isMember() {
@@ -162,9 +167,7 @@
 					var baiyinPrice = this.list[1].promotionPrice || this.list[1].memberPrice;
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					let t = Math.round(time/365);
-					t = parseInt((t-1) * n) - (t-1)*baiyinPrice
-					this.cash = parseInt((n - baiyinPrice) / 365 * (Math.abs(time - 365) || 365)) + t;
+					this.cash = parseInt((n - baiyinPrice) / 365 * (Math.abs(time) || 365));
 					this.cashTime1 = this.getDateTime();
 					this.cashTime2 = this.getDateTime(this.memberInfo.endTime)
 					return true;
@@ -174,10 +177,7 @@
 					var bojinPrice = this.list[2].promotionPrice || this.list[2].memberPrice;
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					let t = Math.round(time/365);
-					t = parseInt((t-1) * n) - (t-1)*bojinPrice
-					// console.log(t, 'tttt');
-					this.cash = parseInt((n - bojinPrice) / 365 * (Math.abs(time - 365) || 365)) + t;
+					this.cash = parseInt((n - bojinPrice) / 365 * (Math.abs(time) || 365));
 					this.cashTime1 = this.getDateTime();
 					this.cashTime2 = this.getDateTime(this.memberInfo.endTime)
 					return true;
@@ -186,6 +186,12 @@
 			}
 		},
 		methods: {
+			changeActive(i) {
+				this.active = i
+			},
+			changeIsShow() {
+				this.isShow = false
+			},
 			// 授权登陆
 			handleLoginComplate() {
 				var _this = this
@@ -214,13 +220,6 @@
 				let ls = await query.find();
 				this.list = ls.map(item => JSON.parse(JSON.stringify(item))).sort((a, b) => a.surfaceId - b.surfaceId)
 				
-				// let date = new Date();
-				// let year = date.getFullYear(); //年
-				// let month = date.getMonth() + 1; //月
-				// let day = date.getDate(); //日
-				// month = month >= 10 ? month : '0' + month;
-				// day = day >= 10 ? day : '0' + day;
-				// let time = ' ' + year + month + day;
 				this.list.forEach((item, i) => {
 					let time1 = parseInt(item.expirationDate.split('-').join(''));
 					ls.forEach(attr => {
@@ -229,11 +228,7 @@
 							item.promotionPrice = arr[i]
 						}
 					})
-					// if (time1 >= time) {
-					// 	item.discount = true;
-					// } else {
-					// 	item.discount = false;
-					// }
+
 				})
 			},
 			// 根据公告或渠道进来的ID请求数据
@@ -350,10 +345,8 @@
 					this.submit = '继续开通';
 					this.submitFn = () => {
 						var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
-						let t = Math.round(time/365);
 						var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-						t = parseInt((t-1) * n ) - (t-1)*baiyinPrice
-						cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time - 365)) * 100 + parseInt(t * 100);
+						cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time)) * 100
 						this.isShow = false;
 						this.showFixed = false;
 						this.payment(parseInt(cash))
@@ -388,11 +381,8 @@
 						this.isShow = false;
 						this.showFixed = false;
 						var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
-						let t = Math.round(time/365);
 						var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-						t = parseInt((t-1) * n) - (t-1)*bojinPrice;
-						console.log(t, 'ttttttttt');
-						cash = parseInt((n - bojinPrice) / 365 * Math.abs(time - 365)) * 100 + parseInt(t * 100);
+						cash = parseInt((n - bojinPrice) / 365 * Math.abs(time)) * 100
 						_this.payment(parseInt(cash))
 					}
 					this.isShow = true;
@@ -426,13 +416,8 @@
 			},
 
 			// 支付
-			payment(cash) {
-				// cash = 0;
-				// if (!this.memberInfo && this.options.ids) {
-				// }
-				// console.log(99);
-					this.createCommission()
-				return
+			async payment(cash) {
+				cash = 0
 				var _this = this;
 				if (cash == 0) {
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5);
@@ -465,8 +450,6 @@
 			},
 			// 支付成功
 			async paymentSuccess(tradeId, cash) {
-				var _this = this;
-
 				this.title = '开通成功';
 				this.submit = '确定';
 				this.submitFn = () => {
@@ -474,10 +457,11 @@
 					this.showFixed = false;
 				}
 				this.isShow = true;
-				
-				await _this.getIntegral(cash / 100);
-				_this.createOrder(tradeId);
-				_this.createMember(tradeId);
+				if (this.options.ids) {
+					this.createCommission()
+				}
+				this.createOrder(tradeId);
+				this.createMember(tradeId);
 			},
 			// 支付失败
 			paymentFail() {
@@ -490,13 +474,11 @@
 			},
 			// 获取积分与赠送积分
 			async getIntegral(cash) {
-				// cash = 10000;
 				await this.Parse.Config.get().then(async config => {
 					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes.shopScore);
 					this.userInfo.score_all = (this.userInfo.score_all || 0) + parseInt(cash * config.attributes.shopScore);
 					this.user.set('score', this.userInfo.score);
 					this.user.set('score_all', this.userInfo.score_all);
-					// console.log(this.userInfo);
 					await this.user.save();
 					uni.setStorage({
 						key: 'userInfo',
@@ -529,6 +511,7 @@
 					// 		_this.showFixed = false;
 					// 	}
 					// })
+					console.log(123);
 				}, (error) => {
 					uni.showToast({
 						title:'开通失败'
@@ -597,15 +580,19 @@
 				order.set("price", this.list[this.active].promotionPrice)
 				order.set("commissionPrice", this.list[this.active].promotionPrice * this.parentData.divideInto / 100 )
 				order.save().then(_order => {
+					
 					let query = new _this.Parse.Query('ChannelManagement')
 					query.equalTo("objectId", _this.parentData.objectId);
 					query.first().then(res => {
+						console.log(res);
+						
 						let total = res.attributes.TotalAmountCommission
 						total = total ? total : 0
 						res.set('TotalAmountCommission', total + this.list[this.active].promotionPrice * this.parentData.divideInto / 100)
 						res.save()
 					})
 				})
+				
 			}			
 		}
 	}

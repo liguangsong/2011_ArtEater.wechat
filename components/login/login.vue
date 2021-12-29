@@ -150,6 +150,7 @@
 					ruser.setACL(postACL);
 					ruser.save().then(res=>{
 						self.Parse.User.logIn(self.openid,self.openid).then(lres=>{
+							
 							// console.log(lres,'lres');
 							// 如果通过别人的二维码进来进行注册，则设置自己parentOpenId为对方的openid
 							lres = JSON.parse(JSON.stringify(lres))
@@ -166,7 +167,6 @@
 										key:'userInfo',
 										data: lres
 									})
-									console.log(lres);
 									let query1 = new self.Parse.Query(self.Parse.User);
 									query1.equalTo('openid', lres.openid)
 									query1.first().then(user=>{
@@ -174,6 +174,7 @@
 										user.save()
 									})
 									
+									// 改变被拉新的用户数据
 									let query2 = new self.Parse.Query('User');
 									query2.equalTo('openid', ress.data)
 									query2.first().then(user=>{
@@ -215,7 +216,10 @@
 									if (Date.now() > new Date(item.useEndTime)) {
 										return ;
 									}
-									if (item.couponRange == 'newUser') {
+									
+									// 拉取新用户送优惠券消息
+									if (item.couponRange == 'pullNewUser') {
+										
 										var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
 										var couponRecord = new NewCouponRecord()
 										couponRecord.set('openid', lres.openid)
@@ -232,38 +236,35 @@
 										var Opinions = self.Parse.Object.extend("Opinions")
 										var opinions = new Opinions()
 										opinions.set('openid', lres.openid)
-										opinions.set("content", '送优惠券啦')
-										opinions.set("message", '注册送优惠券啦')
+										opinions.set("content", '拉新后送优惠券消息')
+										opinions.set("message", '您有新的优惠券，请前往“我的优惠券”查看')
+										opinions.save()
+												
+											
+									} else if (item.couponRange == 'newUser') {
+										// 注册后送优惠券消息
+										var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
+										var couponRecord = new NewCouponRecord()
+										couponRecord.set('openid', lres.openid)
+										couponRecord.set("couponName", '通用类优惠券')
+										couponRecord.set("mode", 'all')
+										couponRecord.set("amount", item.amount)
+										couponRecord.set("state", 0)
+										couponRecord.set("couponRange", 'all')
+										couponRecord.set("useEndTime", item.useEndTime)
+										couponRecord.set("useTime", new Date())
+										couponRecord.set("couponType", 'automaticallySend')
+										couponRecord.save()
+										
+										var Opinions = self.Parse.Object.extend("Opinions")
+										var opinions = new Opinions()
+										opinions.set('openid', lres.openid)
+										opinions.set("content", '注册后送优惠券消息')
+										opinions.set("message", '您有新的优惠券，请前往“我的优惠券”查看')
 										opinions.save()
 									}
-									if (item.couponRange == 'pullNewUser') {
-										uni.getStorage({
-											key: 'userInfo',
-											success(data) {
-												
-												var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
-												var couponRecord = new NewCouponRecord()
-												couponRecord.set('openid', data.data.parentOpenId)
-												couponRecord.set("couponName", '通用类优惠券')
-												couponRecord.set("mode", 'all')
-												couponRecord.set("amount", item.amount)
-												couponRecord.set("state", 0)
-												couponRecord.set("couponRange", 'all')
-												couponRecord.set("useEndTime", item.useEndTime)
-												couponRecord.set("useTime", new Date())
-												couponRecord.set("couponType", 'automaticallySend')
-												couponRecord.save()
-												
-												var Opinions = self.Parse.Object.extend("Opinions")
-												var opinions = new Opinions()
-												opinions.set('openid', data.data.parentOpenId)
-												opinions.set("content", '拉新注册')
-												opinions.set("message", '有人通过你的二维码进行注册啦')
-												opinions.save()
-												
-											}
-										})
-									}
+									
+									
 								})
 							})
 							

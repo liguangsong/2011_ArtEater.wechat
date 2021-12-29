@@ -546,9 +546,7 @@
 					var baiyinPrice = this.list[1].promotionPrice || this.list[1].memberPrice;
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					let t = Math.round(time/365);
-					t = parseInt((t-1) * n) - (t-1)*baiyinPrice
-					this.cash = parseInt((n - baiyinPrice) / 365 * (Math.abs(time - 365) || 365)) + t;
+					this.cash = parseInt((n - baiyinPrice) / 365 * (Math.abs(time) || 365));
 					this.cashTime1 = this.getDateTime();
 					this.cashTime2 = this.getDateTime(this.memberInfo.endTime)
 					return true;
@@ -558,9 +556,7 @@
 					var bojinPrice = this.list[2].promotionPrice || this.list[2].memberPrice;
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					let t = Math.round(time/365);
-					t = parseInt((t-1) * n) - (t-1)*bojinPrice
-					this.cash = (n - bojinPrice) / 365 * (Math.abs(time - 365) || 365) + t;
+					this.cash = (n - bojinPrice) / 365 * (Math.abs(time) || 365);
 					this.cashTime1 = this.getDateTime();
 					this.cashTime2 = this.getDateTime(this.memberInfo.endTime)
 					return true;
@@ -673,9 +669,8 @@
 
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
-					let t = Math.round(time/365);
-					t = parseInt((t-1) * n ) - (t-1)*baiyinPrice
-					cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time - 365)) * 100 + parseInt(t * 100)
+
+					cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time - 365)) * 100
 
 					let obj = [{
 						price: cash,
@@ -710,9 +705,8 @@
 					
 					var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
-					let t = Math.round(time/365);
-					t = parseInt((t-1) * n ) - (t-1)*baiyinPrice
-					cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time - 365)) * 100 + parseInt(t * 100);
+	
+					cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time - 365)) * 100 
 					
 					let obj = [{
 						price: cash,

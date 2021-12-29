@@ -98,6 +98,19 @@
 							self.percent = (self.rightCount*100/self.allCount).toFixed(2)
 							// self.handleBuild()
 							self.getData()
+							// uni.getStorage({
+							// 	key: 'img_Url',
+							// 	success(data) {
+							// 		if (data.data) {
+							// 			self.handleBuild(data.data)
+							// 		} else {
+							// 			self.getData()
+							// 		}
+							// 	},
+							// 	fail() {
+							// 		self.getData()
+							// 	}
+							// })
 						},
 						// fail: (error) => {
 						// 	uni.showToast({
@@ -126,7 +139,6 @@
 						secret: APP_SECRET
 					},
 					success: function(res) {
-						console.log('获取accessToken', res)
 						access_token = res.data.access_token;
 						// 接口B：适用于需要的码数量极多的业务场景 生成的是小程序码
 						that.getQrCode(access_token);
@@ -137,8 +149,7 @@
 			getQrCode(access_token) {
 				var that = this;
 				uni.request({
-					url: "https://api.weixin.qq.com/wxa/getwxacode?access_token=" +
-						access_token, //固定链接，不用改
+					url: "https://api.weixin.qq.com/wxa/getwxacode?access_token=" + access_token, //固定链接，不用改
 					method: 'POST',
 					responseType: 'arraybuffer', //设置响应类型
 					data: {
@@ -154,9 +165,16 @@
 					},
 					success: function(res) {
 						// console.log('获取二维码', res)
-						that.maskData = "data:image/PNG;BASE64," + uni.arrayBufferToBase64(res
-							.data);
-						that.handleBuild()
+						that.maskData = uni.arrayBufferToBase64(res.data);
+						let parseFile = new that.Parse.File(Date.now()+'.png', {base64: that.maskData} , "image/png");
+						parseFile.save().then(res => {
+							uni.setStorage({
+								key: 'img_Url',
+								data: res._url,
+							})
+							console.log(res._url);
+							that.handleBuild(res._url)
+						})
 					},
 					fail: (error) => {
 						uni.showToast({
@@ -228,13 +246,13 @@
 				ctx.fill()
 			},
 			/* 生成图片 */
-			async handleBuild(){
+			async handleBuild(url){
 				var self = this
 				uni.showLoading()
 				await uni.downloadFile({
 					url: self.userInfo.avatarUrl,
 					success (headRes) {
-						// uni.downloadFile({url: self.qrcode, success (qrcodeRes) {
+						uni.downloadFile({url: url, success (qrcodeRes) {
 							uni.downloadFile({url: 'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%88%86%E4%BA%AB%E8%83%8C%E6%9D%BF.png', success (bg) {
 							uni.downloadFile({url: self.sharePicImg, success (bgRes) {	
 								const sysInfo = uni.getSystemInfoSync();
@@ -252,8 +270,9 @@
 								self.roundRect(context, 462 * factor, 50 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
 								
 								// 绘制二维码
-								// context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 52 * factor, 98 * factor,98 * factor);
-								context.drawImage(self.maskData, 466 * factor, 52 * factor, 98 * factor,98 * factor);
+								console.log(qrcodeRes, url);
+								context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 52 * factor, 98 * factor,98 * factor);
+								// context.drawImage(self.maskData, 466 * factor, 52 * factor, 98 * factor,98 * factor);
 								// 绘制头像外层圆形框
 								self.headFill(context, '',  90 * factor, 260 * factor, 720 * factor) // 绘制头像外层框
 								self.headPic(context, '',  90 * factor, 260 * factor, 720 * factor) // 绘制头像外层框
@@ -343,7 +362,6 @@
 											canvasId: 'mycanvas',
 											success: function (res) {
 												uni.hideLoading()
-												console.log(res.tempFilePath)
 												self.sharePicImg = res.tempFilePath
 												self.isShowPicImg = true
 											}
@@ -352,7 +370,7 @@
 								})
 							}})
 							}})
-						// }})
+						}})
 					}
 				})
 			},

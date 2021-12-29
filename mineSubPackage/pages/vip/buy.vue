@@ -147,7 +147,7 @@
 			TopNavbar, Modal
 		},
 		onLoad(options) {
-			console.log(options);
+			// console.log(options);
 			// this.list = JSON.parse(options.obj);
 			this.list = [{
 				price: 999,
@@ -159,7 +159,6 @@
 			
 		},
 		async created() {
-			// console.log(999);
 			this.user = this.Parse.User.current();
 			var query = new this.Parse.Query('MemberType');
 			var ls = await query.find();
@@ -200,9 +199,12 @@
 			handleChooseCoupon() {
 				var self = this
 				uni.navigateTo({
-					url: '/mineSubPackage/pages/vip/choosecoupon',
+					url: '/mineSubPackage/pages/vip/choosecoupon?chooseCoupon=' + JSON.stringify(self.chooseCoupon),
 					success: function(res) {
 						// 通过eventChannel向被打开页面传送数据
+						if (self.chooseCoupon) {
+							self.cash = self.cash + self.chooseCoupon.amount
+						}
 						res.eventChannel.emit('selectedCoupon', self.list[0].type)
 					},
 					events: {
@@ -219,6 +221,8 @@
 			},
 			// 确认支付按钮
 			handleSubmit() {
+				this.checkSendMessage()
+				return
 				this.payment(this.cash * 100);
 			},
 			// 支付
@@ -268,7 +272,7 @@
 					})
 				}
 				this.checkSendMessage()
-				// return
+				return
 				await this.getIntegral(cash / 100);
 				this.createOrder(tradeId);
 				this.createMember(tradeId);
@@ -403,9 +407,23 @@
 				
 				uni.getStorage({
 					key: 'userInfo',
-					success(data) {
-						
+					async success(data) {
+						// 判断是否是通过别人的二维码进行注册的
+						// console.log(data.data.parentOpenId);
 						if (data.data.parentOpenId) {
+							let parentInfo = new self.Parse.Query('MemberList');
+							parentInfo.equalTo('openId', data.data.parentOpenId)
+							parentInfo = await parentInfo.first()
+							// 被拉新的用户不是会员就什么也不做
+							if (!parentInfo) {
+								return ;
+							}
+							let parentMemberType = Number(parentInfo.attributes.memberType)
+							let limitNumber = new self.Parse.Query('MemberType');
+							limitNumber.equalTo('surfaceId', parentMemberType + 1)
+							limitNumber = await limitNumber.first()
+							limitNumber = limitNumber.attributes.limitNumber
+							return
 							let query = new self.Parse.Query('PullNew');
 							query.equalTo('openid', data.data.parentOpenId)
 							query.first().then(res => {
@@ -415,65 +433,58 @@
 								} else {
 									res.set('buyNum', buyNum+1)
 								}
+								res.set('memberType', parentMemberType ? '黑金' : parentMemberType == 1 ? '铂金' : '白银')
 								res.save()
 							
-							
-								var Opinions = self.Parse.Object.extend("Opinions")
-								var opinions = new Opinions()
+								let Opinions = self.Parse.Object.extend("Opinions")
+								let opinions = new Opinions()
 								opinions.set('openid', data.data.parentOpenId)
-								opinions.set("content", '有人通过你的二维码购买啦')
-								opinions.set("message", '有人通过你的二维码注册啦')
-								opinions.save()
-								if (1) {
-								// if ((buyNum+1)%5 == 0) {
-									let memberList = new self.Parse.Query('MemberList')
-									memberList.equalTo('openId', data.data.parentOpenId)
-									memberList.first().then(member => {
-										let range = null;
-										if (member) {
-											if (member.attributes.memberType == '0') {
-												range = 'blackGoldNew'
-											}
-											if (member.attributes.memberType == '1') {
-												range = 'platinumGoldNew'
-											}
-											if (member.attributes.memberType == '2') {
-												range = 'silverGoldNew'
-											}
-										} else {
-											range = 'pullNewUser'
-										}
-										let couponInfo = new self.Parse.Query('NewCouponInfo');
-										couponInfo.equalTo('couponType', 'automaticallySend');
-										couponInfo.equalTo('couponRange', range);
-										couponInfo.first().then(coupon=>{
-											coupon = JSON.parse(JSON.stringify(coupon))
-											if (Date.now() > new Date(coupon.useEndTime)) {
-												return ;
-											}
-											// 发送优惠券
-											var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
-											var couponRecord = new NewCouponRecord()
-											couponRecord.set('openid', data.data.parentOpenId)
-											couponRecord.set("couponName", '通用类优惠券')
-											couponRecord.set("mode", 'all')
-											couponRecord.set("amount", coupon.amount)
-											couponRecord.set("state", 0)
-											couponRecord.set("couponRange", 'all')
-											couponRecord.set("useEndTime", new Date(1671870172910))
-											couponRecord.set("useTime", new Date())
-											couponRecord.set("couponType", 'automaticallySend')
-											couponRecord.save()
-											
-											opinions.set('openid', data.data.parentOpenId)
-											opinions.set("content", '发送通用型优惠券')
-											opinions.set("message", '累计有5人购买')
-											opinions.save()
-										})
-										
-									})
+								if ((buyNum+1)%limitNumber == 0) {
+									opinions.set("content", '会员拉新消息')
+									opinions.set("message", '您有新的优惠券，请前往“我的优惠券”查看')
+								} else {
+									opinions.set("content", '会员拉新消息')
+									opinions.set("message", `您当前已拉新${buy+1}人，还剩${limitNumber-buy%limitNumber-buy-1}人即可获得优惠活动`)
 								}
-							
+								opinions.save()
+								
+								if ((buyNum+1)%limitNumber == 0) {
+									let range = null;
+									if (parentInfo.attributes.memberType == '0') {
+										range = 'blackGoldNew'
+									}
+									if (parentInfo.attributes.memberType == '1') {
+										range = 'platinumGoldNew'
+									}
+									if (parentInfo.attributes.memberType == '2') {
+										range = 'silverGoldNew'
+									}
+									
+									let couponInfo = new self.Parse.Query('NewCouponInfo');
+									couponInfo.equalTo('couponType', 'automaticallySend');
+									couponInfo.equalTo('couponRange', range);
+									couponInfo.first().then(coupon=>{
+										coupon = JSON.parse(JSON.stringify(coupon))
+										if (Date.now() > new Date(coupon.useEndTime)) {
+											return ;
+										}
+										// 发送优惠券
+										var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
+										var couponRecord = new NewCouponRecord()
+										couponRecord.set('openid', data.data.parentOpenId)
+										couponRecord.set("couponName", '通用类优惠券')
+										couponRecord.set("mode", 'all')
+										couponRecord.set("amount", coupon.amount)
+										couponRecord.set("state", 0)
+										couponRecord.set("couponRange", 'all')
+										couponRecord.set("useEndTime", new Date(coupon.useEndTime))
+										couponRecord.set("useTime", new Date())
+										couponRecord.set("couponType", 'automaticallySend')
+										couponRecord.save()
+									})
+									
+								}
+								
 							})
 						}
 					}
