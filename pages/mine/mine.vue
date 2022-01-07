@@ -150,8 +150,8 @@
 						<image src="../../static/mine/mine_fenxiang.png"></image>
 					</view>
 					<view class="cont">
-						<view class="title">
-							<text>分享给好友</text>
+						<view class="title share">
+							<text>分享送好礼</text>
 						</view>
 						<view class="icon">
 							<u-icon name="arrow-right" color="rgba(0,0,0,.1)" size="24"></u-icon>
@@ -232,12 +232,9 @@
 			})
 		},
 		async onShow() {
-			// if (!this.errorCount) {
-				
 			uni.showLoading({
 				title:'加载中……'
 			})
-			// }
 			uni.hideTabBar({
 				animation: false
 			});
@@ -601,7 +598,7 @@
 			color: #995D05;
 		}
 	}
-
+	
 	.actionView {
 		.actionItem {
 			height: 84rpx;
@@ -668,7 +665,12 @@
 			}
 		}
 	}
-
+	.share text {
+		font-family: PingFangSC-Medium !important;
+		font-weight: 500;
+		color: #D81E1F;
+	}
+	
 	page {
 		background-color: #fbfbfb;
 	}

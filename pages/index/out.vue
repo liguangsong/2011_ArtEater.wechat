@@ -1,6 +1,6 @@
 <template>
 	<view class="vip" :style='{overflow: showFixed ? "auto" : "hidden"}'>
-		<Navbar align='center' surplusHeight='70' navbarBg='#1A1512'  title='会员中心'>
+		<Navbar align='center' surplusHeight='70' navbarBg='#1A1512' :title='options.title'>
 			<view>
 				<rich-text class='regular ql-editor' :nodes='pagesInfo | formatRichText'></rich-text>
 				<view style='height: 140rpx'></view>
@@ -54,6 +54,7 @@
 							<view class="info">
 								<view class="price">
 									<text class='discount semibold'>¥{{item.promotionPrice}}</text>
+									<text class='old-price semibold' style='margin-left: 20rpx;text-decoration: line-through;'>¥{{item.memberPrice}}</text>
 								</view>
 							</view>
 						</view>
@@ -76,14 +77,14 @@
 			</view>
 		</view>
 		<Modal @cancle='changeIsShow' :isShow='isShow' :title='title' :submit='submit' @submitFn='submitFn'/>
-		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate"></login>
+		<login :visiable="isShowLogin" @cancle="changeShowLogin" @ok="handleLoginComplate"></login>
 	</view>
 </template>
 
 <script>
 	import Navbar from '../../components/navBar/navbar.vue'
 	import Modal from '@/components/modal/modal.vue'
-	import login from '@/components/login/login.vue'
+	import login from '@/components/login/outLogin.vue'
 	import Curriculum from '../../curriculumSubPackage/js/curriculum.js'
 	import {
 		dateFormat,
@@ -100,7 +101,8 @@
 				
 				userInfo: null,	 // 有没有用户信息
 				pagesInfo: null, // 页面信息
-				isShowLogin: false,	// 是否授权
+				isShowLogin: false,	// 是否显示授权
+				isLogin: false,	// 有没有授权
 				showFixed: false,
 				options: false, // 是否渠道进来
 				parentData: null, // 渠道通过谁进来的
@@ -132,27 +134,24 @@
 			}
 		},
 		onLoad(options) {
-			options = {id: "XJOZt5lEvT", ids: "1"}
-			// console.log(options);
-			// options = {id: "U94UDo1cGE"}
-			if (options.ids) {
-				this.options = options
-				// 渠道进来的
-				this.getNoticeOrChanneInfo(options.id, options.ids)
-			} else {
-				// 公告栏进来的
-				this.getNoticeOrChanneInfo(options.id)
+			// options = {id: "XJOZt5lEvT", ids: "1"}
+			if (options.title == "undefined") {
+				options.title = ''
 			}
+			// options = {id: "U94UDo1cGE"}
+			this.options = options
+			
+			this.getNoticeOrChanneInfo(options.id)
 			// 判断有没有授权
 			let userInfo = uni.getStorageSync('userInfo')
 			if (userInfo) {
 				this.userInfo = userInfo
+				this.isLogin = true
 				this.getMember()
-			} else {
-				this.isShowLogin = true
 			}
 			this.user = this.Parse.User.current();
 		},
+		
 		computed: {
 			isMember() {
 				if (this.memberInfo && Date.now() < this.memberInfo.endTime) {
@@ -186,6 +185,9 @@
 			}
 		},
 		methods: {
+			changeShowLogin() {
+				this.isShowLogin = false
+			},
 			changeActive(i) {
 				this.active = i
 			},
@@ -196,6 +198,7 @@
 			handleLoginComplate() {
 				var _this = this
 				this.isShowLogin = false
+				this.isLogin = true
 				uni.getStorage({
 					key: 'userInfo',
 					success: res => {
@@ -228,15 +231,14 @@
 							item.promotionPrice = arr[i]
 						}
 					})
-
 				})
 			},
 			// 根据公告或渠道进来的ID请求数据
-			async getNoticeOrChanneInfo(id, ids) {
-				let module = ids ? 'ChannelManagement' : 'ActiveManagement'
-				let query = new this.Parse.Query(module)
+			async getNoticeOrChanneInfo(id) {
+				let query = new this.Parse.Query('ActiveManagement')
 				query.equalTo("objectId", id);
 				query = await query.first();
+				// console.log(query);
 				if (query) {
 					query = JSON.parse(JSON.stringify(query))
 					this.parentData = query
@@ -279,6 +281,10 @@
 			},
 			// 底部按钮打开大会员
 			changeShowFixed() {
+				if (!this.isLogin) {
+					this.isShowLogin = true;
+					return
+				}
 				setTimeout(()=>{
 					this.showFixed = !this.showFixed;
 				},300)
@@ -349,7 +355,8 @@
 						cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time)) * 100
 						this.isShow = false;
 						this.showFixed = false;
-						this.payment(parseInt(cash))
+						// 1 代表为升级，改变数据库的字段
+						this.payment(parseInt(cash), 1)
 					}
 					this.isShow = true;
 				} else {
@@ -383,7 +390,7 @@
 						var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 						var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
 						cash = parseInt((n - bojinPrice) / 365 * Math.abs(time)) * 100
-						_this.payment(parseInt(cash))
+						_this.payment(parseInt(cash), 1)
 					}
 					this.isShow = true;
 				} else {
@@ -416,12 +423,12 @@
 			},
 
 			// 支付
-			async payment(cash) {
-				cash = 0
+			async payment(cash, bool) {
+				// cash = 0
 				var _this = this;
 				if (cash == 0) {
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5);
-					this.paymentSuccess(orderNo, cash);
+					this.paymentSuccess(orderNo, cash, bool);
 				} else {
 					this.Parse.Cloud.run('initiatePayment', {
 						price: cash
@@ -438,7 +445,7 @@
 							signType: payload.signType,
 							paySign: payload.paySign,
 							success(res) {
-								_this.paymentSuccess(tradeId, cash);
+								_this.paymentSuccess(tradeId, cash, bool);
 							},
 							fail(res) {
 								_this.paymentFail();
@@ -457,9 +464,8 @@
 					this.showFixed = false;
 				}
 				this.isShow = true;
-				if (this.options.ids) {
-					this.createCommission()
-				}
+				this.checkSendMessage()
+				await this.getIntegral(cash / 100);
 				this.createOrder(tradeId);
 				this.createMember(tradeId);
 			},
@@ -511,7 +517,7 @@
 					// 		_this.showFixed = false;
 					// 	}
 					// })
-					console.log(123);
+					// console.log(123);
 				}, (error) => {
 					uni.showToast({
 						title:'开通失败'
@@ -525,6 +531,23 @@
 					arr.push(tradeId);
 					this.member.set('orderArr', arr);
 					this.member.set('status', 1)
+					
+					// 设置用户的类型
+					var query = new this.Parse.Query('User')
+					// query.equalTo('objectId', this.userInfo.openid)
+					query.get(this.userInfo.openid).then(async record => {
+						record.set('memberType', this.memberInfo.memberType + 1)
+						await record.save()
+					})
+					
+					// 改变拉新列表用户等级
+					var query2 = new this.Parse.Query('PullNew')
+					query2.get(this.userInfo.openid).then(async record => {
+						if (!record) return
+						record.set('memberType', this.memberInfo.memberType + 1)
+						await record.save()
+					})
+					
 					if (this.memberInfo.memberType == 0) {
 						this.member.set('memberType', '0');
 					}
@@ -541,6 +564,9 @@
 						} else {
 							this.member.set('memberType', '0');
 						}
+					}
+					if (bool) {
+						this.member.set('Upgrade', true);
 					}
 					if (this.memberInfo.memberType = '') {
 						this.member.set('endTime', this.getTime(12))
@@ -570,30 +596,164 @@
 					app.globalData.member = JSON.parse(JSON.stringify(results));
 				}
 			},
-			// 渠道进来的创建提成
-			createCommission() {
-				let _this = this;
-				let dbOrder = this.Parse.Object.extend("RoyaltyBill")
-				let order = new dbOrder()
-				order.set('parentId', this.parentData.objectId)
-				order.set('memberType', this.active + 1 + '')
-				order.set("price", this.list[this.active].promotionPrice)
-				order.set("commissionPrice", this.list[this.active].promotionPrice * this.parentData.divideInto / 100 )
-				order.save().then(_order => {
-					
-					let query = new _this.Parse.Query('ChannelManagement')
-					query.equalTo("objectId", _this.parentData.objectId);
-					query.first().then(res => {
-						console.log(res);
-						
-						let total = res.attributes.TotalAmountCommission
-						total = total ? total : 0
-						res.set('TotalAmountCommission', total + this.list[this.active].promotionPrice * this.parentData.divideInto / 100)
-						res.save()
-					})
-				})
+			// 拉新进来的创建消息和优惠券
+			// 支付成功后判断用不用发送消息
+			// 支付成功后判断用不用发送消息
+			checkSendMessage() {
+				let self = this;
 				
-			}			
+				uni.getStorage({
+					key: 'userInfo',
+					async success(data) {
+						// 判断是否是通过别人的二维码进行注册的
+						if (data.data.parentOpenId) {
+							let parentInfo = new self.Parse.Query('MemberList');
+							parentInfo.equalTo('openId', data.data.parentOpenId)
+							parentInfo = await parentInfo.first()
+							// 被拉新的用户不是会员就什么也不做
+							if (!parentInfo) {
+								return ;
+							}
+							
+							let parentMemberType = Number(parentInfo.attributes.memberType)
+							// 请求拉够多少人发送优惠券
+							let limitNumber = new self.Parse.Query('MemberType')
+							limitNumber.equalTo('surfaceId', parentMemberType + 1)
+							limitNumber = await limitNumber.first()
+							limitNumber = limitNumber.attributes.limitNumber
+							let query = new self.Parse.Query('PullNew')
+							query.equalTo('openid', data.data.parentOpenId)
+							query.first().then(res => {
+								let buyNum = res.attributes.buyNum || 0;
+								let upgradeBuyNum = res.attributes.upgradeBuyNum || 0;
+								let blackPullUser = res.attributes.blackPullUser || 0;
+								let userArr = null
+								if (res.attributes.buyUser) {
+									userArr = Array.from(new Set([data.data.openid, ...res.attributes.buyUser]))
+								} else {
+									userArr = [data.data.openid]
+								}
+								if (!buyNum) {
+									res.set('buyNum', 1)
+									res.set('buyUser', [data.data.openid])
+								} else {
+									// res.attributes
+									res.set('buyUser', userArr)
+									res.set('buyNum', buyNum+1)
+								}
+								
+								res.set('memberType', parentMemberType + 1)
+								if (parentInfo.attributes.Upgrade) {
+									res.set('upgradeBuyNum', upgradeBuyNum + 1)
+									if (!upgradeBuyNum) {
+										res.set('upgradeBuyNum', 1)
+										res.set('upgradeBuyArr', [data.data.openid])
+									} else {
+										res.set('upgradeBuyNum', upgradeBuyNum+1)
+										res.set('upgradeBuyArr', userArr)
+									}
+								}
+								let blackPullUserArr = res.attributes.blackPullUserArr || []
+								let m = blackPullUserArr.length
+								if (parentInfo.attributes.memberType == 0) {
+									if (blackPullUserArr.length == 0) {
+										blackPullUserArr = [data.data.openid]
+									} else {
+										blackPullUserArr = Array.from(new Set([data.data.openid, ...res.attributes.blackPullUserArr]))
+									}
+									res.set('blackPullUserArr', blackPullUserArr)
+									res.set('blackPullUser', blackPullUser + 1)
+								}
+								res.save()
+								// -----------------------------------
+								
+								if (parentInfo.attributes.memberType == 0) {
+									let n = blackPullUserArr.length;
+									// console.log(n, res.attributes.blackPullUserArr.length, ';;');
+									if (n != m) {
+										let Opinions1 = self.Parse.Object.extend("CouponMessage")
+										let opinions1 = new Opinions1()
+										opinions1.set('openid', data.data.parentOpenId)
+										if (n%limitNumber == 0) {
+											opinions1.set("content", '新战友招募成功！')
+											opinions1.set("message", `恭喜！您已成功招募新战友${n}人，成功获得“黑金VIP会员招募大礼包”，食艺兽客服专员会在48小时内与您取得联系，沟通礼品兑换事宜。\n\n\r\r\rPs. 当招募的新战友在小程序中产生第一笔消费时，您的战友招募数将 +1。`)
+										} else {
+											opinions1.set("content", '新战友招募成功！')
+											opinions1.set("message", `恭喜！您已成功招募新战友${n}人，只需再招募${limitNumber-n%limitNumber}人即可获得“黑金VIP会员招募大礼包”，届时会有食艺兽客服专员主动与您取得联系，沟通礼品兑换事宜。\n\n\r\r\rPs. 当招募的新战友在小程序中产生第一笔消费时，您的战友招募数将 +1。`)
+										}
+										opinions1.save()
+									}
+								}
+								
+								// -------------------------------------
+								if (parentInfo.attributes.memberType != 0) {
+									let couponInfo = new self.Parse.Query('NewCouponInfo')
+									couponInfo.equalTo('couponType', 'automaticallySend')
+									if (parentInfo.attributes.memberType == 1) {
+										couponInfo.equalTo('couponRange', 'platinumGoldNew')
+									}
+									if (parentInfo.attributes.memberType == 2) {
+										couponInfo.equalTo('couponRange', 'silverGoldNew')
+									}
+									couponInfo.first().then(coupon=>{
+										if (!coupon) return
+										let Opinions = self.Parse.Object.extend("CouponMessage")
+										let opinions = new Opinions()
+										opinions.set('openid', data.data.parentOpenId)
+										if (userArr.length%limitNumber == 0) {
+											opinions.set("content", '新战友招募成功！')
+											opinions.set("message", '恭喜！您已成功招募一名新战友，系统自动发放一张会员奖券给您，可在下次升级您的VIP会员等级时使用噢～请移步“我的优惠券”查收您的奖券。')
+										} else {
+											opinions.set("content", '会员拉新消息')
+											opinions.set("message", `您当前已拉新${userArr.length%limitNumber}人，还剩${limitNumber-userArr.length%limitNumber}人即可获得优惠券`)
+										}
+										opinions.save()
+									})
+								}
+								
+								if (userArr.length%limitNumber == 0) {
+									let range = null;
+									if (parentInfo.attributes.memberType == '0') {
+										range = 'blackGoldNew'
+									}
+									if (parentInfo.attributes.memberType == '1') {
+										range = 'platinumGoldNew'
+									}
+									if (parentInfo.attributes.memberType == '2') {
+										range = 'silverGoldNew'
+									}
+									if (parentInfo.attributes.memberType == undefined) {
+										return;
+									}
+									let couponInfo = new self.Parse.Query('NewCouponInfo');
+									couponInfo.equalTo('couponType', 'automaticallySend');
+									couponInfo.equalTo('couponRange', range);
+									couponInfo.first().then(coupon=>{
+										if (!coupon) return
+										coupon = JSON.parse(JSON.stringify(coupon))
+										// 发送优惠券
+										var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
+										var couponRecord = new NewCouponRecord()
+										couponRecord.set('openid', data.data.parentOpenId)
+										couponRecord.set("couponName", '通用类优惠券')
+										couponRecord.set("mode", 'all')
+										couponRecord.set("amount", coupon.amount)
+										couponRecord.set("state", 0)
+										couponRecord.set("couponRange", 'all')
+										couponRecord.set("useEndTime", new Date(coupon.termValidity*1000*60*60*24 + Date.now()))
+										couponRecord.set("useTime", new Date())
+										couponRecord.set("couponType", 'automaticallySend')
+										couponRecord.save()
+									})
+									
+								}
+								
+							})
+						}
+					}
+				})
+			}
+				
 		}
 	}
 </script>

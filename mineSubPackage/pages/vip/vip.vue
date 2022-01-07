@@ -507,14 +507,13 @@
 
 			var query = new this.Parse.Query('MemberType');
 			var ls = await query.find();
-			this.list = ls.map(item => JSON.parse(JSON.stringify(item))).sort((a, b) => a.surfaceId - b
-				.surfaceId);
+			this.list = ls.map(item => JSON.parse(JSON.stringify(item))).sort((a, b) => a.surfaceId - b.surfaceId);
 
 			var date = new Date();
 			var year = date.getFullYear(); //年
 			var month = date.getMonth() + 1; //月
 			var day = date.getDate(); //日
-			month = month >= 10 ? month : '0' + month;
+			month = month >= 10 ? month : '0' + month
 			day = day >= 10 ? day : '0' + day;
 			var time = ' ' + year + month + day;
 			this.list.forEach(item => {
@@ -527,6 +526,7 @@
 				if (time1 >= time) {
 					item.discount = true;
 				} else {
+					item.promotionPrice = Number(item.memberPrice)
 					item.discount = false;
 				}
 			})
@@ -622,12 +622,20 @@
 			},
 			// 获取是否是会员
 			async getMember() {
+				var app = getApp();
 				var Member = new this.Parse.Query('MemberList')
 				Member.equalTo("openId", this.userInfo.openid);
 				this.member = await Member.first();
 				if (this.member) {
-					this.memberInfo = JSON.parse(JSON.stringify(this.member));
-					this.active = Number(this.memberInfo.memberType);
+						app.globalData.member = this.member.attributes
+					if (this.member.endTime < Date.now()) {
+						results.set('memberType', '');
+						results.set('state', 2);
+						results.save();
+					} else {
+						this.memberInfo = JSON.parse(JSON.stringify(this.member));
+						this.active = Number(this.memberInfo.memberType);
+					}
 				}
 				uni.hideLoading()
 			},
@@ -651,9 +659,11 @@
 					title: str,
 					type: _this.active
 				}]
+				
 				uni.navigateTo({
 					url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
 				})
+				this.showFixed = false
 			},
 			// 白银续费
 			baiyinRenew() {
@@ -670,16 +680,18 @@
 					var time = Math.ceil((this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = this.list[0].promotionPrice || this.list[0].memberPrice;
 
-					cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time - 365)) * 100
+					cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time))
 
 					let obj = [{
 						price: cash,
 						title: '升级为黑金VIP会员',
-						type: 0
+						type: 0,
+						upgrade: true
 					}]
 					uni.navigateTo({
 						url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
 					})
+					this.showFixed = false
 				} else {
 					let obj = [{
 						price: baiyinPrice,
@@ -689,6 +701,7 @@
 					uni.navigateTo({
 						url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
 					})
+					this.showFixed = false
 				}
 			},
 			// 铂金续费
@@ -706,16 +719,18 @@
 					var time = Math.ceil((_this.memberInfo.endTime - Date.now()) / (1000 * 60 * 60 * 24));
 					var n = _this.list[0].promotionPrice || _this.list[0].memberPrice;
 	
-					cash = parseInt((n - baiyinPrice) / 365 * Math.abs(time - 365)) * 100 
+					cash = parseInt((n - bojinPrice) / 365 * Math.abs(time))
 					
 					let obj = [{
 						price: cash,
 						title: '升级为黑金VIP会员',
-						type: 0
+						type: 0,
+						upgrade: true
 					}]
 					uni.navigateTo({
 						url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
 					})
+					this.showFixed = false
 				} else {
 					
 					let obj = [{
@@ -726,6 +741,7 @@
 					uni.navigateTo({
 						url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
 					})
+					this.showFixed = false
 				}
 			},
 			// 黑金续费
@@ -746,6 +762,7 @@
 				uni.navigateTo({
 					url: '/mineSubPackage/pages/vip/buy?obj=' + JSON.stringify(obj)
 				})
+				this.showFixed = false
 			},
 
 			// 支付

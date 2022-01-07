@@ -1,18 +1,20 @@
 <template>
-	<TopNavbar title='消息详情' paddingTop="224">
+	<TopNavbar title='消息详情'>
+		
 	<view class="myView">
+		<view style='height: 20rpx'></view>
 		<view class="head">{{title}}</view>
 		<!-- <view class="date">发布日期：{{CreateTime}}</view> -->
 		<view class="body">
-			<text>{{content}}</text>
-			<!-- <u-parse :html="content?content:''"></u-parse> -->
+			<!-- <view>{{content}}</view> -->
+			<!-- <u-parse :html="content"></u-parse> -->
+			<rich-text class="ql-editor" :nodes='content'></rich-text>
 		</view>
 	</view>
 	</TopNavbar>
 </template>
 
 <script>
-	// import {dateFormat} from '../../../js/common.js'
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
@@ -39,9 +41,6 @@
 				self.content = res.data
 			})
 
-		},
-		methods: {
-			
 		}
 	}
 </script>
@@ -76,5 +75,8 @@
 		font-weight: 400;
 		color: rgba(0,0,0,.8);
 		line-height: 40rpx;
+	}
+	.body view {
+		word-wrap: break-word;
 	}
 </style>

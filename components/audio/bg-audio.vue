@@ -17,6 +17,7 @@
 </template>
 
 <script>
+	import {parseSrc} from '@/js/srcToCdnSrc.js'
 	export default {
 		data() {
 			return {
@@ -53,7 +54,7 @@
 				this.audio.obeyMuteSwitch = false;
 				this.audio.title = this.title || '暂无标题';
 				this.audio.coverImgUrl = this.poster;
-				this.audio.src = this.src;
+				this.audio.src = parseSrc(this.src);
 				// 重要 缺失 音频进入可以播放状态
 				this.audio.onCanplay(() => {
 					this.$emit('changeLearn', true)
@@ -180,17 +181,20 @@
 					String(Math.floor(num % 60)).length) + Math.floor(num % 60)
 			},
 			change(e) {
-				this.audio.pause()
+				// console.log(9999);
+				// this.audio.pause()
 				this.audio.seek(e.detail.value)
-				this.audio.play()
-				setTimeout(() => {
-					this.audio.play()
-					this.current = e.detail.value;
-					this.seek = false;
-				}, 500)
+				
+				this.current = e.detail.value;
+				this.seek = false;
+				// this.audio.play()
+				// setTimeout(() => {
+				// 	// this.audio.play()
+				// 	this.current = e.detail.value;
+				// 	this.seek = false;
+				// }, 500)
 			},
 			changing(e) {
-				// this.audio.pause()
 				this.seek = true;
 				this.current = e.detail.value;
 			}

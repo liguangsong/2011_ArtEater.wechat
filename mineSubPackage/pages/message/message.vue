@@ -1,24 +1,21 @@
 <template>
 	<TopNavbar title='消息中心'>
 	<view class="myPage u-demo-area">
-		<view style='height:44rpx'></view>
+		<view style='height:40rpx'></view>
+		<!-- <Notice :notice='notice'/> -->
 		<view class="readAllView">
 			<button v-if="notReadCount > 0" @click="handleReadAll">全部已读</button>
 			<button v-else class="read">全部已读</button>
 		</view>
 		<view class="msgItem u-badge-wrap" v-for="msg in msgList" @click="handleMsgClick" :data-item="msg">
-			<!-- <view class="conImg">
-				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/coupon2.png"></image>
-			</view> -->
 			<view class="conImg">
 				<image v-if='msg.surface[0]' :src="msg.surface[0]"></image>
-				<image v-else src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/coupon2.png"></image>
+				<image v-else src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BF%A1%E6%81%AF%E9%80%9A%E7%9F%A5_%E7%94%BB%E6%9D%BF%201.jpg"></image>
 			</view>
 			<view style='display: flex; flex: 1;border-bottom: 2rpx solid rgba(0,0,0,.06);'>
 				<view class="conView">
 					<view class="head">
 						<view class="title">{{msg.title}}</view>
-						<!-- <view class="date">{{msg.CreateTime}}</view> -->
 					</view>
 					<view class="content">{{msg.content}}</view>
 				</view>
@@ -37,6 +34,7 @@
 <script>
 	import {dateFormat} from '../../../js/common.js'
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
+	// import Notice from '@/components/notice/notice.vue'
 	export default {
 		data() {
 			return {
@@ -51,7 +49,8 @@
 				},
 				notReadCount: 0,
 				msgList:[],
-				readHistory:[]
+				readHistory:[],
+				notice: []
 			}
 		},
 		components: {
@@ -70,6 +69,7 @@
 
 		},
 		methods: {
+	
 			handleLoadMore(){
 				this.status = 'loading'
 				this.page= this.page+1
@@ -83,6 +83,37 @@
 					if(res){
 						self.readHistory = res
 					}
+					
+					var msgQuery2 = new this.Parse.Query("CouponMessage")
+					msgQuery2.equalTo('openid', self.userInfo.openid)
+					msgQuery2.notEqualTo('message', '')
+					msgQuery2.descending('createdAt')
+					msgQuery2.skip((this.page - 1) * this.pageSize)
+					msgQuery2.limit(this.pageSize)
+					msgQuery2.find().then(mres=>{
+						if(mres.length > 0) {
+							mres.forEach((item)=>{
+								item.set('msgid', item.id)
+								if(res&&res.get('MessageIds').indexOf(item.id)!=-1) {
+									item.set('isRead', 1)
+								} else {
+									item.set('isRead', 0)
+									self.notReadCount += 1
+								}
+								item.set('CreateTime', dateFormat(item.createdAt,'yyyy-MM-dd'))
+							})
+							self.status = 'loadmore'
+							mres = JSON.parse(JSON.stringify(mres));
+							mres.forEach(item => {
+								item.title = item.content
+								item.content = item.message;
+							})
+							self.msgList = self.msgList.concat(mres)
+						} else {
+							self.status = 'nomore'
+						}
+					})
+					
 					var msgQuery1 = new this.Parse.Query("Opinions")
 					msgQuery1.equalTo('openid', self.userInfo.openid)
 					msgQuery1.notEqualTo('message', '')
@@ -131,10 +162,10 @@
 							})
 							self.status = 'loadmore'
 							self.msgList = self.msgList.concat(mres)
-							console.log(self.msgList);
 						} else {
 							self.status = 'nomore'
 						}
+						self.msgList = self.msgList.map(item => JSON.parse(JSON.stringify(item)))
 					})
 					
 					
@@ -189,8 +220,9 @@
 			handleReadAll(){
 				var self= this
 				var ids = []
+				console.log(self.msgList);
 				self.msgList.forEach((item)=>{
-					ids.push(item.id)
+					ids.push(item.objectId)
 				})
 				var dbHistory = this.Parse.Object.extend("MessageReadHistory")
 				var _history = new dbHistory()
@@ -265,18 +297,6 @@
 		width: 100%;
 	}
 	.myPage .msgItem .conView .head .title{
-		/* flex: 1;
-		font-size: 34rpx;
-		height: 48rpx;
-		line-height: 48rpx;
-		font-weight: bold;
-		color: #352026;
-		font-family: PingFangSC-Medium;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp: 1;
-		-webkit-box-orient: vertical; */
 		font-size: 32rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;

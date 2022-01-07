@@ -514,14 +514,6 @@
 
 	/** 包含 */
 	.contain {
-		/* color: #ffffff;
-		background-color: #ff6867;
-		border-radius: 50%;
-		width: 64rpx;
-		height: 64rpx;
-		line-height: 64rpx;
-		display: inline-block;
-		text-align: center; */
 		color: #ffffff;
 		display: inline-block;
 		line-height: 36rpx !important;

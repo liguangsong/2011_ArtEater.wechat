@@ -2,7 +2,7 @@
 	<view class="video-box" 
 		<video
 			id='myvideo'
-			:src="src"
+			:src="parseSrc(src)"
 			play-btn-position='center'
 			:show-center-play-btn='true'
 			:enable-play-gesture='true'
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+	import {parseSrc} from '@/js/srcToCdnSrc.js'
 	export default {
 		name: 'k-video',
 		props: {
@@ -66,10 +67,13 @@
 				sliderVal: 0,
 				showControls: false,
 				timer: null,
-				cover: false
+				cover: false,
+				cdnSrc: null,
+				parseSrc,
 			}
 		},
 		created() {
+			// this.cdnSrc = parseSrc(this.src)
 			this.videoContext = uni.createVideoContext('myvideo', this);
 		},
 		beforeDestroy() {

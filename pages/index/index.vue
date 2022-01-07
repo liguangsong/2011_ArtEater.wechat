@@ -70,8 +70,9 @@
 						</view>
 					</view>
 				</view>
-				<view class='scrollx' v-if='!isShowTips'>
-					<u-notice-bar mode="horizontal" duration='3000' :list="noticeTitleArr" :is-circular='false' @click='noticeBar'></u-notice-bar>
+				<view class='scrollx' v-if='notice.length'>
+					<!-- <u-notice-bar mode="horizontal" duration='3000' :list="noticeTitleArr" :is-circular='false' @click='noticeBar'></u-notice-bar> -->
+					<Notice :notice='notice' :isScroll='isScroll'/>
 				</view>
 				<audition-learning v-if="studyList.length" title="正在学习" :showMore="showLearningMore"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
@@ -87,7 +88,7 @@
 					<view class="title-info">
 						<view class="left" v-if="title">
 							<view class="red-block"></view>
-							推荐
+							推荐阅读
 						</view>
 					</view>
 					<view class="newsView">
@@ -148,10 +149,17 @@
 		<!--轮播 end-->
 		<!-- <u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true"
 			:zoom="false" @click="handleStep"> -->
-		<view class='mask mask_collection' @click="handleShowCollection" v-if='isShowCollection'>
+		<!-- <view class='mask mask_collection' @click="handleShowCollection" v-if='isShowCollection'>
 			<image src="../../static/collection.png" mode='aspectFit'></image>
-		</view>
-		<view class='mask' @click="handleStep" v-if='isShowTips'>
+		</view> -->
+		<view class='mask mask_collection' @click="handleStep" v-if='isShowTips'>
+			<view v-if="step==9">
+				<!-- <view class="navItem" style="right: 4rpx"> -->
+					<view :style='{top: navbarheight+"px"}' style='position:absolute;bottom:0;left:0;right:0'>
+						<image src="../../static/collection.png" style='height: 100%;' mode='aspectFit'></image>
+					</view>
+				<!-- </view> -->
+			</view>
 			<view v-if="step==8" class="step bottom">
 				<view class="navItem" style="right:4rpx">
 					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%A2%98%E5%BA%93.png"
@@ -218,13 +226,15 @@
 	import audition from '@/components/audition/audition.vue'
 	import auditionLearning from '@/components/audition/auditionLearning.vue'
 	import Curriculum from '@/js/utils/curriculum.js'
+	import Notice from '@/components/notice/notice.vue'
 	export default {
 		components: {
 			login,
 			'view-tabbar': Tabbar,
 			audition,
 			auditionLearning,
-			Navbar
+			Navbar,
+			Notice
 		},
 		data() {
 			return {
@@ -260,6 +270,8 @@
 				height: 0,
 				notice: [],	// 公告
 				noticeTitleArr: [],	// 公告标题
+				navbarheight: 0,
+				isScroll: true
 			}
 		},
 		mounted() {
@@ -270,13 +282,40 @@
 				}
 			})
 		},
+		async created() {
+			if (!this.isShowTips) {
+				uni.getSystemInfo({
+					success: (e) => {
+						let statusBar = 0
+						let customBar = 0
+						statusBar = e.statusBarHeight
+						let custom = wx.getMenuButtonBoundingClientRect()
+						customBar = custom.bottom + custom.top - e.statusBarHeight
+						this.navbarheight = customBar * 2 - e.statusBarHeight * 2;
+					}
+				})
+			}
+		},
+		onHide() {
+			this.isScroll = false
+		},
 		async onShow() {
+			this.isScroll = true
 			uni.hideTabBar({
 				animation: false
 			});
 			var app = getApp();
 			var member = app.globalData.member;
-			let res = await Utils.getcount();
+			let res = null
+			try {
+				res = await Utils.getcount();
+			} catch (e) {
+				uni.showToast({
+					title: '数据获取失败，请重新进入小程序',
+					icon: 'none'
+				})
+				return
+			}
 			if (res) {
 				this.userInfo = res.userInfo;
 				this.msgCount = res.msgCount;
@@ -303,23 +342,23 @@
 					await this.getMember();
 				}
 			}
-
 			this.bindConfig();
 			//获取所有的模块
+			this.getNotice()
 			this.getModules();
 			// this.getLearning()
-			this.getNotice()
+			
 		},
 		onLoad(options) {
-			
+			// console.log(options, ';;;;;;;;;;;');
 			// 是不是通过别人的二维码进来的
-			// if (options && options.code) {
-			// 	uni.setStorage({
-			// 		key: 'parentOpenId',
-			// 		data: options.code,
-			// 	})
-			// }
-			
+			if (options && options.scene) {
+				uni.setStorage({
+					key: 'parentOpenId',
+					data: options.scene,
+				})
+			}
+			// this.send()
 			
 			var self = this
 			let app = getApp();
@@ -374,27 +413,23 @@
 					if (data) {
 						data = JSON.parse(JSON.stringify(data));
 						_this.notice = data;
-						data.forEach(item => {
-							_this.noticeTitleArr.push(item.bulletinName)
-						})
 					}
 				})
 			},
 			// 点击公告栏内容
 			noticeBar(i) {
 				let _this = this;
-				if (this.notice[i].type == 1) {
+				if (this.notice[i%this.notice.length].type == 1) {
 					uni.navigateTo({
-						url: '/pages/index/notice?objectId=' + _this.notice[i].objectId
+						url: '/pages/index/notice?objectId=' + _this.notice[i%this.notice.length].objectId
 					})
 				} else {
-					let path = _this.notice[i].link.split('?')
+					let path = _this.notice[i%this.notice.length].link.split('?')
 					uni.navigateTo({
+						// url: '/pages/index/channel?' + path[1]
 						url: '/pages/index/out?' + path[1]
 					})
 				}
-				
-				
 			},
 			async getMember() {
 				var r = uni.getStorageSync('userInfo');
@@ -499,10 +534,6 @@
 				}
 			},
 			async checkMore(params) {
-				// var r = uni.getStorageSync('userInfo');
-				// if (!r) {
-				// 	this.isShowLogin = true;
-				// }
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						uni.navigateTo({
@@ -567,6 +598,7 @@
 			},
 			//获取模块
 			async getModules() {
+				console.log('12345');
 				let res = await Curriculum.getModule();
 				this.moduleList = res;
 			},
@@ -826,7 +858,7 @@
 			},
 			handleStep() {
 				this.step += 1
-				if (this.step > 8) {
+				if (this.step > 9) {
 					uni.setStorage({
 						key: 'hasHomeTiped',
 						data: true
@@ -851,9 +883,22 @@
 				var _item = e.currentTarget.dataset.item
 				if (_item.src) {
 					if (_item.src.indexOf('http') == 0) {
-						uni.navigateTo({
-							url: './news?url=' + _item.src
-						})
+						if (_item.src.indexOf('www.arteater.cn/vip') != -1) {
+							let path = _item.src.split('?')
+							uni.navigateTo({
+								url: '/pages/index/out?' + path[1]
+							})
+						} else if (_item.src.indexOf('www.arteater.cn/channel') != -1) {
+							let path = _item.src.split('?')
+							uni.navigateTo({
+								url: '/pages/index/notice?objectId=' + _item.objectId
+							})
+						} else {
+							uni.navigateTo({
+								url: './news?url=' + _item.src
+							})
+						}
+						
 					} else if (_item.src.indexOf('/pages') == 0) {
 						uni.navigateTo({
 							url: _item.src
@@ -870,8 +915,9 @@
 		overflow: hidden;
 	}
 	.scrollx {
+		margin-top: 6rpx;
 		width: 100%;
-		height: 86rpx;
+		height: 72rpx;
 		z-index: 10000;
 	}
 	.myPage {

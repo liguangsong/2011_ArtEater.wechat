@@ -96,29 +96,9 @@
 								self.rightCount = count
 							})
 							self.percent = (self.rightCount*100/self.allCount).toFixed(2)
-							// self.handleBuild()
 							self.getData()
-							// uni.getStorage({
-							// 	key: 'img_Url',
-							// 	success(data) {
-							// 		if (data.data) {
-							// 			self.handleBuild(data.data)
-							// 		} else {
-							// 			self.getData()
-							// 		}
-							// 	},
-							// 	fail() {
-							// 		self.getData()
-							// 	}
-							// })
 						},
-						// fail: (error) => {
-						// 	uni.showToast({
-						// 		icon: 'none',
-						// 		title: '生成二维码失败',
-						// 		duration: 2000
-						// 	})
-						// }
+
 					});
 				
 				}
@@ -126,65 +106,25 @@
 		},
 		methods: {
 			getData(e) {
-				//获取accessToken
-				let that = this;
-				const APP_ID = 'wx8bef88e5b3f056be'; // 小程序appid
-				const APP_SECRET = 'b5d651459568855faa3b6a43faba3d6e'; // 小程序app_secret
-				let access_token = '';
+				let _this = this
 				uni.request({
-					url: "https://api.weixin.qq.com/cgi-bin/token", //固定链接，不用改
+					method: 'post',
+					url: 'https://www.arteater.cn/wx/getUnlimitedBarcode',
 					data: {
-						grant_type: 'client_credential',
-						appid: APP_ID,
-						secret: APP_SECRET
+						openid: _this.userInfo.openid
 					},
-					success: function(res) {
-						access_token = res.data.access_token;
-						// 接口B：适用于需要的码数量极多的业务场景 生成的是小程序码
-						that.getQrCode(access_token);
-					}
-				})
-			},
-			//获取二维码
-			getQrCode(access_token) {
-				var that = this;
-				uni.request({
-					url: "https://api.weixin.qq.com/wxa/getwxacode?access_token=" + access_token, //固定链接，不用改
-					method: 'POST',
-					responseType: 'arraybuffer', //设置响应类型
-					data: {
-						path: 'pages/index/index?code=' + that.userInfo.openid, // 必须是已经发布的小程序存在的页面（否则报错）
-						width: 298,
-						is_hyaline: true,
-						auto_color: false, // 自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
-						line_color: {
-							"r": "0",
-							"g": "0",
-							"b": "0"
-						} // auto_color 为 false 时生效，使用 rgb 设置颜色
+					success(res) {
+						_this.handleBuild(res.data.data)
 					},
-					success: function(res) {
-						// console.log('获取二维码', res)
-						that.maskData = uni.arrayBufferToBase64(res.data);
-						let parseFile = new that.Parse.File(Date.now()+'.png', {base64: that.maskData} , "image/png");
-						parseFile.save().then(res => {
-							uni.setStorage({
-								key: 'img_Url',
-								data: res._url,
-							})
-							console.log(res._url);
-							that.handleBuild(res._url)
-						})
-					},
-					fail: (error) => {
+					fail() {
 						uni.showToast({
-							icon: 'none',
-							title: '生成二维码失败',
-							duration: 2000
+							title: '获取二维码失败',
+							icon: "none"
 						})
 					}
 				})
 			},
+
 			/**
 			 * 画一个圆角矩形
 			 */
@@ -252,6 +192,7 @@
 				await uni.downloadFile({
 					url: self.userInfo.avatarUrl,
 					success (headRes) {
+						// https://art-eater.oss-accelerate.aliyuncs.com/9ed5f3738bb807f7e79df86306bfd952_1641382617837.png
 						uni.downloadFile({url: url, success (qrcodeRes) {
 							uni.downloadFile({url: 'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%88%86%E4%BA%AB%E8%83%8C%E6%9D%BF.png', success (bg) {
 							uni.downloadFile({url: self.sharePicImg, success (bgRes) {	

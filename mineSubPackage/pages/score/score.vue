@@ -125,7 +125,7 @@
 					if (res.length > 0) {
 						self.status = 'loadmore'
 						self.scoreList = self.scoreList.concat(res)
-						// console.log(self.scoreList);
+						console.log(self.scoreList);
 					} else {
 						self.status = 'nomore'
 					}

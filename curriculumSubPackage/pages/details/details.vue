@@ -110,6 +110,7 @@
 	import kAudio from '../../../components/audio/bg-audio.vue'
 	import kVideo from '../../../components/video/kVideo.vue'
 	import Item from '@/pages/curriculum/item.vue'
+	// import {parseSrc} from '@/js/srcToCdnSrc.js'
 	export default {
 		components: {
 			kAudio,

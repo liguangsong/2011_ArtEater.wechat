@@ -1,6 +1,6 @@
 <template>
-	<TopNavbar title='信息公告' bg='#fafafa'>
-		<view class="">
+	<TopNavbar :title='notice.title' bg='#fafafa'>
+		<view style='margin: 0 20rpx'>
 			<!-- {{notice.bulletinName}} -->
 			<rich-text class='regular ql-editor' :nodes='detail | formatRichText'></rich-text>
 		</view>

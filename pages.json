@@ -20,6 +20,14 @@
 			}
 		},
 		{
+			"path": "pages/index/channel",
+			"style": {
+				"navigationBarBackgroundColor": "#fbfbfa",
+				"navigationBarTitleText": "食艺兽",
+				"navigationStyle":"custom"
+			}
+		},
+		{
 			"path": "pages/index/notice",
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",

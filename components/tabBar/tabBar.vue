@@ -74,9 +74,6 @@
 			let app = getApp();
 			that.paddingBottomHeight = app.globalData.paddingBottomHeight;
 		},
-		mounted() {
-			console.log(1234);
-		},
 		methods: {
 			tabbarChange(path) {
 				this.$emit('tabbarChange', path);

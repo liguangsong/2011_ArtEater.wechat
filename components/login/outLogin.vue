@@ -271,8 +271,8 @@
 									var Opinions = self.Parse.Object.extend("CouponMessage")
 									var opinions = new Opinions()
 									opinions.set('openid', lres.openid)
-									opinions.set("content", '新优惠券消息提醒')
-									opinions.set("message", '恭喜您注册成为新用户，您收到一张新的优惠券，请前往“我的优惠券”查看')
+									opinions.set("content", '拉新后送优惠券消息')
+									opinions.set("message", '您有新的优惠券，请前往“我的优惠券”查看')
 									opinions.save()
 
 								} else {
@@ -293,8 +293,8 @@
 									var Opinions = self.Parse.Object.extend("CouponMessage")
 									var opinions = new Opinions()
 									opinions.set('openid', lres.openid)
-									opinions.set("content", '新优惠券消息提醒')
-									opinions.set("message", '恭喜您注册成为新用户，您收到一张新的优惠券，请前往“我的优惠券”查看')
+									opinions.set("content", '注册后送优惠券消息')
+									opinions.set("message", '您有新的优惠券，请前往“我的优惠券”查看')
 									opinions.save()
 								}
 							})
@@ -373,17 +373,6 @@
 								}
 							})
 							
-							
-							uni.reLaunch({
-								url: '/pages/login/login',
-								events:{
-									back:function(data){
-										uni.navigateTo({
-											url: self.to
-										})
-									}
-								}
-							})
 							self.$emit('ok')
 						})
 					},error=>{

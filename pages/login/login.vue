@@ -25,7 +25,7 @@
 						<u-form-item prop="realname" >
 							<view class="inputItem">
 								<u-input border='none' placeholder-style="font-size:24rpx;color:rgba(0,0,0,0.4)"
-									v-model="form.realname" maxlength='10' placeholder="请输入真实姓名" />
+									v-model="form.realname" placeholder="请输入真实姓名" />
 							</view>
 						</u-form-item>
 						<u-form-item prop="areaTxt">
@@ -321,6 +321,17 @@
 				var pc = new WXBizDataCrypt(_config.AppId, self.sessionKey)
 				var data = pc.decryptData(e.detail.encryptedData, e.detail.iv)
 				self.form.phone = data.phoneNumber
+				uni.getStorage({
+					key: 'userInfo',
+					success(res) {
+						var query = new self.Parse.Query("RoyaltyBill");  // 之前的消息
+						query.equalTo('openid', res.data.openid)
+						query.first().then(lres => {
+							lres.set('phone', data.phoneNumber)
+							lres.save()
+						})
+					}
+				})
 			},
 			/*选择地区*/
 			bindOpenArea() {

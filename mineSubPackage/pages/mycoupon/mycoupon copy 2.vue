@@ -1,5 +1,5 @@
 <template>
-	<TopNavbar title='我的优惠券' paddingTop="204" bg='#fafafa'>
+	<TopNavbar title='我的优惠券' bg='#fafafa'>
 	<view style="text-align: center;padding-bottom: 100rpx;">
 		<view class="testView" v-if="!coupons||coupons.length==0">
 			<view style="text-align: center;padding-top: 200rpx;">
@@ -12,9 +12,8 @@
 			</view>
 				</view>
 		</view>
-		<view :class="'couponItem '+((coupon.tipName&&coupon.productType&&coupon.productType!='all')?'large':'')"
-			v-for="coupon in coupons">
-			<view class="bg1" v-if="coupon.tipName&&coupon.productType&&coupon.productType!='all'">
+		<view :class="'couponItem '+((coupon.state==0&&coupon.couponName&&coupon.couponRange&&coupon.couponRange!='all')?'large':'')" v-for="coupon in coupons">
+			<view class="bg1" v-if="coupon.state==0&&coupon.couponName&&coupon.couponRange&&coupon.couponRange!='all'">
 				<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/coupon1.png"></image>
 			</view>
 			<view class="bg" v-else>
@@ -32,7 +31,7 @@
 						<view class="date" v-if="coupon.state==0">
 							<u-count-down style="display: inline;" color="#b1b1b1" font-size="22" separator="zh"
 								separator-size="22" :show-seconds="false" :show-minutes="false" @end='bindData'
-								separator-color="#b1b1b1" @change="handleChange" :timestamp="coupon.seconds">
+								separator-color="#b1b1b1" :timestamp="coupon.seconds">
 							</u-count-down>
 							后失效
 						</view>
@@ -48,16 +47,16 @@
 				<!-- <view class="bg1">
 					<image src="../../static/coupon1.png"></image>
 				</view> -->
-				<view class="content1" v-if="coupon.tipName&&coupon.productType&&coupon.productType!='all'">
+				<view class="content1" v-if="coupon.state==0&&coupon.couponName&&coupon.couponRange&&coupon.couponRange!='all'">
 					<view class="price">
 						<!-- <view class="pricebox"> -->
 							<view class="price1">券后价</view>
-							<view class="price2">¥{{ coupon.total}}</view>
+							<view class="price2">¥{{coupon.total}}</view>
 							<view class="price3">原价¥{{coupon.price}}</view>
 						<!-- </view> -->
 					</view>
 					<view class="content">
-						<view class="title">{{coupon.tipName}}</view>
+						<view class="title">{{coupon.couponName}}</view>
 						<view class="content">
 							<text>{{coupon.tipContent}}</text>
 						</view>
@@ -93,7 +92,7 @@
 				key: 'openid',
 				success(o) {
 					self.openid = o.data
-					self.bindData()
+					self.bindCoupons()
 				}
 			})
 		},
@@ -101,88 +100,75 @@
 			bindData() {
 				this.bindSubjects()
 			},
-			/* 加载科目 */
-			bindSubjects() {
-				var self = this
-				var query = new self.Parse.Query('Subjects')
-				query.equalTo('parent_ID', '0')
-				query.ascending('createdAt')
-				query.find().then(subjects => {
-					var _products = []
-					let _price = 0
-					subjects.forEach(t => {
-						if (t.get('price') > 0) {
-							_price += t.get('price')
-						}
-					})
-					_products.push({
-						id: 'subjectAll',
-						price: _price,
-						type: 'subjectAll'
-					})
-					self.products = JSON.parse(JSON.stringify(self.products)).concat(_products)
-					self.bindActionConfigs()
+			// 加载优惠券1
+			async memberType () {
+				var query = new this.Parse.Query('MemberType');
+				var ls = await query.find();
+				let list = ls.map(item => JSON.parse(JSON.stringify(item))).sort((a, b) => a.surfaceId - b.surfaceId);
+				
+				var date = new Date();
+				var year = date.getFullYear(); //年
+				var month = date.getMonth() + 1; //月
+				var day = date.getDate(); //日
+				month = month >= 10 ? month : '0' + month
+				day = day >= 10 ? day : '0' + day;
+				var time = ' ' + year + month + day;
+				list.forEach(item => {
+					var time1 = parseInt(item.expirationDate.split('-').join(''));
+					if (time1 < time) {
+						item.promotionPrice = Number(item.memberPrice)
+					}
 				})
+				return list;
 			},
-			/*加载价格配置的收费项目*/
-			bindActionConfigs() {
-				var self = this
-				var query = new self.Parse.Query('ActionConfig')
-				query.ascending('createdAt')
-				query.find().then(actionConfigs => {
-					var _products = []
-					actionConfigs.forEach(t => {
-						if (t.get('price') > 0) {
-							_products.push({
-								id: t.id,
-								price: t.get('price'),
-								type: 'actionConfig'
-							})
-						}
-					})
-					self.products = JSON.parse(JSON.stringify(self.products)).concat(_products)
-					self.bindCoupons()
-				})
-			},
-			handleChange(timestamp) {},
 			/*加载优惠券*/
 			bindCoupons() {
 				var self = this
-				let couponRecord = new self.Parse.Query('CouponRecord')
+				let couponRecord = new self.Parse.Query('NewCouponRecord')
 				couponRecord.equalTo('openid', self.openid)
-				// couponRecord.equalTo('state', 0)
-				couponRecord.greaterThan('useEndTime', new Date())
-				// couponRecord.ascending('state')
-				// couponRecord.descending('useEndTime', 'state')
-				couponRecord.find().then(coupons => {
+				// couponRecord.greaterThan('useEndTime', new Date())
+				couponRecord.find().then(async coupons => {
+					let memberType = await self.memberType()
+					// console.log(memberType, coupons);
 					let _coupons = []
 					coupons.forEach(t => {
+						let tipContent = '此VIP会员服务有效期为365天，到期会系统将关闭所有系统权限，为不影响使用，请提前续费'
+						let total = null, price = null;
+						if (t.attributes.couponRange == 'blackGold') {
+							total = memberType[0].promotionPrice - t.attributes.amount
+							price = memberType[0].promotionPrice
+						}
+						if (t.attributes.couponRange == 'platinum') {
+							total = memberType[1].promotionPrice - t.attributes.amount
+							price = memberType[1].promotionPrice
+						}
+						if (t.attributes.couponRange == 'silver') {
+							total = memberType[2].promotionPrice - t.attributes.amount
+							price = memberType[2].promotionPrice
+						}
 						let state = t.get('state')
-						if (state == 0 && t.get('useEndTime') > new Date()) {
-							state = 0 // 可以使用
-						} else if (state == 0 && t.get('useEndTime') <= new Date()) {
-							state = 1 // 已过期
-						} else if (state == 1) {
-							state = 2 // 已使用
+						if (state == 0 && t.get('useEndTime') <= new Date()) {
+							state = 1
+							t.set('state', 1)
+							t.save()
 						}
 						let useEndDate = dateFormat(t.get('useEndTime'), 'yyyy年MM月dd日HH:mm')
 						let seconds = t.get('useEndTime').getTime() - new Date().getTime()
 						var product = self.products.find(p => {
-							return p.id == t.get('productType')
+							return p.id == t.get('couponRange')
 						})
 						_coupons.push({
 							id: t.id,
 							amount: t.get('amount'),
 							couponName: t.get('couponName'),
 							state: state,
-							price: (product ? product.price : 0),
-							total: parseFloat(((product ? product.price : 0) - t.get('amount'))
-								.toFixed(2)),
+							price,
+							total: total > 0 ? total : 0,
 							seconds: seconds / 1000,
 							useEndDate: useEndDate,
-							productType: t.get('productType'),
-							tipName: t.get('tipName'),
-							tipContent: t.get('tipContent')
+							couponRange: t.get('couponRange'),
+							couponName: t.get('couponName'),
+							tipContent: tipContent
 						})
 					})
 					var _canuse = _coupons.filter(t => {
@@ -192,17 +178,14 @@
 						return t.state != 0
 					})
 					self.coupons = _canuse.concat(_cannotuse)
+					console.log(self.coupons);
 				})
 			},
 			/* 立即使用 */
 			handleUseClick(e) {
-				var _item = e.currentTarget.dataset.item
-				if (_item) {
-					uni.redirectTo({
-						url: '/pages/mine/order?ptype=' + _item.productType + '&cid=' + _item.id + '&amount=' +
-							_item.amount + '&'
-					})
-				}
+				uni.navigateTo({
+					url: '/mineSubPackage/pages/vip/vip'
+				})
 			}
 		}
 	}
@@ -221,7 +204,8 @@
 		height: 350rpx;
 	}
 
-	.couponItem .bg, .couponItem .bg1 {
+	.couponItem .bg,
+	.couponItem .bg1 {
 		position: absolute;
 		width: 100%;
 		height: 100%;
@@ -230,7 +214,8 @@
 		z-index: 10;
 	}
 
-	.couponItem .bg image, .couponItem .bg1 image  {
+	.couponItem .bg image,
+	.couponItem .bg1 image {
 		width: 100%;
 		height: 100%;
 	}
@@ -255,6 +240,7 @@
 		font-family: PingFangSC-Semibold, PingFang SC;
 		color: #ED3535;
 	}
+
 	.couponItem .content .price .pricebox {
 		text-align: center;
 		width: 100%;
@@ -262,10 +248,12 @@
 		line-height: 52rpx;
 		padding-top: 52rpx;
 	}
+
 	.couponItem.large .content .price {
 		flex: 0 1 246rpx;
 		width: 246rpx;
 	}
+
 	.couponItem.large .content .price .pricebox {
 		padding: 0;
 		padding-top: 52rpx;
@@ -325,7 +313,7 @@
 		border-radius: 20rpx;
 		color: #ED3535;
 		border: 2rpx solid #ED3535;
-		
+
 	}
 
 	.couponItem .content.enable .radio {
@@ -361,7 +349,7 @@
 	.couponItem .couponDetail .content1 .price .price1 {
 		font-size: 20rpx;
 		font-weight: 500;
-		color: rgba(0,0,0,.8);
+		color: rgba(0, 0, 0, .8);
 		line-height: 28rpx;
 	}
 
@@ -377,7 +365,7 @@
 		text-decoration: line-through;
 		font-size: 22rpx;
 		font-weight: 500;
-		color: rgba(0,0,0,.3);
+		color: rgba(0, 0, 0, .3);
 		line-height: 32rpx;
 	}
 
@@ -392,14 +380,14 @@
 		line-height: 40rpx;
 		font-size: 24rpx;
 		font-weight: 500;
-		color: rgba(0,0,0,.7);
+		color: rgba(0, 0, 0, .7);
 	}
 
 	.couponItem .couponDetail .content1 .content .content {
 		font-size: 20rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
-		color: rgba(0,0,0,.5);
+		color: rgba(0, 0, 0, .5);
 		line-height: 28rpx;
 		padding-right: 60rpx;
 	}

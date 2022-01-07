@@ -1,14 +1,14 @@
 <template>
 	<view class='login'>
-		<u-popup mode="center" width="578rpx" height="246rpx" border-radius="24" @close="handleCancle" v-model="isShow">
+		<u-popup mode="center" width="578rpx" height="246rpx" :mask-close-able='cancleIcon' border-radius="24" @close="handleCancle" v-model="isShow">
 			<view class="content">
 				<view class="title">{{title}}</view>
 				<view class="action">
 					<view class="btn-box">
-						<view class="btn btnCancel" @click="handleCancle">
+						<view class="btn btnCancel" @click="handleCancle" v-if='cancleIcon'>
 						  取消
 						</view>
-						<view class="btn btnConfirm" @click="submitFn">
+						<view class="btn btnConfirm" @click="submitFn" :style='{flex: cancleIcon?"0 1 50%":"0 1 100%" }'>
 							{{submit}}
 						</view>
 					</view>
@@ -34,10 +34,16 @@
 			// submitFn: {
 			// 	type: Object,
 			// }
+			cancleIcon: {
+				type: Boolean,
+				default: true
+			}
 		},
 		methods: {
 			handleCancle(){
-				this.$emit('cancle')
+				if (this.cancleIcon) {
+					this.$emit('cancle')
+				}
 			},
 			submitFn() {
 				this.$emit('submitFn')

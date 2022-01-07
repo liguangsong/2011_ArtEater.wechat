@@ -4,7 +4,7 @@
 			<view class="noChooseItem" @click="handleCheckCoupon(null)">
 				<view class="title">暂不使用优惠券</view>
 				<view class="radio">
-					<image v-if="checkCoupon==null" src="../../../static/icon/icon_answer_nocheck.png"></image>
+					<image v-if="checkCoupon.length" src="../../../static/icon/icon_answer_nocheck.png"></image>
 					<image v-else src="../../../static/icon/icon_answer_checked.png"></image>
 				</view>
 			</view>
@@ -23,7 +23,14 @@
 					<view class="title">
 						<view class="name">{{coupon.couponName}}</view>
 						<view class="date">截止日期：{{coupon.useEndDate}}</view>
-						<view class="date">使用范围：{{coupon.tipName}}</view>
+						<view class="date">
+							使用范围：
+							<!-- {{coupon.couponName}} -->
+							<text v-if='coupon.couponRange == "all"'>通用型</text>
+							<text v-if='coupon.couponRange == "blackGold"'>黑金会员专属</text>
+							<text v-if='coupon.couponRange == "platinum"'>铂金会员专属</text>
+							<text v-if='coupon.couponRange == "silver"'>白银会员专属</text>
+						</view>
 					</view>
 					<view class="radio">
 						<image v-if="coupon.state == 1" src="../../../static/icon/icon_answer_checked.png"></image>
@@ -48,9 +55,10 @@
 			return {
 				openid: '',
 				coupons: [],
-				checkCoupon: null,
+				checkCoupon: [],
 				selectedProductType: [],
-				selectedCouponId: ''
+				selectedCouponId: '',
+				arr: []	// 临时存储
 			}
 		},
 		components: {
@@ -58,7 +66,7 @@
 		},
 		onLoad(options) {
 			if (options.chooseCoupon) {
-				this.checkCoupon = JSON.parse(options.chooseCoupon)
+				this.arr = JSON.parse(options.chooseCoupon)
 			}
 			var self = this
 			uni.getStorage({
@@ -81,9 +89,12 @@
 				couponRecord.equalTo('openid', self.openid)
 				couponRecord.equalTo('state', 0)
 				couponRecord.find().then(list => {
+					let list1 = list;
 					list = JSON.parse(JSON.stringify(list))
 					let arr = []
-					list.forEach(item => {
+					list.forEach((item,i) => {
+						item.useEndDate = dateFormat(list1[i].get('useEndTime'), 'yyyy年MM月dd日HH:mm')
+						
 						if (new Date(item.useEndTime.iso).getTime() > Date.now()) {
 							arr.push(item)
 						} else {
@@ -95,11 +106,15 @@
 						}
 					})
 					arr.forEach(item => {
-						if (this.checkCoupon && item.objectId == this.checkCoupon.objectId) {
-							item.state = 1
+						if (self.arr.length) {
+							self.arr.forEach(attr => {
+								if (attr.objectId == item.objectId) {
+									item.state = 1
+									self.checkCoupon.push(item)
+								}
+							})
 						}
 						
-						item.useEndDate = new Date(item.useEndTime.iso).toLocaleDateString().replace(/\//g,'-')
 						switch (item.couponRange) {
 							case 'all':
 								item.tipName = '所有';
@@ -111,12 +126,17 @@
 								item.tipName = '白银会员';
 						}
 					})
+					this.arr = []
 					self.coupons = arr;
-					// console.log(arr, 'arr');
 				})
 			},
 			/* 选择优惠券 */
 			handleCheckCoupon(coupon) {
+				if (!coupon) {
+					this.coupons.forEach(item => item.state = 0)
+					this.checkCoupon = []
+					return
+				}
 				if (this.selectedCouponId == 0) {
 					if (coupon.couponRange != 'all' && coupon.couponRange != 'blackGold') {
 						uni.showToast({
@@ -145,14 +165,13 @@
 					}
 				}
 				var self = this
-				self.checkCoupon = coupon
-				self.coupons.forEach(t => {
-					if (coupon && t.objectId == coupon.objectId) {
-						t.state = 1
-					} else {
-						t.state = 0
-					}
-				})
+				if (coupon.state) {
+					coupon.state = 0
+					self.checkCoupon = self.checkCoupon.filter(item => item.objectId != coupon.objectId)
+				} else {
+					coupon.state = 1
+					self.checkCoupon.push(coupon)
+				}
 			},
 			/*选择优惠券*/
 			handleChooseCoupon() {
@@ -179,6 +198,7 @@
 		display: inline-flex;
 		margin-top: 30rpx;
 		margin-bottom: 12rpx;
+		box-shadow: 0 4rpx 6rpx 0 rgba(0,0,0,0.04);
 	}
 
 	.noChooseItem .title {
@@ -312,10 +332,11 @@
 		width: 690rpx;
 		height: 92rpx;
 		line-height: 92rpx;
-		background-color: #ed3535;
+		/* background-color: #ed3535; */
 		border-radius: 46rpx;
+		border: 2rpx solid #D81E1F;
 		letter-spacing: 0rpx;
-		color: #ffffff;
+		color: rgba(216, 30, 31, .8);;
 		font-weight: bold;
 		font-size: 34rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;

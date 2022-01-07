@@ -2,13 +2,14 @@
 	<TopNavbar title='意见反馈'>
 	<view style="padding: 0 30rpx;">
 		<u-form :model="form" label-position="top" :border-bottom="false" ref="uForm" :rules="rules">
-			<u-form-item :label-width="150" :border-bottom="false" prop="content">
+			<!-- <u-form-item :label-width="150" :border-bottom="false" prop="content"> -->
 				<u-input height="420"
 					placeholder-style="font-size:26rpx;color:rgba(53,32,38,0.4);font-family:PingFangSC-Medium"
 					:custom-style="{'background-color':'#ffffff','padding':'28rpx 32rpx','border-radius':'20rpx','border':'2rpx solid rgba(0,0,0,0.08)','font-size':'30rpx','color':'#352026','font-family':'PingFangSC-Medium','margin':'0 10rpx'}"
 					v-model="form.content" :clearable="false" type="textarea" maxlength='300'
-					placeholder="请在输入框内写下您的意见反馈" />
-			</u-form-item>
+					placeholder='请在输入框内写下您的意见反馈'
+					/>
+			<!-- </u-form-item> -->
 		</u-form>
 		<view class="message">
 			消息回复请在消息中心查看
@@ -29,13 +30,13 @@
 				form: {
 					content: ''
 				},
-				rules: {
-					content: [{
-						required: true,
-						message: '请在输入框内写下您的意见反馈',
-						trigger: ['change', 'blur']
-					}],
-				}
+				// rules: {
+				// 	content: [{
+				// 		required: true,
+				// 		message: '请在输入框内写下您的意见反馈',
+				// 		trigger: ['change', 'blur']
+				// 	}],
+				// }
 			}
 		},
 		components: {
@@ -50,13 +51,20 @@
 					self.userInfo = res.data
 				}
 			})
-			this.$refs.uForm.setRules(this.rules);
+			// this.$refs.uForm.setRules(this.rules);
 		},
 		methods: {
 			submit() {
 				var self = this
-				self.$refs.uForm.validate(valid => {
-					if (valid) {
+				// self.$refs.uForm.validate(valid => {
+					// if (valid) {
+						if (!self.form.content) {
+							uni.showToast({
+								title: '请在输入框内写下您的意见反馈！',
+								icon: 'none'
+							})
+							return
+						}
 						var Opinion = self.Parse.Object.extend("Opinions");
 						var opinion = new Opinion();
 						opinion.set("isAnonymous", 0);
@@ -71,10 +79,10 @@
 								title: '提交成功！'
 							})
 						})
-					} else {
-						console.log('验证失败');
-					}
-				})
+					// } else {
+					// 	console.log('验证失败');
+					// }
+				// })
 			}
 		}
 	}
@@ -106,5 +114,10 @@
 		color: rgba(0,0,0,.29);
 		line-height: 32rpx;
 		padding-left: 30rpx;
+		margin-top: 20rpx;
+	}
+	u-input {
+		font-size:26rpx;
+		font-family:PingFangSC-Medium;
 	}
 </style>
