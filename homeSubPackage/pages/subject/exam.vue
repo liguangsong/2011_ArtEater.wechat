@@ -422,6 +422,14 @@
 			existsQuestiionComments(question){
 				var self = this
 				var subjects = question.subjects
+				let app = getApp()
+				var member = app.globalData.member;
+				if (member) {
+					if (member.memberType == 0 || member.memberType == 2) {
+						this.buy = true
+						return
+					}
+				}
 				if(subjects && subjects.length > 0){
 					var query = new this.Parse.Query("Subjects")
 					query.containedIn('objectId', JSON.parse(JSON.stringify(subjects)))

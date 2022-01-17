@@ -228,6 +228,7 @@
 					ls.forEach(attr => {
 						if (attr.attributes.surfaceId == item.surfaceId) {
 							item.explain = this.parseStrToHtml(attr.attributes.explain)
+							item.oldPrice = item.promotionPrice
 							item.promotionPrice = arr[i]
 						}
 					})
@@ -456,7 +457,7 @@
 
 			},
 			// 支付成功
-			async paymentSuccess(tradeId, cash) {
+			async paymentSuccess(tradeId, cash, bool) {
 				this.title = '开通成功';
 				this.submit = '确定';
 				this.submitFn = () => {
@@ -466,8 +467,8 @@
 				this.isShow = true;
 				this.checkSendMessage()
 				await this.getIntegral(cash / 100);
-				this.createOrder(tradeId);
-				this.createMember(tradeId);
+				this.createOrder(tradeId, cash);
+				this.createMember(tradeId, bool);
 			},
 			// 支付失败
 			paymentFail() {
@@ -483,8 +484,10 @@
 				await this.Parse.Config.get().then(async config => {
 					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes.shopScore);
 					this.userInfo.score_all = (this.userInfo.score_all || 0) + parseInt(cash * config.attributes.shopScore);
+					this.userInfo.amount = (this.userInfo.amount || 0) + cash;
 					this.user.set('score', this.userInfo.score);
 					this.user.set('score_all', this.userInfo.score_all);
+					this.user.set('amount', this.userInfo.amount);
 					await this.user.save();
 					uni.setStorage({
 						key: 'userInfo',
@@ -493,7 +496,7 @@
 				})
 			},
 			// 创建订单
-			createOrder(tradeId) {
+			createOrder(tradeId, cash) {
 				var _this = this;
 				var item = this.list[this.active];
 				var dbOrder = this.Parse.Object.extend("Order")
@@ -501,8 +504,10 @@
 				order.set('orderNo', tradeId)
 				order.set("subjectId", item.objectId)
 				order.set("subjectName", item.memberName)
-				order.set("price", item.promotionPrice || item.memberPrice)
-				order.set("cash", item.promotionPrice || item.memberPrice)
+				if (item.oldPrice || item.memberPrice) {
+					order.set("price", Number(item.oldPrice) || Number(item.memberPrice))
+				}
+				order.set("cash", cash/100)
 				order.set('couponAmount', 0)
 				order.set('scoreAmount', this.userInfo.score)
 				order.set('couponId', '')
@@ -525,28 +530,12 @@
 				})
 			},
 			// 创建会员
-			async createMember(tradeId) {
+			async createMember(tradeId, bool) {
 				if (this.member) {
 					var arr = this.memberInfo.orderArr;
 					arr.push(tradeId);
 					this.member.set('orderArr', arr);
 					this.member.set('status', 1)
-					
-					// 设置用户的类型
-					var query = new this.Parse.Query('User')
-					// query.equalTo('objectId', this.userInfo.openid)
-					query.get(this.userInfo.openid).then(async record => {
-						record.set('memberType', this.memberInfo.memberType + 1)
-						await record.save()
-					})
-					
-					// 改变拉新列表用户等级
-					var query2 = new this.Parse.Query('PullNew')
-					query2.get(this.userInfo.openid).then(async record => {
-						if (!record) return
-						record.set('memberType', this.memberInfo.memberType + 1)
-						await record.save()
-					})
 					
 					if (this.memberInfo.memberType == 0) {
 						this.member.set('memberType', '0');
@@ -573,6 +562,9 @@
 					} else {
 						this.member.set('endTime', this.getTime(12) + Number(this.memberInfo.endTime) - Date.now())
 					}
+					this.member.set("nickName", this.userInfo.nickName);
+					this.member.set("realName", this.userInfo.realname);
+					this.member.set("phone", this.userInfo.phone);
 					await this.member.save();
 				} else {
 					// 初次创建
@@ -582,12 +574,32 @@
 					var member = new Member();
 					member.set("openId", this.userInfo.openid);
 					member.set('orderArr', [tradeId]);
+					member.set("nickName", this.userInfo.nickName);
+					member.set("realName", this.userInfo.realname);
+					member.set("phone", this.userInfo.phone);
 					member.set('endTime', this.getTime(12))
 					member.set('memberType', memberType)
 					member.set('status', 1)
 					await member.save();
 				}
-				this.getMember();
+				// this.getMember();
+				
+				// 设置用户的类型
+				var query = new this.Parse.Query('User')
+				// query.equalTo('objectId', this.userInfo.openid)
+				query.get(this.userInfo.openid).then(async record => {
+					record.set('memberType', this.memberInfo.memberType + 1)
+					await record.save()
+				})
+				
+				// 改变拉新列表用户等级
+				var query2 = new this.Parse.Query('PullNew')
+				query2.get(this.userInfo.openid).then(async record => {
+					if (!record) return
+					record.set('memberType', this.memberInfo.memberType + 1)
+					await record.save()
+				})
+				
 				let app = getApp();
 				var query = new this.Parse.Query('MemberList');
 				query.equalTo("openId", this.userInfo.openid);
@@ -735,7 +747,7 @@
 										var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
 										var couponRecord = new NewCouponRecord()
 										couponRecord.set('openid', data.data.parentOpenId)
-										couponRecord.set("couponName", '通用类优惠券')
+										couponRecord.set("couponName", coupon.couponName)
 										couponRecord.set("mode", 'all')
 										couponRecord.set("amount", coupon.amount)
 										couponRecord.set("state", 0)
@@ -759,6 +771,9 @@
 </script>
 
 <style scoped lang="scss">
+	.ql-editor {
+		padding: 0 !important;
+	}
 	.vip {
 		height: 100vh;
 	}

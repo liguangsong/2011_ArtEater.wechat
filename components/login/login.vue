@@ -249,7 +249,7 @@
 								couponInfo.equalTo('couponRange', 'newUser')
 							}
 							couponInfo.first().then(coupon=>{
-								console.log(coupon,'coupon');
+								// console.log(coupon,'coupon');
 								if (!coupon) return
 								let item = JSON.parse(JSON.stringify(coupon))
 
@@ -258,7 +258,8 @@
 									var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
 									var couponRecord = new NewCouponRecord()
 									couponRecord.set('openid', lres.openid)
-									couponRecord.set("couponName", '通用类优惠券')
+									// couponRecord.set("couponName", '通用类优惠券')
+									couponRecord.set("couponName", coupon.attributes.couponName)
 									couponRecord.set("mode", 'all')
 									couponRecord.set("amount", item.amount)
 									couponRecord.set("state", 0)
@@ -280,7 +281,7 @@
 									var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
 									var couponRecord = new NewCouponRecord()
 									couponRecord.set('openid', lres.openid)
-									couponRecord.set("couponName", '通用类优惠券')
+									couponRecord.set("couponName", coupon.attributes.couponName)
 									couponRecord.set("mode", 'all')
 									couponRecord.set("amount", item.amount)
 									couponRecord.set("state", 0)

@@ -36,7 +36,7 @@
 							<text>-{{discountPrice}}/{{couponAmount}}</text>
 						</view>
 						<view v-else>
-							<text v-if="couponCount.length > 0">去选择优惠券</text>
+							<text v-if="couponCount.length > 0">选择优惠券</text>
 							<text v-else>暂无优惠券</text>
 						</view>
 					</view>
@@ -363,7 +363,7 @@
 				}
 				this.checkSendMessage()
 				await this.getIntegral(cash / 100);
-				this.createOrder(tradeId);
+				this.createOrder(tradeId, cash);
 				this.createMember(tradeId);
 			},
 			// 支付失败
@@ -381,8 +381,10 @@
 				await this.Parse.Config.get().then(async config => {
 					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes.shopScore);
 					this.userInfo.score_all = (this.userInfo.score_all || 0) + parseInt(cash * config.attributes.shopScore);
+					this.userInfo.amount = (this.userInfo.amount || 0) + cash;
 					this.user.set('score', this.userInfo.score);
 					this.user.set('score_all', this.userInfo.score_all);
+					this.user.set('amount', this.userInfo.amount);
 					await this.user.save();
 					uni.setStorage({
 						key: 'userInfo',
@@ -391,7 +393,7 @@
 				})
 			},
 			// 创建订单
-			createOrder(tradeId) {
+			createOrder(tradeId, cash) {
 				var _this = this;
 				var item = this.memberType[this.list[0].type];
 				var dbOrder = this.Parse.Object.extend("Order")
@@ -400,7 +402,7 @@
 				order.set("subjectId", item.objectId)
 				order.set("subjectName", item.memberName)
 				order.set("price", this.cash)
-				order.set("cash", this.cash)
+				order.set("cash", cash/100 )
 				order.set('couponAmount', 0)
 				order.set('scoreAmount', this.userInfo.score)
 				order.set('couponId', '')
@@ -431,6 +433,9 @@
 					} else {
 						this.member.set('endTime', this.getTime(12) + Number(this.memberInfo.endTime) - Date.now())
 					}
+					this.member.set("nickName", this.userInfo.nickName);
+					this.member.set("realName", this.userInfo.realname);
+					this.member.set("phone", this.userInfo.phone);
 					await this.member.save().then(_order => {
 						_this.title = '开通成功';
 						_this.submit = '确定';
@@ -649,7 +654,7 @@
 										var NewCouponRecord = self.Parse.Object.extend("NewCouponRecord")
 										var couponRecord = new NewCouponRecord()
 										couponRecord.set('openid', data.data.parentOpenId)
-										couponRecord.set("couponName", '通用类优惠券')
+										couponRecord.set("couponName", coupon.couponName)
 										couponRecord.set("mode", 'all')
 										couponRecord.set("amount", coupon.amount)
 										couponRecord.set("state", 0)

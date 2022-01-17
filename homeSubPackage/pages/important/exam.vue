@@ -419,6 +419,14 @@
 			existsQuestiionComments(question){
 				var self = this
 				var subjects = question.subjects
+				var app = getApp()
+				var member = app.globalData.member;
+				if (member) {
+					if (member.memberType == 0 || member.memberType == 2) {
+						self.isShowComments = true
+						return
+					}
+				}
 				if(subjects && subjects.length > 0){
 					var query = new this.Parse.Query("Subjects")
 					query.containedIn('objectId', JSON.parse(JSON.stringify(subjects)))
@@ -439,7 +447,6 @@
 						self.isShowComments = true
 					}
 				}
-
 			},
 			/*查询是否已购买本章节*/
 			bindOrder(){

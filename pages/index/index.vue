@@ -707,8 +707,7 @@
 					var member = app.globalData.member;
 					if (this.userInfo.phone) {
 						if (member) {
-
-							if (member.memberType == 0 || member.memberType == 1) {
+							if (member.memberType == 0 || member.memberType == 2) {
 								uni.navigateTo({
 									url: '/homeSubPackage/pages/exam/index'
 								})

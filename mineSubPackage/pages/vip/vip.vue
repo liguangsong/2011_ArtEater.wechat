@@ -652,7 +652,7 @@
 				if (this.active==undefined) {
 					this.active=0
 				}
-				let str = `开通${this.active==0?'黑金VIP':this.active==1?'铂金VIP':'白银VIP'}`;
+				let str = `开通${this.active==0?'黑金VIP会员':this.active==1?'铂金VIP会员':'白银VIP会员'}`;
 				let cash = _this.list[_this.active].promotionPrice || _this.list[_this.active].memberPrice;
 				let obj = [{
 					price: cash,
@@ -695,7 +695,7 @@
 				} else {
 					let obj = [{
 						price: baiyinPrice,
-						title: '续费白银VIP',
+						title: '续费白银VIP会员',
 						type: 2
 					}]
 					uni.navigateTo({
@@ -735,7 +735,7 @@
 					
 					let obj = [{
 						price: bojinPrice,
-						title: '续费铂金VIP',
+						title: '续费铂金VIP会员',
 						type: 1
 					}]
 					uni.navigateTo({
@@ -756,7 +756,7 @@
 
 				let obj = [{
 					price: heijinPrice,
-					title: '续费黑金VIP',
+					title: '续费黑金VIP会员',
 					type: 0
 				}]
 				uni.navigateTo({

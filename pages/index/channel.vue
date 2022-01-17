@@ -1,6 +1,6 @@
 <template>
 	<view class="vip" :style='{overflow: showFixed ? "auto" : "hidden"}'>
-		<Navbar align='center' surplusHeight='70' navbarBg='#1A1512' :icon='false' >
+		<Navbar align='center' surplusHeight='70' navbarBg='#1A1512'>
 			<view>
 				<rich-text class='regular ql-editor' :nodes='pagesInfo | formatRichText'></rich-text>
 				<view style='height: 140rpx'></view>
@@ -33,7 +33,7 @@
 							<view class="info">
 								<view class="price">
 									<text class='discount semibold'>¥{{list[0].promotionPrice}}</text>
-									<text class='old-price semibold' style='margin-left: 20rpx;text-decoration: line-through;'>¥{{list[0].memberPrice}}</text>
+									<text class='old-price semibold' style='margin-left: 20rpx;text-decoration: line-through;'>¥{{list[0].oldPrice}}</text>
 								</view>
 							</view>
 						</view>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-	import Navbar from '../../components/navBar/navbar.vue'
+	import Navbar from '../../components/navBar/channelNavbar.vue'
 	import Modal from '@/components/modal/modal.vue'
 	import login from '@/components/login/outLogin.vue'
 	import Curriculum from '../../curriculumSubPackage/js/curriculum.js'
@@ -113,7 +113,7 @@
 			let url = unescape(options.q)
 			let str = url.split('=')[1]
 			this.options = options = {id: str}
-			// this.options = options = {id: "jGNZiFqyLf"}
+			// this.options = options = {id: "T5aBG3fLLa"}
 			// 渠道进来的
 			this.getNoticeOrChanneInfo(options.id)
 
@@ -142,7 +142,8 @@
 					key: 'userInfo',
 					success: res => {
 						_this.userInfo = res.data
-						// _this.getMember()
+						_this.getMember()
+						_this.user = _this.Parse.User.current();
 					}
 				})
 			},
@@ -153,11 +154,18 @@
 				this.member = await Member.first();
 				if (this.member) {
 					this.memberInfo = JSON.parse(JSON.stringify(this.member));
-					// this.active = Number(this.memberInfo.memberType);
 				}
 			},
 			// 获取会员数据
 			async getMemberList(arr, ids) {
+				
+				var date = new Date();
+				var year = date.getFullYear(); //年
+				var month = date.getMonth() + 1; //月
+				var day = date.getDate(); //日
+				month = month >= 10 ? month : '0' + month
+				day = day >= 10 ? day : '0' + day;
+				var time = ' ' + year + month + day;
 	
 				let query = new this.Parse.Query('MemberType');
 				let ls = await query.find();
@@ -167,11 +175,16 @@
 					ls.forEach(attr => {
 						if (attr.attributes.surfaceId == item.surfaceId) {
 							item.explain = this.parseStrToHtml(attr.attributes.explain)
+							if (time < time1) {
+								item.oldPrice = Number(item.promotionPrice)
+							} else {
+								item.oldPrice = Number(item.memberPrice)
+							}
 							item.promotionPrice = arr[i]
 						}
 					})
 				})
-
+				// console.log(this.list);
 			},
 			// 根据公告或渠道进来的ID请求数据
 			async getNoticeOrChanneInfo(id) {
@@ -254,7 +267,7 @@
 			async payment(cash) {
 				// cash = 0
 				var _this = this;
-				if (cash != 0) {
+				if (cash == 0) {
 					var orderNo = dateFormat(new Date(), 'yyyyMMddHHmmss') + GetRandomNum(5);
 					this.paymentSuccess(orderNo, cash);
 				} else {
@@ -285,16 +298,11 @@
 			},
 			// 支付成功
 			async paymentSuccess(tradeId, cash) {
-				this.title = '开通成功';
-				this.submit = '确定';
-				this.submitFn = () => {
-					this.isShow = false;
-					this.showFixed = false;
-				}
 				this.isShow = true;
 				this.createCommission()
-				// this.createOrder(tradeId);
-				// this.createMember(tradeId);
+				await this.getIntegral(cash/100)
+				this.createOrder(tradeId, cash)
+				this.createMember(tradeId)
 			},
 			// 支付失败
 			paymentFail() {
@@ -307,7 +315,7 @@
 			},
 
 			// 创建订单
-			createOrder(tradeId) {
+			createOrder(tradeId, cash) {
 				var _this = this;
 				var item = this.list[0];
 				var dbOrder = this.Parse.Object.extend("Order")
@@ -315,28 +323,15 @@
 				order.set('orderNo', tradeId)
 				order.set("subjectId", item.objectId)
 				order.set("subjectName", item.memberName)
-				order.set("price", item.promotionPrice || item.memberPrice)
-				order.set("cash", item.promotionPrice || item.memberPrice)
+				order.set("price", item.oldPrice)
+				order.set("cash", cash/100)
 				order.set('couponAmount', 0)
 				order.set('scoreAmount', this.userInfo.score)
 				order.set('couponId', '')
 				order.set("openId", this.userInfo.openid)
 				order.set("state", 1)
 				order.set("wechatPayOrderId", '') // 支付流水号
-				order.save().then(_order => {
-					// uni.showModal({
-					// 	content: '恭喜，购买成功',
-					// 	showCancel: false,
-					// 	success() {
-					// 		_this.showFixed = false;
-					// 	}
-					// })
-					// console.log(123);
-				}, (error) => {
-					uni.showToast({
-						title:'开通失败'
-					})
-				})
+				order.save()
 			},
 			// 创建会员
 			async createMember(tradeId) {
@@ -356,12 +351,15 @@
 					
 					this.member.set('memberType', '0');
 					this.member.set('endTime', this.getTime(12))
-			
+					this.member.set("nickName", this.userInfo.nickName);
+					this.member.set("realName", this.userInfo.realname);
+					this.member.set("phone", this.userInfo.phone);
 					this.member.save().then(_order => {
 						_this.title = '开通成功';
 						_this.submit = '确定';
 						_this.submitFn = () => {
 							_this.isShow = false;
+							_this.showFixed = false;
 						}
 						_this.isShow = true;
 					}, (error) => {
@@ -378,6 +376,9 @@
 					var member = new Member();
 					member.set("openId", this.userInfo.openid);
 					member.set('orderArr', [tradeId]);
+					member.set("nickName", this.userInfo.nickName);
+					member.set("realName", this.userInfo.realname);
+					member.set("phone", this.userInfo.phone);
 					member.set('endTime', this.getTime(12))
 					member.set('memberType', memberType)
 					member.set('status', 1)
@@ -386,6 +387,7 @@
 						_this.submit = '确定';
 						_this.submitFn = () => {
 							_this.isShow = false;
+							_this.showFixed = false;
 						}
 						_this.isShow = true;
 					}, (error) => {
@@ -402,6 +404,23 @@
 				if (results) {
 					app.globalData.member = JSON.parse(JSON.stringify(results));
 				}
+			},
+			// 获取积分与赠送积分
+			async getIntegral(cash) {
+				// cash = 10000;
+				await this.Parse.Config.get().then(async config => {
+					this.userInfo.score = (this.userInfo.score || 0) + parseInt(cash * config.attributes.shopScore);
+					this.userInfo.score_all = (this.userInfo.score_all || 0) + parseInt(cash * config.attributes.shopScore);
+					this.userInfo.amount = (this.userInfo.amount || 0) + cash;
+					this.user.set('score', this.userInfo.score);
+					this.user.set('score_all', this.userInfo.score_all);
+					this.user.set('amount', this.userInfo.amount);
+					await this.user.save();
+					uni.setStorage({
+						key: 'userInfo',
+						data: this.userInfo
+					})
+				})
 			},
 			// 渠道进来的创建提成
 			createCommission() {
@@ -433,6 +452,9 @@
 </script>
 
 <style scoped lang="scss">
+	.ql-editor {
+		padding: 0 !important;
+	}
 	.vip {
 		height: 100vh;
 	}

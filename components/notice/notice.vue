@@ -10,8 +10,8 @@
 			</view>
 			<view v-if='noticeArr.length == 3' class="scroll">
 				<view class="text">
-					<view class="">
-						<view>
+					<view @click='changeUrl'>
+						<view class='txt0'>
 							{{noticeArr[active].bulletinName}}
 						</view>
 					</view>
@@ -90,6 +90,7 @@
 		methods: {
 			changeUrl() {
 				let item = this.noticeArr[this.active]
+				console.log(item);
 				if (item.type == 1) {
 					uni.navigateTo({
 						url: '/pages/index/notice?objectId=' + item.objectId

@@ -221,6 +221,7 @@
 			bindCommentsOrder(){
 				var self = this
 				var app = getApp()
+				var member = app.globalData.member;
 				self.dajxConfig = app.globalData.dajxConfig // 答案解析配置
 				if(self.dajxConfig.get('isNeedPay') == 1 && self.dajxConfig.get('price') > 0) { // 需要支付
 					var query = new self.Parse.Query("Order")
@@ -232,6 +233,11 @@
 							self.hasBuyedComments = true // 已经购买了答案解析
 						}
 					})
+				}
+				if (member) {
+					if (member.memberType == 0 || member.memberType == 2) {
+						self.hasBuyedComments = true
+					}
 				}
 			},
 			/*加载题目*/

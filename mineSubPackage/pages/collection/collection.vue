@@ -26,7 +26,7 @@
 			Item,
 			TopNavbar
 		},
-
+	
 		async onShow() {
 			var app = getApp();
 			var member = app.globalData.member;
@@ -73,7 +73,8 @@
 				uni.switchTab({
 					url:item.path
 				})
-			}
+			},
+		
 		}
 	}
 </script>
