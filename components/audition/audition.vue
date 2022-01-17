@@ -37,12 +37,13 @@
 				</view>
 			</view>
 		</view>
-
+		<Modal :isShow='isShow' @cancle='isShow=false' submit='确定' title='需要开通会员' @submitFn='submitFn' />
 	</view>
 </template>
 
 <script>
 	import Parse from '@/parse/index.js'
+	import Modal from '@/components/modal/modal.vue'
 	export default {
 		name: 'audition',
 		props: {
@@ -58,10 +59,26 @@
 				default: () => []
 			}
 		},
-		data() {
-			return {}
+		components: {
+			Modal
 		},
-
+		data() {
+			return {
+				vip: false,
+				isShow: false
+			}
+		},
+		created() {
+			var app = getApp();
+			var member = app.globalData.member;
+			if (member) {
+				if (member.memberType != 2) {
+					if (member.endTime > Date.now()) {
+						this.vip = true
+					}
+				}
+			} 
+		},
 		methods: {
 			gotolist() {
 				this.$emit('checkMore', {
@@ -70,7 +87,17 @@
 				});
 			},
 			async jump(item) {
-				this.$emit('changeUrl', item)
+				if (this.vip) {
+					this.$emit('changeUrl', item)
+				} else {
+					this.isShow = true
+				}
+			},
+			submitFn() {
+				uni.navigateTo({
+					url: '/mineSubPackage/pages/vip/vip'
+				})
+				this.isShow = false
 			}
 		}
 	}

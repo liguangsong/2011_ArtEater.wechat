@@ -70,13 +70,18 @@
 						</view>
 					</view>
 				</view>
+				
+				<!-- 公告栏 -->
 				<view class='scrollx' v-if='notice.length'>
-					<!-- <u-notice-bar mode="horizontal" duration='3000' :list="noticeTitleArr" :is-circular='false' @click='noticeBar'></u-notice-bar> -->
 					<Notice :notice='notice' :isScroll='isScroll'/>
 				</view>
-				<audition-learning v-if="studyList.length" title="正在学习" :showMore="showLearningMore"
+				
+				
+				<!-- 正在学习 -->
+				<!-- <audition-learning v-if="studyList.length" title="正在学习" :showMore="showLearningMore"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
-				</audition-learning>
+				</audition-learning> -->
+				
 				<view class="h-line" v-if="studyList.length"></view>
 				<audition :title="item.name" :list="item.list.slice(0,item.showAmount)"
 					:showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index"
@@ -107,7 +112,7 @@
 				<!--精品推荐 end-->
 				<!--购买重点题库 start-->
 				<view style='height:20rpx'></view>
-				<u-popup v-model="isShowImportBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
+				<!-- <u-popup v-model="isShowImportBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
 					<view class="buylView" style="padding:74rpx 40rpx;">
 						<view class="title">{{zdtkConfig.action}}</view>
 						<view class="price">¥{{zdtkConfig.price}}</view>
@@ -121,11 +126,11 @@
 							<button @click="handleBuyZDTKClick">确认购买</button>
 						</view>
 					</view>
-				</u-popup>
+				</u-popup> -->
 				<!--购买重点题库 end-->
 
 				<!--购买重点题库 start-->
-				<u-popup v-model="isShowTestBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
+				<!-- <u-popup v-model="isShowTestBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
 					<view class="buylView" style="padding:74rpx 40rpx;">
 						<view class="title">{{mnksConfig.action}}</view>
 						<view class="price">¥{{mnksConfig.price}}</view>
@@ -139,19 +144,14 @@
 							<button @click="handleBuyMNKSClick">确认购买</button>
 						</view>
 					</view>
-				</u-popup>
+				</u-popup> -->
 				<!--购买重点题库 end-->
 
 			</template>
 
 		</Navbar>
 		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl"></login>
-		<!--轮播 end-->
-		<!-- <u-mask :custom-style="{'background': 'rgba(0, 0, 0, 0.7)'}" :show="isShowTips" :mask-click-able="true"
-			:zoom="false" @click="handleStep"> -->
-		<!-- <view class='mask mask_collection' @click="handleShowCollection" v-if='isShowCollection'>
-			<image src="../../static/collection.png" mode='aspectFit'></image>
-		</view> -->
+
 		<view class='mask mask_collection' @click="handleStep" v-if='isShowTips'>
 			<view v-if="step==9">
 				<!-- <view class="navItem" style="right: 4rpx"> -->
@@ -467,24 +467,24 @@
 				return vip;
 			},
 			// 正在学习的item被点击时
-			async learnChangeUrl(item) {
-				let vip = await this.checkVip();
-				//配置url
-				let toUrl = await Curriculum.configUrl({
-					course: item
-				}, vip);
-				if (this.userInfo && this.userInfo.openid) {
-					if (this.userInfo.phone) {
-						uni.navigateTo({
-							url: toUrl
-						})
-					} else {
-						uni.reLaunch({
-							url: '/pages/login/login'
-						})
-					}
-				}
-			},
+			// async learnChangeUrl(item) {
+			// 	let vip = await this.checkVip();
+			// 	//配置url
+			// 	let toUrl = await Curriculum.configUrl({
+			// 		course: item
+			// 	}, vip);
+			// 	if (this.userInfo && this.userInfo.openid) {
+			// 		if (this.userInfo.phone) {
+			// 			uni.navigateTo({
+			// 				url: toUrl
+			// 			})
+			// 		} else {
+			// 			uni.reLaunch({
+			// 				url: '/pages/login/login'
+			// 			})
+			// 		}
+			// 	}
+			// },
 			async changeUrl(item) {
 				let vip = await this.checkVip();
 				//配置url
@@ -510,29 +510,24 @@
 				}
 			},
 			// 正在学习
-			async learnCheckMore(params) {
-				// uni.navigateTo({
-				// 	url: '/homeSubPackage/pages/curriculumList/curriculumList?&moduleName=' + params.moduleName
-				// })
-
-				// })
-				if (this.userInfo && this.userInfo.openid) {
-					if (this.userInfo.phone) {
-						uni.navigateTo({
-							url: '/homeSubPackage/pages/curriculumList/curriculumList?&moduleName=' + params
-								.moduleName
-						})
-					} else {
-						uni.reLaunch({
-							url: '/pages/login/login'
-						})
-					}
-				} else {
-					this.isShowLogin = true
-					this.toUrl = '/homeSubPackage/pages/curriculumList/curriculumList?objId=' + params.objectId +
-						'&moduleName=' + params.moduleName;
-				}
-			},
+			// async learnCheckMore(params) {
+			// 	if (this.userInfo && this.userInfo.openid) {
+			// 		if (this.userInfo.phone) {
+			// 			uni.navigateTo({
+			// 				url: '/homeSubPackage/pages/curriculumList/curriculumList?&moduleName=' + params
+			// 					.moduleName
+			// 			})
+			// 		} else {
+			// 			uni.reLaunch({
+			// 				url: '/pages/login/login'
+			// 			})
+			// 		}
+			// 	} else {
+			// 		this.isShowLogin = true
+			// 		this.toUrl = '/homeSubPackage/pages/curriculumList/curriculumList?objId=' + params.objectId +
+			// 			'&moduleName=' + params.moduleName;
+			// 	}
+			// },
 			async checkMore(params) {
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {

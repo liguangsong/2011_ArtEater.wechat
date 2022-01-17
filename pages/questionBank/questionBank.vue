@@ -28,7 +28,6 @@
 	import Utils from '@/js/utils/index.js'
 	import Tabbar from '@/components/tabBar/tabBar.vue';
 	import Item from './item.vue'
-	// import Navbar from '../../components/navBar/navbar.vue';
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
 	export default {
 		data() {
@@ -73,7 +72,6 @@
 					this.vip = true
 				}
 			}
-			// console.log(1);
 			await this.getSubject();
 			uni.hideTabBar({
 				animation: false

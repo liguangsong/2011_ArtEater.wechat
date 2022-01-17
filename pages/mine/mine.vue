@@ -362,8 +362,8 @@
 			},
 			/*错题集*/
 			handleNoteClick() {
-				if (this.userInfo && this.userInfo.openid) {
-					if (this.userInfo.phone) {
+				if (this.userInfo && this.userInfo.attributes.openid) {
+					if (this.userInfo.attributes.phone) {
 						uni.navigateTo({
 							url: '/homeSubPackage/pages/error/index'
 						})
@@ -372,9 +372,6 @@
 							url: '/pages/login/login'
 						})
 					}
-				} else {
-					this.isShowLogin = true
-					this.toUrl = '/homeSubPackage/pages/error/index'
 				}
 			},
 			handleScoreRecord() {

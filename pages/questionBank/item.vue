@@ -17,10 +17,12 @@
 				</view>
 			</view>
 		</view>
+		<Modal :isShow='isShow' @cancle='isShow=false' submit='确定' title='需要开通会员' @submitFn='submitFn' />
 	</view>
 </template>
 
 <script>
+	import Modal from '@/components/modal/modal.vue'
 	export default {
 		props: {
 			item: {
@@ -41,11 +43,6 @@
 				default: false
 			}
 		},
-		watch: {
-			n() {
-				
-			}
-		},
 		data() {
 			return {
 				subjectTree:[],
@@ -55,11 +52,14 @@
 				subjects: [],
 				questionHistory: [],
 				subjectProgress: [],
-				vip1: false
+				vip1: false,
+				isShow: false
 			}
 		},
+		components: {
+			Modal
+		},
 		async created() {
-			// console.log('0000', this.id);
 			var self = this;
 			this.subjectId = this.item.objectId
 			uni.getStorage({
@@ -116,9 +116,16 @@
 				// 		}
 				// 	}
 				// })
+				this.isShow = true
+				// uni.navigateTo({
+				// 	url: '/mineSubPackage/pages/vip/vip'
+				// })
+			},
+			submitFn() {
 				uni.navigateTo({
 					url: '/mineSubPackage/pages/vip/vip'
 				})
+				this.isShow = false
 			},
 			/*加载科目详情*/
 			bindSubjectDetail(){

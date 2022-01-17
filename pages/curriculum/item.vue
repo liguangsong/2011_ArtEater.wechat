@@ -31,11 +31,13 @@
 			<image v-if='item.vip && vip' :src="unlock" />
 			<image v-else :src="lock" />
 		</view>
+		<Modal :isShow='isShow' @cancle='isShow=false' submit='确定' title='需要开通会员' @submitFn='submitFn' />
 	</view>
 </template>
 
 <script>
 	import Curriculum from '@/js/utils/curriculum.js'
+	import Modal from '@/components/modal/modal.vue'
 	export default {
 		props: {
 			item: {
@@ -50,7 +52,11 @@
 			return {
 				lock: '../../static/vip-lock.png',
 				unlock: '../../static/vip-unlock.png',
+				isShow: false
 			}
+		},
+		components: {
+			Modal
 		},
 		methods: {
 			async jumpDefault(item) {
@@ -60,10 +66,17 @@
 				})
 			},
 			unlockFn() {
+				this.isShow = true
+				// uni.navigateTo({
+				// 	url: '/mineSubPackage/pages/vip/vip'
+				// })
+			},
+			submitFn() {
 				uni.navigateTo({
 					url: '/mineSubPackage/pages/vip/vip'
 				})
-			}
+				this.isShow = false
+			},
 		}
 	}
 </script>
