@@ -217,12 +217,30 @@
 				})
 			},
 			/*阅读全部消息*/
-			handleReadAll(){
+			async handleReadAll(){
 				var self= this
 				var ids = []
-				console.log(self.msgList);
-				self.msgList.forEach((item)=>{
-					ids.push(item.objectId)
+				var msgList = []
+						
+				var msgQuery2 = new this.Parse.Query("CouponMessage")
+				msgQuery2.equalTo('openid', self.userInfo.openid)
+				msgQuery2.notEqualTo('message', '')
+				// msgQuery.descending('createdAt')
+				var m2 = await msgQuery2.find()
+				
+				var msgQuery1 = new this.Parse.Query("Opinions")
+				msgQuery1.equalTo('openid', self.userInfo.openid)
+				msgQuery1.notEqualTo('message', '')
+				// msgQuery.descending('createdAt')
+				var m1 = await msgQuery1.find()
+				
+				var msgQuery = new this.Parse.Query("Message")
+				// msgQuery.descending('createdAt')
+				var m = await msgQuery.find()
+				msgList = msgList.concat(m1, m2, m)
+
+				msgList.forEach((item)=>{
+					ids.push(item.id)
 				})
 				var dbHistory = this.Parse.Object.extend("MessageReadHistory")
 				var _history = new dbHistory()
