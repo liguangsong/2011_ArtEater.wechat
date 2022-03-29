@@ -20,10 +20,7 @@
 					<text v-if="curriculumInfo.subTitle1" class='studynum'>{{curriculumInfo.subTitle1}}</text>
 					<text v-if="curriculumInfo.subTitle2">{{curriculumInfo.subTitle2}}</text>
 				</view>
-				<view class="teacher teacher1" v-if='curriculumInfo.portrait.length'>
-					<image v-for='(attr,i) in curriculumInfo.portrait' :style='{zIndex: i, right: 32*i+"rpx", top: "-22rpx"}' :src="attr" mode='aspectFill'></image>
-				</view>
-				<view class="teacher" v-else>
+				<view class="teacher">
 					<image v-if="curriculumInfo.portrait&&curriculumInfo.portrait.length" :src="curriculumInfo.portrait[0]"></image>
 					<text>{{curriculumInfo.lecturerName}}</text>
 				</view>
@@ -244,16 +241,10 @@
 	.teacher {
 		display: flex;
 		align-items: center;
-		position: relative;
 	}
 	.teacher image {
 		border-radius: 50%;
 		margin-right: 10rpx;
-	}
-	.teacher1 image {
-		position: absolute;
-		top: 0;
-		box-shadow: 2rpx 0 4rpx 0 rgba(0,0,0,0.22);
 	}
 	.tabber {
 		display: flex;
@@ -277,6 +268,8 @@
 		border-radius: 2rpx;
 	}
 	.tab {
+		/* height: calc(100vh - 764rpx);
+		overflow-y: auto; */
 		height: calc(100vh - 740rpx);
 		overflow-y: auto;
 		transform: translateY(-24rpx);

@@ -31,19 +31,20 @@
 							<text>课表</text>
 						</view>
 						<view class="btnitem" v-else></view>
-						<view class='btnitem button' @click="share">
-							<!-- :style="{left: curriculumInfo.flag==1 ? '26rpx':'46rpx'}" -->
-							<view class="img">
-								<image src="../../../static/icon/icon_share.png"></image>
-							</view>
-							<!-- <text>分享</text> -->
-							<button type="default" :data-objectId='objectId' open-type='share'>分享</button>
-						</view>
+						
 						<view class='btnitem' @click="operateCollection(false)">
 							<view class="img">
 								<image :src="collectionStatus?active:unactive"></image>
 							</view>
 							<text class='collection'>{{collectionStatus?'已收藏':'收藏'}}</text>
+						</view>
+						<view class='btnitem button' @click="share">
+							<!-- :style="{left: curriculumInfo.flag==1 ? '26rpx':'46rpx'}" -->
+							<view class="img">
+								<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/fenxiang.png"></image>
+							</view>
+							<!-- <text>分享</text> -->
+							<button type="default" :data-objectId='objectId' open-type='share'>分享</button>
 						</view>
 					</view>
 				</view>
@@ -494,7 +495,7 @@
 							background: none;
 							border: none;
 							border-radius: 0;
-							color: rgba(23, 23, 23, 0.6);
+							color: #D81E1F;
 							box-sizing: border-box;
 							margin-left: 0;
 							margin-right: 0;

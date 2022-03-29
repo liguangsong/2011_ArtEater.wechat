@@ -1,14 +1,10 @@
 <template>
 	<view class="myPage" :style="{'overflow-y': 'scroll'}">
-		<view v-if='!list.length' class='collection'>
-			暂无课程
-		</view>
-		<!-- <Navbar v-else navbarBg='#F7F7F7' title='课程' :icon='false' align='center' fontColor="#000" iconColor='#000'> -->
 		<TopNavbar title='课程' bg='#f7f7f7'  :icon='false'>
 			<view :style="{'padding-bottom':pdbtm+'rpx'}">
 				<view style='height:20rpx;'></view>
-				<Item v-for='(item,i) in list' v-if='!item.hide' :key='i' :item='item' :vip='vip' />
-				<!-- <view style='height:33rpx'></view> -->
+				<FirstItem :listImg1='listImg1'/>
+				<Item v-for='(item,i) in list' :key='i' :item='item' :vip='vip' />
 			</view>
 		</TopNavbar>
 		<view-tabbar :current="1" @tabbarChange="tabbarChange"></view-tabbar>
@@ -18,7 +14,9 @@
 <script>
 	import Tabbar from '@/components/tabBar/tabBar.vue';
 	import Item from './item.vue';
+	import FirstItem from './firstItem.vue';
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
+	import {parseSrc} from '../../js/srcToCdnSrc.js'
 	export default {
 		data() {
 			return {
@@ -26,11 +24,13 @@
 				pdbtm: 0, //兼容iphonexr+
 				list: [],
 				vip: false,
+				listImg1: []
 			}
 		},
 		components: {
 			'view-tabbar': Tabbar,
 			Item,
+			FirstItem,
 			TopNavbar
 		},
 		onLoad() {
@@ -39,14 +39,21 @@
 			this.pdbtm = 125 + app.globalData.paddingBottomHeight;
 		},
 		async onShow() {
+			
+			var q = new this.Parse.Query('DailyTeacher')
+			q.find().then(data => {
+				this.listImg1 = data
+			})
+			
 			if (!this.list.length) {
-
 				uni.showLoading({
 					title: '加载中……'
 				})
 			}
 
 			var query = new this.Parse.Query('CoursesModule')
+			query.notEqualTo('hide', true)
+			query.notEqualTo('dailyCourse', true)
 			query.equalTo("level", 0);
 			var res1 = await query.find();
 			query.equalTo("level", undefined);

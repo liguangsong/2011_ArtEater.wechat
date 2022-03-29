@@ -110,9 +110,19 @@
 			}
 		},
 		onLoad(options) {
-			let url = unescape(options.q)
-			let str = url.split('=')[1]
-			this.options = options = {id: str}
+			// console.log(options);
+			let url, str;
+			if (options && options.id) {
+				this.options = options = {id: str}
+			} else {
+				url = unescape(options.q)
+				str = url.split('=')[1]
+				this.options = options = {id: str}
+			}
+			// let url = unescape(options.q)
+			// let str = url.split('=')[1]
+			// this.options = options = {id: str}
+			
 			// this.options = options = {id: "T5aBG3fLLa"}
 			// 渠道进来的
 			this.getNoticeOrChanneInfo(options.id)
@@ -300,7 +310,7 @@
 			async paymentSuccess(tradeId, cash) {
 				this.isShow = true;
 				this.createCommission()
-				await this.getIntegral(cash/100)
+				this.getIntegral(cash/100)
 				this.createOrder(tradeId, cash)
 				this.createMember(tradeId)
 			},

@@ -5,10 +5,8 @@
 			<view class="myView" style="padding-bottom:345rpx">
 				<view class="buyView">
 					<view class="productItem" v-for='(item,i) in list' :key='i'>
-						<!-- <view class="iconView" @click="handleProductCheckedChange(product)"> -->
 						<view class="iconView">
 							<image src="../../../static/icon/icon_check_checked.png"></image>
-							<!-- <image v-else src="../../../static/icon/icon_check_normal.png"></image> -->
 						</view>
 						<view class="contentView">
 							<view class="titleView">
@@ -362,7 +360,7 @@
 					})
 				}
 				this.checkSendMessage()
-				await this.getIntegral(cash / 100);
+				this.getIntegral(cash / 100);
 				this.createOrder(tradeId, cash);
 				this.createMember(tradeId);
 			},
@@ -450,7 +448,7 @@
 						_this.cancleIcon = false
 					}, (error) => {
 						uni.showToast({
-							title:'开通失败',
+							title:'开通失败，请联系客服',
 						})
 					})
 				} else {
@@ -480,7 +478,7 @@
 						_this.cancleIcon = false
 					}, (error) => {
 						uni.showToast({
-							title:'开通失败'
+							title:'开通失败，请联系客服'
 						})
 					})
 				}
@@ -556,7 +554,6 @@
 									res.set('buyNum', 1)
 									res.set('buyUser', [data.data.openid])
 								} else {
-									// res.attributes
 									res.set('buyUser', userArr)
 									res.set('buyNum', buyNum+1)
 								}

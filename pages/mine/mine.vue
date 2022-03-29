@@ -190,6 +190,9 @@
 					</view>
 				</view>
 			</view>
+			<view class="tel">
+				全国统一客服电话 4006406558
+			</view>
 		</view>
 	</view>
 </template>
@@ -666,6 +669,17 @@
 		font-family: PingFangSC-Medium !important;
 		font-weight: 500;
 		color: #D81E1F;
+	}
+	
+	.tel {
+		width: 100%;
+		text-align: center;
+		font-size: 22rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: rgba(0,0,0,.29);
+		line-height: 32rpx;
+		margin-bottom: 30rpx;
 	}
 	
 	page {

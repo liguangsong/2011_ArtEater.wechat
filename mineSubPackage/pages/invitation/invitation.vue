@@ -211,7 +211,7 @@
 								self.roundRect(context, 462 * factor, 50 * factor, 106 * factor, 106 * factor, 53 * factor) // 绘制半透明的圆角背景
 								
 								// 绘制二维码
-								console.log(qrcodeRes, url);
+								// console.log(qrcodeRes, url);
 								context.drawImage(qrcodeRes.tempFilePath, 466 * factor, 52 * factor, 98 * factor,98 * factor);
 								// context.drawImage(self.maskData, 466 * factor, 52 * factor, 98 * factor,98 * factor);
 								// 绘制头像外层圆形框

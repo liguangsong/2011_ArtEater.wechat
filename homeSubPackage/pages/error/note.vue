@@ -220,7 +220,6 @@
 			})
 			uni.getSystemInfo({
 				success: res => {
-					console.log(res)
 					self.screenWidth = res.screenWidth
 				}
 			})
@@ -233,7 +232,6 @@
 		},
 		methods: {
 			inputFocus(e) {
-				console.log(e, '键盘弹起')
 				var inputHeight = 0
 				if (e.detail.height) {
 					this.inputHeight = e.detail.height * 750 / this.screenWidth
@@ -241,7 +239,6 @@
 			},
 			inputBlur(e) {
 				this.inputHeight = 0
-				console.log('键盘收起')
 			},
 			/* 判断当前是否显示答案解析 */
 			existsQuestiionComments(question) {
@@ -286,6 +283,7 @@
 					}
 				}
 				self.dajxConfig = app.globalData.dajxConfig // 答案解析配置
+				if (!self.dajxConfig)return
 				if (self.dajxConfig.get('isNeedPay') == 1 && self.dajxConfig.get('price') > 0) { // 需要支付
 					var query = new self.Parse.Query("Order")
 					query.equalTo('openId', self.userInfo.openid)
@@ -307,6 +305,10 @@
 				hisQuery.limit(10000)
 				hisQuery.ascending('createdAt')
 				hisQuery.find().then(hres => {
+					if (hres.length==0){
+						uni.hideLoading()
+						return
+					}
 					if (hres) {
 						self.index = 1
 						self.count = hres.length

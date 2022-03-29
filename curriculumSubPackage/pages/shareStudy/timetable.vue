@@ -37,9 +37,10 @@
 				}
 				if (item.kind != 4) {
 					if (item.vip && !vip) {
-						uni.navigateTo({
-							url: '/mineSubPackage/pages/vip/vip'
-						});
+						this.$emit('jumpvip')
+						// uni.navigateTo({
+						// 	url: '/mineSubPackage/pages/vip/vip'
+						// });
 					} else {
 						uni.navigateTo({
 							url: '/curriculumSubPackage/pages/shareDetails/details?objectId=' + item.objectId +

@@ -2,8 +2,8 @@
 	<view>
 		<view :class="'optionItem color' + state" @click="handlechange">
 			<view class="icon">
-				<image v-if="state==1" src="../../static/icon/icon_answer_nocheck.png"></image>
-				<image v-if="state==2" src="../../static/icon/icon_answer_checked.png"></image>
+				<image v-if="state==1" src="../../static/icon/1icon_answer_nocheck.png"></image>
+				<image v-if="state==2" src="../../static/icon/1icon_answer_checked.png"></image>
 				<image v-if="state==3" src="../../static/icon/icon_answer_errorn.png"></image>
 				<image v-if="state==4" src="../../static/icon/icon_answer_errpr.png"></image>
 				<image v-if="state==5" src="../../static/icon/icon_answer_rightn.png"></image>

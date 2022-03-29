@@ -44,7 +44,7 @@
 
 <script>
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
-	import Modal from '@/components/modal/modal.vue'
+	import Modal from '@/components/modal/modalvip.vue'
 	export default {
 		data() {
 			return {

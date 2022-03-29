@@ -16,7 +16,7 @@
 			<view class="couponItem" v-if='coupon.state==0' v-for="coupon in coupons"
 				@click="handleCheckCoupon(coupon)">
 				<view class="bg">
-					<image src="../../../static/couponbg.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E4%BC%98%E6%83%A0%E5%88%B8.png"></image>
 				</view>
 				<view class="content">
 					<view class="type">
@@ -114,7 +114,6 @@
 						return t.state != 0
 					})
 					self.coupons = _canuse.concat(_cannotuse)
-					// console.log(self.coupons);
 				})
 			},
 			/* 立即使用 */

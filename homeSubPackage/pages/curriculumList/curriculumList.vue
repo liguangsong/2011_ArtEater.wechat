@@ -14,7 +14,7 @@
 	import Curriculum from '@/js/utils/curriculum.js'
 	import audition from '@/components/audition/audition.vue'
 	import auditionLearning from '@/components/audition/auditionLearning.vue'
-	import Navbar from '../../../components/navBar/navbar.vue';
+	import Navbar from '../../../components/navBar/topNavbar.vue';
 	export default {
 		data() {
 			return {
@@ -69,7 +69,6 @@
 				this.curriculumList=[];
 				let res=await Curriculum.getCategoryCurriculum(this.objId);
 				this.curriculumList=res;
-				console.log(res,'qqqqqq')
 			},
 			//获取免费试听
 			async getFreeCurrList() {
@@ -81,7 +80,6 @@
 				this.curriculumList=[];
 				let res=await Curriculum.getLearning();
 				this.curriculumList=res;
-				console.log(this.curriculumList,6667777)
 			}
 		}
 	}

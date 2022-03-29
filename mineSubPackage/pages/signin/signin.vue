@@ -10,18 +10,16 @@
 					</view>
 					<view class="right">
 						<view class="prev" style='margin-right: 48rpx;' @click="handlePrev">
-							<!-- <u-icon name="arrow-left" color="#ff0000" size="30"></u-icon> -->
 							<image src="../../../static/icon_arrow.png" mode=""></image>
 						</view>
 						<view class="next" @click="handleNext">
-							<!-- <u-icon name="arrow-right" color="#ff0000" size="30"></u-icon> -->
 							<image src="../../../static/icon_arrow.png" mode=""></image>
 						</view>
 					</view>
 				</view>
 
 				<view class="body">
-					<image src="../../../static/1111.png"></image>
+					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E6%97%A5%E5%8E%86.png"></image>
 					<view class="content">
 						<view v-for="item in prevDays" class="item prev">
 							<view @click="handleClickItem" :data-item="item"

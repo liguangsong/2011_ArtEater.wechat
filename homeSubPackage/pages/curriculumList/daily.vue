@@ -1,84 +1,65 @@
 <template>
-	<view class="list" v-if="list.length">
-		<view class="title-info title" v-if="title || showMore">
-			<view class="left" v-if="title">
-				<view class="red-block"></view>
-				{{title}}
-			</view>
-			<view class="more right" v-if="showMore" @click="gotolist">查看更多 ></view>
-		</view>
-
-
+	<view class="list">
+		
+	
+	<Navbar navbarBg='#F7F7F7' title='每日新知' align='center' bg='#f7f7f7' fontColor="#000" iconColor='#000'>
 		<view class="auditon">
 			<view class="item" v-for='(item,i) in list' :key='i' @click='jump(item)'>
 				<view class="image-info">
 					<image :src="item.surface[0]" mode="widthFix" class="main-image"></image>
 					<view class="image-bottom-info">
 						<view class="view">
-							<image src="../../static/icon/play.png" class="play-image"></image>
+							<image src="../../../static/icon/play.png" class="play-image"></image>
 							<text class="play-num">
-								{{(item.baseNum+item.N*(item.realNum||0))<10000?item.baseNum+item.N*(item.realNum||0):((item.baseNum+item.N*(item.realNum||0))/10000).toFixed(1)+'w'}}
+								{{(item.baseNum+item.N*(item.realNum||0))<10000?item.baseNum+item.N*(item.realNum||0):((item.baseNum+item.N*(item.realNum||0))/10000)+'w'}}
 							</text>
 						</view>
 						<text class='time' v-if="item.course.duration&&item.course.duration!='00:00'">
 							{{item.course.duration || ''}}
 						</text>
-					</view>
+					</view> 
 					<view class="opcity"></view>
 				</view>
-				<image src="../../static/icon/icon_vip.png" class="icon-vip" v-if="item.course.vip"></image>
+				<image src="../../../static/icon/icon_vip.png" class="icon-vip" v-if="item.course.vip"></image>
 				<view class="txt-info">
 					<view class="txt-title">
 						{{item.title}}
 					</view>
-					<text class='tag' v-if="item.subTitle">
-						{{item.subTitle||''}}
+					<text class='tag'>
+						<!-- {{item.subTitle||''}} -->
+						No.{{list.length-i < 10 ? '00'+(list.length-i+' ') : list.length-i < 100 ?  '0'+(list.length-i+' ') : list.length-i}} / {{arr[i]}}
 					</text>
 				</view>
 			</view>
 		</view>
+		<view style='height: 40rpx'></view>
 		<Modal :isShow='isShow' @cancle='isShow=false' submit='确定' title='需要开通会员' @submitFn='submitFn' />
 		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl"></login>
+	</Navbar>
 	</view>
 </template>
 
 <script>
 	import Parse from '@/parse/index.js'
 	import Modal from '@/components/modal/modalvip.vue'
-	import login from '../../components/login/login.vue'
+	import login from '@/components/login/login.vue'
+	import Navbar from '../../../components/navBar/topNavbar.vue';
+	import Curriculum from '@/js/utils/curriculum.js'
 	export default {
-		name: 'audition',
-		props: {
-			title: {
-				type: String
-			},
-			showMore: {
-				type: Boolean,
-				default: false
-			},
-			list: {
-				type: Array,
-				default: () => []
-			},
-			userInfo: {
-				type: Object
-			},
-			pageof: {
-				type: Boolean,
-				default: false
-			}
-		},
+		name: 'auditio1n',
 		components: {
-			Modal, login
+			Modal, login, Navbar
 		},
 		data() {
 			return {
 				vip: false,
 				isShow: false,
 				isShowLogin: false,
+				list: [],
+				arr: []
 			}
 		},
-		created() {
+		onShow() {
 			var app = getApp();
 			var member = app.globalData.member;
 			if (member) {
@@ -87,38 +68,33 @@
 						this.vip = true
 					}
 				}
-			} 
+			}
+			var query = new this.Parse.Query('DailyCourse');
+			query.descending("createdAt");
+			query.find().then(data=>{
+				this.list = data
+				this.list.forEach(item=>{
+					this.arr.push(item.createdAt.getFullYear() +'.'+(item.createdAt.getMonth()+1) +'.'+ item.createdAt.getDate())
+				})
+			})
 		},
 		methods: {
-			gotolist() {
-				this.$emit('checkMore', {
-					objectId: this.list[0].module.objectId,
-					moduleName: this.title
-				});
-			},
 			async jump(item) {
-				let userInfo = this.userInfo;
-				if (!userInfo) {
-					userInfo = uni.getStorageSync('userInfo')
-				}
+				let userInfo = uni.getStorageSync('userInfo')
+				await Curriculum.recordDailyCourseNum(item.id);
 				if (userInfo && userInfo.openid) {
 					if (userInfo.phone) {
-						if (!item.course.vip) {
-							this.$emit('changeUrl', item)
+						if (!item.attributes.course.attributes.vip) {
+							uni.navigateTo({
+								url: '/curriculumSubPackage/pages/details/details?objectId='+item.attributes.course.id
+							})
 						} else {
 							if (this.vip) {
-								this.$emit('changeUrl', item)
+								uni.navigateTo({
+									url: '/curriculumSubPackage/pages/details/details?objectId='+item.attributes.course.id
+								})
 							} else {
-								if (item.course.flag == 1) {
-									this.$emit('changeUrl', item)
-									return
-								}
-								// 放到主页去触发，因为放到本地的话遮罩框覆盖不全
-								if (this.pageof) {
-									this.$emit('changePage', item)
-								} else {
-									this.isShow = true
-								}
+								this.isShow = true
 							}
 						}
 					} else {
@@ -127,11 +103,7 @@
 						})
 					}
 				} else {
-					if (this.pageof) {
-						this.$emit('changePage', item)
-					} else {
-						this.isShowLogin = true
-					}
+					this.isShowLogin = true
 				}
 			},
 			submitFn() {
@@ -144,33 +116,16 @@
 			handleLoginComplate() {
 				this.isShowLogin = false
 				this.$emit('doneLogin', uni.getStorageSync('userInfo'))
-				this.isShow = true
 			},
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.list {
-		position: relative;
-
-		.title {
-			margin: 24rpx 0 0rpx 0;
-		}
-
-		.more {
-			font-size: 16rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
-			color: #000000;
-			position: absolute;
-			top: 10rpx;
-			opacity: 0.4;
-			right: 50rpx;
-			z-index: 1;
-		}
+	.list{
+		background: #f7f7f7;
+		height: 100vh;
 	}
-
 	.auditon {
 		display: flex;
 		flex-direction: row;
@@ -247,14 +202,14 @@
 
 	.txt-info .tag {
 		height: 26rpx;
-		font-size: 18rpx;
+		font-size: 16rpx;
 		letter-spacing: 0rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
 		color: #989898;
 		display: inherit;
-		margin-top: 2rpx;
 		line-height: 26rpx;
+		margin-top: 2rpx;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;

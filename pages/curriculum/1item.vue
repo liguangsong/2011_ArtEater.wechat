@@ -1,10 +1,6 @@
 <template>
-	<view class='curriculum-item' @click='jumpDefault(item)'>
-		<view class='img'>
-			<image :src="item.listImg[0]"></image>
-		</view>
-		<view class="content">
-			
+	<view class='curriculum-item'>
+		<view class="content" @click='jumpDefault(item)'>
 			<view class='font'>
 				<view class="title">{{item.subjectName}}</view>
 				<view class="info">
@@ -13,19 +9,22 @@
 				</view>
 			</view>
 			<view class="teacher">
-				<view class='img1' v-if='item.portrait.length'>
-					<image v-for='(attr,i) in item.portrait' :style='{zIndex: 10-i, left: 32*i+"rpx"}' :src="attr" mode='aspectFill'></image>
+				<view class='img'>
+					<image :src="item.portrait[0]" mode='aspectFill'></image>
+					<text>{{item.lecturerName}}</text>
 				</view>
-				<view class='img1' v-else>
-					<image v-if='item.portrait[0]' :src="item.portrait[0]" mode='aspectFill'></image>
-				</view>
+				<!-- <view class="box"> -->
 					<view class="btn" v-if='item.vip' :class='{study: item.vip && vip }'>
 						<text v-if='vip' style='transform: translateY(-1px); display: inline-block;'>学习</text>
 						<text v-else @click.stop='unlockFn'>解锁</text>
+						<!-- <image v-if='vip' src="../../static/study.png" mode=""></image>
+						<image v-else @click.stop='unlockFn' src="../../static/lock.png" mode=""></image> -->
 					</view>
 					<view class="btn study" v-else>
 						<text style='transform: translateY(-1px); display: inline-block;'>学习</text>
+						<!-- <image src="../../static/study.png" mode=""></image> -->
 					</view>
+				<!-- </view> -->
 			</view>
 		</view>
 		<view class="vip" v-if='item.vip' @click='jumpDefault(item)'>
@@ -72,6 +71,9 @@
 			},
 			unlockFn() {
 				this.isShow = true
+				// uni.navigateTo({
+				// 	url: '/mineSubPackage/pages/vip/vip'
+				// })
 			},
 			submitFn() {
 				uni.navigateTo({
@@ -87,32 +89,22 @@
 	.curriculum-item {
 		width: 690rpx;
 		height: 220rpx;
-		margin: 0 auto 28rpx;
-		display: flex;
-		box-shadow: 0 4rpx 10rpx 0 rgba(0,0,0,0.1);
-		border-radius: 24rpx;
-		padding: 20rpx;
+		margin: 0 auto 24rpx;
 		background: #fff;
+		border-radius: 24rpx;
+		box-shadow: rgba(0,0,0,.1) 0 4rpx 10rpx 0;
 		position: relative;
 	}
-	.curriculum-item .img {
-		min-width: 180rpx;
-		height: 180rpx;
-		margin-right: 28rpx;
-	}
-	.curriculum-item .img image {
-		border-radius: 20rpx;
+	.content {
 		width: 100%;
 		height: 100%;
-	}
-	.content {
 		display: flex;
 		flex-direction: column;
-		flex: 1 0 auto;
+		padding: 32rpx 48rpx 0;
 		justify-content: space-between;
 	}
 	.title {
-		width: 400rpx;
+		width: 100%;
 		font-size: 32rpx;
 		font-weight: 500;
 		line-height: 44rpx;
@@ -127,14 +119,15 @@
 		opacity: .5;
 	}
 	.info text:first-child {
+		/* font-family: PingFangSC-Regular, PingFang SC !important; */
 		margin-right: 24rpx;
 	}
 	.teacher {
 		display: flex;
 		justify-content: space-between;
-		/* align-items: center; */
+		align-items: center;
 		font-size: 20rpx;
-		/* height: 48rpx; */
+		height: 92rpx;
 	}
 	.teacher .box {
 		height: 70rpx;
@@ -143,22 +136,23 @@
 		justify-content: flex-end;
 		align-items: center;
 	}
-	.teacher .img1 {
+	.teacher .img {
 		display: flex;
-		flex: 0 1 40%;
 		align-items: center;
 		color: rgba(23,23,23,.6);
-		position: relative;
-		height: 48rpx;
 	}
 	.teacher image {
 		width: 48rpx;
 		height: 48rpx;
-		box-shadow: 2rpx 0 4rpx 0 rgba(0,0,0,0.22);
+		margin-right: 12rpx;
 		border-radius: 50%;
-		position: absolute;
-		/* top: -22rpx; */
 	}
+	/* .btn image{
+		width: 108rpx;
+		height: 48rpx;
+		border-radius: 0;
+		margin-top: 10rpx;
+	} */
 	.btn {
 		width: 100rpx;
 		height: 40rpx;
@@ -169,8 +163,6 @@
 		background: rgba(0,0,0,.1);
 		transform: translate(4rpx, 6rpx);
 		color: rgba(0,0,0,.5);
-		margin-right: 26rpx;
-		margin-top: 4rpx;
 	}
 	.vip {
 		position: absolute;

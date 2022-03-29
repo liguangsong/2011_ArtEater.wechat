@@ -190,12 +190,9 @@
 										<view v-if='isMember'>
 											<text v-if='memberInfo.memberType == 1'>续 &nbsp; 费</text>
 											<text v-else>立即升级黑金会员</text>
-											<!-- <image v-if='memberInfo.memberType == 1' src="../../static/hjxf.png" mode="heightFix"></image>
-											<image v-else src="../../static/hjsj.png" mode="heightFix"></image> -->
 										</view>
 										<view v-else>
 											<text>立即开通</text>
-											<!-- <image src="../../static/hjkt.png" mode="heightFix"></image> -->
 										</view>
 									</view>
 								</view>
@@ -472,7 +469,6 @@
 				showFixed: false,
 				list: null,
 				active: 0,
-				active1: this.active,
 				user: null,
 				userInfo: null,
 				member: null,
@@ -585,7 +581,6 @@
 			},
 			changeShowFixed(f) {
 				if (f == 'bool') {
-					this.active = this.active1;
 					setTimeout(()=>{
 						this.showFixed = true;
 					},300)
@@ -599,6 +594,7 @@
 				} else {
 					this.showFixed = false;
 				}
+				
 			},
 			touchstart(e) {
 				this.clientX = e.changedTouches[0].clientX;
@@ -1225,7 +1221,7 @@
 
 						.item-txt1 {
 							// font-size: 16rpx;
-							font-size: .6em;
+							font-size: .62em;
 							font-weight: 500;
 							// line-height: 22rpx;
 							line-height: 1.5em;
@@ -1234,7 +1230,7 @@
 						}
 
 						.item-txt2 {
-							font-size: .5em;
+							font-size: .58em;
 							font-weight: 400;
 							line-height: 1.4em;
 							width: 100%;

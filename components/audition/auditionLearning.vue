@@ -199,7 +199,7 @@
 
 	.txt-info .tag {
 		height: 22rpx;
-		font-size: 16rpx;
+		font-size: 18rpx;
 		letter-spacing: 0rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;

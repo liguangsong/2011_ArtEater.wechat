@@ -129,7 +129,6 @@
 				// couponRecord.greaterThan('useEndTime', new Date())
 				couponRecord.find().then(async coupons => {
 					let memberType = await self.memberType()
-					// console.log(memberType, coupons);
 					let _coupons = []
 					coupons.forEach(t => {
 						let tipContent = '此VIP会员服务有效期为365天，到期会系统将关闭所有系统权限，为不影响使用，请提前续费'
@@ -178,7 +177,6 @@
 						return t.state != 0
 					})
 					self.coupons = _canuse.concat(_cannotuse)
-					console.log(self.coupons);
 				})
 			},
 			/* 立即使用 */

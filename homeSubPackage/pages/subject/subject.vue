@@ -481,12 +481,14 @@
 				</view>
 			</view> -->
 			</u-mask>
+			<Modal :isShow='isShow' @cancle='isShow=false' submit='确定' title='需要开通会员' @submitFn='submitFn' />
 		</view>
 	</TopNavbar>
 </template>
 
 <script>
 	import TopNavbar from '@/components/navBar/topNavbar.vue'
+	import Modal from '@/components/modal/modalvip.vue'
 	// import config from '../../../../static/config/index.js'
 	// import { dateFormat, GetRandomNum, createWechatPay } from '../../../../js/common.js'
 	export default {
@@ -507,11 +509,12 @@
 				subjects: [],
 				questionHistory: [],
 				subjectProgress: [],
-				isMember: false
+				isMember: false,
+				isShow: false
 			}
 		},
 		components: {
-			TopNavbar
+			TopNavbar, Modal
 		},
 		onShow() {
 			var app = getApp();
@@ -801,16 +804,16 @@
 						})
 						return
 					}
-					var self = this
-					uni.navigateTo({
-						// url: '/pages/buy/buy?subjectId=' + this.subjectDetail.id,
-						url: '/mineSubPackage/pages/vip/vip',
-						event: {
-							reloadOrder: function(data) {
-								self.bindOrder()
-							}
-						}
-					})
+					this.isShow = true
+					// var self = this
+					// uni.navigateTo({
+						// url: '/mineSubPackage/pages/vip/vip',
+						// event: {
+						// 	reloadOrder: function(data) {
+						// 		self.bindOrder()
+						// 	}
+						// }
+					// })
 				} else {
 					var item = e.currentTarget.dataset.item
 					uni.navigateTo({
@@ -826,6 +829,12 @@
 						}
 					})
 				}
+			},
+			submitFn() {
+				uni.navigateTo({
+					url: '/mineSubPackage/pages/vip/vip'
+				})
+				this.isShow = false
 			},
 			handleStep() {
 				this.step += 1

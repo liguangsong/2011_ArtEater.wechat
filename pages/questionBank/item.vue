@@ -10,10 +10,10 @@
 					<view class='regular'>已完成: {{subjectTree.progress?subjectTree.progress:0}}/{{subjectTree.childrenCount?subjectTree.childrenCount:0}}</view>
 				</view>
 				<view class="btn" v-if='vip1 || vip'>
-					<text style='transform: translateY(-1px); display: inline-block;'>学习</text>
+					<text style='display: inline-block;'>学习</text>
 				</view>
 				<view class="btn1" v-else @click.stop='unlock'>
-					<text style='transform: translateY(-1px); display: inline-block;'>解锁</text>
+					<text style='display: inline-block;'>解锁</text>
 				</view>
 			</view>
 		</view>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-	import Modal from '@/components/modal/modal.vue'
+	import Modal from '@/components/modal/modalvip.vue'
 	export default {
 		props: {
 			item: {
@@ -73,10 +73,8 @@
 					query.contains('subjectId', self.uid)
 					query.equalTo('state', 1)
 					let r = await query.first();
-					console.log(r, '------');
 					if (r) {
 						self.vip1 = true;
-						// console.log('\\\\\\\\', self.vip1);
 					}
 				}
 			})

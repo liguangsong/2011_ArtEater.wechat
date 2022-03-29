@@ -48,7 +48,11 @@
 			color: rgba(0,0,0,.5);
 		}
 	}
-	
+	.modalvip view.u-mode-center-box {
+		background: none !important;
+		width: 100% !important;
+		height: 314rpx !important;
+	}
 </style>
 <script>
 	import config from 'static/config/index.js'

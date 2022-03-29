@@ -10,6 +10,7 @@
 				:showAllbtn='true'
 			/>
 		</view>
+		
 	</view>
 </template>
 
@@ -24,11 +25,10 @@
 		},
 		data() {
 			return {
-		
 			}
 		},
 		components: {
-			Tree,
+			Tree
 		},
 		methods: {
 			onClickItem(item) {
@@ -36,13 +36,15 @@
 				let member = app.globalData.member;
 				let vip=false;
 				if(member && member.memberType!=2 && (member.endTime > Date.now())){
-                  vip=true;
+          vip=true;
 				}
 				if(item.kind!=4){
 					if(item.vip && !vip){
-						uni.navigateTo({
-						  url: '/mineSubPackage/pages/vip/vip'
-						});
+						this.$emit('jumpvip')
+						// this.isShow = true
+						// uni.navigateTo({
+						//   url: '/mineSubPackage/pages/vip/vip'
+						// });
 					}else{
 						uni.navigateTo({
 						  url: '/curriculumSubPackage/pages/details/details?objectId='+item.objectId

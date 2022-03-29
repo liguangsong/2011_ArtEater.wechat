@@ -112,7 +112,7 @@
 		max-width:500rpx;
 	}
 	.leave .title .txt.fre{
-		max-width:499rpx;
+		max-width:488rpx;
 		vertical-align: bottom;
 	}
 	.leave .title .txt.cur.fre{

@@ -8,7 +8,7 @@
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
 				"navigationBarTitleText": "食艺兽",
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -16,7 +16,7 @@
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
 				"navigationBarTitleText": "食艺兽",
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -24,7 +24,7 @@
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
 				"navigationBarTitleText": "食艺兽",
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -32,7 +32,7 @@
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
 				"navigationBarTitleText": "公告栏",
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -40,7 +40,7 @@
 			"style": {
 				"navigationBarTitleText": "食艺兽",
 				"enablePullDownRefresh": false,
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 
 		}, {
@@ -56,7 +56,7 @@
 				"navigationBarBackgroundColor": "#fbfbfb",
 				"navigationBarTitleText": "食艺兽",
 				"enablePullDownRefresh": false,
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 
 		}, {
@@ -66,13 +66,13 @@
 				"enablePullDownRefresh": false
 			}
 
-		},  {
+		}, {
 			"path": "pages/mine/order",
 			"style": {
 				"navigationBarBackgroundColor": "#fbfbfa",
 				"navigationBarTitleText": "积分兑换",
 				"enablePullDownRefresh": false,
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 
 		}, {
@@ -92,12 +92,12 @@
 			"style": {
 				"navigationBarTitleText": "考试成绩",
 				"enablePullDownRefresh": false,
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 		}, {
 			"path": "pages/mine/testdetail",
 			"style": {
-				"navigationStyle":"custom",
+				"navigationStyle": "custom",
 				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#f7f7f7"
 			}
@@ -107,12 +107,12 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-		},  {
+		}, {
 			"path": "pages/buy/buy",
 			"style": {
 				"navigationBarTitleText": "购买",
 				"enablePullDownRefresh": false,
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 
 		}, {
@@ -120,7 +120,7 @@
 			"style": {
 				"navigationBarTitleText": "选择优惠券",
 				"enablePullDownRefresh": false,
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 
 		}, {
@@ -136,7 +136,7 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 
 		}, {
@@ -145,7 +145,7 @@
 				"navigationBarTitleText": "题库",
 				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#F7F7F7",
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 
 		}, {
@@ -153,24 +153,22 @@
 			"style": {
 				"navigationBarTitleText": "课程",
 				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#F7F7F7",
-				"navigationStyle":"custom"
+				"navigationBarBackgroundColor": "#F7F7F7",
+				"navigationStyle": "custom"
 			}
 		}
 	],
-	"subPackages": [
-		   {
+	"subPackages": [{
 			"root": "homeSubPackage",
-			"pages": [
-				{
+			"pages": [{
 					"path": "pages/important/result",
 					"style": {
 						"navigationBarBackgroundColor": "#f7f7f7",
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
-				
+
 				},
 				{
 					"path": "pages/error/note",
@@ -179,21 +177,21 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-				
+
 				},
 				{
 					"path": "pages/important/subject",
 					"style": {
 						"navigationBarTitleText": "必考题库",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 				}, {
 					"path": "pages/important/exam",
 					"style": {
 						"navigationBarBackgroundColor": "#f7f7f7",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 				}, {
 					"path": "pages/important/index",
@@ -201,7 +199,7 @@
 						"navigationBarBackgroundColor": "#fbfbfb",
 						"navigationBarTitleText": "必考题库",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 				}, {
 					"path": "pages/important/complate",
@@ -209,30 +207,30 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-				}, 
+				},
 				{
 					"path": "pages/exam/exam",
 					"style": {
 						"navigationBarBackgroundColor": "#f7f7f7",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
-				
-				}, 
+
+				},
 				{
 					"path": "pages/exam/oldexams",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-				
-				}, 
+
+				},
 				{
 					"path": "pages/exam/index",
 					"style": {
 						"navigationBarBackgroundColor": "#fbfbfb",
 						"navigationBarTitleText": "模拟考试",
-						"navigationStyle":"custom",
+						"navigationStyle": "custom",
 						"enablePullDownRefresh": false
 					}
 				}, {
@@ -247,15 +245,15 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-				}, 
+				},
 				{
 					"path": "pages/subject/subject",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
-				
+
 				},
 				{
 					"path": "pages/subject/exam",
@@ -263,9 +261,9 @@
 						"navigationBarBackgroundColor": "#fbfbfa",
 						"navigationBarTitleText": "章节练习",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
-				
+
 				},
 				{
 					"path": "pages/subject/result",
@@ -273,51 +271,60 @@
 						"navigationBarBackgroundColor": "#fbfbfa",
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
-				
+
 				},
-                {
-				"path": "pages/curriculumList/curriculumList",
-				"style": {
-					"navigationBarTitleText": "",
-					"enablePullDownRefresh": false,
-					"navigationStyle":"custom"
-				}
-			  },
-              {
-                "path": "pages/error/error",
-                "style": {
-                    "navigationBarBackgroundColor": "#f7f7f7",
-                    "enablePullDownRefresh": false,
-										"navigationBarTitleText": ""
-                }
-              }, {
-                    "path": "pages/error/index",
-                    "style": {
-                        "navigationBarBackgroundColor": "#fbfbfa",
-                        "navigationBarTitleText": "错题集",
-                        "enablePullDownRefresh": false,
-												"navigationStyle":"custom"
-                    }
-              },
-              {
-                    "path": "pages/error/success",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "enablePullDownRefresh": false
-                    }
-                }
-            ]},
-			{
-			"root": "curriculumSubPackage",
-			"pages": [
 				{
+					"path": "pages/curriculumList/curriculumList",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/curriculumList/daily",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
+				},
+
+				{
+					"path": "pages/error/error",
+					"style": {
+						"navigationBarBackgroundColor": "#f7f7f7",
+						"enablePullDownRefresh": false,
+						"navigationBarTitleText": ""
+					}
+				}, {
+					"path": "pages/error/index",
+					"style": {
+						"navigationBarBackgroundColor": "#fbfbfa",
+						"navigationBarTitleText": "错题集",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/error/success",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "curriculumSubPackage",
+			"pages": [{
 					"path": "pages/sharePage/index",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
-					    "navigationStyle": "custom"
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -325,7 +332,7 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
-					    "navigationStyle": "custom"
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -333,24 +340,25 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
-					    "navigationStyle": "custom"
+						"navigationStyle": "custom"
 					}
 				},
 				{
-				"path": "pages/study/study",
-				"style": {
-					"navigationBarTitleText": "课程",
-					"enablePullDownRefresh": false,
-					"navigationStyle": "custom"
+					"path": "pages/study/study",
+					"style": {
+						"navigationBarTitleText": "课程",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
+				}, {
+					"path": "pages/details/details",
+					"style": {
+						"navigationBarTitleText": "课程",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
 				}
-			},{
-				"path": "pages/details/details",
-				"style": {
-					"navigationBarTitleText": "课程",
-					"enablePullDownRefresh": false,
-					"navigationStyle": "custom"
-				}
-			}]
+			]
 		},
 		{
 			"root": "qbankSubPackage",
@@ -369,7 +377,7 @@
 					"style": {
 						"navigationBarTitleText": "个人信息",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 				}, {
 					"path": "pages/signin/signin",
@@ -408,7 +416,7 @@
 						"navigationBarBackgroundColor": "#fbfbfa",
 						"navigationBarTitleText": "积分排行榜",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -416,7 +424,7 @@
 					"style": {
 						"navigationBarTitleText": "积分记录",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 
 				},
@@ -426,7 +434,7 @@
 						"navigationBarBackgroundColor": "#fbfbfa",
 						"navigationBarTitleText": "我的优惠券",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 
 				},
@@ -435,7 +443,7 @@
 					"style": {
 						"navigationBarTitleText": "考试记录",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -443,8 +451,8 @@
 					"style": {
 						"navigationBarTitleText": "课程收藏",
 						"enablePullDownRefresh": false,
-						"navigationBarBackgroundColor":"#F7F7F7",
-						"navigationStyle":"custom"
+						"navigationBarBackgroundColor": "#F7F7F7",
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -453,7 +461,7 @@
 						"navigationBarBackgroundColor": "#fbfbfa",
 						"navigationBarTitleText": "分享给好友",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 
 				},
@@ -463,7 +471,7 @@
 						"navigationBarBackgroundColor": "#fbfbfb",
 						"navigationBarTitleText": "消息",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 				}, {
 					"path": "pages/message/msgdetail",
@@ -471,7 +479,7 @@
 						"navigationBarBackgroundColor": "#fbfbfb",
 						"navigationBarTitleText": "消息详情",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -480,7 +488,7 @@
 						"navigationBarBackgroundColor": "#fbfbfb",
 						"navigationBarTitleText": "意见反馈",
 						"enablePullDownRefresh": false,
-						"navigationStyle":"custom"
+						"navigationStyle": "custom"
 					}
 				}
 			]

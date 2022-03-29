@@ -20,7 +20,6 @@ export default {
 	},
 	//获取课程及详情
 	async getHideCurriculum(id) {
-		console.log(id,'ppppp')
 		let curriculum = new Parse.Query('CoursesModule');
 		    // curriculum.equalTo('hide', true);
 		if (id) {
@@ -83,7 +82,6 @@ export default {
 		curriculum.containedIn('objectId', ids);
 		curriculum.ascending('createdAt');
 		let res = await curriculum.find();
-		console.log(res);
 		if (res) {
 			res = res.map(v => v.toJSON());
 		} else {
@@ -132,7 +130,6 @@ export default {
 				}
 			})
 		}
-		console.log(res,88776655)
 		return res;
 	},
 	// 获取当前课程所属的整个系列课程 扫码分享情况
@@ -356,57 +353,7 @@ export default {
 			})
 		}
 	},
-	// // 扫码方法
-	// scanCode(member) {
-	// 	let that = this;
-	// 	uni.scanCode({
-	// 		success: async (res) => {
-	// 			this.scaninfo = res;
-	// 			if (res.result) { //res.result
-	// 				res.result = Config.ScanUrl + '1fUxfBh7Pu'
-	// 				if (res.result.includes(Config.ScanUrl)) {
-	// 					let url = decodeURIComponent(res.result);
-	// 					let id = url.split('/')[url.split('/').length - 1];
-	// 					let data = await that.getHideCurriculum(id);
-	// 					if (data.length) {	
-	// 						let info = data[0];
-	// 						if (info.vip && (member.memberType != 0 && member.memberType != 1)) {
-	// 							uni.showToast({
-	// 								icon: 'none',
-	// 								title: '您没有权限'
-	// 							})
-	// 							return ;
-	// 						}
-	// 						let toUrl = await this.configUrl(info);
-	// 						uni.reLaunch({
-	// 							url: toUrl
-	// 						})
-	// 					} else {
-	// 						uni.showToast({
-	// 							title: '未找到当前课程',
-	// 							icon: 'none'
-	// 						})
-	// 					}
-	// 				} else {
-	// 					uni.showToast({
-	// 						title: '二维码错误',
-	// 						icon: 'none'
-	// 					})
-	// 				}
-	// 				// '0016429'||
 
-	// 				// `../pages/index/index`
-	// 				//    console.log(res.result,'内部扫码')
-	// 			}
-	// 		},
-	// 		fail() {
-	// 			uni.showToast({
-	// 				icon: 'none',
-	// 				title: '扫码失败'
-	// 			})
-	// 		}
-	// 	});
-	// },
 	async configUrl(item,vip) {
 		let toUrl = '';
 		// if (item.flag == 1) {

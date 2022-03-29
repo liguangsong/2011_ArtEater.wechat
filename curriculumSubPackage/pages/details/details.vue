@@ -28,19 +28,20 @@
 							<text>课表</text>
 						</view>
 						<view class="btnitem" v-else></view>
-						<view class='btnitem button' @click="share">
-							<!-- :style="{left: curriculumInfo.flag==1 ? '26rpx':'46rpx'}" -->
-							<view class="img">
-								<image src="../../../static/icon/icon_share.png"></image>
-							</view>
-							<!-- <text>分享</text> -->
-							<button type="default" :data-objectId='objectId' open-type='share'>分享</button>
-						</view>
+						
 						<view class='btnitem' @click="operateCollection(false)">
 							<view class="img">
 								<image :src="collectionStatus?active:unactive"></image>
 							</view>
 							<text class='collection'>{{collectionStatus?'已收藏':'收藏'}}</text>
+						</view>
+						<view class='btnitem button' @click="share">
+							<!-- :style="{left: curriculumInfo.flag==1 ? '26rpx':'46rpx'}" -->
+							<view class="img">
+								<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/fenxiang.png"></image>
+							</view>
+							<!-- <text>分享</text> -->
+							<button type="default" :data-objectId='objectId' open-type='share'>分享</button>
 						</view>
 					</view>
 				</view>
@@ -203,16 +204,22 @@
 				}
 			}
 		},
-		//用户点击右上角分享朋友圈
-		onShareTimeline: function() {
-			return {
-				title: '食艺兽',
-				query: {
-					key: value
-				},
-				imageUrl: ''
-			}
-		},
+		// 发送给朋友
+		 onShareAppMessage(){
+		    return {
+		       title: this.curriculumInfo.subjectName, // 标题
+		       path: 'curriculumSubPackage/pages/details/details?objectId='+this.objectId, // 要分享的页面
+		       imageUrl: 'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/m.png' // 分享时的图片
+		   }
+		 },
+		 // 分享到朋友圈
+		 onShareTimeline(){
+		    return {
+		       title: this.curriculumInfo.subjectName,
+		       path: 'curriculumSubPackage/pages/details/details?objectId='+this.objectId,
+		       imageUrl: 'https://art-eater.oss-cn-beijing.aliyuncs.com/photo/m.png'
+		   }
+		 },
 		filters: {
 			/**
 			 * 处理富文本里的图片宽度自适应
@@ -257,14 +264,14 @@
 				let info = res[0];
 				this.curriculumInfo = info;
 				
-				if (info.rootId) {
-					var q = new this.Parse.Query('CoursesModule')
-					q.equalTo('objectId', info.rootId)
-					q.find().then(data => {
-						this.curriculumInfo.portrait = data[0].attributes.portrait;
-						this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
-					})
-				}
+				// if (info.rootId) {
+				// 	var q = new this.Parse.Query('CoursesModule')
+				// 	q.equalTo('objectId', info.rootId)
+				// 	q.find().then(data => {
+				// 		this.curriculumInfo.portrait = data[0].attributes.portrait;
+				// 		this.curriculumInfo.lecturerName = data[0].attributes.lecturerName;
+				// 	})
+				// }
 				if (info.flag == 1) {
 					// 存储上次学习
 					await Curriculum.updatePreLearn(info['rootId'], info.objectId);
@@ -397,7 +404,7 @@
 			},
 			timetablefn() {
 				this.timetable = true
-			}
+			},
 		},
 
 	}
@@ -513,7 +520,7 @@
 							background: none;
 							border: none;
 							border-radius: 0;
-							color: rgba(23, 23, 23, 0.6);
+							color: #D81E1F;
 							box-sizing: border-box;
 							margin-left: 0;
 							margin-right: 0;

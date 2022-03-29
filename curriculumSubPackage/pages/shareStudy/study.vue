@@ -38,10 +38,11 @@
 				</view>
 			</view>
 			<view class="tab">
-				<Timetable v-if='tabbar' :list="timetableList"/>
+				<Timetable v-if='tabbar' :list="timetableList" @jumpvip='jumpvip'/>
 				<!-- :isVip="tabbar" -->
 				<Details v-else :detail="curriculumInfo.introduce" />
 			</view>
+			<Modal :isShow='isShow' @cancle='isShow=false' submit='确定' title='需要开通会员' @submitFn='submitFn' />
 	</view>
 </template>
 
@@ -49,6 +50,7 @@
 	import Curriculum from '../../js/curriculum.js'
 	import Timetable from './timetable.vue';
 	import Details from './details.vue';
+	import Modal from '@/components/modal/modalvip.vue'
 	// import Navbar from '../../components/navbar/navbar.vue';
 	export default {
 		data() {
@@ -64,11 +66,13 @@
 				navbarheight: 0,
 				opacity: 0,
 				screenHeight: 0,
+				isShow: false
 			}
 		},
 		components: {
 			Timetable,
 			Details,
+			Modal
 			// Navbar
 		},
 		
@@ -100,10 +104,19 @@
 			})
 		},
 		methods: {
+			jumpvip() {
+				this.isShow = true
+			},
 			back() {
                 uni.reLaunch({
 					url:'/pages/index/index'
 				});
+			},
+			submitFn() {
+				uni.navigateTo({
+					url: '/mineSubPackage/pages/vip/vip'
+				})
+				this.isShow = false
 			},
 			// 获取详情
 			async getCurriculum() {

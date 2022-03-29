@@ -1,220 +1,247 @@
 <template>
-	<view class="myPage"
-		:style="{'height':height+'px','overflow-y': isShowTips ? 'auto' : 'scroll','padding-bottom':pdbtm +'rpx'}">
-		<!--轮播 start-->
-		<Navbar :icon="false" title="食艺兽" height="514rpx" navbarBg="#fff" :fontColor="fontColor" :fontSize="34"
-			titleLeft="62rpx">
-			<template v-slot:img>
-				<view class="page-section">
-					<view class="page-section-spacing">
-						<swiper class="swiper" :autoplay="true" indicator-dots indicator-color="#ffffff"
-							indicator-active-color="#ED3535" circular>
-							<swiper-item v-for="item in banners" @click="handleBannerClick" :data-item="item">
-								<view class="swiperItem">
-									<image :src="item.img"></image>
-								</view>
-							</swiper-item>
-						</swiper>
-					</view>
-				</view>
-			</template>
-			<template v-slot:other>
-				<!--导航 start-->
-				<view class="navSection">
-					<view class="innerSection">
-						<view class="nav-box">
-							<view class="navItem" @click="handleAuditionClick">
-								<view class="img">
-									<image
-										src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E8%AF%BE%E7%A8%8B%E8%AF%95%E5%90%AC.png">
-									</image>
-								</view>
-								<view class="title">免费试听</view>
-							</view>
-							<view class="navItem" @click="handleImportantClick">
-								<view class="img">
-									<image
-										src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93.png">
-									</image>
-									<!-- <image src="../../static/svg/tiku.svg"></image> -->
-								</view>
-								<view class="title">重点题库</view>
-							</view>
-							<view class="navItem" @click="handleExamClick">
-								<view class="img">
-									<image
-										src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7.png">
-									</image>
-									<!-- <text class="badge">12待添加数字</text> -->
-								</view>
-								<view class="title">模拟试卷</view>
-							</view>
-							<view class="navItem" @click="handleNoteClick">
-								<view class="img">
-									<image
-										src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E9%94%99%E9%A2%98%E9%9B%86.png">
-									</image>
-								</view>
-								<view class="title">错题集</view>
-							</view>
-						</view>
-						<!-- <view class="line"></view> -->
-						<view class="nav-box">
-							<view class="navItem" @click="handleSubjectClick" :data-item="item"
-								v-for="(item,index) in subjects" :key='item.id'>
-								<view class="img">
-									<image :src="item.backgroundImg"></image>
-								</view>
-								<view class="title">{{item.subject_name}}</view>
-							</view>
+	<view class="">
+
+
+		<view class="myPage"
+			:style="{'height':height+'px','overflow-y': isShowTips ? 'auto' : 'scroll','padding-bottom':pdbtm +'rpx'}">
+			<!--轮播 start-->
+			<Navbar :icon="false" title="食艺兽" height="514rpx" navbarBg="#fff" :fontColor="fontColor" :fontSize="34"
+				titleLeft="62rpx">
+				<template v-slot:img>
+					<view class="page-section">
+						<view class="page-section-spacing">
+							<swiper class="swiper" :autoplay="true" indicator-dots indicator-color="#ffffff"
+								indicator-active-color="#ED3535" circular>
+								<swiper-item v-for="item in banners" @click="handleBannerClick" :data-item="item">
+									<view class="swiperItem">
+										<image :src="item.img"></image>
+									</view>
+								</swiper-item>
+							</swiper>
 						</view>
 					</view>
-				</view>
-				
-				<!-- 公告栏 -->
-				<view class='scrollx' v-if='notice.length'>
-					<Notice :notice='notice' :isScroll='isScroll'/>
-				</view>
-				
-				
-				<!-- 正在学习 -->
-				<!-- <audition-learning v-if="studyList.length" title="正在学习" :showMore="showLearningMore"
+				</template>
+				<template v-slot:other>
+					<!--导航 start-->
+					<view class="navSection">
+						<view class="innerSection">
+							<view class="nav-box">
+								<view class="navItem" @click="handleShareClick">
+									<view class="img">
+										<image
+											src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/fenxiangyouli.png">
+										</image>
+									</view>
+									<view class="title">分享有礼</view>
+								</view>
+								<view class="navItem" @click="handleAuditionClick">
+									<view class="img">
+										<image
+											src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E8%AF%BE%E7%A8%8B%E8%AF%95%E5%90%AC.png">
+										</image>
+									</view>
+									<view class="title">免费试听</view>
+								</view>
+								<view class="navItem" @click="handleImportantClick">
+									<view class="img">
+										<image
+											src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93.png">
+										</image>
+									</view>
+									<view class="title">重点题库</view>
+								</view>
+								<view class="navItem" @click="handleExamClick">
+									<view class="img">
+										<image
+											src="https://art-eater.oss-cn-beijing.aliyuncs.com/%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7.png">
+										</image>
+									</view>
+									<view class="title">模拟试卷</view>
+								</view>
+
+							</view>
+							<view class="nav-box">
+								<view class="navItem" @click="handleSubjectClick" :data-item="item"
+									v-for="(item,index) in subjects" :key='item.id'>
+									<view class="img">
+										<image :src="item.backgroundImg"></image>
+									</view>
+									<view class="title">{{item.subject_name}}</view>
+								</view>
+							</view>
+						</view>
+					</view>
+
+					<!-- 公告栏 -->
+				<!-- 	<view class='scrollx' v-if='notice.length'>
+						<Notice :notice='notice' :isScroll='isScroll' />
+					</view>
+ -->
+
+					<!-- 正在学习 -->
+					<!-- <audition-learning v-if="studyList.length" title="正在学习" :showMore="showLearningMore"
 					:list="studyList.slice(0,2)" @learnChangeUrl="learnChangeUrl" @learnCheckMore="learnCheckMore">
 				</audition-learning> -->
-				
-				<view class="h-line" v-if="studyList.length"></view>
-				<audition :title="item.name" :list="item.list.slice(0,item.showAmount)"
-					:showMore="item.list.length>item.showAmount" v-for="(item,index) in moduleList" :key="index"
-					@changeUrl="changeUrl" @checkMore="checkMore"></audition>
-				<!--精品推荐 start-->
-			
-				
-				<view class="groupView" style="margin-top: 24rpx;">
-					<view class="title-info">
-						<view class="left" v-if="title">
+
+					<!-- <view class="h-line"></view> -->
+					<audition :title="item.name" :list="item.list.slice(0,item.showAmount)"
+						:showMore="item.list.length>item.showAmount" :pageof='true' @changePage='changePage'
+						v-for="(item,index) in moduleList" :key="index" @changeUrl="changeUrl" @checkMore="checkMore"
+						@doneLogin='doneLogin' :userInfo='userInfo'></audition>
+					<!--精品推荐 start-->
+					<view style='height:24rpx;width:100%;'></view>
+					<view class="h-line" v-if='isShowDaily && newsKnow.length'></view>
+					<!-- 每日新知 -->
+					<view class="title-info title newsKnow" v-if='isShowDaily && newsKnow.length'>
+						<view class="left">
 							<view class="red-block"></view>
-							推荐阅读
+							每日新知
 						</view>
+						<view class="more" v-if="newsKnow.length>4" @click="gotolist">查看更多 ></view>
 					</view>
-					<view class="newsView">
-						<view class="newsItem" v-for="item in recommends" @click="handleToOtherMiniApp"
-							:data-item="item">
-							<view class="imgView">
-								<image :src="item.headImg"></image>
+
+					<view class="auditon" v-if='isShowDaily && newsKnow.length'>
+						<view class="item" v-for='(item,i) in newsKnowList1' :key='i' @click='jump(item)'>
+							<view class="image-info">
+								<image :src="item.surface[0]" mode="widthFix" class="main-image"></image>
+								<view class="image-bottom-info">
+									<view class="view">
+										<image src="../../static/icon/play.png" class="play-image"></image>
+										<text class="play-num">
+											{{(item.baseNum+item.N*(item.realNum||0))<10000?item.baseNum+item.N*(item.realNum||0):((item.baseNum+item.N*(item.realNum||0))/10000).toFixed(1)+'w'}}
+										</text>
+									</view>
+									<text class='time' v-if="item.course.duration&&item.course.duration!='00:00'">
+										{{item.course.duration || ''}}
+									</text>
+								</view>
+								<view class="opcity"></view>
 							</view>
-							<view class="conView">
-								<view class="title">{{item.title}}</view>
-								<view class="content"></view>
+							<image src="../../static/icon/icon_vip.png" class="icon-vip" v-if="item.course.vip"></image>
+							<view class="txt-info">
+								<view class="txt-title">
+									{{item.title}}
+								</view>
+								<text class='tag'>
+									No.{{newsKnow.length-i < 10 ? '00'+(' '+newsKnow.length-i) : newsKnow.length-i < 100 ?  '0'+(newsKnow.length-i+' ') : newsKnow.length-i}}/{{item.createdAt.getFullYear() +'.'+(Number(item.createdAt.getMonth()+1)) +'.'+ item.createdAt.getDate()}}
+								</text>
+							</view>
+						</view>
+						<view class="item" v-if='newsKnowList2.length'>
+							<view class="newsknow-item" v-for='(item,i) in newsKnowList2' :key='i' @click='jump(item)'>
+								<view class="newsknowView">
+									<view class="newsknow-title">
+										{{item.title}}
+									</view>
+									<view class="newsknow-time">
+										No.{{newsKnow.length-i-1 < 10 ? '00'+(newsKnow.length-i-1+' ') : newsKnow.length-i-1 < 100 ?  '0'+(newsKnow.length-i-1+' ') : newsKnow.length-i-1}}
+										/
+										{{item.createdAt.getFullYear() +'.'+(Number(item.createdAt.getMonth())+1) +'.'+ item.createdAt.getDate()}}
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
-				</view>
-				<!--精品推荐 end-->
-				<!--购买重点题库 start-->
-				<view style='height:20rpx'></view>
-				<!-- <u-popup v-model="isShowImportBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
-					<view class="buylView" style="padding:74rpx 40rpx;">
-						<view class="title">{{zdtkConfig.action}}</view>
-						<view class="price">¥{{zdtkConfig.price}}</view>
-						<view class="tips">
-							您购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
+
+					<!-- 每日新知 -->
+					<view class="h-line"></view>
+					<view class="groupView" style="margin-top: 24rpx;">
+						<view class="title-info">
+							<view class="left" v-if="title">
+								<view class="red-block"></view>
+								推荐阅读
+							</view>
 						</view>
-						<view class="tips">
-							购买后可在【个人中心-已购项目】中查看
-						</view>
-						<view class="btnActions">
-							<button @click="handleBuyZDTKClick">确认购买</button>
+						<view class="newsView">
+							<view class="newsItem" v-for="item in recommends" @click="handleToOtherMiniApp"
+								:data-item="item">
+								<view class="imgView">
+									<image :src="item.headImg"></image>
+								</view>
+								<view class="conView">
+									<view class="title">{{item.title}}</view>
+									<view class="content">{{item.subtitle}}</view>
+								</view>
+							</view>
 						</view>
 					</view>
-				</u-popup> -->
-				<!--购买重点题库 end-->
+					<!--精品推荐 end-->
+					<!--购买重点题库 start-->
+					<view style='height:20rpx'></view>
 
-				<!--购买重点题库 start-->
-				<!-- <u-popup v-model="isShowTestBuy" height="680rpx" :closeable="true" mode="bottom" border-radius="40">
-					<view class="buylView" style="padding:74rpx 40rpx;">
-						<view class="title">{{mnksConfig.action}}</view>
-						<view class="price">¥{{mnksConfig.price}}</view>
-						<view class="tips">
-							您购买的商品为虚拟内容服务，购买后不支持退订、转让、退换，请酌情确认。
-						</view>
-						<view class="tips">
-							购买后可在【个人中心-已购项目】中查看
-						</view>
-						<view class="btnActions">
-							<button @click="handleBuyMNKSClick">确认购买</button>
-						</view>
-					</view>
-				</u-popup> -->
-				<!--购买重点题库 end-->
+				</template>
 
-			</template>
+			</Navbar>
 
-		</Navbar>
-		<login :visiable="isShowLogin" @cancle="isShowLogin=false" @ok="handleLoginComplate" :to="toUrl"></login>
-
-		<view class='mask mask_collection' @click="handleStep" v-if='isShowTips'>
-			<view v-if="step==9">
-				<!-- <view class="navItem" style="right: 4rpx"> -->
+			<view class='mask mask_collection' @click="handleStep" v-if='isShowTips'>
+				<view v-if="step==9">
+					<!-- <view class="navItem" style="right: 4rpx"> -->
 					<view :style='{top: navbarheight+"px"}' style='position:absolute;bottom:0;left:0;right:0'>
-						<image src="../../static/collection.png" style='height: 100%;' mode='aspectFit'></image>
+						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E6%94%B6%E8%97%8F.png"
+							style='height: 100%;' mode='aspectFit'></image>
 					</view>
-				<!-- </view> -->
-			</view>
-			<view v-if="step==8" class="step bottom">
-				<view class="navItem" style="right:4rpx">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%A2%98%E5%BA%93.png"
-						:style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
+					<!-- </view> -->
 				</view>
-			</view>
-			<view v-if="step==7" class="step bottom" style="left:4rpx">
-				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E8%AF%BE%E7%A8%8B.png"
-						:style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
+				<view v-if="step==8" class="step bottom">
+					<view class="navItem" style="right:4rpx">
+						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%A2%98%E5%BA%93.png"
+							:style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
+					</view>
 				</view>
-			</view>
-			<view v-if="step==6" class="step top">
-				<view class="navItem">
-					<image
-						src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E7%A7%91%E6%8A%80%E6%96%87%E8%89%BA%E5%B8%B8%E8%AF%86.png">
-					</image>
+				<view v-if="step==7" class="step bottom" style="left:4rpx">
+					<view class="navItem">
+						<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E8%AF%BE%E7%A8%8B.png"
+							:style="{bottom:tabbarPdBtm?'0rpx':'-26rpx'}"></image>
+					</view>
 				</view>
-			</view>
-			<view v-if="step==2" class="step top">
-				<view class="navItem">
-					<image
-						src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%BF%85%E8%80%83%E9%A2%98%E5%BA%93.png">
-					</image>
+				<view v-if="step==6" class="step top">
+					<view class="navItem">
+						<image
+							src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E7%A7%91%E6%8A%80%E6%96%87%E8%89%BA%E5%B8%B8%E8%AF%86.png">
+						</image>
+					</view>
 				</view>
-			</view>
-			<view v-if="step==1" class="step top">
-				<view class="navItem">
-					<image
-						src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%85%8D%E8%B4%B9%E8%AF%95%E5%90%AC.png">
-					</image>
+				<view v-if="step==2" class="step top">
+					<view class="navItem">
+						<image
+							src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%85%8D%E8%B4%B9%E8%AF%95%E5%90%AC.png">
+						</image>
+					</view>
 				</view>
-			</view>
-			<view v-if="step==4" class="step top">
-				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%94%99%E9%A2%98%E9%9B%86.png">
-					</image>
+				<view v-if="step==1" class="step top">
+					<view class="navItem">
+						<image
+							src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E5%88%86%E4%BA%AB%E6%9C%89%E7%A4%BC.png">
+						</image>
+					</view>
 				</view>
-			</view>
-			<view v-if="step==3" class="step top">
-				<view class="navItem">
-					<image
-						src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7.png">
-					</image>
+				<view v-if="step==4" class="step top">
+					<view class="navItem">
+						<image
+							src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E6%A8%A1%E6%8B%9F%E8%AF%95%E5%8D%B7.png">
+						</image>
+					</view>
 				</view>
-			</view>
-			<view v-if="step==5" class="step top">
-				<view class="navItem">
-					<image src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E4%B8%89%E5%90%88%E4%B8%80.png">
-					</image>
+				<view v-if="step==3" class="step top">
+					<view class="navItem">
+						<image
+							src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E9%87%8D%E7%82%B9%E9%A2%98%E5%BA%93.png">
+						</image>
+					</view>
 				</view>
+				<view v-if="step==5" class="step top">
+					<view class="navItem">
+						<image
+							src="https://art-eater.oss-cn-beijing.aliyuncs.com/photo/%E4%B8%89%E5%90%88%E4%B8%80.png">
+						</image>
+					</view>
+				</view>
+				<!-- </u-mask> -->
 			</view>
-			<!-- </u-mask> -->
+			<view-tabbar :current="0" @tabbarChange="tabbarChange"></view-tabbar>
 		</view>
-		<view-tabbar :current="0" @tabbarChange="tabbarChange"></view-tabbar>
+		<login :visiable="isShowLogin" @cancle="cancleIsShowLogin" @ok="handleLoginComplate" :to="toUrl"></login>
+		<Modal :isShow='isShow' @cancle='isShow=false' submit='确定' title='需要开通会员' @submitFn='submitFn' />
 	</view>
 </template>
 
@@ -224,20 +251,21 @@
 	import Tabbar from '@/components/tabBar/tabBar.vue'
 	import login from '../../components/login/login.vue'
 	import audition from '@/components/audition/audition.vue'
-	import auditionLearning from '@/components/audition/auditionLearning.vue'
 	import Curriculum from '@/js/utils/curriculum.js'
 	import Notice from '@/components/notice/notice.vue'
+	import Modal from '@/components/modal/modalvip.vue'
 	export default {
 		components: {
 			login,
 			'view-tabbar': Tabbar,
 			audition,
-			auditionLearning,
 			Navbar,
-			Notice
+			Notice,
+			Modal
 		},
 		data() {
 			return {
+				isShowDaily: true, // 每日新知是否显示
 				tabbarPdBtm: 0,
 				showLearningMore: false,
 				relationId: '',
@@ -268,10 +296,16 @@
 				studyList: [],
 				moduleList: [], //动态模块
 				height: 0,
-				notice: [],	// 公告
-				noticeTitleArr: [],	// 公告标题
+				notice: [], // 公告
+				noticeTitleArr: [], // 公告标题
 				navbarheight: 0,
-				isScroll: true
+				isScroll: true,
+				isShow: false,
+				newsKnow: [],
+				newsKnowList1: [],
+				newsKnowList2: [],
+				vip: false,
+				read: false, //是否是后台扫码进来的
 			}
 		},
 		mounted() {
@@ -283,6 +317,9 @@
 			})
 		},
 		async created() {
+			this.Parse.Config.get().then(config => {
+				this.isShowDaily = config.attributes.isShowDaily
+			})
 			if (!this.isShowTips) {
 				uni.getSystemInfo({
 					success: (e) => {
@@ -347,10 +384,9 @@
 			this.getNotice()
 			this.getModules();
 			// this.getLearning()
-			
+			this.getDailyCourse()
 		},
 		onLoad(options) {
-			// console.log(options, ';;;;;;;;;;;');
 			// 是不是通过别人的二维码进来的
 			if (options && options.scene) {
 				uni.setStorage({
@@ -358,8 +394,11 @@
 					data: options.scene,
 				})
 			}
+			if (options && options.read) {
+				this.read = true
+			}
 			// this.send()
-			
+
 			var self = this
 			let app = getApp();
 			this.windowHeight = app.globalData.windowHeight;
@@ -380,7 +419,7 @@
 					self.isShowCollection = res.data
 				}
 			})
-			
+
 			const Subjects = this.Parse.Object.extend("Subjects")
 			const query = new this.Parse.Query('Subjects')
 
@@ -398,18 +437,59 @@
 			var recommendQuery = new this.Parse.Query('Recommend')
 			recommendQuery.descending('createdAt')
 			recommendQuery.find().then(recommends => {
-				self.recommends = recommends
+				if (self.read) {
+					self.recommends = recommends
+				} else {
+					self.recommends = recommends.filter(item => item.attributes.hideCourse)
+				}
 			})
 
 
 		},
 		methods: {
+			cancleIsShowLogin() {
+				this.isShowLogin = false
+				this.isShow = false
+			},
+			async jump(item) {
+				let userInfo = this.userInfo;
+				if (!userInfo) {
+					userInfo = uni.getStorageSync('userInfo')
+				}
+
+				if (userInfo && userInfo.openid) {
+					if (userInfo.phone) {
+						if (!item.attributes.course.attributes.vip) {
+							uni.navigateTo({
+								url: '/curriculumSubPackage/pages/details/details?objectId=' + item.attributes
+									.course.id
+							})
+						} else {
+							if (this.vip) {
+								uni.navigateTo({
+									url: '/curriculumSubPackage/pages/details/details?objectId=' + item
+										.attributes.course.id
+								})
+							} else {
+								this.isShow = true
+							}
+						}
+					} else {
+						uni.reLaunch({
+							url: '/pages/login/login'
+						})
+					}
+				} else {
+					this.isShowLogin = true
+				}
+				await Curriculum.recordDailyCourseNum(item.id);
+			},
 			// 获取公告栏内容
 			getNotice() {
 				let _this = this;
 				var query = new this.Parse.Query('BulletinBoard');
 				query.equalTo("isShow", true);
-				query.find().then(data=>{
+				query.find().then(data => {
 					if (data) {
 						data = JSON.parse(JSON.stringify(data));
 						_this.notice = data;
@@ -419,14 +499,13 @@
 			// 点击公告栏内容
 			noticeBar(i) {
 				let _this = this;
-				if (this.notice[i%this.notice.length].type == 1) {
+				if (this.notice[i % this.notice.length].type == 1) {
 					uni.navigateTo({
-						url: '/pages/index/notice?objectId=' + _this.notice[i%this.notice.length].objectId
+						url: '/pages/index/notice?objectId=' + _this.notice[i % this.notice.length].objectId
 					})
 				} else {
-					let path = _this.notice[i%this.notice.length].link.split('?')
+					let path = _this.notice[i % this.notice.length].link.split('?')
 					uni.navigateTo({
-						// url: '/pages/index/channel?' + path[1]
 						url: '/pages/index/out?' + path[1]
 					})
 				}
@@ -445,7 +524,6 @@
 				if (results) {
 					var r = JSON.parse(JSON.stringify(results));
 					app.globalData.member = r;
-					// this.handleImportant(r)
 					if (r.memberType != 2) {
 						if (r.endTime > Date.now()) {
 							this.vip = true;
@@ -485,18 +563,20 @@
 			// 		}
 			// 	}
 			// },
-			async changeUrl(item) {
+			async changePage(item) {
+				// this.isShow = true
 				let vip = await this.checkVip();
 				//配置url
 				let toUrl = await Curriculum.configUrl(item, vip);
-
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
-						// 记录点击量
-						await Curriculum.recordClickNum(item.objectId);
-						uni.navigateTo({
-							url: toUrl
-						})
+						if (!this.vip) {
+							this.isShow = true
+						} else {
+							uni.navigateTo({
+								url: toUrl
+							})
+						}
 					} else {
 						uni.reLaunch({
 							url: '/pages/login/login'
@@ -504,10 +584,37 @@
 					}
 				} else {
 					this.isShowLogin = true
-					this.toAction = "clickNum";
-					this.relationId = item.objectId;
-					this.toUrl = toUrl;
+					// this.toAction = 'modalvip'
 				}
+			},
+			async changeUrl(item) {
+				let vip = await this.checkVip();
+				//配置url
+				let toUrl = await Curriculum.configUrl(item, vip);
+				await Curriculum.recordClickNum(item.objectId);
+				uni.navigateTo({
+					url: toUrl
+				})
+
+
+				// if (this.userInfo && this.userInfo.openid) {
+				// 	if (this.userInfo.phone) {
+				// 		// 记录点击量
+				// 		await Curriculum.recordClickNum(item.objectId);
+				// 		uni.navigateTo({
+				// 			url: toUrl
+				// 		})
+				// 	} else {
+				// 		uni.reLaunch({
+				// 			url: '/pages/login/login'
+				// 		})
+				// 	}
+				// } else {
+				// 	this.isShowLogin = true
+				// 	this.toAction = "clickNum";
+				// 	this.relationId = item.objectId;
+				// 	this.toUrl = toUrl;
+				// }
 			},
 			// 正在学习
 			// async learnCheckMore(params) {
@@ -528,6 +635,22 @@
 			// 			'&moduleName=' + params.moduleName;
 			// 	}
 			// },
+			gotolist() {
+				if (this.userInfo && this.userInfo.openid) {
+					if (this.userInfo.phone) {
+						uni.navigateTo({
+							url: '/homeSubPackage/pages/curriculumList/daily'
+						})
+					} else {
+						uni.reLaunch({
+							url: '/pages/login/login'
+						})
+					}
+				} else {
+					this.isShowLogin = true
+					this.toUrl = '/homeSubPackage/pages/curriculumList/daily'
+				}
+			},
 			async checkMore(params) {
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
@@ -545,6 +668,9 @@
 					this.toUrl = '/homeSubPackage/pages/curriculumList/curriculumList?objId=' + params.objectId +
 						'&moduleName=' + params.moduleName;
 				}
+			},
+			doneLogin(userInfo) {
+				this.userInfo = userInfo;
 			},
 			// Tab	
 			tabbarChange(item) {
@@ -575,8 +701,6 @@
 					self.zdtkConfig = app.globalData.zdtkConfig
 					self.mnksConfig = app.globalData.mnksConfig
 					self.bindOrder()
-
-					// self.handleImportant()
 				})
 			},
 			//正在学习
@@ -593,9 +717,30 @@
 			},
 			//获取模块
 			async getModules() {
-				console.log('12345');
 				let res = await Curriculum.getModule();
-				this.moduleList = res;
+				// this.moduleList = res.filter(item => item.name != '每日新知')
+				this.moduleList = res
+			},
+			async getDailyCourse() {
+				let _this = this;
+				var query = new this.Parse.Query('DailyCourse');
+				query.descending("createdAt");
+				query.find().then(data => {
+					if (data.length == 0) {
+						return;
+					}
+					this.newsKnow = data
+					this.newsKnowList1 = [this.newsKnow[0]]
+					if (this.newsKnow[1]) {
+						this.newsKnowList2 = [this.newsKnow[1]]
+					}
+					if (this.newsKnow[2]) {
+						this.newsKnowList2 = [this.newsKnow[1], this.newsKnow[2]]
+					}
+					if (this.newsKnow[3]) {
+						this.newsKnowList2 = [this.newsKnow[1], this.newsKnow[2], this.newsKnow[3]]
+					}
+				})
 			},
 			/* 登录完成 */
 			handleLoginComplate() {
@@ -603,9 +748,8 @@
 				this.isShowLogin = false
 				uni.getStorage({
 					key: 'userInfo',
-					success: res => {
+					success: async res => {
 						self.userInfo = res.data
-						// debugger
 						if (self.toAction == 'exam') { // 模拟考试
 							self.handleExamClick()
 						}
@@ -615,6 +759,12 @@
 						if (self.toAction == 'clickNum') {
 							Curriculum.recordClickNum(this.relationId);
 						}
+						// if (self.toAction == 'modalvip') {
+						// 	let vip = await this.checkVip();
+						// 	if (!this.vip) {
+						// 		self.isShow = true
+						// 	}
+						// }
 					},
 				})
 			},
@@ -635,12 +785,12 @@
 					self.hasBuyedMNKS = mnksOrder ? true : false
 				})
 			},
-			/*错题集*/
-			handleNoteClick() {
+			/*分享送好礼*/
+			handleShareClick() {
 				if (this.userInfo && this.userInfo.openid) {
 					if (this.userInfo.phone) {
 						uni.navigateTo({
-							url: '/homeSubPackage/pages/error/index'
+							url: '/mineSubPackage/pages/invitation/invitation'
 						})
 					} else {
 						uni.reLaunch({
@@ -660,12 +810,12 @@
 						if (member) {
 							if (member.memberType == 0 || member.memberType == 2) {
 								uni.navigateTo({
-									url: '/homeSubPackage/pages/important/index?buy='+true
+									url: '/homeSubPackage/pages/important/index?buy=' + true
 								})
 								return;
 							}
 						}
-						
+
 						if (this.zdtkConfig.get('isNeedPay') == 1 && !this.hasBuyedZDTK) { // 需要购买，但是没买
 							// this.isShowImportBuy = true
 							// uni.navigateTo({
@@ -678,11 +828,11 @@
 							// 	}
 							// })
 							uni.navigateTo({
-								url: '/homeSubPackage/pages/important/index?buy='+false
+								url: '/homeSubPackage/pages/important/index?buy=' + false
 							})
 						} else {
 							uni.navigateTo({
-								url: '/homeSubPackage/pages/important/index?buy='+true
+								url: '/homeSubPackage/pages/important/index?buy=' + true
 							})
 						}
 					} else { // 未绑定手机号，跳转至绑定页
@@ -710,16 +860,7 @@
 							}
 						}
 						if (this.mnksConfig.get('isNeedPay') == 1 && !this.hasBuyedMNKS) { // 需要购买，但是没买
-							// this.isShowTestBuy = true
-							uni.navigateTo({
-								// url: '/pages/buy/buy?subjectId=' + this.mnksConfig.id,
-								url: '/mineSubPackage/pages/vip/vip',
-								event: {
-									reloadOrder: function(data) {
-										self.bindOrder()
-									}
-								}
-							})
+							this.isShow = true
 						} else {
 							uni.navigateTo({
 								url: '/homeSubPackage/pages/exam/index'
@@ -734,6 +875,12 @@
 					this.isShowLogin = true
 					this.toAction = 'exam'
 				}
+			},
+			submitFn() {
+				uni.navigateTo({
+					url: '/mineSubPackage/pages/vip/vip'
+				})
+				this.isShow = false
 			},
 			// 点击免费试听
 			handleAuditionClick() {
@@ -827,7 +974,6 @@
 				this.Parse.Config.get().then(config => {
 					let isShowVideo = config.get('isShowVideo')
 					if (isShowVideo) {
-						// if(false) {
 						if (this.userInfo && this.userInfo.openid) {
 							uni.navigateTo({
 								url: '/pages/course/course?rid=' + _item.objectId
@@ -892,7 +1038,7 @@
 								url: './news?url=' + _item.src
 							})
 						}
-						
+
 					} else if (_item.src.indexOf('/pages') == 0) {
 						uni.navigateTo({
 							url: _item.src
@@ -908,12 +1054,23 @@
 	page {
 		overflow: hidden;
 	}
+
+	.more {
+		font-size: 16rpx;
+		font-weight: 500;
+		color: #000000;
+		top: 10rpx;
+		opacity: 0.4;
+		padding-right: 20rpx;
+	}
+
 	.scrollx {
 		margin-top: 6rpx;
 		width: 100%;
 		height: 72rpx;
 		z-index: 10000;
 	}
+
 	.myPage {
 		background-color: #F7F7F7;
 	}
@@ -959,7 +1116,6 @@
 			justify-content: space-around;
 
 			.navItem {
-				// flex: 1;
 				width: 50%;
 				height: 182rpx;
 				text-align: center;
@@ -1052,7 +1208,6 @@
 
 	.groupView .subjectView {
 		width: 100%;
-		/* padding: 20rpx 0; */
 		padding-top: 40rpx;
 	}
 
@@ -1147,7 +1302,7 @@
 		padding: 22rpx 0 24rpx;
 		width: 690rpx;
 		height: 196rpx;
-		border-bottom: 1px solid rgba(0,0,0,.06);
+		border-bottom: 1px solid rgba(0, 0, 0, .06);
 	}
 
 	.newsView .newsItem .imgView {
@@ -1173,21 +1328,32 @@
 		text-overflow: ellipsis;
 		overflow: hidden;
 		display: -webkit-box;
-		-webkit-line-clamp: 3;
+		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
-		
+
 		font-size: 24rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
 		font-weight: 600;
-		color: rrgba(0,0,0,.8);
+		color: rrgba(0, 0, 0, .8);
 		line-height: 34rpx;
 	}
 
 	.newsView .newsItem .conView .content {
-		font-family: PingFangSC-Medium;
-		font-size: 30rpx;
-		color: #352026;
+		word-break: break-all;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+
+		font-size: 18rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #989898;
+		line-height: 26rpx;
+		margin-top: 8rpx;
 	}
+
 	.newsView .newsItem:last-child {
 		border-bottom: none;
 	}
@@ -1230,12 +1396,13 @@
 		font-family: PingFangSC-Medium;
 		font-size: 34rpx;
 	}
+
 	.mask_collection image {
 		position: absolute;
-		// width: 100%;
 		height: calc(100vh - 100rpx);
 		bottom: 0;
 	}
+
 	.mask {
 		position: fixed;
 		top: 0;
@@ -1268,9 +1435,9 @@
 		position: absolute;
 	}
 
-	// .bottom image {
-	// 	top: calc(100vh - 368rpx + 10rpx);
-	// }
+	.newsKnow {
+		margin-top: 24rpx;
+	}
 
 	.top image {
 		top: 480rpx;
@@ -1285,13 +1452,181 @@
 		min-width: 32rpx;
 		min-height: 32rpx;
 	}
+
 	/deep/ .u-type-warning-light-bg {
 		background: rgba(237, 231, 230, 1) !important;
 	}
+
 	/deep/ .u-news-item {
 		color: rgba(0, 0, 0, 0.37);
 	}
+
 	/deep/ .u-icon__icon--warning.data-v-172979f2 {
-	  color: rgba(0, 0, 0, 0.37);
+		color: rgba(0, 0, 0, 0.37);
+	}
+
+
+	.auditon {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		padding: 0rpx 30rpx 0rpx 30rpx;
+		justify-content: space-between;
+	}
+
+	.item {
+		width: 336rpx;
+		position: relative;
+		margin-top: 24rpx;
+
+		.icon-vip {
+			position: absolute;
+			right: 0;
+			top: -5rpx;
+			width: 98rpx;
+			height: 28rpx;
+		}
+	}
+
+	.image-info {
+		width: 336rpx;
+		height: 176rpx;
+		overflow: hidden;
+		position: relative;
+		background: #fff;
+		border-radius: 20rpx;
+		margin-bottom: 8rpx;
+	}
+
+	.image-bottom-info {
+		width: 100%;
+		height: 24rpx;
+		position: absolute;
+		bottom: 8rpx;
+		display: flex;
+		align-items: center;
+		align-content: center;
+		justify-content: space-between;
+		font-size: 22rpx;
+		z-index: 1;
+	}
+
+	.opcity {
+		position: absolute;
+		bottom: 0;
+		width: 336rpx;
+		height: 32rpx;
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.6) 100%);
+	}
+
+	.image-info .main-image {
+		width: 100%;
+		height: 176rpx;
+	}
+
+	.txt-info {
+		padding-left: 18rpx;
+	}
+
+	.txt-info .txt-title {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		height: 34rpx;
+		font-size: 24rpx;
+		letter-spacing: 0rpx;
+		font-weight: 500;
+		color: #171717;
+		line-height: 34rpx;
+	}
+
+	.txt-info .tag {
+		height: 22rpx;
+		font-size: 18rpx;
+		letter-spacing: 0rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #989898;
+		display: inherit;
+		line-height: 22rpx;
+		margin-bottom: 24rpx;
+	}
+
+	.view {
+		height: 24rpx;
+		font-size: 16rpx;
+		font-weight: 500;
+		color: #FFFFFF;
+		margin-left: 12rpx;
+		display: flex;
+		align-items: center;
+		align-content: center;
+
+		.play-image {
+			width: 24rpx;
+			height: 24rpx;
+		}
+
+		.play-num {
+			font-size: 16rpx;
+			font-weight: 500;
+			color: #FFFFFF;
+		}
+
+		image {
+			margin-top: -2rpx;
+		}
+
+	}
+
+	.newsknow-item:before {
+		content: "";
+		display: inline-block;
+		width: 8rpx;
+		min-width: 8rpx;
+		height: 8rpx;
+		background: #D81E1F;
+		border-radius: 6rpx;
+		margin-top: 14rpx;
+		margin-right: 6rpx;
+	}
+
+	.newsknowView {
+		padding-left: 10rpx;
+		width: 100%;
+	}
+
+	.newsknow-item {
+		margin-bottom: 30rpx;
+		display: flex;
+	}
+
+	.newsknow-title {
+		font-size: 24rpx;
+		font-weight: 500;
+		color: #171717;
+		line-height: 34rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.newsknow-time {
+		height: 26rpx;
+		font-size: 18rpx;
+		letter-spacing: 0rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #989898;
+		display: inherit;
+		line-height: 26rpx;
+		margin-top: 2rpx;
+	}
+
+	.time {
+		font-size: 16rpx;
+		font-weight: 500;
+		color: #FFFFFF;
+		margin-right: 12rpx;
 	}
 </style>

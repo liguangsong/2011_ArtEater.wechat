@@ -11,6 +11,7 @@
 			:enable-progress-gesture='true'
 			:show-fullscreen-btn='true'
 			:vslide-gesture='true'
+			:custom-cache='false'
 			@click='switchShowControlsFn'
 			@play='videoPlayFn'
 			@pause='videoPauseFn'

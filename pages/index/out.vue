@@ -466,7 +466,7 @@
 				}
 				this.isShow = true;
 				this.checkSendMessage()
-				await this.getIntegral(cash / 100);
+				this.getIntegral(cash / 100);
 				this.createOrder(tradeId, cash);
 				this.createMember(tradeId, bool);
 			},
